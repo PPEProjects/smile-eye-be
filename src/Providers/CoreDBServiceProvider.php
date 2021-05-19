@@ -1,5 +1,5 @@
 <?php
-namespace ppe\dvtinh\Providers;
+namespace ppeCore\dvtinh\Providers;
 use Illuminate\Support\ServiceProvider;
 class CoreDBServiceProvider extends ServiceProvider
 {

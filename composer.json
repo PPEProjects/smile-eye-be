@@ -20,14 +20,14 @@
   },
   "autoload": {
     "psr-4": {
-      "ppe-core\\dvtinh_root\\": "./",
-      "ppe-core\\dvtinh\\": "src/"
+      "ppeCore\\dvtinh_root\\": "./",
+      "ppeCore\\dvtinh\\": "src/"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "ppe-core\\dvtinh\\Providers\\CoreDBServiceProvider"
+        "ppeCore\\dvtinh\\Providers\\CoreDBServiceProvider"
       ]
     }
   }

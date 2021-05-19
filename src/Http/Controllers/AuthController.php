@@ -1,6 +1,6 @@
 <?php
 
-namespace ppe\dvtinh\Http\Controllers;
+namespace ppeCore\dvtinh\Http\Controllers;
 use ppe\dvtinh\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;

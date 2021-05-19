@@ -1,6 +1,6 @@
 <?php
 
-namespace ppe\dvtinh\Models;
+namespace ppeCore\dvtinh\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

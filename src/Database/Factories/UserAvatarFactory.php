@@ -1,6 +1,6 @@
 <?php
 
-namespace ppe\dvtinh\Database\Factories;
+namespace ppeCore\dvtinh\Database\Factories;
 
 use App\Models\UserAvatar;
 use Illuminate\Database\Eloquent\Factories\Factory;

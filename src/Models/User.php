@@ -1,6 +1,6 @@
 <?php
 
-namespace ppe\dvtinh\Models;
+namespace ppeCore\dvtinh\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
