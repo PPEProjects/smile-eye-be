@@ -1,0 +1,34 @@
+{
+  "name": "ppe-core/dvtinh",
+  "description": "This is base db ppe smile-eyes",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "dvtinh99",
+      "email": "tinh5969@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "joselfonseca/lighthouse-graphql-passport-auth": "^6.0",
+    "laravel/passport": "^10.1",
+    "laravel/ui": "^3.2",
+    "mll-lab/laravel-graphql-playground": "^2.5",
+    "nuwave/lighthouse": "^5.3",
+    "staudenmeir/eloquent-json-relations": "^1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "ppe-core\\dvtinh_root\\": "./",
+      "ppe-core\\dvtinh\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "ppe-core\\dvtinh\\Providers\\CoreDBServiceProvider"
+      ]
+    }
+  }
+}
