@@ -30,6 +30,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'remember_token',
+        'avatar',
+        'first_name',
+        'platform',
+        'access_token_social',
+        'social_id',
         'username',
         'phone_number',
     ];

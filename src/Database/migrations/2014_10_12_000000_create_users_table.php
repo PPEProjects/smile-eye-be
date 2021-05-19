@@ -25,10 +25,16 @@ class CreateUsersTable extends Migration
         $this->schema->dropIfExists('users');
         $this->schema->create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('first_name')->nullable();
             $table->string('name');
+            $table->string('platform')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->text('access_token_social')->nullable();
+            $table->text('social_id')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('username')->nullable();
+            $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
