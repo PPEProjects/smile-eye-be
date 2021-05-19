@@ -4,7 +4,7 @@ namespace ppeCore\dvtinh\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use ppe\dvtinh\Database\Factories\UserAvatarFactory;
+use ppeCore\dvtinh\Database\Factories\UserAvatarFactory;
 
 class UserAvatar extends Model
 {

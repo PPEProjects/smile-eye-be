@@ -2,7 +2,7 @@
 
 namespace ppeCore\dvtinh\Database\Factories;
 
-use ppe\dvtinh\Models\User;
+use ppeCore\dvtinh\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 

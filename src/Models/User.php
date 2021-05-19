@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
-use ppe\dvtinh\Database\Factories\UserFactory;
+use ppeCore\dvtinh\Database\Factories\UserFactory;
 
 //class User extends \TCG\Voyager\Models\User
 class User extends Authenticatable

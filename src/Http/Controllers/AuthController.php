@@ -1,7 +1,7 @@
 <?php
 
 namespace ppeCore\dvtinh\Http\Controllers;
-use ppe\dvtinh\Models\User;
+use ppeCore\dvtinh\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
