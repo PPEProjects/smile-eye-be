@@ -1,6 +1,7 @@
 <?php
 
-use ppeCore\Services\ResponseApi;
+use Illuminate\Http\Response;
+use ppeCore\dvtinh\Services\ResponseApi;
 
 if (!function_exists('response_api')) {
     function response_api($data = '', $code = Response::HTTP_OK, $message = null)

@@ -1,6 +1,6 @@
 <?php
 
-namespace ppeCore\Services;
+namespace ppeCore\dvtinh\Services;
 
 use Illuminate\Http\Response as ResponseCore;
 

@@ -5,7 +5,6 @@ namespace ppeCore\dvtinh\Http\Requests;
 
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class AuthRequest extends FormRequest
 {
@@ -29,18 +28,16 @@ class AuthRequest extends FormRequest
     public function rules()
     {
         $req = $this->all();
-//        \Illuminate\Support\Facades\Log::channel('single')->info('$req', [$req]);
-//        \Illuminate\Support\Facades\Log::channel('single')->info('$this->method()', [$this->method()]);
-
         $rules = [
-            'email' => 'string|email|required|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'email'    => ['email', 'required', 'unique:users'],
+            'password' => 'required|min:8|confirmed',
         ];
-        switch ($this->method()) {
-            case 'POST':
-
-                break;
-        }
+//        switch ($this->method()) {
+//            case 'POST':
+//
+//                break;
+//        }
+//        dd($rules);
         return $rules;
     }
 
