@@ -18,7 +18,10 @@ class CoreDBServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../../config/ppe.php' => config_path('ppe.php'),
         ]);
-
+        //public lang
+        $this->publishes([
+            __DIR__.'/../../lang/en/ppe.php' => resource_path('lang/en/ppe.php'),
+        ]);
     }
 
 }

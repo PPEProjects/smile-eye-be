@@ -5,6 +5,7 @@ namespace ppeCore\dvtinh\Http\Requests;
 
 
 use Illuminate\Foundation\Http\FormRequest;
+use ppeCore\dvtinh\Models\User;
 
 class AuthRequest extends FormRequest
 {
@@ -27,17 +28,28 @@ class AuthRequest extends FormRequest
      */
     public function rules()
     {
-        $req = $this->all();
-        $rules = [
-            'email'    => ['email', 'required', 'unique:users'],
-            'password' => 'required|min:8|confirmed',
-        ];
-//        switch ($this->method()) {
-//            case 'POST':
-//
-//                break;
-//        }
-//        dd($rules);
+        $rules = [];
+        if ($this->is('*/register')) {
+            $req = $this->all();
+            $rules = [
+                'email'    => [
+                    'email',
+                    'required',
+                    function ($attribute, $value, $fail) use ($req) {
+                        if (User::where('email', '=', $value)->exists()) {
+                            return $fail(__('ppe.email_already_exists'));
+                        }
+                    },
+                ],
+                'password' => 'required|min:8|confirmed',
+            ];
+        }
+        if ($this->is('*/login')) {
+            $rules = [
+                'email' => 'required',
+                'password' => 'required',
+            ];
+        }
         return $rules;
     }
 
