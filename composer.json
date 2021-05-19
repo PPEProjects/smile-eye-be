@@ -19,8 +19,10 @@
     "staudenmeir/eloquent-json-relations": "^1.1"
   },
   "autoload": {
+    "files": [
+      "./helpers/common.php"
+    ],
     "psr-4": {
-      "ppeCore\\dvtinh_root\\": "./",
       "ppeCore\\dvtinh\\": "src/"
     }
   },
