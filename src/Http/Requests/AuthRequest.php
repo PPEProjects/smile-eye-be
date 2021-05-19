@@ -42,6 +42,7 @@ class AuthRequest extends FormRequest
                     },
                 ],
                 'password' => 'required|min:8|confirmed',
+                'name' => 'required',
             ];
         }
         if ($this->is('*/login')) {
