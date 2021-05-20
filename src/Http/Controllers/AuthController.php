@@ -47,16 +47,16 @@ class AuthController extends Controller
     public function login(AuthRequest $request)
     {
         try {
-            DB::beginTransaction();
-            $req = $request->all();
-            if (!auth()->attempt($req)) {
+            $req = $request->only(['email', 'password']);
+            if (!Auth::attempt($req)) {
                 throw new Exception(__('ppe.invalid_credentials'));
             }
-            $access_token = auth()->user()->createToken('authToken')->accessToken;
-            $user = auth()->user()->toArray();
+            $access_token = Auth::user()->createToken('authToken')->accessToken;
+            $user = Auth::user()->toArray();
             return response_api(['user' => $user, 'access_token' => $access_token]);
+        } catch (\PDOException $exception) {
+            throw new Exception($exception->getMessage());
         } catch (\Exception $exception) {
-            DB::rollBack();
             throw new Exception($exception->getMessage());
         }
     }
