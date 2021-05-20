@@ -46,7 +46,7 @@ class AuthController extends Controller
 
     public function login(AuthRequest $request)
     {
-        try {
+//        try {
             $req = $request->only(['email', 'password']);
             if (!Auth::attempt($req)) {
                 throw new Exception(__('ppe.invalid_credentials'));
@@ -54,11 +54,11 @@ class AuthController extends Controller
             $access_token = Auth::user()->createToken('authToken')->accessToken;
             $user = Auth::user()->toArray();
             return response_api(['user' => $user, 'access_token' => $access_token]);
-        } catch (\PDOException $exception) {
-            throw new Exception($exception->getMessage());
-        } catch (\Exception $exception) {
-            throw new Exception($exception->getMessage());
-        }
+//        } catch (\PDOException $exception) {
+//            throw new Exception($exception->getMessage());
+//        } catch (\Exception $exception) {
+//            throw new Exception($exception->getMessage());
+//        }
     }
 
     public function generateUrl(Request $request)
