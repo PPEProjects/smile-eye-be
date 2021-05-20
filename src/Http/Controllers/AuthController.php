@@ -35,7 +35,6 @@ class AuthController extends Controller
             $user = User::create($req);
             DB::commit();
             $access_token = $user->createToken('authToken')->accessToken;
-
             return response_api(['user' => $user, 'access_token' => $access_token]);
             throw new Exception(__('ppe.something_wrong'));
         } catch (\PDOException $exception) {
@@ -52,6 +51,10 @@ class AuthController extends Controller
 //        try {
         $req = $request->only(['email', 'password']);
         if (Auth::attempt($req)) {
+            \Illuminate\Support\Facades\Log::channel('single')->info('$req', [$req]);
+            
+            \Illuminate\Support\Facades\Log::channel('single')->info('Auth::id()', [Auth::id()]);
+            
             $user = User::find(Auth::id());
             $access_token = $user->createToken('authToken')->accessToken;
             return response_api(['user' => $user, 'access_token' => $access_token]);
