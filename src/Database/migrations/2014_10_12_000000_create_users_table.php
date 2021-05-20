@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('first_name')->nullable();
             $table->string('name');
-            $table->string('platform')->nullable();
+            $table->string('platform')->default("email");
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->text('access_token_social')->nullable();
