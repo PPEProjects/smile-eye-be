@@ -49,6 +49,8 @@ class AuthController extends Controller
     public function login(AuthRequest $request)
     {
 //        try {
+        \Illuminate\Support\Facades\Log::channel('single')->info('00', []);
+        
         $req = $request->only(['email', 'password']);
         if (Auth::attempt($req)) {
             \Illuminate\Support\Facades\Log::channel('single')->info('$req', [$req]);
