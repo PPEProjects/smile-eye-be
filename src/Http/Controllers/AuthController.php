@@ -4,24 +4,27 @@ namespace ppeCore\dvtinh\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Exception;
+use GuzzleHttp\Client;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use PDOException;
-use GuzzleHttp\Client;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Http\Request;
+use PDOException;
 use ppeCore\dvtinh\Http\Requests\AuthRequest;
 use ppeCore\dvtinh\Models\User;
 
 class AuthController extends Controller
 {
     private $redirect_url;
-    function __construct(){
+
+    function __construct()
+    {
         $redirect_url = URL::to('ppe-core/auth/handle');
-        $redirect_url = str_replace('http:','https:',$redirect_url);
+        $redirect_url = str_replace('http:', 'https:', $redirect_url);
         $this->redirect_url = $redirect_url;
     }
+
     public function register(AuthRequest $request)
     {
         try {
@@ -47,13 +50,14 @@ class AuthController extends Controller
     public function login(AuthRequest $request)
     {
 //        try {
-            $req = $request->only(['email', 'password']);
-            if (!Auth::attempt($req)) {
-                throw new Exception(__('ppe.invalid_credentials'));
-            }
-            $access_token = Auth::user()->createToken('authToken')->accessToken;
-            $user = Auth::user()->toArray();
+        $req = $request->only(['email', 'password']);
+        if (Auth::attempt($req)) {
+            $user = User::find(Auth::id());
+            $access_token = $user->createToken('authToken')->accessToken;
             return response_api(['user' => $user, 'access_token' => $access_token]);
+        }
+        throw new Exception(__('ppe.invalid_credentials'));
+
 //        } catch (\PDOException $exception) {
 //            throw new Exception($exception->getMessage());
 //        } catch (\Exception $exception) {
@@ -65,43 +69,43 @@ class AuthController extends Controller
     {
         if ($request->platform == 'google') {
             $params = http_build_query([
-                'client_id' => config('services.google.client_id'),
-                'redirect_uri' => $this->redirect_url,
-                'scope' => 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+                'client_id'     => config('services.google.client_id'),
+                'redirect_uri'  => $this->redirect_url,
+                'scope'         => 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
                 'response_type' => 'code',
-                'access_type' => 'offline',
-                'prompt' => '',
-                'state' => json_encode([
+                'access_type'   => 'offline',
+                'prompt'        => '',
+                'state'         => json_encode([
                     'platform' => $request->platform,
 
                 ])
             ]);
             return response()->json([
                 'status' => true,
-                'data' => "https://accounts.google.com/o/oauth2/v2/auth?{$params}"
+                'data'   => "https://accounts.google.com/o/oauth2/v2/auth?{$params}"
             ]);
         }
         //---------------------------FACEBOOK-----------------------------
-        if ($request->platform=='facebook'){
+        if ($request->platform == 'facebook') {
             $params = http_build_query([
-                'client_id' => config('services.facebook.client_id') ,
-                'redirect_uri' => $this->redirect_url,
-                'scope'=>'email',
-                'response_type'=>'code',
-                'auth_type' => 'rerequest',
-                'display' =>'popup',
-                'state' =>json_encode([
-                    'platform'=>$request->platform,
+                'client_id'     => config('services.facebook.client_id'),
+                'redirect_uri'  => $this->redirect_url,
+                'scope'         => 'email',
+                'response_type' => 'code',
+                'auth_type'     => 'rerequest',
+                'display'       => 'popup',
+                'state'         => json_encode([
+                    'platform' => $request->platform,
                 ])
             ]);
             return response()->json([
-                'status'=>true,
-                'data'=>"https://www.facebook.com/v9.0/dialog/oauth?{$params}"
+                'status' => true,
+                'data'   => "https://www.facebook.com/v9.0/dialog/oauth?{$params}"
             ]);
         }
         return response()->json([
-            'status' =>   false,
-            'message'=> 'something was wrong !',
+            'status'  => false,
+            'message' => 'something was wrong !',
         ]);
     }
 
@@ -112,14 +116,14 @@ class AuthController extends Controller
         $client = new Client();
         if ($state['platform'] == 'google') {
             $data = [
-                'client_id' => config('services.google.client_id'),
+                'client_id'     => config('services.google.client_id'),
                 'client_secret' => config('services.google.client_secret'),
-                'redirect_uri' => $this->redirect_url,
-                'grant_type' => 'authorization_code',
-                'code' => $request->code,
+                'redirect_uri'  => $this->redirect_url,
+                'grant_type'    => 'authorization_code',
+                'code'          => $request->code,
             ];
             $res = $client->request('POST', "https://oauth2.googleapis.com/token", [
-                'headers' => [
+                'headers'     => [
                     'Content-Type' => 'application/x-www-form-urlencoded',
                 ],
                 'form_params' => $data
@@ -133,69 +137,69 @@ class AuthController extends Controller
                 ]);
             $info = json_decode($res->getBody()->getContents(), true);
             $newUser = [
-                'name' => $info['name'],
-                'email' => $info['email'],
-                'platform' => 'google',
+                'name'                => $info['name'],
+                'email'               => $info['email'],
+                'platform'            => 'google',
                 'access_token_social' => $accessToken['access_token'],
-                'first_name' => $info['family_name'],
-                'last_name' => $info['given_name'],
-                'social_id' => $info['id'],
-                'avatar' => $info['picture']
+                'first_name'          => $info['family_name'],
+                'last_name'           => $info['given_name'],
+                'social_id'           => $info['id'],
+                'avatar'              => $info['picture']
             ];
 
             $userCreate = User::updateOrCreate([
-                'platform' => $newUser['platform'],
+                'platform'  => $newUser['platform'],
                 'social_id' => $newUser['social_id']
             ],
                 $newUser);
             $userCreate->token = $userCreate->createToken('authToken')->accessToken;
             return response()->json([
                 'status' => true,
-                'data' => $userCreate
+                'data'   => $userCreate
             ]);
 
         }
         //-------------------------------FACEBOOK------------------------------
-        if ($state['platform'] == 'facebook'){
-            $res = $client->request('GET',"https://graph.facebook.com/v9.0/oauth/access_token",[
-                'query'=>[
-                    'client_id' => config('services.facebook.client_id') ,
-                    'client_secret' => config('services.facebook.client_secret') ,
-                    'redirect_uri' => $this->redirect_url,
-                    'code'=>$request->code,
+        if ($state['platform'] == 'facebook') {
+            $res = $client->request('GET', "https://graph.facebook.com/v9.0/oauth/access_token", [
+                'query' => [
+                    'client_id'     => config('services.facebook.client_id'),
+                    'client_secret' => config('services.facebook.client_secret'),
+                    'redirect_uri'  => $this->redirect_url,
+                    'code'          => $request->code,
                 ]
             ]);
-            $accessToken = json_decode($res->getBody()->getContents(),true);
-            $res = $client->request('GET',"https://graph.facebook.com/v9.0/me",
+            $accessToken = json_decode($res->getBody()->getContents(), true);
+            $res = $client->request('GET', "https://graph.facebook.com/v9.0/me",
                 [
-                    'headers'=>[
-                        'Authorization'=>"Bearer {$accessToken['access_token']}",
+                    'headers' => [
+                        'Authorization' => "Bearer {$accessToken['access_token']}",
                     ],
-                    'query'=>[
-                        'fields'=>'id,email,first_name,last_name,picture'
+                    'query'   => [
+                        'fields' => 'id,email,first_name,last_name,picture'
                     ]
                 ]);
-            $info = json_decode($res->getBody()->getContents(),true);
+            $info = json_decode($res->getBody()->getContents(), true);
             $newUser = [
-                'email' => $info['email'],
-                'platform' => 'facebook',
+                'email'               => $info['email'],
+                'platform'            => 'facebook',
                 'access_token_social' => $accessToken['access_token'],
-                'first_name' => $info['first_name'],
-                'name' => $info['last_name'],
-                'social_id' =>$info['id'],
-                'avatar' => $info['picture']['data']['url']
+                'first_name'          => $info['first_name'],
+                'name'                => $info['last_name'],
+                'social_id'           => $info['id'],
+                'avatar'              => $info['picture']['data']['url']
             ];
 
 //            $userCreate = User::create($newUser);
             $userCreate = User::updateOrCreate([
-                'platform'=>$newUser['platform'],
+                'platform'  => $newUser['platform'],
                 'social_id' => $newUser['social_id']
             ],
                 $newUser);
             $userCreate->token = $userCreate->createToken('authToken')->accessToken;
             return response()->json([
-                'status'=>true,
-                'data'=>$userCreate
+                'status' => true,
+                'data'   => $userCreate
             ]);
         }
     }
