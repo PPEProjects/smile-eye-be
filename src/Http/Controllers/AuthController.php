@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 use PDOException;
-use ppeCore\dvtinh\Http\Requests\AuthRequest;
+use ppeCore\dvtinh\Http\Requests\MediaRequest;
 use ppeCore\dvtinh\Models\User;
 
 class AuthController extends Controller
@@ -25,7 +25,7 @@ class AuthController extends Controller
         $this->redirect_url = $redirect_url;
     }
 
-    public function register(AuthRequest $request)
+    public function register(MediaRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -46,7 +46,7 @@ class AuthController extends Controller
         }
     }
 
-    public function login(AuthRequest $request)
+    public function login(MediaRequest $request)
     {
 //        try {
         \Illuminate\Support\Facades\Log::channel('single')->info('00', []);
