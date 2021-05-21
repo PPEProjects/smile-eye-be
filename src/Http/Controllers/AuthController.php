@@ -57,10 +57,11 @@ class AuthController extends Controller
                 ]);
             }
         }
-        return response()->json([
-            'status'=>false,
-            'message'=>'username or pass wrongs'
-        ]);
+        throw new Exception(__('ppe.invalid_credentials'));
+//        return response()->json([
+//            'status'=>false,
+//            'message'=>'username or pass wrongs'
+//        ]);
     }
     public function logout(){
         Auth::user()->tokens->each(function($token, $key) {
