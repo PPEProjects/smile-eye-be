@@ -2,11 +2,34 @@
 
 namespace ppeCore\dvtinh\Services;
 
+use App\Models\Media;
 use Image;
 use Imagick;
 
 class MediaService
 {
+
+    public function map_medium($mediaCol, $dataIds, $data)
+    {
+        $media = Media::whereIn($mediaCol, $dataIds)
+            ->get()
+            ->keyBy($mediaCol)
+            ->toArray();
+        $data = $data->map(function ($datum) use ($media) {
+            $medium = @$media[$datum['id']];
+            if ($medium['file'] != "") {
+                $image = asset('storage/' . $medium['file']);
+                $medium['image'] = $image;
+                $medium['thumb_image'] = self::get_thumb($image);
+                $datum->medium = $medium;
+                return $datum;
+            } else {
+                $datum->medium = null;
+                return $datum;
+            }
+        });
+        return $data;
+    }
 
     public function get_thumb($imagePath)
     {
