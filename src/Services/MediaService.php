@@ -17,7 +17,7 @@ class MediaService
             ->toArray();
         $data = $data->map(function ($datum) use ($media) {
             $medium = @$media[$datum['id']];
-            if ($medium['file'] != "") {
+            if (isset($medium['file'])) {
                 $image = asset('storage/' . $medium['file']);
                 $medium['image'] = $image;
                 $medium['thumb_image'] = self::get_thumb($image);
