@@ -4,7 +4,7 @@ namespace ppeCore\dvtinh\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
-use Illuminate\Auth\Notifications\ResetPassword;
+//use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\User;
@@ -30,7 +30,7 @@ class ResetPasswordController extends Controller
             'token' => Str::random(60),
         ]);
         if ($passwordReset) {
-            $user->notify(new ResetPassword($passwordReset->token));
+            $user->notify(new ResetPasswordRequest($passwordReset->token));
         }
 
         return response()->json([
