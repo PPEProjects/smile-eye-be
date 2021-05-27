@@ -72,6 +72,25 @@ class AuthController extends Controller
             'message'=>'logout success'
         ]);
     }
+    public function changePass(Request $request){
+        $old_pass = $request["old_password"];
+        $new_pass = $request["new_password"];
+        $confirm_pass = $request["confirm_password"];
+
+        $user = Auth::user();
+        if (Hash::check($old_pass,$user->password)){
+            if ($new_pass == $confirm_pass && !Hash::check($new_pass,$user->password)){
+                DB::beginTransaction();
+                $user->password = Hash::make($new_pass);
+                $user->save();
+                DB::commit();
+                return response_api(['message' => "success"]);
+                throw new Exception(__('ppe.something_wrong'));
+            }else{
+                throw new Exception(__('ppe.something_wrong'));
+            }
+        }
+    }
 
     public function generateUrl(Request $request)
     {
@@ -210,5 +229,7 @@ class AuthController extends Controller
             ]);
         }
     }
+
+
 
 }
