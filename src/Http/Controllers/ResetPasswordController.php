@@ -40,14 +40,11 @@ class ResetPasswordController extends Controller
 
     public function reset(Request $request)
     {
-        $passwordReset = \ppeCore\dvtinh\Models\PasswordReset::where('token', $request['token'])->firstOrFail();
+        $passwordReset = PasswordReset::where('token', $request['token'])->firstOrFail();
         if (Carbon::parse($passwordReset->updated_at)->addMinutes(720)->isPast()) {
             $passwordReset->delete();
 
-            throw new Exception(__('ppe.invalid_credentials'));
-//            return response()->json([
-//                'message' => 'This password reset token is invalid.',
-//            ], 422);
+            throw new Exception(__('ppe.token_invalid'));
         }
         $user = User::where('email', $passwordReset->email)->firstOrFail();
         $updatePasswordUser = $user->password = Hash::make($request['password']);
