@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 
 use ppeCore\dvtinh\Models\PasswordReset;
 use ppeCore\dvtinh\Notifications\ResetPasswordRequest;
+use Exception;
 
 class ResetPasswordController extends Controller
 {
@@ -23,7 +24,11 @@ class ResetPasswordController extends Controller
      */
     public function sendMail(Request $request)
     {
-        $user = User::where('email', $request->email)->firstOrFail();
+        $user = User::where('email', $request->email)->first();
+        if(!$user){
+            throw new Exception(__('ppe.email_not_exist'));
+        };
+        $user->get();
         $passwordReset = PasswordReset::updateOrCreate([
             'email' => $user->email,
         ], [
@@ -40,7 +45,11 @@ class ResetPasswordController extends Controller
 
     public function reset(Request $request)
     {
-        $passwordReset = PasswordReset::where('token', $request['token'])->firstOrFail();
+        $passwordReset = PasswordReset::where('token', $request['token'])->first();
+        if(!$passwordReset){
+            throw new Exception(__('ppe.token_invalid'));
+        }
+        $passwordReset->get();
         if (Carbon::parse($passwordReset->updated_at)->addMinutes(720)->isPast()) {
             $passwordReset->delete();
 
