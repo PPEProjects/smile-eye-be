@@ -39,7 +39,7 @@ class ResetPasswordController extends Controller
         }
 
         return response()->json([
-        'message' => true,
+        'status' => true,
         ]);
     }
 
@@ -61,7 +61,7 @@ class ResetPasswordController extends Controller
         $passwordReset->delete();
 
         return response()->json([
-            'message' => true,
+            'status' => true,
         ]);
     }
 }
