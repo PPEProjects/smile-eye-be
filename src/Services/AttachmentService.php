@@ -2,21 +2,21 @@
 
 namespace ppeCore\dvtinh\Services;
 
-use App\Models\Media;
+use App\Models\Attachment;
 use Image;
 use Imagick;
 
-class MediaService
+class AttachmentService
 {
 
-    public function map_medium($mediaCol, $dataIds, $data)
+    public function map_medium($attachmentCol, $dataIds, $data)
     {
-        $media = Media::whereIn($mediaCol, $dataIds)
+        $attachment = Attachment::whereIn($attachmentCol, $dataIds)
             ->get()
-            ->keyBy($mediaCol)
+            ->keyBy($attachmentCol)
             ->toArray();
-        $data = $data->map(function ($datum) use ($media) {
-            $medium = @$media[$datum['id']];
+        $data = $data->map(function ($datum) use ($attachment) {
+            $medium = @$attachment[$datum['id']];
             if (isset($medium['file'])) {
                 $image = asset('storage/' . $medium['file']);
                 $medium['image'] = $image;

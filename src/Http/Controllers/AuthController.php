@@ -18,6 +18,7 @@ class AuthController extends Controller
 {
     private $redirect_url;
     function __construct(){
+
         $redirect_url = URL::to('ppe-core/auth/handle');
         $redirect_url = str_replace('http:','https:',$redirect_url);
         $this->redirect_url = $redirect_url;
