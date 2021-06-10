@@ -217,8 +217,8 @@ class AuthController extends Controller
                 'social_id' =>$info['id'],
                 'avatar' => $info['picture']['data']['url']
             ];
-
             $userCreate = User::updateOrCreate([
+                'email' => $newUser['email'],
                 'platform'=>$newUser['platform'],
                 'social_id' => $newUser['social_id']
             ],
