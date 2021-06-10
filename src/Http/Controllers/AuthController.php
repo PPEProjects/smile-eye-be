@@ -98,7 +98,7 @@ class AuthController extends Controller
         if ($request->platform == 'google') {
             $params = http_build_query([
                 'client_id' => config('services.google.client_id'),
-                'redirect_uri' => $this->redirect_url,
+                'redirect_uri' => config('services.google.redirect'),
                 'scope' => 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
                 'response_type' => 'code',
                 'access_type' => 'offline',
@@ -117,7 +117,7 @@ class AuthController extends Controller
         if ($request->platform=='facebook'){
             $params = http_build_query([
                 'client_id' => config('services.facebook.client_id') ,
-                'redirect_uri' => $this->redirect_url,
+                'redirect_uri' => config('services.facebook.redirect'),
                 'scope'=>'email',
                 'response_type'=>'code',
                 'auth_type' => 'rerequest',
@@ -146,7 +146,7 @@ class AuthController extends Controller
             $data = [
                 'client_id' => config('services.google.client_id'),
                 'client_secret' => config('services.google.client_secret'),
-                'redirect_uri' => $this->redirect_url,
+                'redirect_uri' => config('services.google.redirect'),
                 'grant_type' => 'authorization_code',
                 'code' => $request->code,
             ];
@@ -193,7 +193,7 @@ class AuthController extends Controller
                 'query'=>[
                     'client_id' => config('services.facebook.client_id') ,
                     'client_secret' => config('services.facebook.client_secret') ,
-                    'redirect_uri' => $this->redirect_url,
+                    'redirect_uri' => config('services.facebook.redirect'),
                     'code'=>$request->code,
                 ]
             ]);
