@@ -174,11 +174,11 @@ class AuthController extends Controller
                 'social_id' => $info['id'],
                 'avatar' => $info['picture']
             ];
-
             $userCreate = User::updateOrCreate([
+
+                'email' => $newUser['email'],
                 'platform' => $newUser['platform'],
-                'social_id' => $newUser['social_id'],
-                'email' => $newUser['email']
+                'social_id' => $newUser['social_id']
             ],
                 $newUser);
             $userCreate->token = $userCreate->createToken('authToken')->accessToken;
@@ -219,11 +219,10 @@ class AuthController extends Controller
                 'social_id' =>$info['id'],
                 'avatar' => $info['picture']['data']['url']
             ];
-
             $userCreate = User::updateOrCreate([
+                'email' => $newUser['email'],
                 'platform'=>$newUser['platform'],
                 'social_id' => $newUser['social_id'],
-                'email' => $newUser['email']
             ],
                 $newUser);
             $userCreate->token = $userCreate->createToken('authToken')->accessToken;
