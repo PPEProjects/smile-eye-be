@@ -177,10 +177,12 @@ class AuthController extends Controller
 
             $userCreate = User::updateOrCreate([
                 'platform' => $newUser['platform'],
-                'social_id' => $newUser['social_id']
+                'social_id' => $newUser['social_id'],
+                'email' => $newUser['email']
             ],
                 $newUser);
             $userCreate->token = $userCreate->createToken('authToken')->accessToken;
+            event(new \App\Events\LoginMessage($userCreate));
             return response()->json([
                 'status' => true,
                 'data' => $userCreate
@@ -220,10 +222,12 @@ class AuthController extends Controller
 
             $userCreate = User::updateOrCreate([
                 'platform'=>$newUser['platform'],
-                'social_id' => $newUser['social_id']
+                'social_id' => $newUser['social_id'],
+                'email' => $newUser['email']
             ],
                 $newUser);
             $userCreate->token = $userCreate->createToken('authToken')->accessToken;
+            event(new \App\Events\LoginMessage($userCreate));
             return response()->json([
                 'status'=>true,
                 'data'=>$userCreate
