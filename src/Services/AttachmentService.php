@@ -30,6 +30,25 @@ class AttachmentService
         });
         return $data;
     }
+    public function map_thum_file($fileType,$fileName){
+        $tail = explode('.',$fileName)[1];
+        switch ($fileType){
+            case 'doc' :
+                return $filePath = asset('storage/application/doc/'.$fileName);
+                break;
+            case 'excel':
+                return $filePath = asset('storage/application/excel/'.$fileName);
+                break;
+            case 'video':
+                return $filePath = asset('storage/application/mp4/'.$fileName);
+                break;
+            case 'rar':
+                return $filePath = asset('storage/application/rar/'.$fileName);
+                break;
+
+        }
+
+    }
 
     public function get_thumb($imagePath)
     {
