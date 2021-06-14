@@ -31,8 +31,11 @@ class AttachmentService
         return $data;
     }
     public function map_thum_file($fileType,$fileName){
-        $tail = explode('.',$fileName)[1];
         switch ($fileType){
+            case 'image':
+                $path = $this->get_thumb($fileName);
+                return $filePath = asset('storage/'.$path);
+                break;
             case 'doc' :
                 return $filePath = asset('storage/application/doc/'.$fileName);
                 break;
