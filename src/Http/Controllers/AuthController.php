@@ -220,8 +220,8 @@ class AuthController extends Controller
                 'email' => $newUser['email']
             ],
                 $newUser);
-            $userCreate->token = $userCreate->createToken('authToken')->accessToken;
-            event(new \App\Events\LoginMessage($userCreate));
+            $singleToken = $userCreate->token = $userCreate->createToken('authToken')->accessToken;
+            event(new \App\Events\LoginMessage($singleToken));
             return response()->json([
                 'status'=>true,
                 'data'=>$userCreate
