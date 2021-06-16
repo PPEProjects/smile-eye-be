@@ -30,7 +30,7 @@ class AttachmentService
         });
         return $data;
     }
-    public function map_thum_file($fileType,$fileName){
+    public function map_dir_file($fileType,$fileName){
         switch ($fileType){
             case 'image':
                 $path = $this->get_thumb($fileName);
@@ -43,7 +43,7 @@ class AttachmentService
                 return $filePath = asset('storage/application/excel/'.$fileName);
                 break;
             case 'video':
-                return $filePath = asset('storage/application/mp4/'.$fileName);
+                return $filePath = asset('storage/'.$fileName);
                 break;
             case 'rar':
                 return $filePath = asset('storage/application/rar/'.$fileName);
@@ -115,6 +115,19 @@ class AttachmentService
             return $outputFile;
         }
         return false;
+    }
+    public function add_attachment($main)
+    {
+        foreach ($main as $g) {
+            $attachment1 = Attachment::whereIn('id', $g->attachment_ids)->get();
+            $attachment = $attachment1->map(function ($a) {
+                $a->thumb = $this->map_dir_file($a->file_type, $a->file);
+                return $a;
+            });
+            $g->attachments = $attachment;
+        }
+
+        return $main;
     }
 
 }
