@@ -33,6 +33,7 @@ class AttachmentService
 
     public function getThumbFile($fileType, $fileName)
     {
+
         switch ($fileType) {
             case 'image':
                 $imagePath = str_replace('/images/', '/thumb-images/', $fileName);
@@ -42,16 +43,28 @@ class AttachmentService
                 return [$thumb, $file];
                 break;
             case 'doc' :
-                return $filePath = asset('storage/application/doc/' . $fileName);
+                $filePath = asset('storage/application/doc/' . $fileName);
+                $thumb = $filePath;
+                $file =  $filePath;
+                return [$thumb, $file];
                 break;
             case 'excel':
-                return $filePath = asset('storage/application/excel/' . $fileName);
+                $filePath = asset('storage/application/excel/' . $fileName);
+                $thumb = $filePath;
+                $file =  $filePath;
+                return [$thumb, $file];
                 break;
             case 'video':
-                return $filePath = asset('storage/' . $fileName);
+                $filePath = asset('storage/media/videos/' . $fileName);
+                $thumb = $filePath;
+                $file =  $filePath;
+                return [$thumb, $file];
                 break;
             case 'rar':
-                return $filePath = asset('storage/application/rar/' . $fileName);
+                $filePath = asset('storage/application/rar/' . $fileName);
+                $thumb = $filePath;
+                $file =  $filePath;
+                return [$thumb, $file];
                 break;
         }
     }
