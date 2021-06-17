@@ -9,34 +9,37 @@ use Imagick;
 class AttachmentService
 {
 
-    public function map_medium($attachmentCol, $dataIds, $data)
-    {
-        $attachment = Attachment::whereIn($attachmentCol, $dataIds)
-            ->get()
-            ->keyBy($attachmentCol)
-            ->toArray();
-        $data = $data->map(function ($datum) use ($attachment) {
-            $medium = @$attachment[$datum['id']];
-            if (isset($medium['file'])) {
-                $image = asset('storage/' . $medium['file']);
-                $medium['image'] = $image;
-                $medium['thumb_image'] = self::get_thumb($image);
-                $datum->medium = $medium;
-                return $datum;
-            } else {
-                $datum->medium = null;
-                return $datum;
-            }
-        });
-        return $data;
-    }
+//    public function map_medium($attachmentCol, $dataIds, $data)
+//    {
+//        $attachment = Attachment::whereIn($attachmentCol, $dataIds)
+//            ->get()
+//            ->keyBy($attachmentCol)
+//            ->toArray();
+//        $data = $data->map(function ($datum) use ($attachment) {
+//            $medium = @$attachment[$datum['id']];
+//            if (isset($medium['file'])) {
+//                $image = asset('storage/' . $medium['file']);
+//                $medium['image'] = $image;
+//                $medium['thumb_image'] = self::get_thumb($image);
+//                $datum->medium = $medium;
+//                return $datum;
+//            } else {
+//                $datum->medium = null;
+//                return $datum;
+//            }
+//        });
+//        return $data;
+//    }
 
-    public function map_dir_file($fileType, $fileName)
+    public function getThumbFile($fileType, $fileName)
     {
         switch ($fileType) {
             case 'image':
-                $path = $this->get_thumb($fileName);
-                return $filePath = asset('storage/' . $path);
+                $imagePath = str_replace('/images/', '/thumb-images/', $fileName);
+                $imagePath = str_replace('.wepb', '.jpg', $imagePath);
+                $thumb = asset('storage/' . $imagePath);
+                $file = asset('storage/' . $fileName);
+                return [$thumb, $file];
                 break;
             case 'doc' :
                 return $filePath = asset('storage/application/doc/' . $fileName);
@@ -50,21 +53,20 @@ class AttachmentService
             case 'rar':
                 return $filePath = asset('storage/application/rar/' . $fileName);
                 break;
-
         }
-
     }
 
-    public function get_thumb($imagePath)
+//    public function get_thumb($imagePath)
+//    {
+//        $imagePath = str_replace('/images/', '/thumb-images/', $imagePath);
+//        $imagePath = str_replace('.wepb', '.jpg', $imagePath);
+//        return $imagePath;
+//    }
+
+    public function saveThumbImage($path, $imagePath)
     {
         $imagePath = str_replace('/images/', '/thumb-images/', $imagePath);
         $imagePath = str_replace('.wepb', '.jpg', $imagePath);
-        return $imagePath;
-    }
-
-    public function thumb_image($path, $imagePath)
-    {
-        $imagePath = self::get_thumb($imagePath);
         return Image::make($path)
             ->fit(90, 90)
             ->save($imagePath, 100);
@@ -123,13 +125,16 @@ class AttachmentService
     {
         $attachment_ids = $datum->attachment_ids;
         $attachments = Attachment::whereIn('id', $attachment_ids)->get();
-        return $datum->map(function ($item) use ($attachments) {
-            $item->attachments = $attachments->whereIn('id', $item->attachment_ids)->map(function ($item1) {
-                $item1->thumb = $this->map_dir_file($item1->file_type, $item1->file);
+        $attachments = $attachments
+            ->whereIn('id', $datum->attachment_ids)
+            ->map(function ($item1) {
+                [$thumb, $file] = $this->getThumbFile($item1->file_type, $item1->file);
+                $item1->thumb = $thumb;
+                $item1->file = $file;
                 return $item1;
             });
-            return $item;
-        });
+        $datum->attachments = $attachments;
+        return $datum;
     }
 
     public function mappingAttachments($data)
@@ -138,7 +143,9 @@ class AttachmentService
         $attachments = Attachment::whereIn('id', $attachment_ids)->get();
         return $data->map(function ($item) use ($attachments) {
             $item->attachments = $attachments->whereIn('id', $item->attachment_ids)->map(function ($item1) {
-                $item1->thumb = $this->map_dir_file($item1->file_type, $item1->file);
+                [$thumb, $file] = $this->getThumbFile($item1->file_type, $item1->file);
+                $item1->thumb = $thumb;
+                $item1->file = $file;
                 return $item1;
             });
             return $item;
