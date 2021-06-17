@@ -43,25 +43,25 @@ class AttachmentService
                 return [$thumb, $file];
                 break;
             case 'doc' :
-                $filePath = asset('storage/application/doc/' . $fileName);
+                $filePath = asset('storage/' . $fileName);
                 $thumb = $filePath;
                 $file =  $filePath;
                 return [$thumb, $file];
                 break;
             case 'excel':
-                $filePath = asset('storage/application/excel/' . $fileName);
+                $filePath = asset('storage/' . $fileName);
                 $thumb = $filePath;
                 $file =  $filePath;
                 return [$thumb, $file];
                 break;
             case 'video':
-                $filePath = asset('storage/media/videos/' . $fileName);
+                $filePath = asset('storage/' . $fileName);
                 $thumb = $filePath;
                 $file =  $filePath;
                 return [$thumb, $file];
                 break;
             case 'rar':
-                $filePath = asset('storage/application/rar/' . $fileName);
+                $filePath = asset('storage/' . $fileName);
                 $thumb = $filePath;
                 $file =  $filePath;
                 return [$thumb, $file];
