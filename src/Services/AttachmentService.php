@@ -123,6 +123,7 @@ class AttachmentService
 
     public function mappingAttachment($datum)
     {
+        if(!isset($datum->attachment_ids)) return $datum;
         $attachment_ids = $datum->attachment_ids;
         $attachments = Attachment::whereIn('id', $attachment_ids)->get();
         $attachments = $attachments
