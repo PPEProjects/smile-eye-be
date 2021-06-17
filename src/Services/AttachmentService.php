@@ -30,23 +30,25 @@ class AttachmentService
         });
         return $data;
     }
-    public function map_dir_file($fileType,$fileName){
-        switch ($fileType){
+
+    public function map_dir_file($fileType, $fileName)
+    {
+        switch ($fileType) {
             case 'image':
                 $path = $this->get_thumb($fileName);
-                return $filePath = asset('storage/'.$path);
+                return $filePath = asset('storage/' . $path);
                 break;
             case 'doc' :
-                return $filePath = asset('storage/application/doc/'.$fileName);
+                return $filePath = asset('storage/application/doc/' . $fileName);
                 break;
             case 'excel':
-                return $filePath = asset('storage/application/excel/'.$fileName);
+                return $filePath = asset('storage/application/excel/' . $fileName);
                 break;
             case 'video':
-                return $filePath = asset('storage/'.$fileName);
+                return $filePath = asset('storage/' . $fileName);
                 break;
             case 'rar':
-                return $filePath = asset('storage/application/rar/'.$fileName);
+                return $filePath = asset('storage/application/rar/' . $fileName);
                 break;
 
         }
@@ -116,18 +118,31 @@ class AttachmentService
         }
         return false;
     }
-    public function add_attachment($main)
-    {
-        foreach ($main as $g) {
-            $attachment1 = Attachment::whereIn('id', $g->attachment_ids)->get();
-            $attachment = $attachment1->map(function ($a) {
-                $a->thumb = $this->map_dir_file($a->file_type, $a->file);
-                return $a;
-            });
-            $g->attachments = $attachment;
-        }
 
-        return $main;
+    public function mappingAttachment($datum)
+    {
+        $attachment_ids = $datum->attachment_ids;
+        $attachments = Attachment::whereIn('id', $attachment_ids)->get();
+        return $datum->map(function ($item) use ($attachments) {
+            $item->attachments = $attachments->whereIn('id', $item->attachment_ids)->map(function ($item1) {
+                $item1->thumb = $this->map_dir_file($item1->file_type, $item1->file);
+                return $item1;
+            });
+            return $item;
+        });
+    }
+
+    public function mappingAttachments($data)
+    {
+        $attachment_ids = $data->pluck('attachment_ids')->flatten();
+        $attachments = Attachment::whereIn('id', $attachment_ids)->get();
+        return $data->map(function ($item) use ($attachments) {
+            $item->attachments = $attachments->whereIn('id', $item->attachment_ids)->map(function ($item1) {
+                $item1->thumb = $this->map_dir_file($item1->file_type, $item1->file);
+                return $item1;
+            });
+            return $item;
+        });
     }
 
 }
