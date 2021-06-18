@@ -154,14 +154,17 @@ class AttachmentService
     public function mappingAttachments($data)
     {
         $attachment_ids = $data->pluck('attachment_ids')->flatten();
-        $attachments = Attachment::whereIn('id', $attachment_ids)->get();
-        return $data->map(function ($item) use ($attachments) {
-            $item->attachments = $attachments->whereIn('id', $item->attachment_ids)->map(function ($item1) {
+        $attachments = Attachment::whereIn('id', $attachment_ids)
+            ->get()
+            ->map(function ($item1) {
                 [$thumb, $file] = $this->getThumbFile($item1->file_type, $item1->file);
                 $item1->thumb = $thumb;
                 $item1->file = $file;
                 return $item1;
             });
+        return $data->map(function ($item) use ($attachments) {
+            $attachments1 = $attachments->whereIn('id', $item->attachment_ids);
+            $item->attachments = $attachments1;
             return $item;
         });
     }
