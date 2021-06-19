@@ -39,6 +39,7 @@ class User extends Authenticatable
         'username',
         'phone_number',
         'quotes',
+        'attachment_id'
     ];
 
     /**
