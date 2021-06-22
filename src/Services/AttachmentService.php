@@ -66,6 +66,12 @@ class AttachmentService
                 $file =  $filePath;
                 return [$thumb, $file];
                 break;
+            case 'exe':
+                $filePath = asset('storage/' . $fileName);
+                $thumb = $filePath;
+                $file =  $filePath;
+                return [$thumb, $file];
+                break;
         }
     }
 
@@ -148,6 +154,19 @@ class AttachmentService
                 return $item1;
             });
         $datum->attachments = $attachments;
+        return $datum;
+    }
+    public function mappingSingleAttachment($datum)
+    {
+        if(!isset($datum->attachment_id)) return $datum;
+        $attachment_id = $datum->attachment_id;
+        $attachment = Attachment::where('id', $attachment_id)->first();
+
+        [$thumb, $file] = $this->getThumbFile($attachment->file_type, $attachment->file);
+        $attachment->thumb = $thumb;
+        $attachment->file = $file;
+
+        $datum->attachment = $attachment;
         return $datum;
     }
 
