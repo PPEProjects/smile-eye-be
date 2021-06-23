@@ -33,7 +33,6 @@ class AttachmentService
 
     public function getThumbFile($fileType, $fileName)
     {
-
         switch ($fileType) {
             case 'image':
                 $imagePath = str_replace('/images/', '/thumb-images/', $fileName);
@@ -158,15 +157,19 @@ class AttachmentService
     }
     public function mappingSingleAttachment($datum)
     {
-        if(!isset($datum->attachment_id)) return $datum;
+        if (!isset($datum->attachment_id)) {
+            $datum->attachment_id = null;
+            return $datum;
+        }
         $attachment_id = $datum->attachment_id;
         $attachment = Attachment::where('id', $attachment_id)->first();
-
+        if ($attachment) {
         [$thumb, $file] = $this->getThumbFile($attachment->file_type, $attachment->file);
         $attachment->thumb = $thumb;
         $attachment->file = $file;
 
         $datum->attachment = $attachment;
+        }else $datum->attachment = null ;
         return $datum;
     }
 
