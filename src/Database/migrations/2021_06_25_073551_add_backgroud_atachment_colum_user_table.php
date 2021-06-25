@@ -20,7 +20,7 @@ class AddBackgroudAtachmentColumUserTable extends Migration
     {
         $this->schema->table('users', function(Blueprint $table) {
             $table->renameColumn('attachment_id', 'avatar_attachment_id');
-            $table->json('backgroud_attachment_id')->nullable();
+            $table->json('background_attachment_id')->nullable();
         });
     }
 

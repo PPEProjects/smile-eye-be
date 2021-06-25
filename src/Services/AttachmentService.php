@@ -188,17 +188,17 @@ class AttachmentService
             }
         }
 
-        if ($datum->backgroud_attachment_id) {
-            $attachment_id = $datum->backgroud_attachment_id;
+        if ($datum->background_attachment_id) {
+            $attachment_id = $datum->background_attachment_id;
             $attachment = Attachment::where('id', $attachment_id)->first();
             if ($attachment) {
                 [$thumb, $file] = $this->getThumbFile($attachment->file_type, $attachment->file);
                 $attachment->thumb = $thumb;
                 $attachment->file = $file;
 
-                $datum->backgroud_attachment = $attachment;
+                $datum->background_attachment = $attachment;
             } else {
-                $datum->backgroud_attachment = null;
+                $datum->background_attachment = null;
             }
 
         }
