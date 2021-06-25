@@ -172,6 +172,36 @@ class AttachmentService
         }else $datum->attachment = null ;
         return $datum;
     }
+    public function mappingAvatarBackgroud($datum)
+    {
+        if (!isset($datum->avatar_attachment_id)) {
+            $datum->avatar_attachment_id = null;
+            return $datum;
+        }
+        $attachment_id = $datum->avatar_attachment_id;
+        $attachment = Attachment::where('id', $attachment_id)->first();
+        if ($attachment) {
+            [$thumb, $file] = $this->getThumbFile($attachment->file_type, $attachment->file);
+            $attachment->thumb = $thumb;
+            $attachment->file = $file;
+
+            $datum->attachment = $attachment;
+
+            if ($datum->backgroud_attachment_id) {
+                $attachment_id = $datum->backgroud_attachment_id;
+                $attachment = Attachment::where('id', $attachment_id)->first();
+                if ($attachment) {
+                    [$thumb, $file] = $this->getThumbFile($attachment->file_type, $attachment->file);
+                    $attachment->thumb = $thumb;
+                    $attachment->file = $file;
+
+                    $datum->backgroud_attachment = $attachment;
+                }
+
+            } else $datum->attachment = null;
+            return $datum;
+        }
+    }
 
     public function mappingAttachments($data)
     {
