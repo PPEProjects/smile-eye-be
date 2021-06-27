@@ -172,7 +172,7 @@ class AuthController extends Controller
                 'first_name' => $info['family_name'],
                 'last_name' => $info['given_name'],
                 'social_id' => $info['id'],
-                'avatar' => $info['picture']
+                'avatar_attachment_id' => $info['picture']
             ];
             $userCreate = User::updateOrCreate([
                 'email' => $newUser['email']
@@ -214,7 +214,7 @@ class AuthController extends Controller
                 'first_name' => $info['first_name'],
                 'name' => $info['last_name'],
                 'social_id' =>$info['id'],
-                'avatar' => $info['picture']['data']['url']
+                'avatar_attachment_id' => $info['picture']['data']['url']
             ];
             $userCreate = User::updateOrCreate([
                 'email' => $newUser['email']
