@@ -68,7 +68,6 @@ class AchieveRepository
     }
     public function detailAchieve($args){
         $achieve = Achieve::where("general_id",$args['general_id'])
-            ->where("user_id",Auth::id())
             ->first();
         $user = User::find($achieve->user_id);
         $user = $this->attachment_service->mappingAvatarBackgroud($user);
