@@ -161,4 +161,13 @@ class AchieveRepository
             $achieve->member = $member;
             return $achieve;
     }
+    public function updateAchieveWithGeneralId($args){
+
+        $achieve = Achieve::where("general_id",$args["general_id"])
+            ->where("user_invite_id",Auth::id())
+            ->first();
+        $args = array_diff_key($args,array_flip(["directive","general_id"]));
+        $achieve->update($args);
+        return $achieve;
+    }
 }

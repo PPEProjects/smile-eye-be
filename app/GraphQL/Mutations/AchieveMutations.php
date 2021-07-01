@@ -42,5 +42,8 @@ class AchieveMutations
         $cm = Achieve::find($args['id']);
         return $cm->delete();
     }
+    public function updateAchieveWithGeneralId($_, array $args){
+        return $this->achieve_repository->updateAchieveWithGeneralId($args);
+    }
 
 }

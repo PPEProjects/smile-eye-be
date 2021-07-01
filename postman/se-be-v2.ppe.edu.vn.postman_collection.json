@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c0aab87f-a8e5-4913-bb9e-7da3c6844d82",
+		"_postman_id": "b2657970-2e81-4c8d-8a45-7c0d1511cd52",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -21,7 +21,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"tinhdoan\",\n    \"email\": \"tinh1@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
+							"raw": "{\n    \"name\": \"tinhdoan\",\n    \"email\": \"tinh3@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -92,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"tinh5969@gmail.com\",\n    \"password\": \"123456789\"\n}",
+							"raw": "{\n    \"email\": \"tinh1@gmail.com\",\n    \"password\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -708,7 +708,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "  query($types: [String]!){\r\n  my_notifications(\r\n      types: $types\r\n  ){\r\n    id\r\n    user{\r\n        id\r\n        name\r\n        attachment{\r\n            file_type\r\n            thumb\r\n            file\r\n        }\r\n    }\r\n    general_id\r\n    task_id\r\n    goal_id\r\n    todolist_id\r\n    type\r\n    type_id\r\n    messages\r\n    created_at\r\n    updated_at\r\n  }\r\n}",
-								"variables": "{\r\n    \"types\":[\"friend\"]\r\n}"
+								"variables": "{\r\n    \"types\":[\"comment\"]\r\n}"
 							}
 						},
 						"url": {
@@ -958,7 +958,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "\nmutation($general_id:ID!,$user_invite_ids:[ID]!,$status:String) {\n  create_achieve(\n    input: {\n      general_id: $general_id\n      user_invite_ids: $user_invite_ids\n      status: $status\n    }\n  )\n  }",
-								"variables": "{\n     \"general_id\" : 1,\n    \"user_invite_ids\" : [3,1],\n    \"status\" : \"accept\"\n}"
+								"variables": "{\n     \"general_id\" : 1,\n    \"user_invite_ids\" : [3,1],\n    \"status\" : \"pending\"\n}"
 							}
 						},
 						"url": {
@@ -987,8 +987,38 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "\nmutation($id:ID!,$general_id:ID,$user_invite_ids:ID,$status:String) {\n  update_achieve(\n    input: {\n        id : $id\n      general_id: $general_id\n      user_invite_ids: $user_invite_ids\n      status: $status\n      \n    }\n  ) {\n      id\n      general{id}\n      user_invite{id}\n    \n  }\n}",
-								"variables": "{\n    \"id\":16,\n    \"status\" : \"accept\"\n}"
+								"query": "\nmutation($id:ID!,$general_id:ID,$user_invite_ids:ID,$status:String) {\n  update_achieve_with_general_id(\n    input: {\n        id : $id\n      general_id: $general_id\n      user_invite_ids: $user_invite_ids\n      status: $status\n      \n    }\n  ) {\n      id\n      general{id}\n      user_invite{id}\n    \n  }\n}",
+								"variables": "{\n    \"general_id\":16,\n    \"status\" : \"accept\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_achieve_with_general_id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation($id:ID,$general_id:ID,$user_invite_ids:ID,$status:String) {\n  update_achieve_with_general_id(\n    input: {\n        id : $id\n      general_id: $general_id\n      user_invite_ids: $user_invite_ids\n      status: $status\n      \n    }\n  ) {\n      id\n      general{id}\n      user_invite{id}\n      status\n    \n  }\n}",
+								"variables": "{\n    \"general_id\":1,\n    \"status\" : \"accept\"\n}"
 							}
 						},
 						"url": {
@@ -1330,7 +1360,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/HoaiNam/Videos/Captures/Demo web manga.mp4"
+									"src": "/C:/Users/Admin/Desktop/canhan.jpg"
 								}
 							]
 						},
@@ -2581,8 +2611,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($id: ID, $not_auth: Boolean) {\r\n  my_goals_tree_sort(id: $id, not_auth: $not_auth)\r\n}",
-								"variables": "{\r\n    \"id\": 2,\r\n    \"not_auth\": true\r\n}"
+								"query": "query($id: ID) {\r\n  my_goals_tree_sort(id: $id)\r\n}",
+								"variables": "{\r\n    \"id\": 2  \r\n}"
 							}
 						},
 						"url": {
@@ -2952,7 +2982,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "\nmutation($general_id:ID, $parent_id:ID, $mode:String,\n$content:String, $attachment_ids : JSON) {\n  create_comment(\n    input: {\n      general_id: $general_id\n      parent_id: $parent_id\n      mode: $mode,\n      content: $content,\n      attachment_ids:$attachment_ids\n    }\n  ) {\n    id\n    content\n    created_at\n    updated_at\n    user{\n        id\n        name\n        email\n        created_at\n        updated_at\n    }\n    general{\n        id \n        goal{\n            id\n            name\n        }\n        todolist{\n            id\n        }\n        task{\n            id\n        }\n    }\n  }\n}",
-								"variables": "{\n    \"general_id\": 23,\n    \"parent_id\": null,\n    \"mode\": \"let\",\n    \"content\" :\"user 1\",\n    \"attachment_ids\" :[]\n\n}"
+								"variables": "{\n    \"general_id\": 1386,\n    \"parent_id\": null,\n    \"mode\": \"let\",\n    \"content\" :\"user 51\",\n    \"attachment_ids\" :[]\n\n}"
 							}
 						},
 						"url": {

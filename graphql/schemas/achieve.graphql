@@ -2,6 +2,7 @@ extend type Mutation {
     create_achieve(input: CreateAchieveInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\AchieveMutations@createAchieve")
     delete_achieve(input: DeleteAchieveInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\AchieveMutations@deleteAchieve")
     update_achieve(input: UpdateAchieveInput! @spread): Achieve @guard @field(resolver: "App\\GraphQL\\Mutations\\AchieveMutations@updateAchieve")
+    update_achieve_with_general_id(input: UpdateAchieveInput! @spread): Achieve @guard @field(resolver: "App\\GraphQL\\Mutations\\AchieveMutations@updateAchieveWithGeneralId")
 }
 
 extend type Query {
@@ -37,7 +38,7 @@ input DetailAchieveInput{
     id:ID!
 }
 input UpdateAchieveInput{
-    id : ID!
+    id : ID
     general_id : ID
     user_invite_ids : ID
     status : String @rules(apply: ["in:accept,pending"])
