@@ -119,7 +119,7 @@ class GoalRepository
     {
         $goal_ids = $this->myGoalsAchieve()->pluck("id")->toArray();
         $temp = in_array($goalId, $goal_ids);
-        if ($temp){
+        if ($temp) {
             $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, status')
                 ->orderBy('id', 'desc')
                 ->get();
@@ -147,89 +147,93 @@ class GoalRepository
                 $branch[] = $element;
             }
         }
-//        dd($branch);
         return $branch;
     }
-    public function mapProcess($goals){
+
+    public function mapProcess($goals)
+    {
 
         $goal_ids = $goals->pluck("id");
-        $task = Task::whereIn("goal_id",$goal_ids);
+        $task = Task::whereIn("goal_id", $goal_ids);
         $task_ids = $task->pluck("id");
 
         $todolist = Todolist::selectRaw("task_id, count(*) as count")
             ->whereIn("task_id", $task_ids)
-            ->where("status","done")
+            ->where("status", "done")
             ->groupBy("task_id")
             ->get();
-        return $goals = $goals->map( function ($g) use($todolist){
-            if ($g->status == "done"){
+        return $goals = $goals->map(function ($g) use ($todolist) {
+            if ($g->status == "done") {
                 $g->process = 100;
                 return $g;
             }
-            $task = Task::where("goal_id",$g->id)->first();
-            if ($task){
-                $todo = $todolist->where("task_id",$task->id)->first();
+            $task = Task::where("goal_id", $g->id)->first();
+            if ($task) {
+                $todo = $todolist->where("task_id", $task->id)->first();
 
-                if($todo){
+                if ($todo) {
                     $star_day = Carbon::parse($g->start_day);
                     $end_day = Carbon::parse($g->end_day);
                     $day = $end_day->diffInDays($star_day) + 1;
 
-                    if ($day > 0){
+                    if ($day > 0) {
                         $count = $todo->count;
-                        $process = $count / $day *100;
-                        $process = $process > 100 ? 100:$process;
+                        $process = $count / $day * 100;
+                        $process = $process > 100 ? 100 : $process;
                         $g->process = $process;
                     }
-                }else{
+                } else {
                     $g->process = 0;
                 }
 
-            }else{
+            } else {
                 $g->process = 0;
             }
             return @$g;
         });
     }
-    public function mapProcessSingle($goal){
+
+    public function mapProcessSingle($goal)
+    {
         if ($goal->status == "done") {
             $goal->process = 100;
             return $goal;
         }
-        $task = Task::where("goal_id",$goal->id)
+        $task = Task::where("goal_id", $goal->id)
             ->first();
-        if ($task){
-            $todolist = Todolist::where('task_id',$task->id)
-                ->where("status","done")
-                ->where("user_id",Auth::id())
+        if ($task) {
+            $todolist = Todolist::where('task_id', $task->id)
+                ->where("status", "done")
+                ->where("user_id", Auth::id())
                 ->get();
-            $count = count($todolist) == 0 ? 1:count($todolist);
+            $count = count($todolist) == 0 ? 1 : count($todolist);
 
             $star_day = Carbon::parse($goal->start_day);
             $end_day = Carbon::parse($goal->end_day);
 
             $day = $end_day->diffInDays($star_day) + 1;
             //process
-            $process = round($count/$day * 100,2);
+            $process = round($count / $day * 100, 2);
             $goal->process = $process;
             return $goal;
         }
         $goal->process = 0;
         return $goal;
     }
+
     public function myGoalsAchieve()
     {
-        $general_ids = Achieve::where("user_invite_id",Auth::id())
-            ->where("status","accept")
+        $general_ids = Achieve::where("user_invite_id", Auth::id())
+            ->where("status", "accept")
             ->get()
             ->pluck("general_id")
             ->toArray();
-        $general_ids = array_unique($general_ids,0);
-        $goal_ids = GeneralInfo::whereIn("id",$general_ids)
+        $general_ids = array_unique($general_ids, 0);
+        $goal_ids = GeneralInfo::whereIn("id", $general_ids)
             ->get()
             ->pluck("goal_id")
             ->toArray();
-        $goal_ids = array_unique($goal_ids,0);
+        $goal_ids = array_unique($goal_ids, 0);
         $goals = Goal::whereIn('id', $goal_ids)->get();
         $goals = $this->mapProcess($goals);
         $goals = $this->generalinfo_repository
@@ -237,7 +241,9 @@ class GoalRepository
             ->get($goals);
         return $goals;
     }
-    public function countGoals($args){
+
+    public function countGoals($args)
+    {
         $goals = Goal::where('user_id', Auth::id());
         switch ($args['parent_id']) {
             case 'all':
@@ -261,16 +267,17 @@ class GoalRepository
             ->toArray();
         $count["todo"] += @$count[""];
         $count["todo"] += @$count["null"];
-        $count = array_diff_key($count,array_flip(["","null"]));
+        $count = array_diff_key($count, array_flip(["", "null"]));
 
         $temp = [];
-        foreach ($count as $key=>$c){
+        foreach ($count as $key => $c) {
             $t["status"] = $key;
             $t["number"] = $c;
-            array_push($temp,$t);
+            array_push($temp, $t);
         }
         return $temp;
     }
+
     public function myGoals($args)
     {
         $goals = Goal::where('user_id', Auth::id());
@@ -293,62 +300,71 @@ class GoalRepository
         $goals = $this->generalinfo_repository
             ->setType('goal')
             ->get($goals);
+//        dd($goals->toArray());
         if ($args["parent_id"] == "root") {
             $root_ids = $goals->pluck("id");
-            return $this->goalAll($goals,"root",$root_ids);
+            return $this->goalAll($goals, "root", $root_ids);
         }
         return $this->goalAll($goals);
     }
-    public function goalRoot($goals){
+
+    public function goalRoot($goals)
+    {
         dd($goals->toArray());
     }
-    public function goalAll($goals,$type = "all",$root_ids = []){
+
+    public function goalAll($goals, $type = "all", $root_ids = [])
+    {
         $parentGoal_ids = $goals->whereNotNull("parent_id")
             ->pluck("parent_id")
             ->toArray();
         $parentGoal_ids = array_unique($parentGoal_ids);
         //find goal not have child not in parentGoal_ids
-        $goalNochild = $goals->whereNotIn("id",$parentGoal_ids);
+        $goalNochild = $goals->whereNotIn("id", $parentGoal_ids);
 //        $goalNochild = $this->mapProcess($goalNochild);
-        $goalNochild = $goalNochild->map(function ($goal){
+        $goalNochild = $goalNochild->map(function ($goal) {
             $goal = $this->mapProcessSingle($goal);
+            dd($goal->toArray());
             return $goal;
         });
 
         //find parent goal and caculate process on goalNoChild
-        $goalParent = $goals->whereIn("id",$parentGoal_ids);
-        foreach ($goalParent as $goal){
-            $goal = $this->getProcessChild($goal,$goalNochild);
+        $goalParent = $goals->whereIn("id", $parentGoal_ids);
+        foreach ($goalParent as $goal) {
+            $goal = $this->getProcessChild($goal, $goalNochild);
         }
-        $goalParent = $goalParent->merge($goalNochild);if ($type == "root"){
-            return $goalParent->whereIn("id",$root_ids);
+        $goalParent = $goalParent->merge($goalNochild);
+        if ($type == "root") {
+            return $goalParent->whereIn("id", $root_ids);
         }
 
         return $goalParent;
     }
-    public function getProcessChild($goal,$goalNochild){
-        if ($goal->status == "done"){
+
+    public function getProcessChild($goal, $goalNochild)
+    {
+        if ($goal->status == "done") {
             $goal->process = 100;
             return $goal;
         }
-        $childs = $goalNochild->where("parent_id",$goal->id);
+        $childs = $goalNochild->where("parent_id", $goal->id);
         $process_s = $childs->pluck("process");
         $process = 0;
-        foreach ($process_s as $p){
-            $process+= $p;
+        foreach ($process_s as $p) {
+            $process += $p;
         }
         $count = count($process_s) == 0 ? 1 : count($process_s);
-        $process = $process/$count;
+        $process = $process / $count;
 
 
-        if ($process == 100){
+        if ($process == 100) {
             $arr["status"] = "done";
-            Goal::where("id",$goal->id)
+            Goal::where("id", $goal->id)
                 ->update($arr);
             $goal->status = 'done';
         }
 
-        $goal->process = round($process,2);
+        $goal->process = round($process, 2);
 
         return $goal;
     }
@@ -369,5 +385,70 @@ class GoalRepository
 //        return $branch;
 //    }
 
+
+
+    public function calculatorProcessTodolist($goal)
+    {
+        $progress = $goal->status == 'done' ? 100 : 0;
+        $task = Task::where('goal_id', $goal->id)
+            ->first();
+        if ($task) {
+            $todolist = Todolist::where('task_id', $task->id)
+                ->where('status', 'done')
+                ->where('user_id', Auth::id())
+                ->get();
+            $count = count($todolist) == 0 ? 1 : count($todolist);
+            $star_day = Carbon::parse($goal->start_day);
+            $end_day = Carbon::parse($goal->end_day);
+            $day = $end_day->diffInDays($star_day) + 1;
+            $progress = round($count / $day * 100, 2);
+        }
+        $goal->progress = $progress;
+        $goal->status = $progress == 100 ? 'done' : 'todo';
+        $this->calculatorProcessUpdate($goal->id, $goal->status);
+        return $goal;
+    }
+
+    public function calculatorProcessUpdate($goalId, $status)
+    {
+        $goals = Goal::selectRaw('*, id as value')
+            ->orderBy('id', 'desc')
+            ->where('user_id', Auth::id())
+            ->get()
+            ->toArray();
+        $goals = $this->buildTree($goals);
+
+        $listP = [];
+        $itemP = [];
+        $listU = [];
+        array_walk_recursive($goals, function ($val, $key) use (&$listP, &$itemP, &$listU) {
+            if ($key == 'id' || $key == 'parent_id' || $key == 'status') {
+                $itemP[$key] = $val;
+            }
+            if ($key == 'status') {
+                $listP[$itemP['parent_id']][] = $itemP['status'];
+                $listU[$itemP['parent_id']][] = $itemP;
+            }
+        });
+        if ($status == 'done') {
+            foreach ((@$listU[$goalId] ?? []) as $item) {
+                Goal::where('id', $item['id'])
+                    ->update([
+                        'progress' => 100,
+                        'status'   => 'done',
+                    ]);
+            }
+        }
+
+        foreach ($listP as $goalId => $item) {
+            $done = @array_count_values($item)['done'] ?? 0;
+            $progress = ($done / count($item)) * 100;
+            Goal::where('id', $goalId)
+                ->update([
+                    'progress' => $progress,
+                    'status'   => $progress == 100 ? 'done' : 'todo'
+                ]);
+        }
+    }
 
 }

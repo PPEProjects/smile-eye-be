@@ -2,15 +2,10 @@
 
 namespace App\GraphQL\Queries;
 
-use App\Models\Achieve;
-use App\Models\GeneralInfo;
 use App\Models\Goal;
-use App\Models\Task;
-use App\Models\Todolist;
 use App\Repositories\GeneralInfoRepository;
 use App\Repositories\GoalRepository;
 use App\Repositories\TodolistRepository;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class GoalQueries
@@ -73,13 +68,41 @@ class GoalQueries
         return null;
     }
 
-    public function myGoals($_, array $args)
+    public function myGoals1($_, array $args)
     {
         return $this->goal_repository->myGoals($args);
     }
-    public function countGoals($_, array $args){
+
+    public function myGoals($_, array $args)
+    {
+        $goals = Goal::where('user_id', Auth::id())
+            ->orderBy('id', 'desc');
+        switch ($args['parent_id']) {
+            case 'all':
+                break;
+            case 'root':
+                $goals = $goals->where('parent_id', null);
+                break;
+            default:
+                $goals = $goals->where('parent_id', $args['parent_id']);
+                break;
+        }
+        $goals = $goals->get();
+        $goals = $this->generalinfo_repository
+            ->setType('goal')
+            ->get($goals)
+            ->map(function ($goal) {
+                return $this->goal_repository->calculatorProcessTodolist($goal);
+            });
+//        dd($goals->first()->toArray());
+        return $goals;
+    }
+
+    public function countGoals($_, array $args)
+    {
         return $this->goal_repository->countGoals($args);
     }
+
     public function myGoalsAchieve($_, array $args)
     {
         return $this->goal_repository->myGoalsAchieve($args);
@@ -87,7 +110,7 @@ class GoalQueries
 
     public function myGoalsTreeSort($_, array $args)
     {
-        if(isset($args['not_auth'])){
+        if (isset($args['not_auth'])) {
             return $this->goal_repository->getTreeSortByGoalId($args['id']);
         }
         return $this->goal_repository->getTreeSortByGoalId($args['id'], Auth::id());

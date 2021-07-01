@@ -3,6 +3,8 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\Goal;
+use App\Models\Task;
+use App\Models\Todolist;
 use App\Repositories\AttachmentRepository;
 use App\Repositories\GeneralInfoRepository;
 use App\Repositories\GoalRepository;
@@ -49,26 +51,6 @@ class GoalMutations
 
         $args['user_id'] = Auth::id();
         $goal = Goal::create($args);
-        $generalInfo = $this->generalinfo_repository
-            ->setType('goal')
-            ->upsert(array_merge($goal->toArray(), $args))
-            ->findByTypeId($goal->id);
-        $goal->general_info = $generalInfo;
-        return $goal;
-    }
-
-    public function updateGoal($_, array $args): Goal
-    {
-        if (isset($args['start_day'], $args['end_day'])) {
-            $startDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['start_day']);
-            $endDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['end_day']);
-            if (!$startDay->lte($endDay)) {
-                throw new Error('Start day must less than end day');
-            }
-        }
-
-        $goal = tap(Goal::findOrFail($args["id"]))
-            ->update($args);
         $generalInfo = $this->generalinfo_repository
             ->setType('goal')
             ->upsert(array_merge($goal->toArray(), $args))
@@ -133,4 +115,27 @@ class GoalMutations
 
         return $this->goal_repository->getTreeSortByGoalId($args['root_id'], Auth::id());
     }
+
+    public function updateGoal($_, array $args): Goal
+    {
+        if (isset($args['start_day'], $args['end_day'])) {
+            $startDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['start_day']);
+            $endDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['end_day']);
+            if (!$startDay->lte($endDay)) {
+                throw new Error('Start day must less than end day');
+            }
+        }
+
+        $goal = tap(Goal::findOrFail($args["id"]))
+            ->update($args);
+        $generalInfo = $this->generalinfo_repository
+            ->setType('goal')
+            ->upsert(array_merge($goal->toArray(), $args))
+            ->findByTypeId($goal->id);
+        $goal->general_info = $generalInfo;
+
+        $this->goal_repository->calculatorProcessUpdate($goal->id, $goal->status);
+        return $goal;
+    }
+
 }

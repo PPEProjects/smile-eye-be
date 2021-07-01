@@ -20,7 +20,8 @@ class Goal extends Model
         'name',
         'start_day',
         'end_day',
-        "status",
+        'progress',
+        'status',
         'task_id',
         'is_pined',
         'user_id'

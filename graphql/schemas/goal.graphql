@@ -32,11 +32,12 @@ type Goal{
     end_day: DateTime
     status : String
     task_id: ID
-    process : Float
+#    process : Float
     is_pined : Boolean
     created_at: DateTime
     updated_at: DateTime
     general_info: GeneralInfo
+    progress: Float
 }
 type CountGoal {
     status : String

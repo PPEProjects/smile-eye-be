@@ -20,6 +20,7 @@ class CreateGoalsTable extends Migration
             $table->string('name')->nullable();
             $table->dateTime('start_day')->nullable();
             $table->dateTime('end_day')->nullable();
+            $table->float('progress')->nullable();
             $table->string('status')->nullable();
             $table->unsignedInteger('task_id')->nullable();
             $table->boolean('is_pined')->nullable();
