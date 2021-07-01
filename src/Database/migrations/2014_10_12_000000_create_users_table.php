@@ -35,6 +35,9 @@ class CreateUsersTable extends Migration
             $table->string('phone_number')->nullable();
             $table->string('username')->nullable();
             $table->string('password')->nullable();
+            $table->string('quotes')->nullable();
+            $table->json('avatar_attachment_id')->nullable();
+            $table->json('background_attachment_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

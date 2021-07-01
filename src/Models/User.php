@@ -9,7 +9,6 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use ppeCore\dvtinh\Database\Factories\UserFactory;
 
-//class User extends \TCG\Voyager\Models\User
 class User extends Authenticatable
 {
     use \Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
