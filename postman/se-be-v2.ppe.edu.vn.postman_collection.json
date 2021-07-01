@@ -677,7 +677,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($id: ID!){\r\n  detail_notification(\r\n      id: $id\r\n     \r\n    ) {\r\n        id\r\n        user{\r\n            id\r\n        }\r\n        detail\r\n        member{\r\n            id\r\n            name\r\n            process\r\n            attachment{\r\n                thumb\r\n            }\r\n        }\r\n    }\r\n}\r\n",
+								"query": "query($id: ID!){\r\n  detail_notification(\r\n      id: $id\r\n     \r\n    ) {\r\n        id\r\n        user{\r\n            id\r\n        }\r\n        detail\r\n        member{\r\n            id\r\n            name\r\n            progress\r\n            attachment{\r\n                thumb\r\n            }\r\n        }\r\n    }\r\n}\r\n",
 								"variables": "{\r\n    \"id\": 1\r\n}\r\n"
 							}
 						},
@@ -2461,7 +2461,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($parent_id: String!){\r\n  my_goals_achieve(parent_id: $parent_id) {\r\n    id\r\n    name\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    process\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n}\r\n}",
+								"query": "query($parent_id: String!){\r\n  my_goals_achieve(parent_id: $parent_id) {\r\n    id\r\n    name\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    progress\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n}\r\n}",
 								"variables": "{\r\n \"parent_id\": \"all\"\r\n}"
 							}
 						},
