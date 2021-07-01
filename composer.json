@@ -21,7 +21,8 @@
         "mll-lab/laravel-graphql-playground": "^2.5",
         "nuwave/lighthouse": "^5.3",
         "pusher/pusher-php-server": "^7.0",
-        "staudenmeir/eloquent-json-relations": "^1.1"
+        "staudenmeir/eloquent-json-relations": "^1.1",
+        "intervention/image": "dev-master"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
