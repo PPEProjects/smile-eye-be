@@ -20,7 +20,6 @@
         "laravel/ui": "^3.2",
         "mll-lab/laravel-graphql-playground": "^2.5",
         "nuwave/lighthouse": "^5.3",
-        "ppe-core/dvtinh": "dev-master",
         "pusher/pusher-php-server": "^7.0",
         "staudenmeir/eloquent-json-relations": "^1.1"
     },
