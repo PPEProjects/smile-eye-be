@@ -1,0 +1,45 @@
+extend type Mutation {
+    create_achieve(input: CreateAchieveInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\AchieveMutations@createAchieve")
+    delete_achieve(input: DeleteAchieveInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\AchieveMutations@deleteAchieve")
+    update_achieve(input: UpdateAchieveInput! @spread): Achieve @guard @field(resolver: "App\\GraphQL\\Mutations\\AchieveMutations@updateAchieve")
+}
+
+extend type Query {
+    achieve: [Achieve!]! @paginate(type: "paginator" model: "App\\Models\\Achieve")
+    search_achieve(content: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [Achieve] @paginate(type: "paginator" model: "App\\Models\\Achieve")
+    detail_achieve(general_id: ID): Achieve @guard @field(resolver:"AchieveQueries@detailAchieve")
+#    my_assignInfos: [AssignInfo] @guard @field(resolver:"AssignInfoQueries@my_AssignInfos")
+    sort_achieve(orderBy: [OrderByClause!] @orderBy): [Achieve] @paginate(type: "paginator" model: "App\\Models\\Achieve")
+    #    currentUser: User @auth
+}
+
+type Achieve {
+    id: ID
+    user : User
+    general : GeneralInfo
+    user_invite : User
+    status : String
+    member : [User]
+    detail : JSON
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateAchieveInput{
+    general_id : ID
+    user_invite_ids : [ID]
+    status : String
+}
+input DeleteAchieveInput{
+    id: ID!
+}
+input DetailAchieveInput{
+    id:ID!
+}
+input UpdateAchieveInput{
+    id : ID!
+    general_id : ID
+    user_invite_ids : ID
+    status : String @rules(apply: ["in:accept,pending"])
+}
+

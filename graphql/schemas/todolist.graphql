@@ -1,0 +1,75 @@
+extend type Mutation {
+    create_todolist(input: CreateTodolistInput! @spread): Todolist @guard @field(resolver: "App\\GraphQL\\Mutations\\TodolistMutations@createTodolist")
+    delete_todolist(input: DeleteTodolistInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\TodolistMutations@deleteTodolist")
+    update_todolist(input: UpdateTodolistInput! @spread): Todolist @guard @field(resolver: "App\\GraphQL\\Mutations\\TodolistMutations@updateTodolist")
+# Ver 2
+    upsert_todolist(input: UpsertTodolistInput! @spread): Todolist @guard @field(resolver: "App\\GraphQL\\Mutations\\TodolistMutations@upsertTodolist")
+}
+extend type Query {
+    todolists: [Todolist!]! @paginate(type: "paginator" model: "App\\Models\\Todolist")
+    search_todolists(name: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [Todolist!]! @paginate(type: "paginator" model: "App\\Models\\Todolist")
+    detail_todolist(id: ID,task_id: ID, checked_at: String): Todolist @guard @field(resolver:"TodoListQueries@detailTodolist")
+    my_todolists_with_month(created_at: String!): JSON @guard @field(resolver:"TodoListQueries@my_todolists_with_month")
+    sort_todolists(orderBy: [OrderByClause!] @orderBy): [Todolist!]! @paginate(type: "paginator" model: "App\\Models\\Todolist")
+    search_todolist_month(month: String): [Todolist]@guard @field(resolver:"TodoListQueries@search_todolist_month")
+# Ver 2
+    my_todolists(checked_at: String): [Todolist] @guard @field(resolver:"TodoListQueries@myTodoLists")
+}
+type Todolist{
+    id: ID
+    user: User
+    name : String
+    status : String
+    checked_at : DateTime
+    created_at: DateTime
+    updated_at: DateTime
+    task: Task
+    goal: Goal
+    general_info : GeneralInfo
+    type: String
+    task_id: ID
+    todolist_id: ID
+}
+
+input CreateTodolistInput{
+    goal_id: ID
+    task_id: ID
+    name: String
+    status : String
+    checked_at : DateTime
+
+}
+input DeleteTodolistInput{
+#    id:ID! @rules(apply: ["required","App\\Rules\\OwnerCheckTodolist"])
+    task_id:ID!
+    checked_at: DateTime!
+}
+input UpdateTodolistInput{
+
+    id:ID! @rules(apply: ["required","App\\Rules\\OwnerCheckTodolist"])
+#   goal_id: ID @rules(apply: ["nullable","integer","App\\Rules\\OwnerCheckGoal"])
+    name: String
+    status: String @rules(apply: ["in:todo,done"])
+    task_id: ID
+    goal_id: ID
+    checked_at: DateTime
+}
+input UpdateTodolistInput{
+
+    id:ID! @rules(apply: ["required","App\\Rules\\OwnerCheckTodolist"])
+#   goal_id: ID @rules(apply: ["nullable","integer","App\\Rules\\OwnerCheckGoal"])
+    name: String
+    status: String @rules(apply: ["in:todo,done"])
+    task_id: ID
+    goal_id: ID
+    checked_at: DateTime
+}
+
+
+input UpsertTodolistInput{
+    task_id: ID!
+    checked_at: DateTime!
+    name: String
+    status: String @rules(apply: ["in:todo,done"])
+    general_info: JSON
+}

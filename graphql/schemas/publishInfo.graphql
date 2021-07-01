@@ -1,0 +1,51 @@
+extend type Mutation {
+    create_publishInfo(input: CreatePublishInfoInput! @spread): PublishInfo @guard @field(resolver: "App\\GraphQL\\Mutations\\PublishInfoMutations@createPublishInfo")
+    delete_publishInfo(input: DeletePublishInfoInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\PublishInfoMutations@deletePublishInfo")
+    update_publishInfo(input: UpdatePublishInfoInput! @spread): PublishInfo @guard @field(resolver: "App\\GraphQL\\Mutations\\PublishInfoMutations@updatePublishInfo")
+
+}
+
+extend type Query {
+    publishInfos: [PublishInfo!]! @paginate(type: "paginator" model: "App\\Models\\PublishInfo")
+    search_publishInfos(status: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [PublishInfo] @paginate(type: "paginator" model: "App\\Models\\PublishInfo")
+    detail_publishInfo(id: ID! @eq): PublishInfo @find
+#    my_publishInfos: [PublishInfo] @guard@field(resolver:"PublishInfoQueries@my_publishInfos")
+    sort_publishInfos(orderBy: [OrderByClause!] @orderBy): [PublishInfo] @paginate(type: "paginator" model: "App\\Models\\PublishInfo")
+    #    currentUser: User @auth
+}
+
+type PublishInfo{
+    id: ID
+    general : GeneralInfo
+    user_invite : User
+    status : String
+    rule :String
+    is_copy : Boolean
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreatePublishInfoInput{
+
+    general_id : ID
+    user_invite_id : ID
+    status : String
+    rule :String
+    is_copy : Boolean
+
+}
+input DeletePublishInfoInput{
+    id: ID
+}
+input DetailPublishInfoInput{
+    id:ID
+}
+input UpdatePublishInfoInput{
+    id : ID
+    general_id : ID
+    user_invite_id : ID
+    status : String
+    rule :String
+    is_copy : Boolean
+}
+

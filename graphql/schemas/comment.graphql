@@ -1,0 +1,57 @@
+extend type Mutation {
+    create_comment(input: CreateCommentInput! @spread): Comment @guard @field(resolver: "App\\GraphQL\\Mutations\\CommentMutations@createComment")
+    delete_comment(input: DeleteCommentInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\CommentMutations@deleteComment")
+    update_comment(input: UpdateCommentInput! @spread): Comment @guard @field(resolver: "App\\GraphQL\\Mutations\\CommentMutations@updateComment")
+
+}
+
+extend type Query {
+#    comments: [Comment!]! @paginate(type: "paginator" model: "App\\Models\\Comment")
+    search_comments(content: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [Comment] @paginate(type: "paginator" model: "App\\Models\\Comment")
+    detail_comment(id: ID! @eq): Comment @guard @field(resolver:"CommentQueries@detailComment")
+    my_comments: [Comment] @guard @field(resolver:"CommentQueries@myComments")
+    sort_comments(orderBy: [OrderByClause!] @orderBy): [Comment] @paginate(type: "paginator" model: "App\\Models\\Comment")
+    comments(general_id:ID): [Comment] @guard @field(resolver:"CommentQueries@Comments")
+    #    currentUser: User @auth
+}
+
+type Comment{
+    id: ID
+    user: User
+    general: GeneralInfo
+    general_id : ID
+    parent : Comment
+    mode : String
+    content :String
+    detail : JSON
+    attachments : [Attachment]
+    children: [Comment]
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateCommentInput{
+    general_id : ID
+    parent_id : ID
+    mode: String
+    content : String
+    attachment_ids : JSON
+    created_at : DateTime
+    updated_at : DateTime
+}
+input DeleteCommentInput{
+    id: ID!
+}
+input DetailCommentInput{
+    id:ID!
+}
+input UpdateCommentInput{
+    id : ID!
+    general_id : ID
+    parent_id : ID
+    mode: String
+    content : String
+    attachment_ids : JSON
+}
+
+

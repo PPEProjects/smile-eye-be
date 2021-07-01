@@ -1,0 +1,73 @@
+extend type Mutation {
+    create_generalInfo(input: CreateGeneralInfoInput! @spread): GeneralInfo @guard @field(resolver: "App\\GraphQL\\Mutations\\GeneralInfoMutations@createGeneralInfo")
+    delete_generalInfo(input: DeleteGeneralInfoInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GeneralInfoMutations@deleteGeneralInfo")
+    update_generalInfo(input: UpdateGeneralInfoInput! @spread): GeneralInfo @guard @field(resolver: "App\\GraphQL\\Mutations\\GeneralInfoMutations@updateGeneralInfo")
+}
+
+extend type Query {
+    my_generalInfo : [GeneralInfo] @guard @field(resolver:"GeneralInfoQueries@myGeneralInfo")
+
+    generalInfo: [GeneralInfo!]! @paginate(type: "paginator" model: "App\\Models\\GeneralInfo")
+    sort_generalInfo(orderBy: [OrderByClause!] @orderBy): [GeneralInfo!]! @paginate(type: "paginator" model: "App\\Models\\GeneralInfo")
+    search_generalInfo(note: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [GeneralInfo!]! @paginate(type: "paginator" model: "App\\Models\\GeneralInfo")
+    detail_generalInfo(id: ID! @eq): GeneralInfo @find
+
+}
+type GeneralInfo{
+    id: ID
+    user: User
+    goal : Goal
+    task : Task
+    todolist : Todolist
+    address : String
+    zalo : String
+    repeat : String
+    reminder : String
+    action_at : DateTime
+    note : String
+    attachments : [Attachment]
+    publish : String
+    contest : JSON
+    color : String
+    created_at: DateTime
+    updated_at: DateTime
+    achieves: [Achieve]
+    publishs: [PublishInfo]
+}
+
+input CreateGeneralInfoInput{
+    goal_id: ID
+    task_id : ID
+    todolist_id : ID
+    address : String
+    zalo : String
+    repeat : String  @rules(apply: ["in:null,every day,every week,every month"])
+    reminder : String
+    action_at : DateTime
+    note : String
+    attachment_ids : JSON
+    publish : String
+    contest : JSON
+    color : String
+
+}
+input DeleteGeneralInfoInput{
+    id:ID!
+}
+input UpdateGeneralInfoInput{
+    id : ID
+    goal_id: ID
+    task_id : ID
+    todolist_id : ID
+    address : String
+    zalo : String
+    repeat : String @rules(apply: ["in:null,every day,every week,every month"])
+    reminder : String
+    action_at : DateTime
+    note : String
+    attachment_ids : JSON
+    publish : String
+    contest : JSON
+    color : String
+}
+

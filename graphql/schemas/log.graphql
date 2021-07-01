@@ -1,0 +1,40 @@
+extend type Mutation {
+    create_log(input: CreateLogInput! @spread): Log @guard @field(resolver: "App\\GraphQL\\Mutations\\LogMutations@createLog")
+    delete_log(input: DeleteLogInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\LogMutations@deleteLog")
+    update_log(input: UpdateLogInput! @spread): Log @guard @field(resolver: "App\\GraphQL\\Mutations\\LogMutations@updateLog")
+}
+extend type Query {
+    logs: [Log!]! @paginate(type: "paginator" model: "App\\Models\\Log")
+    search_logs(content: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [Log!]! @paginate(type: "paginator" model: "App\\Models\\Log")
+    detail_log(id: ID! @eq): Log @find
+    my_logs: [Log] @guard @field(resolver:"LogQueries@my_logs")
+    sort_logs(orderBy: [OrderByClause!] @orderBy): [Log!]! @paginate(type: "paginator" model: "App\\Models\\Log")
+
+
+}
+type Log{
+    id: ID
+    user: User
+    table : String
+    content: JSON
+    created_at: DateTime!
+    updated_at: DateTime!
+}
+
+input CreateLogInput{
+    table: String
+    action: String
+    content: JSON
+
+}
+input DeleteLogInput{
+    id:ID! @rules(apply: ["required","App\\Rules\\OwnerCheckLog"])
+}
+
+input UpdateLogInput{
+    id:ID! @rules(apply: ["required","App\\Rules\\OwnerCheckLog"])
+    table : String
+    action : String
+    content: JSON
+
+}

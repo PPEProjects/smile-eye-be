@@ -1,0 +1,47 @@
+
+extend type Mutation {
+    create_friend(input: CreateFriendInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\FriendMutations@createFriend")
+    update_friend(input: UpdateFriendInput! @spread): Friend @guard @field(resolver: "App\\GraphQL\\Mutations\\FriendMutations@updateFriend")
+    delete_friend(input: DeleteFriendInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\FriendMutations@deleteFriend")
+}
+
+extend type Query {
+    friends: [Friend!]! @paginate(type: "paginator" model: "App\\Models\\Friend")
+    sort_friends(orderBy: [OrderByClause!] @orderBy): [Friend!]! @paginate(type: "paginator" model: "App\\Models\\Friend")
+    recomment_friends(name:String): [User] @guard @field(resolver:"FriendQueries@recommentFriends")
+    my_friends(status:String, name:String): [User] @guard @field(resolver:"FriendQueries@my_friends")
+    friend_and_goal(status:String, name:String): [User] @guard @field(resolver:"FriendQueries@friendAndGoal")
+    list_pend_friends(status:String): [User] @guard @field(resolver:"FriendQueries@pendFriend")
+#    search_friends_content(content: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [Friend!]! @paginate(type: "paginator" model: "App\\Models\\Friend")
+#    search_friends_name_friend : [Friend] @all @where(relation: "friends")
+
+}
+
+type Friend {
+    id: ID
+    user: User
+    user_id_friends: User @hasOne(relation: "friend")
+    status: String
+    goals: [Goal]
+    created_at: DateTime
+    updated_at: DateTime
+    medium: Attachment
+    goal_ids: [Goal]
+    user_id: ID
+    user_id_friend: ID
+}
+input CreateFriendInput{
+    user_id_friend: ID!
+    status: String @rules(apply: ["nullable", "in:pending,accept,block"])
+}
+
+input UpdateFriendInput{
+    id: ID
+    goal_ids: [ID] @rules(apply: ["nullable","App\\Rules\\OwnerCheckGoal"])
+}
+
+input DeleteFriendInput{
+    user_id_friend: ID!
+}
+
+

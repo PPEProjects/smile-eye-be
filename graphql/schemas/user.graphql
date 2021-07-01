@@ -1,0 +1,24 @@
+
+extend type Mutation {
+    update_user(input: UpdateUserInput! @spread): User @guard @field(resolver: "App\\GraphQL\\Mutations\\UserMutations@updateUser")
+    delete_user: Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\UserMutations@deleteUser")
+
+}
+
+extend type Query {
+    me_attachment: JSON @guard @field(resolver:"UserQueries@me_attachment")
+}
+
+input UpdateUserInput{
+    name: String
+    email: String
+    username: String
+    quotes: String
+    phone_number: String
+    avatar_attachment_id: ID
+    background_attachment_id : ID
+
+}
+
+
+

@@ -1,0 +1,43 @@
+extend type Mutation {
+    create_contestInfo(input: CreateContestInfoInput! @spread): ContestInfo @guard @field(resolver: "App\\GraphQL\\Mutations\\ContestInfoMutations@createContestInfo")
+    delete_contestInfo(input: DeleteContestInfoInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\ContestInfoMutations@deleteContestInfo")
+    update_contestInfo(input: UpdateContestInfoInput! @spread): ContestInfo @guard @field(resolver: "App\\GraphQL\\Mutations\\ContestInfoMutations@updateContestInfo")
+
+}
+
+extend type Query {
+    contestInfos: [ContestInfo!]! @paginate(type: "paginator" model: "App\\Models\\ContestInfo")
+    search_contestInfos(content: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [ContestInfo] @paginate(type: "paginator" model: "App\\Models\\ContestInfo")
+    detail_contestInfo(id: ID! @eq): ContestInfo @find
+#    my_contestInfos: [ContestInfo] @guard @field(resolver:"ContestInfoQueries@my_ContestInfos")
+    sort_contestInfos(orderBy: [OrderByClause!] @orderBy): [ContestInfo] @paginate(type: "paginator" model: "App\\Models\\ContestInfo")
+    #    currentUser: User @auth
+}
+
+type ContestInfo{
+    id: ID
+    general : GeneralInfo
+    user_invite : User
+    status :String
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateContestInfoInput{
+    general_id : ID
+    user_invite_id : ID
+    status : String
+}
+input DeleteContestInfoInput{
+    id: ID!
+}
+input DetailContestInfoInput{
+    id:ID!
+}
+input UpdateContestInfoInput{
+    id : ID!
+    general_id : ID
+    user_invite_id : ID
+    status : String
+}
+

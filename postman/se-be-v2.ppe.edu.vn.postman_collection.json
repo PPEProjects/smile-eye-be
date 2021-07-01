@@ -1,0 +1,3428 @@
+{
+	"info": {
+		"_postman_id": "c0aab87f-a8e5-4913-bb9e-7da3c6844d82",
+		"name": "se-be-v2.ppe.edu.vn",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth-core",
+			"item": [
+				{
+					"name": "{{url}}/ppe-core/auth/register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"tinhdoan\",\n    \"email\": \"tinh1@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/ppe-core/auth/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ppe-core",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{url}}/ppe-core/auth/logout",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/ppe-core/auth/logout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ppe-core",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{url}}/ppe-core/auth/login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"tinh5969@gmail.com\",\n    \"password\": \"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/ppe-core/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ppe-core",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{url}}/ppe-core/auth/reset-password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"nhnam1632@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/ppe-core/auth/reset-password",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ppe-core",
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{url}}/ppe-core/auth/reset",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\":\"WIRrYogotCU1iXKpF7iVr1VH1VVhP9RVRrUeNsG7nJJIvPwrZtANVsbPFTmz\",\n    \"password\":\"hoainam0544\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/ppe-core/auth/reset",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ppe-core",
+								"auth",
+								"reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{url}}/ppe-core/auth/change-password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"old_password\": \"hhhhhh\",\r\n    \"new_password\":\"hoainam123\",\r\n    \"confirm_password\":\"hoainam123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/ppe-core/auth/change-pass",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ppe-core",
+								"auth",
+								"change-pass"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{url}}/ppe-core/auth/generate link",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/ppe-core/auth/generate-url?platform=facebook",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ppe-core",
+								"auth",
+								"generate-url"
+							],
+							"query": [
+								{
+									"key": "platform",
+									"value": "facebook"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "publish-info",
+			"item": [
+				{
+					"name": "create_publishInfo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation(\n    $general_id : ID\n    $user_invite_id : ID\n    $status : String\n    $rule : String\n    $is_copy : Boolean\n\n) {\n  create_publishInfo(\n    input: {\n       general_id:$general_id\n       user_invite_id:$user_invite_id\n       status : $status\n       rule : $rule\n       is_copy:$is_copy\n    }\n  ) {\n      id\n      general{\n          id\n      }\n    user_invite{\n        id\n    }\n    status\n    rule\n    is_copy\n    created_at\n    updated_at\n    \n  }\n}",
+								"variables": "{\n    \"general_id\" : 1,\n    \"user_invite_id\" : 1,\n    \"status\" : \"String\",\n    \"rule\" :\"String\",\n    \"is_copy\" : false\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_publishInfo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation(\n    $id : ID\n    $general_id : ID\n    $user_invite_id : ID\n    $status : String\n    $rule : String\n    $is_copy : Boolean\n\n) {\n  update_publishInfo(\n    input: {\n       id : $id\n       general_id:$general_id\n       user_invite_id:$user_invite_id\n       status : $status\n       rule : $rule\n       is_copy:$is_copy\n    }\n  ) {\n      id\n      general{\n          id\n      }\n    user_invite{\n        id\n    }\n    status\n    rule\n    is_copy\n    created_at\n    updated_at\n    \n  }\n}",
+								"variables": "{\n    \"id\" : 1,\n    \"general_id\" : 2,\n    \"user_invite_id\" : 2,\n    \"status\" : \"String\",\n    \"rule\" :\"String\",\n    \"is_copy\" : true\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_publish_info",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($id:ID!) {\r\n    delete_publishInfo(\r\n    input: {\r\n      id: $id\r\n    }\r\n  )\r\n}",
+								"variables": "{\r\n    \"id\": 1\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_publishInfos",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  publishInfos(first:20, page:1) {\r\n    data {\r\n     id\r\n      general{\r\n          id\r\n      }\r\n    user_invite{\r\n        id\r\n    }\r\n    status\r\n    rule\r\n    is_copy\r\n    created_at\r\n    updated_at\r\n    \r\n  }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detail_publishInfo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID!){\r\n  detail_publishInfo(\r\n      id: $id\r\n     \r\n    ) {\r\n         id\r\n      general{\r\n          id\r\n      }\r\n    user_invite{\r\n        id\r\n    }\r\n    status\r\n    rule\r\n    is_copy\r\n    created_at\r\n    updated_at\r\n    \r\n    }\r\n}",
+								"variables": "{\r\n    \"id\": 1\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search_publishInfos",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($status: String!, $first: Int!, $page: Int!, $orderBy: [OrderByClause!]) {\r\n  search_publishInfos(status: $status, first: $first, page: $page, orderBy: $orderBy) {\r\n    data {\r\n      id\r\n      general{\r\n          id\r\n      }\r\n    user_invite{\r\n        id\r\n    }\r\n    status\r\n    rule\r\n    is_copy\r\n    created_at\r\n    updated_at\r\n    \r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \"status\": \"%\",\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"ASC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sort_publishInfos",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_publishInfos(\r\n      \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n       id\r\n      general{\r\n          id\r\n      }\r\n    user_invite{\r\n        id\r\n    }\r\n    status\r\n    rule\r\n    is_copy\r\n    created_at\r\n    updated_at\r\n    \r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "notification",
+			"item": [
+				{
+					"name": "create_notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n    $user_receive_id : ID\r\n    $type : String\r\n    $type_id : ID\r\n    $content: JSON\r\n    $is_read : Boolean\r\n) {\r\n  create_notification(\r\n    input: {\r\n    user_receive_id : $user_receive_id\r\n    type : $type\r\n    type_id : $type_id\r\n    content: $content\r\n    is_read : $is_read\r\n    }\r\n  ) {\r\n   id\r\n        user{\r\n            id\r\n        }\r\n        content\r\n        \r\n        created_at\r\n        updated_at\r\n}\r\n}\r\n",
+								"variables": "{\r\n    \"user_receive_id\" : 3,\r\n    \"type\" : \"todolist\",\r\n    \"type_id\" : 2,\r\n    \"content\": {\r\n        \"title\":\"test\",\r\n        \"message\" : \"cung lam\"\r\n    },\r\n    \"is_read\" : true\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n    $id : ID!\r\n    $user_receive_id : ID\r\n    $type : String\r\n    $type_id : ID\r\n    $content: JSON\r\n    $is_read : Boolean\r\n) {\r\n  update_notification(\r\n    input: {\r\n        id : $id\r\n    user_receive_id : $user_receive_id\r\n    type : $type\r\n    type_id : $type_id\r\n    content: $content\r\n    is_read : $is_read\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    user_receive{\r\n        id\r\n    }\r\n    type\r\n    type_id\r\n    content\r\n    is_read\r\n    created_at\r\n    updated_at\r\n}\r\n}\r\n",
+								"variables": "{\r\n    \"id\":3,\r\n    \"user_receive_id\" : 2,\r\n    \"type\" : \"todolist\",\r\n    \"type_id\" : 2,\r\n    \"content\": {\r\n        \"title\" : \"hihi vui ghe\",\r\n        \"content\" : \"Cung nhau OT\"\r\n    },\r\n    \"is_read\" : true\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($id:ID!) {\r\n  delete_notification(\r\n    input: {\r\n      id: $id\r\n    }\r\n  )\r\n}",
+								"variables": "{\r\n    \"id\": 4\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search_notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($type:String) {\r\n  notification_by_type(\r\n      type: $type\r\n  ){\r\n id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    user_receive{\r\n        id\r\n        name\r\n    }\r\n    general_info{\r\n        id\r\n        attachments{\r\n            thumb\r\n        }\r\n\r\n    }\r\n    type\r\n    type_id\r\n    content\r\n    is_read\r\n    created_at\r\n    updated_at\r\n  }\r\n}",
+								"variables": "{\r\n    \"type\": \"todolist\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  notifications(first:22, page:1) {\r\n    data {\r\n    id\r\n    user{\r\n        id\r\n        name\r\n        email\r\n    }\r\n    content\r\n    created_at\r\n    updated_at\r\n  }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query sort_notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_notifications(\r\n      \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n      id\r\n      user{\r\n          id\r\n          name\r\n      }\r\n      content\r\n      created_at\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n\r\n",
+								"variables": "{\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query detail_ notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID!){\r\n  detail_notification(\r\n      id: $id\r\n     \r\n    ) {\r\n        id\r\n        user{\r\n            id\r\n        }\r\n        detail\r\n        member{\r\n            id\r\n            name\r\n            process\r\n            attachment{\r\n                thumb\r\n            }\r\n        }\r\n    }\r\n}\r\n",
+								"variables": "{\r\n    \"id\": 1\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "  query($types: [String]!){\r\n  my_notifications(\r\n      types: $types\r\n  ){\r\n    id\r\n    user{\r\n        id\r\n        name\r\n        attachment{\r\n            file_type\r\n            thumb\r\n            file\r\n        }\r\n    }\r\n    general_id\r\n    task_id\r\n    goal_id\r\n    todolist_id\r\n    type\r\n    type_id\r\n    messages\r\n    created_at\r\n    updated_at\r\n  }\r\n}",
+								"variables": "{\r\n    \"types\":[\"friend\"]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "friend",
+			"item": [
+				{
+					"name": "create_friend",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $user_id_friend:ID!, \n    $status:String\n    )\n{\n  create_friend(\n    input: \n    {\n      user_id_friend: $user_id_friend\n      status: $status\n    }) \n  \n}",
+								"variables": "{\n    \"user_id_friend\": 3,\n    \"status\": \"accept\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_friend",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation($user_id_friend:ID!) \n    {\n    delete_friend(\n    input: \n        {\n        user_id_friend: $user_id_friend\n        }\n  )\n}",
+								"variables": "{\r\n    \"user_id_friend\": 5\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_friend",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation(\n    $goal_ids:[ID]\n    $id: ID) \n    {\n  update_friend(\n    input:{\n        id: $id\n        goal_ids: $goal_ids\n    }\n   )\n    {\n        id\n        goals{\n            id\n            name\n        }\n    }\n  \n}",
+								"variables": "{   \n    \"id\": 30,\n    \"goal_ids\": [7,5,6]\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query friends",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  friends(first:22, page:1) {\n    data {\n     id\n        user{\n            id\n            name\n            email\n            created_at\n            updated_at\n        }\n        user_id_friend\n        status\n        goals{\n            id\n            name\n        }\n        created_at\n        updated_at\n  }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query recomment_friends",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($name: String){\n    recomment_friends(\n        name: $name\n    ){\n        number_goals\n        id\n        name\n        email\n        phone_number\n        number_mutual\n        attachment{\n            id\n            thumb\n        }\n        mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n        }\n    }\n}",
+								"variables": "{\r\n    \"name\": null\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_friends",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($name: String, $status: String){\n  my_friends(\n   name: $name\n   status: $status){\n    friend{\n          id\n        }\n      id\n      name\n      email\n      phone_number\n      friend_status\n      attachment{\n          id\n          thumb\n      }\n      background_attachment{\n            id\n            thumb\n        }\n      mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n        \n   }\n  }\n}\n",
+								"variables": "{\n \"name\": null,\n \"status\": \"accept\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query list_pend_friends",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($status: String){\n  list_pend_friends\n  (\n   status: $status\n   ){\n       friend{\n           id\n           status\n       }\n      id\n      messages\n      name\n      email\n      phone_number\n      quotes\n       attachment{\n          id\n          thumb\n      }\n       mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n       }\n      \n    \n   }\n}\n\n",
+								"variables": "{\r\n    \r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "achieve",
+			"item": [
+				{
+					"name": "create_achieve",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation($general_id:ID!,$user_invite_ids:[ID]!,$status:String) {\n  create_achieve(\n    input: {\n      general_id: $general_id\n      user_invite_ids: $user_invite_ids\n      status: $status\n    }\n  )\n  }",
+								"variables": "{\n     \"general_id\" : 1,\n    \"user_invite_ids\" : [3,1],\n    \"status\" : \"accept\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_achieve",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation($id:ID!,$general_id:ID,$user_invite_ids:ID,$status:String) {\n  update_achieve(\n    input: {\n        id : $id\n      general_id: $general_id\n      user_invite_ids: $user_invite_ids\n      status: $status\n      \n    }\n  ) {\n      id\n      general{id}\n      user_invite{id}\n    \n  }\n}",
+								"variables": "{\n    \"id\":16,\n    \"status\" : \"accept\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_achieve",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($id:ID!) {\r\n  delete_achieve(\r\n    input: {\r\n      id: $id\r\n    }\r\n  )\r\n}",
+								"variables": "{\r\n    \"id\": 18\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_achieve",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  achieve(first:20, page:1) {\r\n    data {\r\n    id\r\n    status\r\n    general{\r\n        id \r\n        task{\r\n            id\r\n            name\r\n        }\r\n        user{\r\n            id \r\n            name\r\n        }\r\n    }\r\n  }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detail_achieve",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($general_id: ID){\r\n  detail_achieve(\r\n      general_id: $general_id\r\n     \r\n    ) {\r\n        id   \r\n        user{\r\n            id\r\n            name\r\n            attachment\r\n            {\r\n                thumb\r\n            }\r\n        }\r\n        detail\r\n       member{\r\n           id\r\n           name\r\n           attachment{\r\n               thumb\r\n           }\r\n       }\r\n    }\r\n}",
+								"variables": "{\r\n    \"general_id\" : 1\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sort_achieve",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_achieve(\r\n      \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n      id\r\n      \r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "update_user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation(\n    $name:String, \n    $email:String, \n    $username:String, \n    $quotes: String,\n    $phone_number: String ,\n    $avatar_attachment_id: ID,\n    $background_attachment_id: ID\n    ) \n{\n  update_user(\n    input: \n    {\n        name: $name\n        email: $email\n        username: $username\n        quotes: $quotes\n        phone_number: $phone_number\n        avatar_attachment_id: $avatar_attachment_id\n        background_attachment_id : $background_attachment_id\n    }) \n    {\n            id\n            name\n            email\n            username\n            quotes\n            phone_number\n            created_at\n            updated_at\n            attachment{\n                id\n                file\n                thumb\n            }\n            background_attachment{\n                id\n                file\n                thumb\n            }\n        }\n}",
+								"variables": "{\n\n    \"avatar_attachment_id\":44,\n    \"background_attachment_id\":66\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation {\n  delete_user\n}",
+								"variables": "{\r\n    \"id\":\"2\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  users (first:22, page:1) {\n    data {\n        id\n        name\n        email\n        username\n        quotes\n        phone_number\n  }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query sort_users",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query(\n    $first: Int!, \n    $page: Int!, \n    $orderBy: [OrderByClause!]){\n  sort_users(\n      first: $first, \n      page: $page, \n      orderBy: $orderBy\n    ) {\n    data {\n        id\n        name\n        email\n        username\n        quotes\n        phone_number\n        created_at\n        updated_at\n  }\n    paginatorInfo {\n      total\n      currentPage\n      hasMorePages\n      lastPage\n    }\n  }\n}\n\n",
+								"variables": "{\r\n\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query me",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\n  me{\n     id\n     attachment{\n         id\n         file\n         thumb\n     }\n     background_attachment{\n         id\n         file\n         thumb\n     }\n        name\n        email\n        username\n        phone_number\n        quotes\n        notification\n        created_at\n        updated_at\n  }\n}\n\n",
+								"variables": "{\r\n\r\n   \r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query detail users",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID!){\n  user(\n      id: $id\n    ) {\n    id\n        name\n        email\n        username\n        quotes\n        total_goal\n        total_friend\n        attachments{\n            id \n            thumb\n        }\n        attachment{\n            id\n            thumb\n        }\n        background_attachment{\n            id\n            thumb\n        }\n        goals{\n            id\n            general_info{\n            attachments{\n                thumb\n            }\n            }\n        }\n        my_friends{\n            id\n            name\n            attachment{\n                thumb\n            }\n        }\n  }\n}\n\n",
+								"variables": "{\r\n\r\n    \"id\": 11\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "attachment",
+			"item": [
+				{
+					"name": "{{url}}/api/attachment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/HoaiNam/Videos/Captures/Demo web manga.mp4"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/attachment",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"attachment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_attachment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($id: ID!) {\n  delete_attachment(input: { id: $id })\n}\n",
+								"variables": "{\r\n    \"id\":2\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query attachment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  attachment(first: 22, page: 1) {\n    data {\n      id\n      user {\n        id\n        name\n        email\n        created_at\n        updated_at\n      }\n      \n      file_type\n      file\n      file_size\n      created_at\n      updated_at\n    }\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query sort_attachment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\n  sort_attachment(\n      first: $first, \n      page: $page, \n      orderBy: $orderBy\n    ) {\n    data {\n    id\n    user{\n        id\n        name\n        email\n        created_at\n        updated_at\n    }\n    goal{\n        id\n    }\n    todolist{\n        id\n    }\n    challenge{\n        id\n        name\n        \n    }\n    file_type\n    file\n    created_at\n    updated_at\n  }\n    paginatorInfo {\n      total\n      currentPage\n      hasMorePages\n      lastPage\n    }\n  }\n}",
+								"variables": "{\r\n\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_attachment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  my_attachment {\n    id\n    file_type\n    file\n    file_size\n    created_at\n    updated_at\n    thumb\n  }\n}\n",
+								"variables": "{\r\n\r\n   \r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query detail_attachment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID!) {\n  detail_attachment(id: $id) {\n    id\n    user {\n      id\n      name\n      email\n      created_at\n      updated_at\n    }\n    \n    file_type\n    file\n    created_at\n    updated_at\n  }\n}\n",
+								"variables": "{\r\n\r\n    \"id\": 1\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query search_attachment{file}",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($file: String, $first: Int!, $page: Int!, $orderBy: [OrderByClause!]) {\n  search_attachment(file: $file, first: $first, page: $page, orderBy: $orderBy) {\n    data {\n      id\n      user {\n        id\n        name\n        email\n        created_at\n        updated_at\n      }\n      goal {\n        id\n      }\n      todolist {\n        id\n      }\n      challenge {\n        id\n        name\n      }\n      file_type\n      file\n      created_at\n      updated_at\n    }\n    paginatorInfo {\n      total\n      currentPage\n      hasMorePages\n      lastPage\n    }\n  }\n}\n",
+								"variables": "{\r\n    \"file\": \"%2021%\",\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"ASC\"\r\n    }]\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "log",
+			"item": [
+				{
+					"name": "create_log",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n  $table: String\r\n  $action: String\r\n  $content: JSON\r\n\r\n) {\r\n  create_log(\r\n    input: {\r\n      table: $table\r\n      action: $action\r\n      content: $content\r\n    }\r\n  ) {\r\n    id\r\n    user {\r\n      id\r\n      name\r\n    }\r\n    \r\n    content\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"table\":\"friend\",\r\n    \"action\": \"private\",\r\n    \"content\":{\r\n        \"id\" : 1,\r\n        \"conten\" : \"come on baby\"\r\n    }\r\n   \r\n    \r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_log",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n    $id:ID!\r\n  $table: String\r\n  $action: String\r\n  $content:JSON\r\n  \r\n) {\r\n  update_log(\r\n    input: {\r\n      id: $id\r\n      table: $table\r\n      action: $action\r\n      content: $content\r\n    }\r\n  ) {\r\n    \r\n    content\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"id\": 2,\r\n    \"table\": \"log\",\r\n    \"action\": \"toang\",\r\n    \"content\": {\r\n        \"id\" : 1,\r\n        \"content\" : \"ok\"\r\n    }\r\n\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_log",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($id:ID!) {\r\n  delete_log(\r\n    input: {\r\n      id: $id\r\n    }\r\n  )\r\n}",
+								"variables": "{\r\n    \"id\": \"41\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_logs",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  logs(first:22, page:1) {\r\n    data {\r\n    id\r\n    user{\r\n        id\r\n        name\r\n        email\r\n    }\r\n    content\r\n    created_at\r\n    updated_at\r\n  }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query detail_ log",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID!){\r\n  detail_log(\r\n      id: $id\r\n     \r\n    ) {\r\n        id\r\n        user{\r\n            id\r\n        }\r\n        \r\n        content\r\n       \r\n        created_at\r\n        updated_at\r\n    }\r\n}\r\n",
+								"variables": "{\r\n    \"id\": 2\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_logs",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  my_logs{\r\n    id\r\n    user{\r\n        id\r\n        name\r\n        email\r\n        created_at\r\n        updated_at\r\n    }\r\n   \r\n    content\r\n    created_at\r\n    updated_at\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query search_logs",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($content: String!, $first: Int!, $page: Int!, $orderBy: [OrderByClause!]) {\r\n  search_logs(content: $content, first: $first, page: $page, orderBy: $orderBy) {\r\n    data {\r\n      id\r\n      user {\r\n        id\r\n        name\r\n        email\r\n        created_at\r\n        updated_at\r\n      }\r\n      content\r\n      \r\n      created_at\r\n      updated_at\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"content\": \"%\",\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"ASC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query sort_logs",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_logs(\r\n      \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n      id\r\n      user{\r\n          id\r\n          name\r\n      }\r\n      content\r\n      created_at\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n\r\n",
+								"variables": "{\r\n    \r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user_avatar",
+			"item": [
+				{
+					"name": "create_user_avatar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation(\n    $background_file:String, \n    $face:JSON, \n    $hair:JSON, \n    $eyebrows:JSON, \n    $body:JSON, \n    $eyes:JSON, \n    $mouth:JSON, \n    $nose:JSON, \n    $shirt:JSON \n    $trouser:JSON, \n    $shoes:JSON,\n    ) \n{\n  create_user_avatar(\n    input: \n    {\n        background_file: $background_file\n        face: $face\n        hair: $hair\n        eyebrows: $eyebrows\n        body: $body\n        eyes: $eyes\n        mouth: $mouth\n        nose: $nose\n        shirt: $shirt\n        trouser: $trouser\n        shoes: $shoes\n    }) \n    {\n        id\n        user{\n            id\n            name\n            email\n            created_at\n            updated_at\n        }\n        background_file\n        face\n        hair\n        eyebrows\n        body\n        eyes\n        mouth\n        nose\n        shirt\n        trouser\n        shoes\n    }\n}",
+								"variables": "{\n    \"background_file\": \"bg-12.jpg\",\n    \"face\": { \"file\": \"face1.jpg\", \"color\": \"red\"},\n    \"hair\": { \"file\": \"hair.jpg\", \"color\": \"black\"},\n    \"eyebrows\": { \"file\": \"eyes-1.jpg\", \"color\": \"yellow\"},\n    \"body\": { \"file\": \"face.jpg\", \"color\": \"White\"},\n    \"eyes\": { \"file\": \"face3.jpg\", \"color\": \"White\"},\n    \"mouth\": { \"file\": \"face1.jpg\", \"color\": \"White\"},\n    \"nose\": { \"file\": \"face2.jpg\", \"color\": \"White\"},\n    \"shirt\": { \"file\": \"face2.jpg\", \"color\": \"White\"},\n    \"trouser\": { \"file\": \"face2.jpg\", \"color\": \"black\"},\n    \"shoes\": { \"file\": \"face.jpg\", \"color\": \"yellow\"}\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_user_avatar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation {\n  delete_user_avatar\n}",
+								"variables": "{\r\n    \"id\": 2\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_user_avatar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation(\n    $background_file:String, \n    $face:JSON, \n    $hair:JSON, \n    $eyebrows:JSON, \n    $body:JSON, \n    $eyes:JSON, \n    $mouth:JSON, \n    $nose:JSON, \n    $shirt:JSON, \n    $trouser:JSON, \n    $shoes:JSON ) \n{\n  update_user_avatar(\n    input: \n    {\n        background_file: $background_file\n        face: $face\n        hair: $hair\n        eyebrows: $eyebrows\n        body: $body\n        eyes: $eyes\n        mouth: $mouth\n        nose: $nose\n        shirt: $shirt\n        trouser: $trouser\n        shoes: $shoes\n    }) \n    {\n            id\n            user{\n                id\n                name\n                email\n                created_at\n                updated_at\n            }\n            background_file\n            face\n            hair\n            eyebrows\n            body\n            eyes\n            mouth\n            nose\n            shirt\n            trouser\n            shoes\n        }\n}",
+								"variables": "{\n    \"background_file\": \"back.jpg\",\n    \"face\": [\"face.jpg\", \"White\"],\n    \"hair\": [\"hair.jpg\", \"Black\"],\n    \"eyebrows\": [\"eyebrows.jpg\", \"Black\"],\n    \"body\": [\"body.jpg\", \"White\"],\n    \"eyes\": [\"eyes.jpg\", \"Black\"],\n    \"mouth\": [\"mouth.jpg\", \"Yellow\"],\n    \"nose\": [\"nose.jpg\", \"White\"],\n    \"shirt\": [\"shirt.jpg\", \"Yellow\"],\n    \"trouser\": [\"trouser.jpg\", \"White\"],\n    \"shoes\": [\"shoes.jpg\", \"Yellow\"]\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query user_avatars",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  user_avatars(first:22, page:1) {\n    data {\n     id\n        user{\n            id\n            name\n            email\n            created_at\n            updated_at\n        }\n        background_file\n        face\n        hair\n        eyebrows\n        body\n        eyes\n        mouth\n        nose\n        shirt\n        trouser\n        shoes\n        created_at\n        updated_at\n  }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query sort user_avatars",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query(\n    $first: Int!, \n    $page: Int!, \n    $orderBy: [OrderByClause!])\n    {\n  sort_user_avatars(\n      first: $first, \n      page: $page, \n      orderBy: $orderBy\n    ) {\n    data {\n      id\n        user{\n            id\n            name\n            email\n            created_at\n            updated_at\n        }\n        background_file\n        face\n        hair\n        eyebrows\n        body\n        eyes\n        mouth\n        nose\n        shirt\n        trouser\n        shoes\n        created_at\n        updated_at\n  }\n    paginatorInfo {\n      total\n      currentPage\n      hasMorePages\n      lastPage\n    }\n  }\n}\n\n",
+								"variables": "{\r\n\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my user_avatars",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\n  my_user_avatars{\n     id\n        user{\n            id\n            name\n            email\n            created_at\n            updated_at\n        }\n        background_file\n        face\n        hair\n        eyebrows\n        body\n        eyes\n        mouth\n        nose\n        shirt\n        trouser\n        shoes\n        created_at\n        updated_at\n  }\n}\n\n",
+								"variables": "{\r\n\r\n   \r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query detail user_avatars",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID!){\n  detail_user_avatars(\n      id: $id\n    ) {\n      id\n        user{\n            id\n            name\n            email\n            created_at\n            updated_at\n        }\n        background_file\n        face\n        hair\n        eyebrows\n        body\n        eyes\n        mouth\n        nose\n        shirt\n        trouser\n        shoes\n        created_at\n        updated_at\n  }\n}\n\n",
+								"variables": "{\r\n\r\n    \"id\": 1\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "general-info",
+			"item": [
+				{
+					"name": "create_general_info",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation($goal_id:ID, $task_id:ID, $todolist_id:ID,\n$address:String, $zalo : String,$repeat:String,$reminder:String,\n$action_at:DateTime,$note:String,$attachment_ids:JSON,$publish:String,\n$contest:JSON,\n$color : String\n\n) {\n  create_generalInfo(\n    input: {\n      goal_id: $goal_id\n      task_id: $task_id\n      todolist_id: $todolist_id,\n      address:$address,\n      zalo:$zalo,\n      repeat:$repeat,\n      reminder:$reminder,\n      action_at : $action_at,\n      note:$note,\n      attachment_ids:$attachment_ids,\n      publish:$publish,\n      contest:$contest,\n      color:$color\n    }\n  ) {\n      id\n    user{\n        id\n    }\n    goal{\n        id\n    }\n    task{\n        id\n    }\n    todolist {\n        id\n    }\n    address\n    zalo\n    repeat\n    reminder\n    action_at\n    note\n    attachments{\n        id\n    }\n    publish \n    contest \n    color \n    created_at\n    updated_at\n  }\n}",
+								"variables": "{\n    \"goal_id\": null,\n    \"task_id\": null,\n    \"todolist_id\": 2,\n    \"address\" :\"51 tran bach dang\",\n    \"zalo\":\"0965893632\",\n    \"repeat\" : \"every day\",\n    \"reminder\":\"20-11-2021 00:00:00\",\n    \"action_at\": \"2021-11-20 00:00:00\",\n    \"note\":\"this is note\",\n    \"attachment_ids\":[1,2],\n    \"publish\":\"ok nhe\",\n    \"contest\":{\"name\" : \"ok\",\n    \"content\":\"ok\"},\n    \"color\":\"yellow\"\n\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_generalInfo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation($id: ID, $goal_id:ID, $task_id:ID, $todolist_id:ID,\n$address:String, $zalo : String,$repeat:String,$reminder:String,\n$action_at:DateTime,$note:String,$attachment_ids:JSON,$publish:String,\n$contest:JSON,\n$color : String\n\n) {\n  update_generalInfo(\n    input: {\n        id: $id\n      goal_id: $goal_id\n      task_id: $task_id\n      todolist_id: $todolist_id,\n      address:$address,\n      zalo:$zalo,\n      repeat:$repeat,\n      reminder:$reminder,\n      action_at : $action_at,\n      note:$note,\n      attachment_ids:$attachment_ids,\n      publish:$publish,\n      contest:$contest,\n      color:$color\n    }\n  ) {\n      id\n    user{\n        id\n    }\n    goal{\n        id\n    }\n    task{\n        id\n    }\n    todolist {\n        id\n    }\n    address\n    zalo\n    repeat\n    reminder\n    action_at\n    note\n    attachments{\n        id\n    }\n    publish \n    contest \n    color \n    created_at\n    updated_at\n  }\n}",
+								"variables": "{\n    \"id\" : 1,\n    \"goal_id\": 1\n\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_generalInfo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($id:ID!) {\r\n  delete_generalInfo(\r\n    input: {\r\n      id: $id\r\n    }\r\n  )\r\n}",
+								"variables": "{\r\n    \"id\": 1\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_general_info",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  generalInfo(first:20, page:1) {\r\n    data {\r\n    id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    task{\r\n        id\r\n        name\r\n    }\r\n    todolist {\r\n        id\r\n        name\r\n    }\r\n    address\r\n    zalo\r\n    repeat\r\n    reminder\r\n    action_at\r\n    note\r\n    attachments{\r\n        id\r\n        thumb\r\n    }\r\n    publish \r\n    contest \r\n    color \r\n    created_at\r\n    updated_at\r\n  }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detail_generalInfo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID!){\r\n  detail_generalInfo(\r\n      id: $id\r\n     \r\n    ) {\r\n        id      \r\n        user{id}\r\n        goal{id}\r\n        task{id}\r\n        todolist{id}\r\n        attachments{\r\n            id\r\n        }\r\n        publishs{\r\n            id\r\n        }\r\n    }\r\n}",
+								"variables": "{\r\n    \"id\": 1\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "my_generalInfo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  my_generalInfo{\r\n       id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    task{\r\n        id\r\n        name\r\n    }\r\n    todolist {\r\n        id\r\n        name\r\n    }\r\n    address\r\n    zalo\r\n    repeat\r\n    reminder\r\n    action_at\r\n    note\r\n    attachments{\r\n        id\r\n        thumb\r\n    }\r\n    publish \r\n    contest \r\n    color \r\n    created_at\r\n    updated_at\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query search_general_info",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($note: String!, $first: Int!, $page: Int!, $orderBy: [OrderByClause!]) {\r\n  search_generalInfo(note: $note, first: $first, page: $page, orderBy: $orderBy) {\r\n    data {\r\n      id\r\n      \r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \"note\": \"%\",\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"ASC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query sort_generalInfo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_generalInfo(\r\n      \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n      id\r\n      \r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "goal",
+			"item": [
+				{
+					"name": "create_goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n    $task_id : ID\r\n  $parent_id: ID\r\n  $name: String!\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n) {\r\n  create_goal(\r\n    input: {\r\n        task_id : $task_id\r\n      parent_id: $parent_id\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      is_pined: $is_pined\r\n      general_info: $general_info\r\n    }\r\n  ) {\r\n    id\r\n    task_id\r\n    name\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"task_id\" : null,\r\n    \"parent_id\": null,\r\n    \"name\": \"test goal\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"DC\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"everyday\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "goal_to_task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n  $name : String!\r\n  $goal_id : ID\r\n) {\r\n  goal_to_task(\r\n    input: {\r\n      name: $name\r\n      goal_id: $goal_id\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    name\r\n    goal_id\r\n    created_at\r\n    updated_at\r\n  }\r\n}",
+								"variables": "{\r\n    \"name\" : \"day la goal chuyen sang\",\r\n    \"goal_id\":2\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n  $id: ID!\r\n  $parent_id: ID\r\n  $name: String!\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n) {\r\n  update_goal(\r\n    input: {\r\n      id: $id\r\n      parent_id: $parent_id\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      is_pined: $is_pined\r\n      general_info: $general_info\r\n    }\r\n  ) {\r\n    id\r\n    name\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    general_info{\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"id\": 2,\r\n    \"parent_id\": null,\r\n    \"name\": \"lam lai cuoc doi\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"hanh tinh namet\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"everyday\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [2,3],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\",\r\n        \"todolist_id\": 1\r\n    } \r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($id:ID!) {\r\n  delete_goal(\r\n    input: {\r\n      id: $id\r\n    }\r\n  )\r\n}",
+								"variables": "{\r\n    \"id\":3\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($parent_id: String!) {\r\n  my_goals(parent_id: $parent_id) {\r\n      id\r\n      name\r\n      start_day\r\n      end_day\r\n      status\r\n      is_pined\r\n      process\r\n      general_info {\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments {\r\n          file\r\n          file_type\r\n          thumb\r\n        }\r\n        achieves {\r\n          id\r\n          user_invite {\r\n            id\r\n            name\r\n            attachment {\r\n              thumb\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n",
+								"variables": "{\r\n \"parent_id\": \"root\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query count_goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($parent_id: String!) {\r\n  count_goal(parent_id: $parent_id) {\r\n      status\r\n      number\r\n  }\r\n  }\r\n",
+								"variables": "{\r\n \"parent_id\": \"all\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_goals_achieve",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($parent_id: String!){\r\n  my_goals_achieve(parent_id: $parent_id) {\r\n    id\r\n    name\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    process\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n}\r\n}",
+								"variables": "{\r\n \"parent_id\": \"all\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query detail_goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID!){\r\n  detail_goal(id: $id) {\r\n    id\r\n    name\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publishs{\r\n            id\r\n        }\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n        achieves{\r\n            id\r\n            user{\r\n                id\r\n                name\r\n            \r\n        }\r\n        \r\n    }\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"id\": 1\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query search_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($name: String!, $first: Int!, $page: Int!, $orderBy: [OrderByClause!]) {\r\n  search_goals(name: $name, first: $first, page: $page, orderBy: $orderBy) {\r\n    data {\r\n      id\r\n      user{\r\n          id\r\n      }\r\n      name\r\n      created_at\r\n      updated_at\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"name\": \"%\",\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"ASC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  goals(first:22, page:1) {\r\n    data {\r\n    id\r\n    parent{\r\n        id\r\n        name\r\n    }\r\n    name\r\n    user{\r\n        id\r\n    }\r\n    start_day\r\n    end_day\r\n    is_pined\r\n    created_at\r\n    updated_at\r\n  }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query sort_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_goals(\r\n      \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n      id\r\n      name\r\n      created_at\r\n      user{\r\n          id\r\n          name\r\n      }\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n\r\n",
+								"variables": "{\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_goals_tree_sort",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID, $not_auth: Boolean) {\r\n  my_goals_tree_sort(id: $id, not_auth: $not_auth)\r\n}",
+								"variables": "{\r\n    \"id\": 2,\r\n    \"not_auth\": true\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "goals_achieve_tree_sort",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID) {\r\n  goals_achieve_tree_sort(id: $id)\r\n}",
+								"variables": "{\r\n    \"id\":2\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_goals_tree_select",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  my_goals_tree_select\r\n}",
+								"variables": "{\r\n   \r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "task",
+			"item": [
+				{
+					"name": "create_task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n  $name : String!\r\n  $goal_id : ID\r\n  $general_info: JSON\r\n  \r\n) {\r\n  create_task(\r\n    input: {\r\n      name: $name\r\n      goal_id : $goal_id\r\n      general_info : $general_info\r\n    }\r\n  ) {\r\n    id\r\n    goal_id\r\n    user{\r\n        id\r\n    }\r\n    name\r\n    goal_id\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \"goal_id\":2,\r\n    \"name\" : \"quay len de\",\r\n    \"general_info\": {\r\n        \"address\": \"sieu pham mavel\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n    \r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "task_to_goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n  $parent_id: ID\r\n  $name: String!\r\n  $attachment_ids:  JSON\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $task_id: ID\r\n  $is_pined: Boolean\r\n) {\r\n  task_to_goal(\r\n    input: {\r\n      parent_id: $parent_id\r\n      name: $name\r\n      attachment_ids: $attachment_ids\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      task_id: $task_id\r\n      is_pined: $is_pined\r\n    }\r\n  ) {\r\n    id\r\n    name\r\n    user{\r\n        id\r\n    }\r\n    start_day\r\n    end_day\r\n    status\r\n    task_id\r\n    is_pined\r\n    \r\n  }\r\n}",
+								"variables": "{\r\n    \"parent_id\": null,\r\n    \"name\": \"day la task\",\r\n    \"attachment_ids\": 1,\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"task_id\" : 2,\r\n    \"is_pined\": true \r\n    \r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n    $id : ID!\r\n  $name : String!\r\n  $goal_id : ID\r\n  $general_info: JSON\r\n  \r\n) {\r\n  update_task(\r\n    input: {\r\n        id : $id\r\n      name: $name\r\n      goal_id : $goal_id\r\n      general_info : $general_info\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    name\r\n    goal_id\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \"id\": 90,\r\n    \"name\": \"Ä‘i há»�c\",\r\n    \"goal_id\": null,\r\n    \"general_info\": {\r\n        \"address\": \"Spider man\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1,3],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\",\r\n        \"todolist_id\": 1\r\n    } \r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($id:ID!, $delete_type: String, $checked_at: String) {\r\n  delete_task(\r\n    input: {\r\n      id: $id\r\n      delete_type: $delete_type\r\n      checked_at: $checked_at\r\n    }\r\n  )\r\n}",
+								"variables": "{\r\n    \"id\": 3,\r\n    \"delete_type\": \"task\",\r\n    \"checked_at\": \"2021-05-06\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query detail_task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID!){\r\n  detail_task(id: $id) {\r\n    id\r\n    name\r\n    general_info{\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n        achieves{\r\n            id\r\n            user{\r\n                id\r\n                name\r\n            }\r\n        }\r\n        created_at\r\n        updated_at\r\n    }\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"id\": 3\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_tasks",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  my_tasks{\r\n    id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    name\r\n    user{\r\n        id\r\n    }\r\n     general_info{\r\n         id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n          created_at\r\n        updated_at\r\n    }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  tasks(first:22, page:1) {\r\n    data {\r\n  id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    name\r\n    user{\r\n        id\r\n    }\r\n     general_info{\r\n         id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n          created_at\r\n        updated_at\r\n    }\r\n  }\r\n}\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query search_tasks",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($name: String!, $first: Int!, $page: Int!, $orderBy: [OrderByClause!]) {\r\n  search_task(name: $name, first: $first, page: $page, orderBy: $orderBy) {\r\n    data {\r\n      id\r\n      name\r\n      \r\n      created_at\r\n      updated_at\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \"name\": \"%\",\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"ASC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query sort_tasks",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_tasks(\r\n      \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n      id\r\n      name\r\n      goal_id\r\n      created_at\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "comment",
+			"item": [
+				{
+					"name": "create_comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation($general_id:ID, $parent_id:ID, $mode:String,\n$content:String, $attachment_ids : JSON) {\n  create_comment(\n    input: {\n      general_id: $general_id\n      parent_id: $parent_id\n      mode: $mode,\n      content: $content,\n      attachment_ids:$attachment_ids\n    }\n  ) {\n    id\n    content\n    created_at\n    updated_at\n    user{\n        id\n        name\n        email\n        created_at\n        updated_at\n    }\n    general{\n        id \n        goal{\n            id\n            name\n        }\n        todolist{\n            id\n        }\n        task{\n            id\n        }\n    }\n  }\n}",
+								"variables": "{\n    \"general_id\": 23,\n    \"parent_id\": null,\n    \"mode\": \"let\",\n    \"content\" :\"user 1\",\n    \"attachment_ids\" :[]\n\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\r\nmutation($id:ID!,$general_id:ID, $parent_id:ID, $mode:String,\r\n$content:String, $attachment_ids : JSON) {\r\n  update_comment(\r\n    input: {\r\n        id : $id\r\n      general_id: $general_id\r\n      parent_id: $parent_id\r\n      mode: $mode,\r\n      content: $content,\r\n      attachment_ids:$attachment_ids\r\n    }\r\n  ) {\r\n    id\r\n    content\r\n    created_at\r\n    updated_at\r\n    user{\r\n        id\r\n        name\r\n        email\r\n        created_at\r\n        updated_at\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \"id\":1,\r\n    \"general_id\": 1,\r\n    \"parent_id\": 2,\r\n    \"mode\": \"hihi\",\r\n    \"content\" :\"pha comment\",\r\n    \"attachment_ids\" : [3,4]\r\n\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($id:ID!) {\r\n  delete_comment(\r\n    input: {\r\n      id: $id\r\n    }\r\n  )\r\n}",
+								"variables": "{\r\n    \"id\": \"3\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query detail_ comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID!){\r\n  detail_comment(\r\n      id: $id\r\n     \r\n    ) {\r\n        id\r\n        user{\r\n            id\r\n            name\r\n            attachment{\r\n                thumb\r\n            }\r\n            \r\n        }\r\n        detail\r\n        content\r\n        created_at\r\n        updated_at\r\n    }\r\n}\r\n",
+								"variables": "{\r\n    \"id\": 1\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_comments",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  my_comments{\r\n    id\r\n    user{\r\n        id\r\n        name\r\n        email\r\n        created_at\r\n        updated_at\r\n    }\r\n    general{\r\n        id \r\n        goal{\r\n            id\r\n            name\r\n        }\r\n        todolist{\r\n            id\r\n            name\r\n        }\r\n        task{\r\n            id\r\n            name\r\n        }\r\n    }\r\n    content\r\n    created_at\r\n    updated_at\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query comments",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($general_id: ID){\r\n  comments(\r\n      general_id: $general_id\r\n    ) {\r\n        id\r\n        mode\r\n        content\r\n        user{\r\n            id\r\n            attachment{\r\n                thumb\r\n            }\r\n        }\r\n        children{\r\n            id\r\n            mode\r\n            content\r\n            attachments{\r\n                thumb\r\n            }\r\n            user{\r\n                id\r\n                attachment{\r\n                    thumb\r\n                }\r\n            }\r\n        }\r\n        attachments{\r\n            id\r\n            thumb\r\n        }\r\n    }\r\n}",
+								"variables": "{\r\n    \"general_id\":873\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "todolist",
+			"item": [
+				{
+					"name": "create_todolist",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n  $goal_id: ID\r\n  $name: String\r\n  $task_id: ID\r\n  $checked_at: DateTime\r\n  $status: String!\r\n) {\r\n  create_todolist(\r\n    input: {\r\n      goal_id: $goal_id\r\n      name: $name\r\n      task_id: $task_id\r\n      status: $status\r\n      checked_at: $checked_at\r\n    }\r\n  ) {\r\n    id\r\n    name\r\n    user{\r\n        id\r\n    } \r\n    status\r\n    task{\r\n        id\r\n    }\r\n    checked_at\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"goal_id\": 5,\r\n    \"name\": \"toang\",\r\n    \"task_id\": null,\r\n    \"status\": \"done\",\r\n    \"checked_at\": null  \r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upsert_todolist",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n  $task_id: ID!\r\n  $checked_at: DateTime!\r\n  $name: String\r\n  $status: String\r\n  $general_info: JSON\r\n\r\n) {\r\n  upsert_todolist(\r\n    input: {\r\n      task_id: $task_id\r\n      checked_at: $checked_at\r\n      name: $name\r\n      status: $status\r\n      general_info: $general_info\r\n    }\r\n  ) {\r\n    id\r\n    name\r\n    status\r\n    created_at\r\n    updated_at\r\n    task{\r\n        id\r\n    }\r\n    goal{\r\n        id\r\n    }\r\n    general_info{\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n        created_at\r\n        updated_at\r\n    }\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"task_id\": 7,\r\n    \"checked_at\":\"2021-05-06 00:00:00\",\r\n    \"name\":\"lam bai tap ve nha\",\r\n    \"status\": \"todo\",\r\n    \"general_info\": {\r\n        \"address\": \"sieu pham mavel\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": null,\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"white1\"\r\n    } \r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_todolist",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n  $id: ID!\r\n  $name: String\r\n  $task_id: ID\r\n  $goal_id: ID\r\n  $status: String\r\n  $checked_at: DateTime\r\n) {\r\n  update_todolist(\r\n    input: {\r\n        id:$id\r\n      name: $name\r\n      task_id: $task_id\r\n      goal_id: $goal_id\r\n      status: $status\r\n      checked_at: $checked_at\r\n    }\r\n  ) {\r\n      id\r\n    goal{\r\n        id\r\n    }\r\n    name\r\n    user{\r\n        id\r\n    }\r\n    task_id\r\n    goal_id\r\n    status\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"id\": 2,\r\n    \"name\":\"lam bai tap ve nha\",\r\n    \"task_id\": null,\r\n    \"goal_id\": \"3\",\r\n    \"status\": \"todo\",\r\n    \"checked_at\":\"2021-06-14 00:00:00\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_todolist",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n   $task_id: ID!\r\n   $checked_at: DateTime!\r\n) {\r\n  delete_todolist(\r\n    input: {\r\n      task_id:$task_id\r\n      checked_at: $checked_at\r\n    }\r\n  )\r\n}\r\n",
+								"variables": "{\r\n    \"task_id\": 3,\r\n    \"checked_at\": \"2021-06-20 06:57:48\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_todolists",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($checked_at: String){\r\n  my_todolists(checked_at:$checked_at){\r\n    id\r\n    name\r\n    status\r\n    created_at\r\n    updated_at\r\n    task{\r\n        id\r\n    }\r\n    goal{\r\n        id\r\n    }\r\n    general_info{\r\n        id\r\n    }\r\n    type\r\n    task_id\r\n    todolist_id\r\n  }\r\n}",
+								"variables": "{\r\n    \"checked_at\":\"2021-06-28\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query detail_todolist",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query(\r\n    $id: ID!){\r\n  detail_todolist(\r\n      id: $id\r\n    ) \r\n    {\r\n    id\r\n    general_info{\r\n        id\r\n    address \r\n    zalo\r\n    repeat\r\n    reminder\r\n    action_at \r\n    note\r\n    attachments \r\n    {\r\n        id\r\n        file\r\n        file_type\r\n        thumb\r\n    }\r\n    publish\r\n    contest \r\n    color\r\n    }\r\n    name\r\n    status\r\n    checked_at\r\n    created_at\r\n    updated_at\r\n    }\r\n}\r\n",
+								"variables": "{\r\n    \"id\": 8\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_todolists",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  todolists(first:22, page:1) {\r\n    data {\r\n    id\r\n    goal{\r\n        id\r\n    }\r\n    name\r\n    user{\r\n        id\r\n    }\r\n    status\r\n    task{\r\n        id\r\n        name\r\n    }\r\n    checked_at\r\n    created_at\r\n    updated_at\r\n  }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query search_todolists",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($name: String!, $first: Int!, $page: Int!, $orderBy: [OrderByClause!]) {\r\n  search_todolists(name: $name, first: $first, page: $page, orderBy: $orderBy) {\r\n    data {\r\n      id\r\n      user {\r\n        id\r\n        name\r\n      }\r\n      goal{\r\n        id\r\n        user{\r\n            id\r\n        }\r\n      }\r\n        name\r\n        status\r\n        task{\r\n            id\r\n            name\r\n        }\r\n        checked_at\r\n        created_at\r\n        updated_at\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"name\": \"%\",\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "my_todolists_with_month",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($created_at: String!){\r\n  my_todolists_with_month(created_at:$created_at)\r\n      \r\n}",
+								"variables": "{\r\n    \"created_at\":\"2021-06\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query sort_todolists",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_todolists(\r\n      \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n      id\r\n      name\r\n      status\r\n      checked_at\r\n      user{\r\n          id\r\n      }\r\n      goal{\r\n        id\r\n        user{\r\n            id\r\n        }\r\n     }\r\n     task{\r\n         id\r\n         name\r\n     }\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n\r\n",
+								"variables": "{\r\n    \r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

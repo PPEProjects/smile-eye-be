@@ -1,0 +1,49 @@
+extend type Mutation {
+    create_task(input: CreateTaskInput! @spread): Task @guard @field(resolver: "App\\GraphQL\\Mutations\\TaskMutations@createTask")
+    delete_task(input: DeleteTaskInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\TaskMutations@deleteTask")
+    update_task(input: UpdateTaskInput! @spread): Task @guard @field(resolver: "App\\GraphQL\\Mutations\\TaskMutations@updateTask")
+    goal_to_task(input: GoalToTaskInput! @spread): Task @guard @field(resolver: "App\\GraphQL\\Mutations\\TaskMutations@goalTotask")
+}
+
+extend type Query {
+    tasks: [Task] @paginate(type: "paginator" model: "App\\Models\\Task")
+    search_task(name: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [Task] @paginate(type: "paginator" model: "App\\Models\\Task")
+    detail_task(id: ID! @eq): Task @guard @field(resolver:"TaskQueries@detailTask")
+    my_tasks: [Task] @guard @field(resolver:"TaskQueries@myTasks")
+#    my_tasks(created_at: String): [Task] @guard @field(resolver:"TaskQueries@my_tasks")
+    sort_tasks(orderBy: [OrderByClause!] @orderBy): [Task] @paginate(type: "paginator" model: "App\\Models\\Task")
+    #    currentUser: User @auth
+}
+
+type Task{
+    id: ID
+    user: User
+    name: String
+    goal_id: ID
+    created_at: DateTime
+    updated_at: DateTime
+    general_info: GeneralInfo
+}
+input CreateTaskInput{
+    name: String
+    goal_id : ID
+    general_info : JSON
+}
+input DeleteTaskInput{
+    id: ID!
+    delete_type : String @rules(apply: ["nullable", "in:todolist,task"])
+    checked_at : String
+}
+input UpdateTaskInput{
+    id:ID!
+    name: String
+    goal_id: ID
+    general_info : JSON
+}
+input DetailTaskInput{
+    id:ID!
+}
+input GoalToTaskInput{
+    name: String! @rules(apply:["required"])
+    goal_id: ID
+}

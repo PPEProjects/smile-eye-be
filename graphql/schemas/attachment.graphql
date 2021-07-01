@@ -1,0 +1,50 @@
+extend type Mutation {
+    create_attachment(input: CreateAttachmentInput! @spread): Attachment @guard @field(resolver: "App\\GraphQL\\Mutations\\AttachmentMutations@createAttachment")
+    delete_attachment(input: DeleteAttachmentInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\AttachmentMutations@deleteAttachment")
+    update_attachment(input: UpdateAttachmentInput! @spread): Attachment @guard @field(resolver: "App\\GraphQL\\Mutations\\AttachmentMutations@updateAttachment")
+}
+
+extend type Query {
+    attachment: [Attachment!]! @paginate(type: "paginator" model: "App\\Models\\Attachment")
+    sort_attachment(orderBy: [OrderByClause!] @orderBy): [Attachment!]! @paginate(type: "paginator" model: "App\\Models\\Attachment")
+    search_attachment(file: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [Attachment!]! @paginate(type: "paginator" model: "App\\Models\\Attachment")
+    detail_attachment(id: ID! @eq): Attachment @find
+    my_attachment: [Attachment] @guard @field(resolver:"AttachmentQueries@my_attachment")
+}
+
+type Attachment{
+    id: ID
+    user: User
+    file_type:String
+    file:String
+    file_name:String
+    thumb:String
+    file_size : Int
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateAttachmentInput{
+    goal_id: ID
+    #    user_id: ID
+    todolist_id: ID
+    challenge_id: ID
+    file_type:String
+    file:String
+
+
+}
+input DeleteAttachmentInput{
+    id:ID!@rules(apply: ["required","App\\Rules\\OwnerCheckAttachment"])
+}
+input UpdateAttachmentInput{
+    id: ID! @rules(apply: ["required","App\\Rules\\OwnerCheckAttachment"])
+    #    user_id:ID
+    goal_id:ID
+    todolist_id:ID
+    challenge_id:ID
+    file_type:String
+    file:String
+
+}
+

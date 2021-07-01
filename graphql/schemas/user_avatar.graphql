@@ -1,0 +1,69 @@
+
+extend type Mutation {
+    create_user_avatar(input: CreateUserAvatarInput! @spread): UserAvatar @guard @field(resolver: "App\\GraphQL\\Mutations\\UserAvatarMutations@createUserAvatar")
+    update_user_avatar(input: UpdateUserAvatarInput! @spread): UserAvatar @guard @field(resolver: "App\\GraphQL\\Mutations\\UserAvatarMutations@updateUserAvatar")
+    delete_user_avatar: Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\UserAvatarMutations@deleteUserAvatar")
+
+}
+
+extend type Query {
+    user_avatars: [UserAvatar!]! @paginate(type: "paginator" model: "App\\Models\\UserAvatar")
+    sort_user_avatars(orderBy: [OrderByClause!] @orderBy): [UserAvatar!]! @paginate(type: "paginator" model: "App\\Models\\UserAvatar")
+    detail_user_avatars(id: ID! @eq): UserAvatar @find
+    my_user_avatars: [UserAvatar] @guard @field(resolver:"UserAvatarQueries@my_userAvatars")
+
+
+}
+
+type UserAvatar {
+    id: ID
+    user: User
+    background_file: String
+    face: JSON
+    hair: JSON
+    eyebrows: JSON
+    body: JSON
+    eyes: JSON
+    mouth: JSON
+    nose: JSON
+    shirt: JSON
+    trouser: JSON
+    shoes: JSON
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateUserAvatarInput{
+    user_id_friend: ID
+    background_file: String
+    face: JSON
+    hair: JSON
+    eyebrows: JSON
+    body: JSON
+    mouth: JSON
+    eyes: JSON
+    nose: JSON
+    shirt: JSON
+    trouser: JSON
+    shoes: JSON
+    media_id: ID
+
+}
+
+input UpdateUserAvatarInput{
+    background_file: String
+    face: JSON
+    hair: JSON
+    eyebrows: JSON
+    body: JSON
+    eyes: JSON
+    mouth: JSON
+    nose: JSON
+    shirt: JSON
+    trouser: JSON
+    shoes: JSON
+}
+
+
+
+

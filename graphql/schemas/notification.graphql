@@ -1,0 +1,75 @@
+extend type Mutation {
+    create_notification(input: CreateNotificationInput! @spread): Notification @guard @field(resolver: "App\\GraphQL\\Mutations\\NotificationMutations@createNotification")
+    delete_notification(input: DeleteNotificationInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\NotificationMutations@deleteNotification")
+    update_notification(input: UpdateNotificationInput! @spread): Notification @guard @field(resolver: "App\\GraphQL\\Mutations\\NotificationMutations@updateNotification")
+}
+extend type Query {
+    notifications: [Notification!]! @paginate(type: "paginator" model: "App\\Models\\Notification")
+#    search_notifications(content: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [Notification!]! @paginate(type: "paginator" model: "App\\Models\\Notification")
+    detail_notification(id: ID! @eq): Notification @guard @field(resolver:"NotificationQueries@detailNotifications")
+    my_notifications1: [Content] @guard @field(resolver:"NotificationQueries@myNotifications")
+    sort_notifications(orderBy: [OrderByClause!] @orderBy): [Notification!]! @paginate(type: "paginator" model: "App\\Models\\Notification")
+    notification_by_type(type : String): [Notification] @guard @field(resolver:"NotificationQueries@NotificationsByType")
+
+    my_notifications(types : [String]): [Notification] @guard @field(resolver:"NotificationQueries@myNotifications")
+
+
+}
+type Notification1{
+    id: ID
+    user: User
+    user_receive : User
+    type : String
+    type_id : ID
+    content: JSON
+    type : String
+    general_info : GeneralInfo
+    is_read : Boolean
+    general_id : ID
+    created_at: DateTime!
+    updated_at: DateTime!
+}
+type Notification{
+    id: ID
+    user: User
+    type : String
+    type_id : ID
+    messages: JSON
+    general_info : GeneralInfo
+    is_read : Boolean
+    member : [User]
+    detail : JSON
+    general_id : ID
+    task_id : ID
+    goal_id : ID
+    todolist_id : ID
+    created_at: DateTime
+    updated_at: DateTime
+}
+type Content{
+    id : ID
+    user : User
+    type : String
+    content : String
+}
+input CreateNotificationInput{
+    user_receive_id : ID
+    type : String
+    type_id : ID
+    content: JSON
+    is_read : Boolean
+
+}
+input DeleteNotificationInput{
+    id:ID!
+}
+
+input UpdateNotificationInput{
+    id:ID!
+    user_receive_id : ID
+    type : String
+    type_id : ID
+    content: JSON
+    is_read : Boolean
+
+}

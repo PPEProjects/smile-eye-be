@@ -1,0 +1,43 @@
+extend type Mutation {
+    create_assignInfo(input: CreateAssignInfoInput! @spread): AssignInfo @guard @field(resolver: "App\\GraphQL\\Mutations\\AssignInfoMutations@createAssignInfo")
+    delete_assignInfo(input: DeleteAssignInfoInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\AssignInfoMutations@deleteAssignInfo")
+    update_assignInfo(input: UpdateAssignInfoInput! @spread): AssignInfo @guard @field(resolver: "App\\GraphQL\\Mutations\\AssignInfoMutations@updateAssignInfo")
+
+}
+
+extend type Query {
+    assignInfos: [AssignInfo!]! @paginate(type: "paginator" model: "App\\Models\\AssignInfo")
+    search_assignInfos(content: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [AssignInfo] @paginate(type: "paginator" model: "App\\Models\\AssignInfo")
+    detail_assignInfo(id: ID! @eq): AssignInfo @find
+#    my_assignInfos: [AssignInfo] @guard @field(resolver:"AssignInfoQueries@my_AssignInfos")
+    sort_assignInfos(orderBy: [OrderByClause!] @orderBy): [AssignInfo] @paginate(type: "paginator" model: "App\\Models\\AssignInfo")
+    #    currentUser: User @auth
+}
+
+type AssignInfo{
+    id: ID
+    general : GeneralInfo
+    user_invite : User
+    status : String
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateAssignInfoInput{
+    general_id : ID
+    user_invite_id : ID
+    status : String
+}
+input DeleteAssignInfoInput{
+    id: ID!
+}
+input DetailAssignInfoInput{
+    id:ID!
+}
+input UpdateAssignInfoInput{
+    id : ID!
+    general_id : ID
+    user_invite_id : ID
+    status : String
+}
+

@@ -1,0 +1,113 @@
+extend type Mutation {
+    delete_goal(input: DeleteGoalInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@deleteGoal")
+# Ver 2
+    create_goal(input: CreateGoalInput! @spread): Goal @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@createGoal")
+    update_goal(input: UpdateGoalInput! @spread): Goal @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@updateGoal")
+    task_to_goal(input: TaskToGoalInput! @spread): Goal @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@taskToGoal")
+    upsert_goal(input: UpsertGoalInput! @spread): JSON @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@upsertGoal")
+}
+extend type Query {
+    #    userss: [User] @guard @field(resolver:"GoalQueries@userss")
+    goals: [Goal] @paginate(type: "paginator" model: "App\\Models\\Goal")
+    search_goals(name: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [Goal!]! @paginate(type: "paginator" model: "App\\Models\\Goal")
+#    goal_and_friend(name:String):GoalUser @field(resolver:"GoalQueries@goal_and_friend")
+    my_ParentGoal( id: ID): [GoalParent] @guard @field(resolver:"GoalQueries@my_parentGoal")
+    my_goals_tree_select: JSON @guard @field(resolver:"GoalQueries@myGoalsTreeSelect")
+    my_goals_tree_sort(id:ID, not_auth:Boolean): JSON @guard @field(resolver:"GoalQueries@myGoalsTreeSort")
+    goals_achieve_tree_sort(id:ID): JSON @guard @field(resolver:"GoalQueries@goalsAchieveTreeSort")
+    sort_goals(orderBy: [OrderByClause!] @orderBy): [Goal!]! @paginate(type: "paginator" model: "App\\Models\\Goal")
+# Ver 2
+    detail_goal(id: ID!): Goal @field(resolver:"GoalQueries@detailGoal")
+    my_goals(parent_id:String!): [Goal] @guard @field(resolver:"GoalQueries@myGoals")
+    my_goals_achieve(parent_id:String!): [Goal] @guard @field(resolver:"GoalQueries@myGoalsAchieve")
+    count_goal (parent_id:String!): [CountGoal] @guard @field(resolver:"GoalQueries@countGoals")
+}
+
+type Goal{
+    id: ID
+    user: User
+    parent : Goal
+    name: String
+    start_day: DateTime
+    end_day: DateTime
+    status : String
+    task_id: ID
+    process : Float
+    is_pined : Boolean
+    created_at: DateTime
+    updated_at: DateTime
+    general_info: GeneralInfo
+}
+type CountGoal {
+    status : String
+    number : Int
+}
+type GoalParent{
+    id: ID
+    name: String
+    parent_id: ID
+    children:[Goal]
+}
+
+type GoalUser{
+    goals:[Goal]
+    users: [User]
+}
+type ParentId{
+    parents :[Goal]
+}
+
+input TaskToGoalInput{
+    #    user_id: ID
+    parent_id: ID @rules(apply: ["nullable","App\\Rules\\OwnerCheckGoal"])
+    attachment_ids : JSON
+    name: String! @rules(apply:["required"])
+    start_day: DateTime! @rules(apply:["required"])
+    end_day: DateTime! @rules(apply:["required"])
+    status : String! @rules(apply:["required"])
+    task_id:ID
+    status : String @rules(apply:["in:todo,done"])
+    is_pined : Boolean
+    general_info: JSON
+}
+
+input CreateGoalInput{
+    parent_id: ID @rules(apply: ["nullable","App\\Rules\\OwnerCheckGoal"])
+    task_id : ID
+    name: String
+    start_day: DateTime
+    end_day: DateTime
+    status : String
+    is_pined : Boolean
+    general_info: JSON
+}
+
+input UpdateGoalInput{
+    id:ID! @rules(apply: ["required","App\\Rules\\OwnerCheckGoal"])
+    parent_id: ID @rules(apply: ["nullable","integer","App\\Rules\\OwnerCheckGoal"])
+    name: String
+    start_day: DateTime
+    end_day: DateTime
+    status : String @rules(apply:["in:todo,done"])
+    task_id : ID
+    is_pined : Boolean
+    general_info: JSON
+}
+
+input DeleteGoalInput{
+    id: ID! @rules(apply: ["required","App\\Rules\\OwnerCheckGoal"])
+}
+
+# Ver 2
+input UpsertGoalInput{
+    id:ID
+    root_id: ID
+    parent_id: ID
+    name: String
+    start_day: DateTime
+    end_day: DateTime
+    status : String @rules(apply:["nullable", "in:todo,done"])
+    task_id : ID
+    is_pined : Boolean
+    general_info: JSON
+}
