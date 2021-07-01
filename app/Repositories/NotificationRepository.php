@@ -167,10 +167,14 @@ class NotificationRepository
                 case 'comment':
                     $content = $noti->content;
                     $generalInfo = $this->generalinfo_repository->find($content['general_id']);
-                    $user = User::where("id",@$content["user_id"])->first();
-                    $messages->push("commented on a post that you're tagged in");
-                    $noti->general_id = $content["general_id"];
-                    $noti->task_id = $generalInfo->task_id;
+                    if ($generalInfo) {
+                        $user = User::where("id", @$content["user_id"])->first();
+                        $messages->push("commented on a post that you're tagged in");
+                        $noti->general_id = $content["general_id"];
+                        $noti->task_id = @$generalInfo->task_id;
+                    }else{
+                        return;
+                    }
 
                     break;
                 case 'friend':
