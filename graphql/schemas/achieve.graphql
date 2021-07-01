@@ -41,6 +41,6 @@ input UpdateAchieveInput{
     id : ID
     general_id : ID
     user_invite_ids : ID
-    status : String @rules(apply: ["in:accept,pending"])
+    status : String @rules(apply: ["in:accept,denine"])
 }
 
