@@ -4,8 +4,6 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Building'
-        sh 'composer install'
-        sh 'php artisan migrate'
       }
     }
 
