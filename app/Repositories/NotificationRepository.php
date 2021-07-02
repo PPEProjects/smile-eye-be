@@ -248,6 +248,7 @@ class NotificationRepository
 
                 $user_recive_ids = array_unique($user_recive_ids);
                 foreach ($user_recive_ids as $user_id) {
+                    if ($user_id == Auth::id()) continue;
                     $noti = Notification::create([
                         'type' => $type,
                         'type_id' => $typeId,
