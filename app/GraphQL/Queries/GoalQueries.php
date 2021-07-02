@@ -75,6 +75,9 @@ class GoalQueries
 
     public function myGoals($_, array $args)
     {
+        $this->goal_repository->calculatorProcessTodolist();
+        $this->goal_repository->calculatorProcessUpdate();
+
         $goals = Goal::where('user_id', Auth::id())
             ->orderBy('id', 'desc');
         switch ($args['parent_id']) {
@@ -90,10 +93,10 @@ class GoalQueries
         $goals = $goals->get();
         $goals = $this->generalinfo_repository
             ->setType('goal')
-            ->get($goals)
-            ->map(function ($goal) {
-                return $this->goal_repository->calculatorProcessTodolist($goal);
-            });
+            ->get($goals);
+//            ->map(function ($goal) {
+//                return $this->goal_repository->calculatorProcessTodolist($goal);
+//            });
 //        dd($goals->first()->toArray());
         return $goals;
     }
