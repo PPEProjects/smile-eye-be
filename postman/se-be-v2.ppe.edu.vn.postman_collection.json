@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b0814fad-4577-4e88-9af5-58d30e716c00",
+		"_postman_id": "c0aab87f-a8e5-4913-bb9e-7da3c6844d82",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -92,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"tinh3@gmail.com\",\n    \"password\": \"123456789\"\n}",
+							"raw": "{\n    \"email\": \"tinh5969@gmail.com\",\n    \"password\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -958,7 +958,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "\nmutation($general_id:ID!,$user_invite_ids:[ID]!,$status:String) {\n  create_achieve(\n    input: {\n      general_id: $general_id\n      user_invite_ids: $user_invite_ids\n      status: $status\n    }\n  )\n  }",
-								"variables": "{\n     \"general_id\" : 1,\n    \"user_invite_ids\" : [3,1],\n    \"status\" : \"pending\"\n}"
+								"variables": "{\n     \"general_id\" : 1,\n    \"user_invite_ids\" : [3,1],\n    \"status\" : \"accept\"\n}"
 							}
 						},
 						"url": {
@@ -987,38 +987,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "\nmutation($id:ID!,$general_id:ID,$user_invite_ids:ID,$status:String) {\n  update_achieve_with_general_id(\n    input: {\n        id : $id\n      general_id: $general_id\n      user_invite_ids: $user_invite_ids\n      status: $status\n      \n    }\n  ) {\n      id\n      general{id}\n      user_invite{id}\n    \n  }\n}",
-								"variables": "{\n    \"general_id\":16,\n    \"status\" : \"accept\"\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update_achieve_with_general_id",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "\nmutation($id:ID,$general_id:ID,$user_invite_ids:ID,$status:String) {\n  update_achieve_with_general_id(\n    input: {\n        id : $id\n      general_id: $general_id\n      user_invite_ids: $user_invite_ids\n      status: $status\n      \n    }\n  ) {\n      id\n      general{id}\n      user_invite{id}\n      status\n    \n  }\n}",
-								"variables": "{\n    \"general_id\":1,\n    \"status\" : \"accept\"\n}"
+								"query": "\nmutation($id:ID!,$general_id:ID,$user_invite_ids:ID,$status:String) {\n  update_achieve(\n    input: {\n        id : $id\n      general_id: $general_id\n      user_invite_ids: $user_invite_ids\n      status: $status\n      \n    }\n  ) {\n      id\n      general{id}\n      user_invite{id}\n    \n  }\n}",
+								"variables": "{\n    \"id\":16,\n    \"status\" : \"accept\"\n}"
 							}
 						},
 						"url": {
@@ -1360,7 +1330,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/Admin/Desktop/canhan.jpg"
+									"src": "/C:/Users/HoaiNam/Videos/Captures/Demo web manga.mp4"
 								}
 							]
 						},
@@ -2418,6 +2388,36 @@
 					"response": []
 				},
 				{
+					"name": "query my_goals Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($parent_id: String!) {\r\n  my_goals(parent_id: $parent_id) {\r\n      id\r\n      name\r\n      start_day\r\n      end_day\r\n      status\r\n      is_pined\r\n      progress\r\n      general_info {\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments {\r\n          file\r\n          file_type\r\n          thumb\r\n        }\r\n        achieves {\r\n          id\r\n          user_invite {\r\n            id\r\n            name\r\n            attachment {\r\n              thumb\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n",
+								"variables": "{\r\n \"parent_id\": \"root\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "query count_goal",
 					"request": {
 						"method": "POST",
@@ -2611,8 +2611,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($id: ID) {\r\n  my_goals_tree_sort(id: $id)\r\n}",
-								"variables": "{\r\n    \"id\": 2  \r\n}"
+								"query": "query($id: ID, $not_auth: Boolean) {\r\n  my_goals_tree_sort(id: $id, not_auth: $not_auth)\r\n}",
+								"variables": "{\r\n    \"id\": 2,\r\n    \"not_auth\": true\r\n}"
 							}
 						},
 						"url": {
@@ -2982,7 +2982,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "\nmutation($general_id:ID, $parent_id:ID, $mode:String,\n$content:String, $attachment_ids : JSON) {\n  create_comment(\n    input: {\n      general_id: $general_id\n      parent_id: $parent_id\n      mode: $mode,\n      content: $content,\n      attachment_ids:$attachment_ids\n    }\n  ) {\n    id\n    content\n    created_at\n    updated_at\n    user{\n        id\n        name\n        email\n        created_at\n        updated_at\n    }\n    general{\n        id \n        goal{\n            id\n            name\n        }\n        todolist{\n            id\n        }\n        task{\n            id\n        }\n    }\n  }\n}",
-								"variables": "{\n    \"general_id\": 1386,\n    \"parent_id\": null,\n    \"mode\": \"let\",\n    \"content\" :\"user 51\",\n    \"attachment_ids\" :[]\n\n}"
+								"variables": "{\n    \"general_id\": 23,\n    \"parent_id\": null,\n    \"mode\": \"let\",\n    \"content\" :\"user 1\",\n    \"attachment_ids\" :[]\n\n}"
 							}
 						},
 						"url": {
@@ -3408,6 +3408,36 @@
 							"graphql": {
 								"query": "query($created_at: String!){\r\n  my_todolists_with_month(created_at:$created_at)\r\n      \r\n}",
 								"variables": "{\r\n    \"created_at\":\"2021-06\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "my_todolists_from_now",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\r\n  my_todolists_from_now\r\n      \r\n}",
+								"variables": ""
 							}
 						},
 						"url": {

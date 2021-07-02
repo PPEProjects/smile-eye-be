@@ -7,6 +7,8 @@ use App\Models\Task;
 use App\Models\Todolist;
 use App\Repositories\GeneralInfoRepository;
 use App\Repositories\TodolistRepository;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -163,10 +165,10 @@ WHERE
 //            $todolist->general_info = $generalInfo;
 //            return $todolist;
 //        }
-        if(isset($args['id'])){
+        if (isset($args['id'])) {
             $todolist = Todolist::where('id', $args['id'])->first();
         }
-        if(isset($args['task_id'], $args['checked_at'])){
+        if (isset($args['task_id'], $args['checked_at'])) {
             $todolist = Todolist::where('task_id', $args['task_id'])
                 ->whereRaw("DATE(checked_at) = DATE('{$args['checked_at']}')")
                 ->first();
@@ -179,5 +181,47 @@ WHERE
             return $todolist;
         }
         return null;
+    }
+
+
+    public function myTodolistsFromNow($_, array $args)
+    {
+        $startDate = Carbon::now()->subDays(30);
+        $endDate = Carbon::now()->addDays(30);
+
+        $query = "SELECT tasks.id, DATE(IFNULL(gi.action_at, tasks.created_at)) as action_at
+FROM tasks
+     left join general_infos gi on tasks.id = gi.task_id
+WHERE gi.`repeat` is NULL AND (action_at IS NULL AND DATE(tasks.created_at) BETWEEN '$startDate' AND '$endDate'
+   OR DATE(action_at) BETWEEN '$startDate' AND '$endDate')";
+        $results = DB::select(DB::raw($query));
+        $tasksAction = json_decode(json_encode($results), true);
+        $tasksAction = array_map(function ($item) {
+            return $item['action_at'];
+        }, $tasksAction);
+        $tasksAction = array_count_values($tasksAction);
+
+        $query = "SELECT tasks.id, DATE(IFNULL(gi.action_at, tasks.created_at)) as action_at
+FROM tasks
+     inner join general_infos gi on tasks.id = gi.task_id
+WHERE gi.`repeat`='every day'";
+        $results = DB::select(DB::raw($query));
+        $tasksEveryDay = json_decode(json_encode($results), true);
+        $tasksEveryDay = array_map(function ($item) {
+            return $item['action_at'];
+        }, $tasksEveryDay);
+
+        $workloads = [];
+        foreach (CarbonPeriod::create($startDate, $endDate) as $date) {
+            $date = $date->format('Y-m-d');
+            $workload = [
+                'date'     => $date,
+                'workload' => (@$tasksAction[$date] ?? 0) + count($tasksEveryDay)
+            ];
+            if (!empty($workload['workload'])) {
+                $workloads[] = $workload;
+            }
+        }
+        return $workloads;
     }
 }
