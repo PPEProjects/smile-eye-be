@@ -10,6 +10,7 @@ use App\Models\Friend;
 use App\Models\GeneralInfo;
 use App\Models\Goal;
 use App\Models\Notification;
+use App\Models\Task;
 use App\Models\Todolist;
 use App\Models\User;
 use Carbon\Carbon;
@@ -172,7 +173,12 @@ class NotificationRepository
                         $messages->push("commented on a post that you're tagged in");
                         $noti->general_id = $content["general_id"];
                         if ($generalInfo->task_id){
-                            $noti->task_id = @$generalInfo->task_id;
+                            $t = Task::where("id",$generalInfo->task_id)->first();
+                            if ($t){
+                                $noti->task_id = @$generalInfo->task_id;
+                            }else{
+                                return;
+                            }
                         }else if ($generalInfo->goal_id){
                             $noti->goal_id = @$generalInfo->goal_id;
                         }else if ($generalInfo->todolist_id){
