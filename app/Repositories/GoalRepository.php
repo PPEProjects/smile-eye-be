@@ -387,18 +387,19 @@ class GoalRepository
         $task = Task::where('goal_id', $goal->id)
             ->first();
         if ($task) {
+            $startDay = Carbon::parse($goal->start_day);
+            $endDay = Carbon::parse($goal->end_day);
             $todolist = Todolist::where('task_id', $task->id)
+                ->whereBetween('checked_at', [$startDay->format('Y-m-d'), $endDay->format('Y-m-d')])
                 ->where('status', 'done')
                 ->where('user_id', Auth::id())
                 ->get();
-            $count = count($todolist) == 0 ? 1 : count($todolist);
-            $star_day = Carbon::parse($goal->start_day);
-            $end_day = Carbon::parse($goal->end_day);
-            $day = $end_day->diffInDays($star_day) + 1;
-            $progress = round($count / $day * 100, 2);
+            $count = $todolist->count();
+            $day = $endDay->diffInDays($startDay) + 1;
+            $progress = round(($count / $day) * 100, 2);
         }
         $goal->progress = $progress;
-        $goal->status = $progress == 100 ? 'done' : 'todo';
+        $goal->status = $progress >= 100 ? 'done' : 'todo';
         $this->calculatorProcessUpdate($goal->id, $goal->status);
         return $goal;
     }

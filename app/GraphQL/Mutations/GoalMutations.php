@@ -97,6 +97,8 @@ class GoalMutations
 // Ver 2
     public function upsertGoal($_, array $args)
     {
+        \Illuminate\Support\Facades\Log::channel('single')->info('$args', [$args]);
+        
         if (isset($args['start_day'], $args['end_day'])) {
             $startDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['start_day']);
             $endDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['end_day']);

@@ -67,7 +67,7 @@ input TaskToGoalInput{
     end_day: DateTime! @rules(apply:["required"])
     status : String! @rules(apply:["required"])
     task_id:ID
-    status : String @rules(apply:["in:todo,done"])
+    status : String @rules(apply:["nullable""in:todo,done"])
     is_pined : Boolean
     general_info: JSON
 }
@@ -89,7 +89,7 @@ input UpdateGoalInput{
     name: String
     start_day: DateTime
     end_day: DateTime
-    status : String @rules(apply:["in:todo,done"])
+    status : String @rules(apply:["nullable", "in:todo,done"])
     task_id : ID
     report_type : String
     is_pined : Boolean
