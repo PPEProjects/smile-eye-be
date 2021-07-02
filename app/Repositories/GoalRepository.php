@@ -402,8 +402,11 @@ class GoalRepository
         foreach ($tasks as $task) {
             $goal = $task['goal'];
 //            $progress = $goal->status == 'done' ? 100 : 0;
-            $startDay = Carbon::parse($goal->start_day);
-            $endDay = Carbon::parse($goal->end_day);
+
+            if ($goal) {
+                $startDay = Carbon::parse($goal->start_day);
+                $endDay = Carbon::parse($goal->end_day);
+
             $todolist = Todolist::where('task_id', $task['id'])
                 ->whereBetween('checked_at', [$startDay->format('Y-m-d'), $endDay->format('Y-m-d')])
                 ->where('status', 'done')
@@ -418,6 +421,7 @@ class GoalRepository
 //            $goal->status = $progress >= 100 ? 'done' : 'todo';
             Goal::where('id', $goal->id)
                 ->update(['progress' => $progress, 'status' => $status]);
+        }
         }
 //        return $this->calculatorProcessUpdate($goal);
     }
