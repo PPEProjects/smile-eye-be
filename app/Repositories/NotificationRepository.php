@@ -162,7 +162,7 @@ class NotificationRepository
                         $noti->todolist_id = $generalInfo->todolist_id;
                         //find todolist
                     }else{
-                        //do nothings
+                        return;
                     }
                     break;
                 case 'comment':
@@ -207,7 +207,7 @@ class NotificationRepository
             $noti->messages = $messages;
             return $noti;
         });
-        return $notifications;
+        return $notifications->filter();
     }
 
     public function createNotification($args)
