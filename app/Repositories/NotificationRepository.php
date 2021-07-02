@@ -171,7 +171,13 @@ class NotificationRepository
                         $user = User::where("id", @$content["user_id"])->first();
                         $messages->push("commented on a post that you're tagged in");
                         $noti->general_id = $content["general_id"];
-                        $noti->task_id = @$generalInfo->task_id;
+                        if ($generalInfo->task_id){
+                            $noti->task_id = @$generalInfo->task_id;
+                        }else if ($generalInfo->goal_id){
+                            $noti->goal_id = @$generalInfo->goal_id;
+                        }else if ($generalInfo->todolist_id){
+                            $noti->todolist_id = @$generalInfo->todolist_id;
+                        }
                     }else{
                         return;
                     }
