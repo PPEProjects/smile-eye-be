@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b2657970-2e81-4c8d-8a45-7c0d1511cd52",
+		"_postman_id": "b0814fad-4577-4e88-9af5-58d30e716c00",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -21,7 +21,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"tinhdoan\",\n    \"email\": \"tinh3@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
+							"raw": "{\n    \"name\": \"tinhdoan\",\n    \"email\": \"tinh2@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -92,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"tinh1@gmail.com\",\n    \"password\": \"123456789\"\n}",
+							"raw": "{\n    \"email\": \"tinh3@gmail.com\",\n    \"password\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -677,7 +677,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($id: ID!){\r\n  detail_notification(\r\n      id: $id\r\n     \r\n    ) {\r\n        id\r\n        user{\r\n            id\r\n        }\r\n        detail\r\n        member{\r\n            id\r\n            name\r\n            progress\r\n            attachment{\r\n                thumb\r\n            }\r\n        }\r\n    }\r\n}\r\n",
+								"query": "query($id: ID!){\r\n  detail_notification(\r\n      id: $id\r\n     \r\n    ) {\r\n        id\r\n        user{\r\n            id\r\n        }\r\n        detail\r\n        member{\r\n            id\r\n            name\r\n            process\r\n            attachment{\r\n                thumb\r\n            }\r\n        }\r\n    }\r\n}\r\n",
 								"variables": "{\r\n    \"id\": 1\r\n}\r\n"
 							}
 						},
@@ -2268,7 +2268,7 @@
 			"name": "goal",
 			"item": [
 				{
-					"name": "create_goal",
+					"name": "upsert_goal",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -2281,8 +2281,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\r\n    $task_id : ID\r\n  $parent_id: ID\r\n  $name: String!\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n) {\r\n  create_goal(\r\n    input: {\r\n        task_id : $task_id\r\n      parent_id: $parent_id\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      is_pined: $is_pined\r\n      general_info: $general_info\r\n    }\r\n  ) {\r\n    id\r\n    task_id\r\n    name\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"task_id\" : null,\r\n    \"parent_id\": null,\r\n    \"name\": \"test goal\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"DC\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"everyday\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
+								"query": "mutation(\r\n    $root_id:ID\r\n    $task_id : ID\r\n    $report_type : String\r\n  $parent_id: ID\r\n  $name: String!\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n) {\r\n  upsert_goal(\r\n    input: {\r\n        root_id : $root_id\r\n        task_id : $task_id\r\n        report_type : $report_type\r\n      parent_id: $parent_id\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      is_pined: $is_pined\r\n      general_info: $general_info\r\n    }\r\n  ) \r\n}\r\n",
+								"variables": "{\r\n    \"root_id\":1,\r\n    \"report_type\":\"s\",\r\n    \"task_id\" : null,\r\n    \"parent_id\": null,\r\n    \"name\": \"test goal\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"DC\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"everyday\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
 							}
 						},
 						"url": {
@@ -2341,8 +2341,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\r\n  $id: ID!\r\n  $parent_id: ID\r\n  $name: String!\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n) {\r\n  update_goal(\r\n    input: {\r\n      id: $id\r\n      parent_id: $parent_id\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      is_pined: $is_pined\r\n      general_info: $general_info\r\n    }\r\n  ) {\r\n    id\r\n    name\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    general_info{\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n    progress\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"id\": 1,\r\n    \"parent_id\": null,\r\n    \"name\": \"lam lai cuoc doi\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"done\",\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"hanh tinh namet\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"everyday\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [2,3],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\",\r\n        \"todolist_id\": 1\r\n    } \r\n}"
+								"query": "mutation(\r\n  $id: ID!\r\n  $parent_id: ID\r\n  $report_type : String\r\n  $name: String!\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n) {\r\n  update_goal(\r\n    input: {\r\n      id: $id\r\n      parent_id: $parent_id\r\n      report_type : $report_type\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      is_pined: $is_pined\r\n      general_info: $general_info\r\n    }\r\n  ) {\r\n    id\r\n    name\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    general_info{\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n    progress\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"id\": 1,\r\n    \"report_type\": \"s\",\r\n    \"parent_id\": null,\r\n    \"name\": \"lam lai cuoc doi\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"done\",\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"hanh tinh namet\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"everyday\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [2,3],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\",\r\n        \"todolist_id\": 1\r\n    } \r\n}"
 							}
 						},
 						"url": {
@@ -2461,7 +2461,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($parent_id: String!){\r\n  my_goals_achieve(parent_id: $parent_id) {\r\n    id\r\n    name\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    progress\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n}\r\n}",
+								"query": "query($parent_id: String!){\r\n  my_goals_achieve(parent_id: $parent_id) {\r\n    id\r\n    name\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    process\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n}\r\n}",
 								"variables": "{\r\n \"parent_id\": \"all\"\r\n}"
 							}
 						},
