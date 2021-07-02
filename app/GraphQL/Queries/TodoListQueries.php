@@ -192,7 +192,7 @@ WHERE
         $query = "SELECT tasks.id, DATE(IFNULL(gi.action_at, tasks.created_at)) as action_at
 FROM tasks
      left join general_infos gi on tasks.id = gi.task_id
-WHERE gi.`repeat` is NULL AND (action_at IS NULL AND DATE(tasks.created_at) BETWEEN '$startDate' AND '$endDate'
+WHERE tasks.deleted_at IS NULL AND gi.`repeat` is NULL AND (action_at IS NULL AND DATE(tasks.created_at) BETWEEN '$startDate' AND '$endDate'
    OR DATE(action_at) BETWEEN '$startDate' AND '$endDate')";
         $results = DB::select(DB::raw($query));
         $tasksAction = json_decode(json_encode($results), true);
@@ -204,7 +204,7 @@ WHERE gi.`repeat` is NULL AND (action_at IS NULL AND DATE(tasks.created_at) BETW
         $query = "SELECT tasks.id, DATE(IFNULL(gi.action_at, tasks.created_at)) as action_at
 FROM tasks
      inner join general_infos gi on tasks.id = gi.task_id
-WHERE gi.`repeat`='every day'";
+WHERE tasks.deleted_at IS NULL AND gi.`repeat`='every day'";
         $results = DB::select(DB::raw($query));
         $tasksEveryDay = json_decode(json_encode($results), true);
         $tasksEveryDay = array_map(function ($item) {
