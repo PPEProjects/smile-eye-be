@@ -91,6 +91,7 @@ input UpdateGoalInput{
     end_day: DateTime
     status : String @rules(apply:["in:todo,done"])
     task_id : ID
+    report_type : String
     is_pined : Boolean
     general_info: JSON
 }
@@ -106,6 +107,7 @@ input UpsertGoalInput{
     parent_id: ID
     name: String
     start_day: DateTime
+    report_type : String
     end_day: DateTime
     status : String @rules(apply:["nullable", "in:todo,done"])
     task_id : ID

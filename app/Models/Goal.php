@@ -24,6 +24,7 @@ class Goal extends Model
         'status',
         'task_id',
         'is_pined',
+        'report_type',
         'user_id'
     ];
 

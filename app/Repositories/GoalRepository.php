@@ -308,11 +308,6 @@ class GoalRepository
         return $this->goalAll($goals);
     }
 
-    public function goalRoot($goals)
-    {
-        dd($goals->toArray());
-    }
-
     public function goalAll($goals, $type = "all", $root_ids = [])
     {
         $parentGoal_ids = $goals->whereNotNull("parent_id")
@@ -324,7 +319,6 @@ class GoalRepository
 //        $goalNochild = $this->mapProcess($goalNochild);
         $goalNochild = $goalNochild->map(function ($goal) {
             $goal = $this->mapProcessSingle($goal);
-            dd($goal->toArray());
             return $goal;
         });
 

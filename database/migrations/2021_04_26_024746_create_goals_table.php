@@ -24,6 +24,7 @@ class CreateGoalsTable extends Migration
             $table->string('status')->nullable();
             $table->unsignedInteger('task_id')->nullable();
             $table->boolean('is_pined')->nullable();
+            $table->string('report_type')->default("s&k")->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
