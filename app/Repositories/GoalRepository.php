@@ -380,9 +380,11 @@ class GoalRepository
 //    }
 
 
-
     public function calculatorProcessTodolist($goal)
     {
+        if (Goal::where('parent_id', $goal->id)->first()) {
+            return $this->calculatorProcessUpdate($goal);
+        }
         $progress = $goal->status == 'done' ? 100 : 0;
         $task = Task::where('goal_id', $goal->id)
             ->first();
@@ -401,13 +403,14 @@ class GoalRepository
         $goal->progress = $progress;
         $goal->status = $progress >= 100 ? 'done' : 'todo';
         Goal::where('id', $goal->id)
-            ->update(['progress'=>$goal->progress, 'status'=>$goal->status]);
-        $this->calculatorProcessUpdate($goal->id, $goal->status);
-        return $goal;
+            ->update(['progress' => $goal->progress, 'status' => $goal->status]);
+        return $this->calculatorProcessUpdate($goal);
     }
 
-    public function calculatorProcessUpdate($goalId, $status)
+    public function calculatorProcessUpdate($goal)
     {
+//        $goalId = $goal->id;
+//        $status = $goal->status;
         $goals = Goal::selectRaw('*, id as value')
             ->orderBy('id', 'desc')
             ->where('user_id', Auth::id())
@@ -427,8 +430,9 @@ class GoalRepository
                 $listU[$itemP['parent_id']][] = $itemP;
             }
         });
-        if ($status == 'done') {
-            foreach ((@$listU[$goalId] ?? []) as $item) {
+//        dd($listP);
+        if ($goal->status == 'done') {
+            foreach ((@$listU[$goal->id] ?? []) as $item) {
                 Goal::where('id', $item['id'])
                     ->update([
                         'progress' => 100,
@@ -440,12 +444,15 @@ class GoalRepository
         foreach ($listP as $goalId => $item) {
             $done = @array_count_values($item)['done'] ?? 0;
             $progress = ($done / count($item)) * 100;
+            $status = $progress == 100 ? 'done' : 'todo';
+            if ($goal->id == $goalId) {
+                $goal->progress = $progress;
+                $goal->status = $status;
+            }
             Goal::where('id', $goalId)
-                ->update([
-                    'progress' => $progress,
-                    'status'   => $progress == 100 ? 'done' : 'todo'
-                ]);
+                ->update(['progress' => $progress, 'status' => $status]);
         }
+        return $goal;
     }
 
 }

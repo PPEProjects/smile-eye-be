@@ -136,7 +136,7 @@ class GoalMutations
             ->findByTypeId($goal->id);
         $goal->general_info = $generalInfo;
 
-        $this->goal_repository->calculatorProcessUpdate($goal->id, $goal->status);
+        $this->goal_repository->calculatorProcessUpdate($goal);
         return $goal;
     }
 
