@@ -143,21 +143,21 @@ class NotificationRepository
                     if (@$generalInfo->task_id) {
                         $messages->push('task');
                         $task = $this->task_repository->find($generalInfo->task_id);
-                        if(!$task) return $noti;
+                        if(!$task) return;
                         $messages->push($task->name);
                         $noti->task_id = $generalInfo->task_id;
                     }
                     else if (@$generalInfo->goal_id) {
                         $messages->push('goal');
                         $goal = $this->goal_repository->find($generalInfo->goal_id);
-                        if(!$goal) return $noti;
+                        if(!$goal) return;
                         $messages->push($goal->name);
                         $noti->goal_id = $generalInfo->goal_id;
                         //find goal
                     }else if (@$generalInfo->todolist_id) {
                         $messages->push('todolist');
                         $todo = $this->todolist_repository->find($generalInfo->todolist_id);
-                        if(!$todo) return $noti;
+                        if(!$todo) return;
                         $messages->push($todo->name);
                         $noti->todolist_id = $generalInfo->todolist_id;
                         //find todolist
@@ -173,16 +173,11 @@ class NotificationRepository
                         $messages->push("commented on a post that you're tagged in");
                         $noti->general_id = $content["general_id"];
                         if ($generalInfo->task_id){
-                            $t = Task::where("id",$generalInfo->task_id)->first();
-                            if ($t){
-                                $noti->task_id = @$generalInfo->task_id;
-                            }else{
-                                return;
-                            }
-                        }else if ($generalInfo->goal_id){
-                            $noti->goal_id = @$generalInfo->goal_id;
-                        }else if ($generalInfo->todolist_id){
-                            $noti->todolist_id = @$generalInfo->todolist_id;
+                            $t = $this->task_repository->find($generalInfo->task_id);
+                            if (!$t) return;
+                            $noti->task_id = @$generalInfo->task_id;
+                        }else {
+                            return;
                         }
                     }else{
                         return;
