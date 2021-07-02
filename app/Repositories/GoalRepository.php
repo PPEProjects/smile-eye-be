@@ -400,6 +400,8 @@ class GoalRepository
         }
         $goal->progress = $progress;
         $goal->status = $progress >= 100 ? 'done' : 'todo';
+        Goal::where('id', $goal->id)
+            ->update(['progress'=>$goal->progress, 'status'=>$goal->status]);
         $this->calculatorProcessUpdate($goal->id, $goal->status);
         return $goal;
     }
