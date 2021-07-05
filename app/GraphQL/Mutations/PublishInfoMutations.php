@@ -8,19 +8,24 @@ use App\Models\GeneralInfo;
 use App\Models\PublishInfo;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\PublishInfoRepository;
+use App\Repositories\NotificationRepository;
 
 class PublishInfoMutations
 {
     private $publish_info_repository ;
-    public function __construct(PublishInfoRepository $publish_info_repository)
+    private $notification_repository;
+    public function __construct(PublishInfoRepository $publish_info_repository, NotificationRepository $notificationRepository)
     {
         $this->publish_info_repository = $publish_info_repository;
+        $this->notification_repository = $notificationRepository;
     }
 
     public function createPublishInfo($_, array $args)
     {
-        $args['user_id'] = Auth::id();
-        return PublishInfo::create($args);
+        $publicInfo = PublishInfo::create($args);
+        $publicInfo['user_id'] = Auth::id();
+        $this->notification_repository->saveNotification('publish', $publicInfo['id'], $publicInfo);
+        return $publicInfo;
     }
     public function deletePublishInfo($_, array $args):bool
     {

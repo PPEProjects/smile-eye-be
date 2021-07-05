@@ -119,6 +119,7 @@ class NotificationRepository
 
     public function myNotifications($args)
     {
+
         $notifications = Notification::where("user_receive_id", Auth::id())
             ->orderBy('id', 'desc')
             ->whereIn("type",$args["types"]);
@@ -129,10 +130,8 @@ class NotificationRepository
         $notifications = $notifications->map(function ($noti) {
             $user = User::where("id",$noti->user_id)->first();
             $user = $this->attachment_service->mappingAvatarBackgroud($user);
-
             $noti->user = $user;
             $messages = collect();
-
             switch ($noti->type) {
                 case 'achieve':
                     $content = $noti->content;
@@ -165,6 +164,34 @@ class NotificationRepository
                         return;
                     }
                     break;
+                case "publish":
+                    $content = $noti->content;
+                    $generalInfo = $this->generalinfo_repository->find($content['general_id']);
+                    if (@$generalInfo->task_id) {
+                        $messages->push('task');
+                        $task = $this->task_repository->find($generalInfo->task_id);
+                        if(!$task) return;
+                        $messages->push($task->name);
+                        $noti->task_id = $generalInfo->task_id;
+                    }
+                    else if (@$generalInfo->goal_id) {
+                        $messages->push('goal');
+                        $goal = $this->goal_repository->find($generalInfo->goal_id);
+                        if(!$goal) return;
+                        $messages->push($goal->name);
+                        $noti->goal_id = $generalInfo->goal_id;
+                        //find goal
+                    }else if (@$generalInfo->todolist_id) {
+                        $messages->push('todolist');
+                        $todo = $this->todolist_repository->find($generalInfo->todolist_id);
+                        if(!$todo) return;
+                        $messages->push($todo->name);
+                        $noti->todolist_id = $generalInfo->todolist_id;
+                        //find todolist
+                    }else{
+                        return;
+                    }
+                break;
                 case 'comment':
                     $content = $noti->content;
                     $generalInfo = $this->generalinfo_repository->find($content['general_id']);
@@ -230,6 +257,16 @@ class NotificationRepository
         switch ($type) {
             case 'achieve':
                 Notification::create([
+                    'type'    => $type,
+                    'type_id'  => $typeId,
+                    'user_id' => $content['user_id'],
+                    'user_receive_id' => $content['user_invite_id'],
+                    'content' => $content,
+                ]);
+                $this->sendPushNotifi($content['user_invite_id']);
+                break;
+            case 'publish':
+               $publish = Notification::create([
                     'type'    => $type,
                     'type_id'  => $typeId,
                     'user_id' => $content['user_id'],
