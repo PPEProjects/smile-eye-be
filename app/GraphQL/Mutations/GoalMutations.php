@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Models\GeneralInfo;
 use App\Models\Goal;
 use App\Models\Task;
 use App\Models\Todolist;
@@ -13,6 +14,7 @@ use Carbon\Carbon;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use ppeCore\dvtinh\Services\AttachmentService;
+use App\Repositories\NotificationRepository;
 
 class GoalMutations
 {
@@ -22,6 +24,7 @@ class GoalMutations
     private $goal_repository;
     private $task_repository;
     private $attachment_service;
+    private $notification_repository;
 
     public function __construct(
         GeneralInfoRepository $general_info_repository,
@@ -29,7 +32,8 @@ class GoalMutations
         TaskRepository $TaskRepository,
         AttachmentService $attachment_service,
         GeneralInfoRepository $generalinfo_repository,
-        AttachmentRepository $attachment_repository
+        AttachmentRepository $attachment_repository,
+        NotificationRepository $notification_repository
     ) {
         $this->general_info_repository = $general_info_repository;
         $this->attachment_service = $attachment_service;
@@ -37,6 +41,7 @@ class GoalMutations
         $this->attachment_repository = $attachment_repository;
         $this->goal_repository = $GoalRepository;
         $this->task_repository = $TaskRepository;
+        $this->notification_repository = $notification_repository;
     }
 
     public function createGoal($_, array $args): Goal
@@ -118,6 +123,15 @@ class GoalMutations
         return $this->goal_repository->getTreeSortByGoalId($args['root_id'], Auth::id());
     }
 
+   public function compare_goal($goalnew,$goalOld){
+        $generalNew = $goalnew["general_info"];
+        $generalOld = $goalOld->general_info;
+//        $generalOld->achieves->toArray();
+//        $generalOld->publishs->toArray();
+        dd(array_diff($generalNew,$generalOld));
+
+
+    }
     public function updateGoal($_, array $args): Goal
     {
         if (isset($args['start_day'], $args['end_day'])) {
@@ -127,17 +141,70 @@ class GoalMutations
                 throw new Error('Start day must less than end day');
             }
         }
-
-        $goal = tap(Goal::findOrFail($args["id"]))
-            ->update($args);
+        //self update
+        $goalCheckUser = Goal::where("id",$args["id"])->first();
         $generalInfo = $this->generalinfo_repository
             ->setType('goal')
-            ->upsert(array_merge($goal->toArray(), $args))
-            ->findByTypeId($goal->id);
-        $goal->general_info = $generalInfo;
+            ->findByTypeId($goalCheckUser->id)
+            ->toArray();
+        $goalCheckUser->general_info = $generalInfo;
+//        dd($goalCheckUser->toArray());
+        if (@$goalCheckUser->user_id == Auth::id()){
+            $goal = tap(Goal::findOrFail($args["id"]))
+                ->update($args);
+            $generalInfo = $this->generalinfo_repository
+                ->setType('goal')
+                ->upsert(array_merge($goal->toArray(), $args))
+                ->findByTypeId($goal->id);
+            $goal->general_info = $generalInfo;
+        }else{
+            $goal = Goal::where("id",$args["id"])->first();
+            $goalOld = Goal::where("id",$args["id"])->first();
 
+            $goal->update($args);
+
+            $generalInfo = GeneralInfo::where("goal_id",$args["id"])->first();
+            $generalInfoOld = GeneralInfo::where("goal_id",$args["id"])->first();
+
+            $generalInfo->update($args["general_info"]);
+
+            $goalChange = array_diff_key($goal->getChanges(),array_flip(["updated_at","is_pined"]));
+            $generalInfoChange = array_diff_key($generalInfo->getChanges(),array_flip(["updated_at","todolist_id"]));
+
+
+            //filler information change save as an array
+            $temp = collect();
+            foreach ($goalChange as $key=>$value){
+                $arr[$key]["old"] =  $goalOld->$key;
+                $arr[$key]["new"] =  $goalChange[$key];
+                $temp->push($arr);
+            }
+            foreach ($generalInfoChange as $key=>$value){
+                $arr[$key]["old"] =  $generalInfoOld->$key;
+                $arr[$key]["new"] =  $generalInfoChange[$key];
+                $temp->push($arr);
+            }
+            $temp = @$temp->toArray()[1];
+            if ($temp){
+                foreach ($temp as $key=>$t){
+                    $t2 = [];
+                    $t2[$key] = $t;
+                    $this->
+                    notification_repository->
+                    saveNotification("edit_goal",$goal->id,$t2);
+
+                }
+            }
+
+            $generalInfo = $this->generalinfo_repository
+                ->setType('goal')
+                ->upsert(array_merge($goal->toArray(), $args))
+                ->findByTypeId($goal->id);
+            $goal->general_info = $generalInfo;
+        }
 //        $this->goal_repository->calculatorProcessUpdate($goal);
         return $goal;
     }
+
 
 }

@@ -245,6 +245,17 @@ class NotificationRepository
                         $messages->push("accept you're friend request");
                     }
                     break;
+                case 'edit_goal':
+                    $content = $noti->content;
+                    $key = array_key_first($content);
+                    $user = User::where("id",$noti["user_id"])->first();
+                    $goal = Goal::where("id",$noti->type_id)->first();
+
+                    $messages
+                        ->push($user->name ." change ".
+                            $key." ".$content[$key]["old"]." to ".$content[$key]["new"].
+                            " at your goal name ".$goal->name );
+                    break;
             }
             $noti->messages = $messages;
             return $noti;
@@ -333,6 +344,17 @@ class NotificationRepository
                         'content' => $content,
                     ]);
                 $this->sendPushNotifi($user_invite);
+                break;
+            case 'edit_goal':
+                $goal = Goal::find($typeId);
+                $noti = Notification::create([
+                    'type' => $type,
+                    'type_id' => $typeId,
+                    'user_id' => Auth::id(),
+                    'user_receive_id' => $goal->user_id,
+                    'content' => $content,
+                ]);
+                $this->sendPushNotifi($goal->user_id);
                 break;
 
         }

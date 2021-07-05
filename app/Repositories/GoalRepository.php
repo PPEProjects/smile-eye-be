@@ -17,6 +17,7 @@ class GoalRepository
     private $user_repository;
     private $attachment_repository;
     private $generalinfo_repository;
+    private $child_ids = [];
 
     public function __construct(
         UserRepository $UserRepository,
@@ -34,6 +35,7 @@ class GoalRepository
     {
         return Goal::find($id);
     }
+
 
     public function getByParentGoal($cons)
     {
@@ -265,8 +267,10 @@ class GoalRepository
             ->get()
             ->pluck('count', 'status')
             ->toArray();
-        $count["todo"] += @$count[""];
-        $count["todo"] += @$count["null"];
+        if (@$count["todo"]){
+            $count["todo"] += @$count[""];
+            $count["todo"] += @$count["null"];
+        }
         $count = array_diff_key($count, array_flip(["", "null"]));
 
         $temp = [];
@@ -477,4 +481,61 @@ class GoalRepository
 //        return $goal;
     }
 
+    public function reportGoal($args){
+        $dayBefor = (new \DateTime($args["date"]))->modify('-7 day')->format('Y-m-d');
+
+        $goal = Goal::where("id",$args["id"])->first();
+
+        $this->findAllIdChild($goal);
+        $children_ids = $this->child_ids;
+        $remove = [];
+        foreach ($children_ids as $id){
+            if (!$this->isSmallest(null,$id)){
+                array_push($remove,$id);
+            }
+        }
+        $children_ids = array_diff_key($children_ids,$remove);
+        $taskToday = count($children_ids);
+        //get all task from goal
+        $args = [];
+        $args["checked_at"] = "2021-06-28" ;
+        dd("ok");
+//        $todolists = $this->todolist_repository->myTodolist($args);
+//        dd($todolists->toArray());
+
+//        return $report;
+    }
+
+    public function findAllIdChild($goal){
+        $this->chid_ids = [];
+        $arr = [];
+        $goalChild = Goal::where("parent_id",$goal->id)->get();
+        if ($goalChild){
+            foreach ($goalChild as $g) {
+                array_push($arr,$g);
+                array_push($this->child_ids,$g->id);
+                $this->findAllIdChild($g);
+            }
+        }
+        $goal->goalChildIds = $arr;
+        return $goal;
+    }
+    public function isSmallest($goal = null ,$goal_id = null){
+        if ($goal){
+            $child = Goal::Where("parent_id",$goal->id)->get();
+            if (count($child) != 0){
+                return false;
+            }else{
+                return true;
+            }
+        }else if($goal_id){
+            $child = Goal::Where("parent_id",$goal_id)->get();
+
+            if (count($child) != 0){
+                return false;
+            }else{
+                return true;
+            }
+        }
+    }
 }
