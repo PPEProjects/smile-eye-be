@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use ppeCore\dvtinh\Services\AttachmentService;
 use App\Repositories\TodolistRepository;
+use App\Repositories\PublishInfoRepository;
 
 class NotificationRepository
 {
@@ -27,6 +28,7 @@ class NotificationRepository
     private $attachment_service;
     private $comment_repository;
     private $todolist_repository;
+    private $publish_info_repository ;
 
     public function __construct(
         TaskRepository $task_repository,
@@ -34,7 +36,8 @@ class NotificationRepository
         GeneralInfoRepository $generalinfo_repository,
         AttachmentService $attachment_service,
         CommentRepository $comment_repository,
-        TodolistRepository $todolist_repository
+        TodolistRepository $todolist_repository,
+        PublishInfoRepository $publish_info_repository
     ) {
         $this->task_repository = $task_repository;
         $this->goal_repository = $goal_repository;
@@ -42,6 +45,7 @@ class NotificationRepository
         $this->attachment_service = $attachment_service;
         $this->comment_repository = $comment_repository;
         $this->todolist_repository = $todolist_repository;
+        $this->publish_info_repository = $publish_info_repository;
     }
 
     public function detailNotifications(array $args)
@@ -139,7 +143,7 @@ class NotificationRepository
 
     public function myNotifications($args)
     {
-
+        
         $notifications = Notification::where("user_receive_id", Auth::id())
             ->orderBy('id', 'desc')
             ->whereIn("type",$args["types"]);
@@ -187,6 +191,7 @@ class NotificationRepository
                 case "publish":
                     $content = $noti->content;
                     $generalInfo = $this->generalinfo_repository->find($content['general_id']);
+                    $PublishInfo =  $this->publish_info_repository->find(Auth::id());
                     if (@$generalInfo->task_id) {
                         $messages->push('task');
                         $task = $this->task_repository->find($generalInfo->task_id);
@@ -211,6 +216,8 @@ class NotificationRepository
                     }else{
                         return;
                     }
+                    $rule = @$PublishInfo[$content['general_id']]['rule'];
+                    $messages->push("with rule: ".$rule);
                 break;
                 case 'comment':
                     $content = $noti->content;

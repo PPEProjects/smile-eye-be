@@ -1,5 +1,5 @@
 extend type Mutation {
-    create_publishInfo(input: CreatePublishInfoInput! @spread): PublishInfo @guard @field(resolver: "App\\GraphQL\\Mutations\\PublishInfoMutations@createPublishInfo")
+    create_publishInfo(input: CreatePublishInfoInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\PublishInfoMutations@createPublishInfo")
     delete_publishInfo(input: DeletePublishInfoInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\PublishInfoMutations@deletePublishInfo")
     update_publishInfo(input: UpdatePublishInfoInput! @spread): PublishInfo @guard @field(resolver: "App\\GraphQL\\Mutations\\PublishInfoMutations@updatePublishInfo")
 

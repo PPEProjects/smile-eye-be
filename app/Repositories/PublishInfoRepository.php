@@ -12,6 +12,12 @@ use ppeCore\dvtinh\Services\MediaService;
 class PublishInfoRepository
 {
     public function createPublishInfo($args){
+        $publishInfo = PublishInfo::Where("general_id", $args['general_id'])->get();
+        foreach($publishInfo as $value){
+            if($args['user_invite_id'] == $value->user_invite_id){
+                return false;
+            }
+        }
        return PublishInfo::create($args);
     }
     public function updatePublishInfo($args)
@@ -21,6 +27,11 @@ class PublishInfoRepository
         $update = tap(PublishInfo::findOrFail($args["id"]))
             ->update($args);
         return $update;
+
+    }
+    public function find($useId){
+      $publishInfo = PublishInfo::where('user_invite_id', $useId)->get()->keyBy("general_id");
+      return $publishInfo->toArray();
 
     }
 }
