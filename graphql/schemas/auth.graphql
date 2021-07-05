@@ -53,6 +53,7 @@ type User {
     notification : JSON
     count_notification : Int
     messages : String
+    status : String
 }
 
 type AuthPayload {

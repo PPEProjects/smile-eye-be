@@ -70,6 +70,24 @@ class UserRepository
         });
         $user->attachments = $attachments;
         $user = $this->attachment_service->mappingAvatarBackgroud($user);
+        // add status for viewer
+
+        $auth = Auth::id();
+        $status = null ;
+        $raw = Friend::where("user_id",Auth::id())
+            ->where("user_id_friend",$args["id"])
+            ->first();
+        if ($raw) {
+            $status = $raw->status;
+            }else{
+            $raw = Friend::where("user_id",$args["id"])
+                ->where("user_id_friend",Auth::id())
+                ->first();
+            if ($raw){
+                $status = "waiting";
+            }
+        }
+        $user->status = $status;
         return [$user];
     }
 
