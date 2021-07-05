@@ -29,9 +29,10 @@ class PublishInfoRepository
         return $update;
 
     }
-    public function find($useId){
-      $publishInfo = PublishInfo::where('user_invite_id', $useId)->get()->keyBy("general_id");
-      return $publishInfo->toArray();
+    public function find($generalId, $userId){
+      return PublishInfo::where('user_invite_id',$userId)
+                                    ->where("general_id", $generalId)
+                                    ->first();
 
     }
 }

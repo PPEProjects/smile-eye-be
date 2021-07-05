@@ -191,7 +191,7 @@ class NotificationRepository
                 case "publish":
                     $content = $noti->content;
                     $generalInfo = $this->generalinfo_repository->find($content['general_id']);
-                    $PublishInfo =  $this->publish_info_repository->find(Auth::id());
+                    $PublishInfo =  $this->publish_info_repository->find($content['general_id'], Auth::id());
                     if (@$generalInfo->task_id) {
                         $messages->push('task');
                         $task = $this->task_repository->find($generalInfo->task_id);
@@ -216,8 +216,7 @@ class NotificationRepository
                     }else{
                         return;
                     }
-                    $rule = @$PublishInfo[$content['general_id']]['rule'];
-                    $messages->push("with rule: ".$rule);
+                    $messages->push("with rule: ".$PublishInfo->rule);
                 break;
                 case 'comment':
                     $content = $noti->content;
