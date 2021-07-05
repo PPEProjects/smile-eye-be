@@ -10,6 +10,7 @@ use App\Models\Friend;
 use App\Models\GeneralInfo;
 use App\Models\Goal;
 use App\Models\Notification;
+use App\Models\PublishInfo;
 use App\Models\Task;
 use App\Models\Todolist;
 use App\Models\User;
@@ -101,6 +102,25 @@ class NotificationRepository
 
                         $attachment = Attachment::where('id',$user->avatar_attachment_id)->first();
 
+                        if ($attachment) {
+                            [$thumb, $file] = $this->attachment_service->getThumbFile($attachment->file_type, $attachment->file);
+                            $attachment->thumb = $thumb;
+                            $attachment->file = $file;
+                        }
+                        $user->attachment = $attachment;
+                        return $user;
+                    });
+                    $noti->detail = $general;
+                    $noti->member = $member;
+                    break;
+                case 'publish':
+                    $general = GeneralInfo::where("id",$general_id)->first()->toArray();
+                    $publishInfo = PublishInfo::where('general_id',$general_id)
+                        ->pluck("user_invite_id");
+                    //even me
+                    $member = User::whereIn('id',$publishInfo)->get();
+                    $member= $member->map(function ($user){
+                        $attachment = Attachment::where('id',$user->avatar_attachment_id)->first();
                         if ($attachment) {
                             [$thumb, $file] = $this->attachment_service->getThumbFile($attachment->file_type, $attachment->file);
                             $attachment->thumb = $thumb;

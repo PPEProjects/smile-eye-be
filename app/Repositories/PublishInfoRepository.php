@@ -11,6 +11,9 @@ use ppeCore\dvtinh\Services\MediaService;
 
 class PublishInfoRepository
 {
+    public function createPublishInfo($args){
+       return PublishInfo::create($args);
+    }
     public function updatePublishInfo($args)
     {
         $args = array_diff_key($args, array_flip(['directive']));

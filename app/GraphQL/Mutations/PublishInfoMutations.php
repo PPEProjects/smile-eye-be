@@ -22,7 +22,7 @@ class PublishInfoMutations
 
     public function createPublishInfo($_, array $args)
     {
-        $publicInfo = PublishInfo::create($args);
+        $publicInfo = $this->publish_info_repository->createPublishInfo($args);
         $publicInfo['user_id'] = Auth::id();
         $this->notification_repository->saveNotification('publish', $publicInfo['id'], $publicInfo);
         return $publicInfo;
