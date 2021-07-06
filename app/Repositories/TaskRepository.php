@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 use App\Models\Task;
 use App\Models\Todolist;
+use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\GeneralInfoRepository;
 use App\Repositories\GoalRepository;
@@ -56,7 +57,19 @@ class TaskRepository
             return $task->delete();
         }
     }
-
+    public function updateTaskAndGeneral($args){
+        if (isset($args['general_info']['repeat']) && !in_array($args['general_info']['repeat'],
+                [null, 'every day', 'every week', 'every month'])) {
+            throw new Error('General Info Repeat invalid');
+        }
+        $task = $this->updateTask($args);
+        $generalInfo = $this->generalinfo_repository
+            ->setType('task')
+            ->upsert(array_merge($task->toArray(), $args))
+            ->findByTypeId($task->id);
+        $task->general_info = $generalInfo;
+        return $task;
+    }
     public function updateTask($payload)
     {
         return tap(Task::findOrFail($payload["id"]))

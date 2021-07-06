@@ -50,16 +50,7 @@ class TaskMutations
 
     public function updateTask($_, array $args)
     {
-        if (isset($args['general_info']['repeat']) && !in_array($args['general_info']['repeat'],
-                [null, 'every day', 'every week', 'every month'])) {
-            throw new Error('General Info Repeat invalid');
-        }
-        $task = $this->task_repository->updateTask($args);
-        $generalInfo = $this->generalinfo_repository
-            ->setType('task')
-            ->upsert(array_merge($task->toArray(), $args))
-            ->findByTypeId($task->id);
-        $task->general_info = $generalInfo;
+        $task = $this->task_repository->updateTaskAndGeneral($args);
         return $task;
     }
 

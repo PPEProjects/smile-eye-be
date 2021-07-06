@@ -145,12 +145,16 @@ class GoalMutations
                 throw new Error('Start day must less than end day');
             }
         }
-        $checkIdTask = $this->checkTaskId($args['parent_id']);
-        if(!$checkIdTask){
-            return ;
+        if (isset($args['parent_id'])) {
+            $checkIdTask = $this->checkTaskId($args['parent_id']);
+            if (!$checkIdTask) {
+                return;
+            }
         }
+
         //self update
         $goalCheckUser = Goal::where("id",$args["id"])->first();
+
         $generalInfo = $this->generalinfo_repository
             ->setType('goal')
             ->findByTypeId($goalCheckUser->id)
