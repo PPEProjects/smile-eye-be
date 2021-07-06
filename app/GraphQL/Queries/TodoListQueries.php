@@ -164,7 +164,7 @@ WHERE
                 $tasks = $tasks->sortBy('-`status`');
                 break;
             default:
-            $tasks = $tasks->sortBy('general_info.action_at');
+            $tasks = $tasks->sortBy(['general_info.action_at', 'ASC'],['general_info.id', 'ASC']);
         }
 
         return $tasks;
