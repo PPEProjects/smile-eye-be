@@ -33,9 +33,11 @@ class TaskMutations
                 [null, 'every day', 'every week', 'every month'])) {
             throw new Error('General Info Repeat invalid');
         }
-        $checkGoalId = Task::where('goal_id',$args['goal_id'])->first();
-        if ($checkGoalId){
-            return ;
+        if($args['goal_id']) {
+            $checkGoalId = Task::where('goal_id', $args['goal_id'])->first();
+            if ($checkGoalId) {
+                return;
+            }
         }
         $task = $this->task_repository->createTask($args);
         $generalInfo = $this->generalinfo_repository
