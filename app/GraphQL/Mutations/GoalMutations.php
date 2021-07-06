@@ -167,10 +167,9 @@ class GoalMutations
             $generalInfoOld = GeneralInfo::where("goal_id",$args["id"])->first();
 
             $generalInfo->update($args["general_info"]);
-
+//            GeneralInfo::where("goal_id",$args["id"])->update($args["general_info"]);
             $goalChange = array_diff_key($goal->getChanges(),array_flip(["updated_at","is_pined"]));
             $generalInfoChange = array_diff_key($generalInfo->getChanges(),array_flip(["updated_at","todolist_id"]));
-
 
             //filler information change save as an array
             $temp = collect();
@@ -198,11 +197,9 @@ class GoalMutations
 
             $generalInfo = $this->generalinfo_repository
                 ->setType('goal')
-                ->upsert(array_merge($goal->toArray(), $args))
                 ->findByTypeId($goal->id);
             $goal->general_info = $generalInfo;
         }
-//        $this->goal_repository->calculatorProcessUpdate($goal);
         return $goal;
     }
 
