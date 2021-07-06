@@ -156,6 +156,7 @@ WHERE
         }
         switch ($sortBy) {
             case 'by time':
+                $tasks = $tasks->sortByDESC('task_id');
                 $actionAtNoNull = $tasks->WhereNotNull('general_info.action_at')->sortBy('general_info.action_at');
                 $actionAtNull = $tasks->WhereNull('general_info.action_at');
                 $tasks = $actionAtNoNull->concat($actionAtNull);
