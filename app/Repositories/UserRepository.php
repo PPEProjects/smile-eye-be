@@ -87,8 +87,8 @@ class UserRepository
                 $status = "waiting";
             }
         }
-        $user->status = $status;
-        return [$user];
+        $user->friend_status = $status;
+        return $user;
     }
 
     public function getWithoutIds($userIds)
