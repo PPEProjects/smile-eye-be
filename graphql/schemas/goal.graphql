@@ -21,8 +21,13 @@ extend type Query {
     my_goals(parent_id:String!): [Goal] @guard @field(resolver:"GoalQueries@myGoals")
     my_goals_achieve(parent_id:String!): [Goal] @guard @field(resolver:"GoalQueries@myGoalsAchieve")
     count_goal (parent_id:String!): [CountGoal] @guard @field(resolver:"GoalQueries@countGoals")
+    report_goal (id:ID!): JSON @guard @field(resolver:"GoalQueries@reportGoal")
 }
-
+type ReportGoal{
+    A : Float
+    S : Float
+    K : Float
+}
 type Goal{
     id: ID
     user: User

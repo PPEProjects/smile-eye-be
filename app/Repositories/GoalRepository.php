@@ -9,6 +9,7 @@ use App\Models\Task;
 use App\Models\Todolist;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use ppeCore\dvtinh\Services\AttachmentService;
 
 class GoalRepository
@@ -18,7 +19,6 @@ class GoalRepository
     private $attachment_repository;
     private $generalinfo_repository;
     private $child_ids = [];
-
     public function __construct(
         UserRepository $UserRepository,
         AttachmentService $AttachmentService,
@@ -482,11 +482,42 @@ class GoalRepository
     }
 
     public function reportGoal($args){
-        $dayBefor = (new \DateTime($args["date"]))->modify('-7 day')->format('Y-m-d');
+        if (is_numeric($args["id"])){
+            $goal = Goal::where("id",$args["id"])
+                ->first();
+            return $this->ASKSingleGoal($goal);
+        }else{
 
-        $goal = Goal::where("id",$args["id"])->first();
+            switch ($args["id"]){
+                case "all":
+                    $goals = Goal::where("user_id",Auth::id())
+                        ->get()
+                        ->keyBy("id");
+                    $goals = $goals->map(function ($g){
+                        $g = $this->ASKSingleGoal($g);
+                        return $g;
+                    });
+                    return $goals;
+                    break;
+                case "root":
+                    $goals = Goal::where("user_id",Auth::id())
+                        ->whereNull("parent_id")
+                        ->get()
+                        ->keyBy("id");
+                    $goals = $goals->map(function ($g){
+                        $g = $this->ASKSingleGoal($g);
+                        return $g;
+                    });
+                    return $goals;
+                    break;
+            }
+        }
 
-        $this->findAllIdChild($goal);
+
+    }
+    public function ASKSingleGoal($goal){
+        $dayBefor = (new \DateTime())->modify('-7 day')->format('Y-m-d');
+        $DadAndSon = $this->findAllIdChild($goal);
         $children_ids = $this->child_ids;
         $remove = [];
         foreach ($children_ids as $id){
@@ -495,15 +526,56 @@ class GoalRepository
             }
         }
         $children_ids = array_diff_key($children_ids,$remove);
-        $taskToday = count($children_ids);
-        //get all task from goal
-        $args = [];
-        $args["checked_at"] = "2021-06-28" ;
-        dd("ok");
-//        $todolists = $this->todolist_repository->myTodolist($args);
-//        dd($todolists->toArray());
+        //count total
+        $goals = Goal::whereIn("id",$children_ids)->get();
+        $arrayTotal = [];
+        foreach ($goals as $g){
+            $to = Carbon::createFromFormat('Y-m-d H:s:i', $g->start_day);
+            $from = Carbon::createFromFormat('Y-m-d H:s:i', $g->end_day);
 
-//        return $report;
+            $total = $to->diffInDays($from);
+            array_push($arrayTotal,$total);
+        }
+        $total = array_sum($arrayTotal);
+
+        //then get task->todolist between
+        $task_ids = Task::whereIn("goal_id",$children_ids)
+            ->get()
+            ->pluck("id");
+
+        //get todolist between daybefor -> today
+        $todolists = Todolist::whereIn("task_id",$task_ids)
+            ->whereBetween("checked_at",[$dayBefor,new \DateTime()])
+            ->where("status","done")
+            ->get();
+
+        $a = round(count($todolists)/$total *100,2);
+
+        //get S(skill)
+        $sTemp = $DadAndSon
+            ->where("report_type","s")
+            ->orWhere("report_type","s&k")
+            ->get();
+        $sTemp2 = $DadAndSon
+            ->where("report_type","s")
+            ->orWhere("report_type","s&k")
+            ->where("status","done")
+            ->get();
+        $countS = count($sTemp) == 0 ? 1:count($sTemp);
+
+        $s = round(count($sTemp2)/$countS*100,2);
+        //get k (knowlege)
+        $kTemp = $DadAndSon
+            ->where("report_type","k")
+            ->orWhere("report_type","s&k")
+            ->get();
+        $kTemp2 = $DadAndSon
+            ->where("report_type","k")
+            ->orWhere("report_type","s&k")
+            ->where("status","done")->get();
+        $countK = count($kTemp) ==0 ? 1 : count($kTemp) ;
+        $k = round(count($kTemp2)/$countK *100,2) ;
+        return ["A"=>$a,"S"=>$s,"K"=>$k];
     }
 
     public function findAllIdChild($goal){
