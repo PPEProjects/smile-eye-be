@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6f7a9a87-8e18-4015-92ae-268f30a4804e",
+		"_postman_id": "b0814fad-4577-4e88-9af5-58d30e716c00",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -21,7 +21,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"tinhdoan\",\n    \"email\": \"tinh2@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
+							"raw": "{\n    \"name\": \"tinhdoan\",\n    \"email\": \"tinh5969@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -92,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"tinh3@gmail.com\",\n    \"password\": \"123456789\"\n}",
+							"raw": "{\n    \"email\": \"tinh5969@gmail.com\",\n    \"password\": \"oknhe\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -126,7 +126,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"nhnam1632@gmail.com\"\n}",
+							"raw": "{\n    \"email\": \"tinh5969@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -160,7 +160,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"token\":\"WIRrYogotCU1iXKpF7iVr1VH1VVhP9RVRrUeNsG7nJJIvPwrZtANVsbPFTmz\",\n    \"password\":\"hoainam0544\"\n}",
+							"raw": "{\n    \"token\":\"451403\",\n    \"password\":\"oknhe\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -743,7 +743,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\n    $user_id_friend:ID!, \n    $status:String\n    )\n{\n  create_friend(\n    input: \n    {\n      user_id_friend: $user_id_friend\n      status: $status\n    }) \n  \n}",
-								"variables": "{\n    \"user_id_friend\": 1,\n    \"status\": \"accept\"\n}"
+								"variables": "{\n    \"user_id_friend\": 58,\n    \"status\": \"accept\"\n}"
 							}
 						},
 						"url": {
@@ -1173,7 +1173,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "\nmutation(\n    $name:String, \n    $email:String, \n    $username:String, \n    $quotes: String,\n    $phone_number: String ,\n    $avatar_attachment_id: ID,\n    $background_attachment_id: ID\n    ) \n{\n  update_user(\n    input: \n    {\n        name: $name\n        email: $email\n        username: $username\n        quotes: $quotes\n        phone_number: $phone_number\n        avatar_attachment_id: $avatar_attachment_id\n        background_attachment_id : $background_attachment_id\n    }) \n    {\n            id\n            name\n            email\n            username\n            quotes\n            phone_number\n            created_at\n            updated_at\n            attachment{\n                id\n                file\n                thumb\n            }\n            background_attachment{\n                id\n                file\n                thumb\n            }\n        }\n}",
-								"variables": "{\n\n    \"avatar_attachment_id\":44,\n    \"background_attachment_id\":66\n}"
+								"variables": "{\n\n    \"avatar_attachment_id\":1,\n    \"background_attachment_id\":1\n}"
 							}
 						},
 						"url": {
@@ -1323,7 +1323,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID!){\n  user(\n      id: $id\n    ) {\n    id\n    friend_status\n        name\n        email\n        username\n        quotes\n        total_goal\n        total_friend\n        attachments{\n            id \n            thumb\n        }\n        attachment{\n            id\n            thumb\n        }\n        background_attachment{\n            id\n            thumb\n        }\n        goals{\n            id\n            general_info{\n            attachments{\n                thumb\n            }\n            }\n        }\n        my_friends{\n            id\n            name\n            attachment{\n                thumb\n            }\n        }\n  }\n}\n\n",
-								"variables": "{\r\n\r\n    \"id\": 2\r\n}\r\n"
+								"variables": "{\r\n\r\n    \"id\": 25\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -1360,7 +1360,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/Admin/Desktop/canhan.jpg"
+									"src": "/C:/Users/Admin/Desktop/cựu thiếu nhi.jpg"
 								}
 							]
 						},
@@ -1393,6 +1393,36 @@
 							"graphql": {
 								"query": "mutation($id: ID!) {\n  delete_attachment(input: { id: $id })\n}\n",
 								"variables": "{\r\n    \"id\":2\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "befor_delete_attachment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID!) {\n  befor_delete(\n      id : $id\n  )\n}\n",
+								"variables": "{\r\n    \"id\":1\r\n}"
 							}
 						},
 						"url": {
@@ -2282,7 +2312,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $root_id:ID\r\n    $task_id : ID\r\n    $report_type : String\r\n  $parent_id: ID\r\n  $name: String!\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n) {\r\n  upsert_goal(\r\n    input: {\r\n        root_id : $root_id\r\n        task_id : $task_id\r\n        report_type : $report_type\r\n      parent_id: $parent_id\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      is_pined: $is_pined\r\n      general_info: $general_info\r\n    }\r\n  ) \r\n}\r\n",
-								"variables": "{\r\n    \"root_id\":1,\r\n    \"report_type\":\"s\",\r\n    \"task_id\" : null,\r\n    \"parent_id\": null,\r\n    \"name\": \"test goal\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"DC\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"everyday\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
+								"variables": "{\r\n    \"root_id\":null,\r\n    \"report_type\":\"s\",\r\n    \"task_id\" : null,\r\n    \"parent_id\": null,\r\n    \"name\": \"test goal\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"DC\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"everyday\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
 							}
 						},
 						"url": {
@@ -2737,7 +2767,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n  $name : String!\r\n  $goal_id : ID\r\n  $general_info: JSON\r\n  \r\n) {\r\n  create_task(\r\n    input: {\r\n      name: $name\r\n      goal_id : $goal_id\r\n      general_info : $general_info\r\n    }\r\n  ) {\r\n    id\r\n    goal_id\r\n    user{\r\n        id\r\n    }\r\n    name\r\n    goal_id\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n  }\r\n}",
-								"variables": "{\r\n    \"goal_id\":3,\r\n    \"name\" : \"con lon goi tinh\",\r\n    \"general_info\": {\r\n        \"address\": \"sieu pham mavel\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n    \r\n}"
+								"variables": "{\r\n    \"goal_id\":null,\r\n    \"name\" : \"con lon goi tinh\",\r\n    \"general_info\": {\r\n        \"address\": \"sieu pham mavel\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n    \r\n}"
 							}
 						},
 						"url": {
@@ -2797,7 +2827,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $id : ID!\r\n  $name : String!\r\n  $goal_id : ID\r\n  $general_info: JSON\r\n  \r\n) {\r\n  update_task(\r\n    input: {\r\n        id : $id\r\n      name: $name\r\n      goal_id : $goal_id\r\n      general_info : $general_info\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    name\r\n    goal_id\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n  }\r\n}",
-								"variables": "{\r\n    \"id\": 90,\r\n    \"name\": \"Ä‘i há»�c\",\r\n    \"goal_id\": null,\r\n    \"general_info\": {\r\n        \"address\": \"Spider man\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1,3],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\",\r\n        \"todolist_id\": 1\r\n    } \r\n}"
+								"variables": "{\r\n    \"id\": 647,\r\n    \"name\": \"da doi\",\r\n    \"goal_id\": null,\r\n    \"general_info\": {\r\n        \"address\": \"Spider man\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1,3],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\",\r\n        \"todolist_id\": 1\r\n    } \r\n}"
 							}
 						},
 						"url": {
@@ -3012,7 +3042,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "\nmutation($general_id:ID, $parent_id:ID, $mode:String,\n$content:String, $attachment_ids : JSON) {\n  create_comment(\n    input: {\n      general_id: $general_id\n      parent_id: $parent_id\n      mode: $mode,\n      content: $content,\n      attachment_ids:$attachment_ids\n    }\n  ) {\n    id\n    content\n    created_at\n    updated_at\n    user{\n        id\n        name\n        email\n        created_at\n        updated_at\n    }\n    general{\n        id \n        goal{\n            id\n            name\n        }\n        todolist{\n            id\n        }\n        task{\n            id\n        }\n    }\n  }\n}",
-								"variables": "{\n    \"general_id\": 12,\n    \"parent_id\": null,\n    \"mode\": \"let\",\n    \"content\" :\"user 3 lan 3 da o day\",\n    \"attachment_ids\" :[]\n\n}"
+								"variables": "{\n    \"general_id\": 1,\n    \"parent_id\": null,\n    \"mode\": \"let\",\n    \"content\" :\"user 3 lan 3 da o day\",\n    \"attachment_ids\" :[1,2]\n\n}"
 							}
 						},
 						"url": {
