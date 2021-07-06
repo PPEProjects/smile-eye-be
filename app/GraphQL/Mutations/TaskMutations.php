@@ -33,7 +33,7 @@ class TaskMutations
                 [null, 'every day', 'every week', 'every month'])) {
             throw new Error('General Info Repeat invalid');
         }
-        if($args['goal_id']) {
+        if(isset($args['goal_id'])) {
             $checkGoalId = Task::where('goal_id', $args['goal_id'])->first();
             if ($checkGoalId) {
                 return;
