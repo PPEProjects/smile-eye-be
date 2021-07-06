@@ -84,7 +84,12 @@ class UserRepository
                 ->where("user_id_friend",Auth::id())
                 ->first();
             if ($raw){
-                $status = "waiting";
+                if ($raw->status == "accept"){
+                    $status = "accept";
+                }else{
+                    $status = "waiting";
+                }
+
             }
         }
         $user->friend_status = $status;
