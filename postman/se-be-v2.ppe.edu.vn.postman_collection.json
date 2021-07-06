@@ -743,7 +743,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\n    $user_id_friend:ID!, \n    $status:String\n    )\n{\n  create_friend(\n    input: \n    {\n      user_id_friend: $user_id_friend\n      status: $status\n    }) \n  \n}",
-								"variables": "{\n    \"user_id_friend\": 3,\n    \"status\": \"accept\"\n}"
+								"variables": "{\n    \"user_id_friend\": 1,\n    \"status\": \"accept\"\n}"
 							}
 						},
 						"url": {
@@ -1322,8 +1322,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($id: ID!){\n  user(\n      id: $id\n    ) {\n    id\n        name\n        email\n        username\n        quotes\n        total_goal\n        total_friend\n        attachments{\n            id \n            thumb\n        }\n        attachment{\n            id\n            thumb\n        }\n        background_attachment{\n            id\n            thumb\n        }\n        goals{\n            id\n            general_info{\n            attachments{\n                thumb\n            }\n            }\n        }\n        my_friends{\n            id\n            name\n            attachment{\n                thumb\n            }\n        }\n  }\n}\n\n",
-								"variables": "{\r\n\r\n    \"id\": 11\r\n}\r\n"
+								"query": "query($id: ID!){\n  user(\n      id: $id\n    ) {\n    id\n    friend_status\n        name\n        email\n        username\n        quotes\n        total_goal\n        total_friend\n        attachments{\n            id \n            thumb\n        }\n        attachment{\n            id\n            thumb\n        }\n        background_attachment{\n            id\n            thumb\n        }\n        goals{\n            id\n            general_info{\n            attachments{\n                thumb\n            }\n            }\n        }\n        my_friends{\n            id\n            name\n            attachment{\n                thumb\n            }\n        }\n  }\n}\n\n",
+								"variables": "{\r\n\r\n    \"id\": 2\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -2342,7 +2342,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n  $id: ID!\r\n  $parent_id: ID\r\n  $report_type : String\r\n  $name: String\r\n  $start_day: DateTime\r\n  $end_day: DateTime\r\n  $status : String\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n) {\r\n  update_goal(\r\n    input: {\r\n      id: $id\r\n      parent_id: $parent_id\r\n      report_type : $report_type\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      is_pined: $is_pined\r\n      general_info: $general_info\r\n    }\r\n  ) {\r\n    id\r\n    name\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    general_info{\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n    progress\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"id\": 1,\r\n    \"report_type\": \"s&k\",\r\n    \"parent_id\": null,\r\n    \"name\": \"toang 444\",\r\n    \"status\": \"todo\",\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"1 oo no\",\r\n        \"zalo\": \"444 666\",\r\n        \"repeat\": \"everyday\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that khong vui :D\",\r\n        \"attachment_ids\": [2,9],\r\n        \"publish\": \"public\",\r\n        \"color\": \"blu\",\r\n        \"todolist_id\": 1\r\n    } \r\n}"
+								"variables": "{\r\n    \"id\": 1,\r\n    \"report_type\": \"s&k\",\r\n    \"parent_id\": null,\r\n    \"name\": \"toang 444\",\r\n    \"status\": \"todo\",\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"ok\",\r\n        \"zalo\": \"adsd\",\r\n        \"repeat\": \"everyday\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that khong vui :D\",\r\n        \"attachment_ids\": [2,9],\r\n        \"publish\": \"public\",\r\n        \"color\": \"blu\",\r\n        \"todolist_id\": 1\r\n    } \r\n}"
 							}
 						},
 						"url": {
@@ -2402,7 +2402,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id:ID!) {\r\n  report_goal(id: $id\r\n  )\r\n}",
-								"variables": "{\r\n    \"id\":1\r\n}"
+								"variables": "{\r\n    \"id\": \"root\"\r\n}"
 							}
 						},
 						"url": {
