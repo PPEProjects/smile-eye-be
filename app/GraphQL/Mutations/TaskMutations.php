@@ -3,6 +3,7 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Models\Goal;
 use App\Models\Task;
 use App\Models\Todolist;
 use App\Repositories\GeneralInfoRepository;
@@ -31,6 +32,10 @@ class TaskMutations
         if (isset($args['general_info']['repeat']) && !in_array($args['general_info']['repeat'],
                 [null, 'every day', 'every week', 'every month'])) {
             throw new Error('General Info Repeat invalid');
+        }
+        $checkGoalId = Task::where('goal_id',$args['goal_id'])->first();
+        if ($checkGoalId){
+            return ;
         }
         $task = $this->task_repository->createTask($args);
         $generalInfo = $this->generalinfo_repository

@@ -112,6 +112,10 @@ class GoalMutations
             }
         }
         $args['user_id'] = Auth::id();
+        $checkIdTask = $this->checkTaskId($args['parent_id']);
+        if(!$checkIdTask){
+            return $checkIdTask;
+        }
         $goal = Goal::updateOrCreate(
             ['id' => @$args['id']],
             $args
@@ -132,7 +136,7 @@ class GoalMutations
 
 
     }
-    public function updateGoal($_, array $args): Goal
+    public function updateGoal($_, array $args)
     {
         if (isset($args['start_day'], $args['end_day'])) {
             $startDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['start_day']);
@@ -140,6 +144,10 @@ class GoalMutations
             if (!$startDay->lte($endDay)) {
                 throw new Error('Start day must less than end day');
             }
+        }
+        $checkIdTask = $this->checkTaskId($args['parent_id']);
+        if(!$checkIdTask){
+            return ;
         }
         //self update
         $goalCheckUser = Goal::where("id",$args["id"])->first();
@@ -202,6 +210,18 @@ class GoalMutations
         }
         return $goal;
     }
-
+    public function checkTaskId($idGoal){
+        $check = Goal::find($idGoal);
+        if ($check){
+            if ($check->task_id){
+                $taskId = $check->task_id;
+                $task = Task::find($taskId);
+                if ($task) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
 }
