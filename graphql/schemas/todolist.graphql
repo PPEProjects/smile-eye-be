@@ -14,7 +14,7 @@ extend type Query {
     sort_todolists(orderBy: [OrderByClause!] @orderBy): [Todolist!]! @paginate(type: "paginator" model: "App\\Models\\Todolist")
     search_todolist_month(month: String): [Todolist]@guard @field(resolver:"TodoListQueries@search_todolist_month")
 # Ver 2
-    my_todolists(checked_at: String): [Todolist] @guard @field(resolver:"TodoListQueries@myTodoLists")
+    my_todolists(checked_at: String, sort_by: String): [Todolist] @guard @field(resolver:"TodoListQueries@myTodoLists")
 }
 type Todolist{
     id: ID

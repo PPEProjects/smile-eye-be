@@ -120,7 +120,7 @@ WHERE
         $todolists = Todolist::selectRaw("*, id as todolist_id, 'todolist' as type")
             ->where('user_id', Auth::id())
             ->whereRaw("DATE(checked_at) = DATE('$checkedAt')")
-            ->orderBy('id', 'desc')
+            ->orderBy('status', 'desc')
             ->get();
         $todolists = $this->generalinfo_repository
             ->setType('todolist')
@@ -128,7 +128,6 @@ WHERE
         $tasks = Task::selectRaw("*, id as task_id, 'task' as type")
             ->where('user_id', Auth::id())
             ->whereIn('id', $taskIds)
-            ->orderBy('id', 'desc')
             ->get();
 //            ->map(function ($task) use (&$todolists) {
 //                $todolist = $todolists->where('task_id', $task->id)->first();
@@ -148,9 +147,26 @@ WHERE
             }
             return $todolist;
         });
+
         $tasks = $tasks->concat($todolists)
-            ->where('status', '!=', 'delete')
-            ->sortByDesc('created_at');
+                ->where('status', '!=', 'delete');
+        $sortBy = "default";
+        if (isset($args['sort_by'])){
+            $sortBy = $args['sort_by'];
+        }
+        switch ($sortBy) {
+            case 'by time':
+                $actionAtNoNull = $tasks->WhereNotNull('general_info.action_at')->sortBy('general_info.action_at');
+                $actionAtNull = $tasks->WhereNull('general_info.action_at');
+                $tasks = $actionAtNoNull->concat($actionAtNull);
+                break;
+            case 'by done':
+                $tasks = $tasks->sortBy('-`status`');
+                break;
+            default:
+            $tasks = $tasks->sortBy('general_info.action_at');
+        }
+
         return $tasks;
     }
 

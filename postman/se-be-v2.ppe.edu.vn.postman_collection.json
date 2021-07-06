@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b0814fad-4577-4e88-9af5-58d30e716c00",
+		"_postman_id": "6f7a9a87-8e18-4015-92ae-268f30a4804e",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -3227,7 +3227,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n  $task_id: ID!\r\n  $checked_at: DateTime!\r\n  $name: String\r\n  $status: String\r\n  $general_info: JSON\r\n\r\n) {\r\n  upsert_todolist(\r\n    input: {\r\n      task_id: $task_id\r\n      checked_at: $checked_at\r\n      name: $name\r\n      status: $status\r\n      general_info: $general_info\r\n    }\r\n  ) {\r\n    id\r\n    name\r\n    status\r\n    created_at\r\n    updated_at\r\n    task{\r\n        id\r\n    }\r\n    goal{\r\n        id\r\n    }\r\n    general_info{\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n        created_at\r\n        updated_at\r\n    }\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"task_id\": 7,\r\n    \"checked_at\":\"2021-05-06 00:00:00\",\r\n    \"name\":\"lam bai tap ve nha\",\r\n    \"status\": \"todo\",\r\n    \"general_info\": {\r\n        \"address\": \"sieu pham mavel\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": null,\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"white1\"\r\n    } \r\n}"
+								"variables": "{\r\n    \"task_id\": 2,\r\n    \"checked_at\":\"2021-07-06 00:00:00\",\r\n    \"status\": \"todo\",\r\n    \"general_info\": {\r\n        \"address\": \"sieu pham mavel\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": null,\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-06 02:30:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"white1\"\r\n    } \r\n}"
 							}
 						},
 						"url": {
@@ -3316,8 +3316,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($checked_at: String){\r\n  my_todolists(checked_at:$checked_at){\r\n    id\r\n    name\r\n    status\r\n    created_at\r\n    updated_at\r\n    task{\r\n        id\r\n    }\r\n    goal{\r\n        id\r\n    }\r\n    general_info{\r\n        id\r\n    }\r\n    type\r\n    task_id\r\n    todolist_id\r\n  }\r\n}",
-								"variables": "{\r\n    \"checked_at\":\"2021-06-29\"\r\n}"
+								"query": "query($checked_at: String, $sort_by:String){\r\n  my_todolists(checked_at:$checked_at, sort_by:$sort_by){\r\n    id\r\n    name\r\n    status\r\n    created_at\r\n    updated_at\r\n    task{\r\n        id\r\n    }\r\n    goal{\r\n        id\r\n    }\r\n    general_info{\r\n        id\r\n        action_at\r\n    }\r\n    type\r\n    task_id\r\n    todolist_id\r\n  }\r\n}",
+								"variables": "{\r\n    \"checked_at\":\"2021-07-06\",\r\n    \"sort_by\": \"by time\"\r\n}"
 							}
 						},
 						"url": {
@@ -3438,6 +3438,36 @@
 							"graphql": {
 								"query": "query($created_at: String!){\r\n  my_todolists_with_month(created_at:$created_at)\r\n      \r\n}",
 								"variables": "{\r\n    \"created_at\":\"2021-06\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "my_todolists_from_now",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\r\n  my_todolists_from_now\r\n      \r\n}",
+								"variables": ""
 							}
 						},
 						"url": {
