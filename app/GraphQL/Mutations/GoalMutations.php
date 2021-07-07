@@ -102,6 +102,7 @@ class GoalMutations
 // Ver 2
     public function upsertGoal($_, array $args)
     {
+        if (isset($args["id"])) return $this->updateGoal(null,$args);
         \Illuminate\Support\Facades\Log::channel('single')->info('$args', [$args]);
         
         if (isset($args['start_day'], $args['end_day'])) {
@@ -192,6 +193,7 @@ class GoalMutations
                 ->findByTypeId($goal->id);
             $goal->general_info = $generalInfo;
         }else{
+            //not owner
             $goal = Goal::where("id",$args["id"])->first();
             $goalOld = Goal::where("id",$args["id"])->first();
 
