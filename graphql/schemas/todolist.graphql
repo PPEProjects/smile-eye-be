@@ -69,6 +69,7 @@ input UpdateTodolistInput{
 
 input UpsertTodolistInput{
     task_id: ID!
+    edit_type : String
     checked_at: DateTime!
     name: String
     status: String @rules(apply: ["in:todo,done"])

@@ -64,6 +64,15 @@ class TodolistMutations
                 $args1["general_info"] = array_intersect_key($args["general_info"],array_flip(["color"]));
                 $this->task_repository->updateTaskAndGeneral($args1);
         }
+        if (isset($args["edit_type"])){
+            switch ($args["edit_type"]){
+                case "all":
+                    $args1 = $args;
+                    $args1["id"] = $args["task_id"];
+                    $this->task_repository->updateTaskAndGeneral($args1);
+                    break;
+            }
+        }
 
         $args["id"] = $todolist->id;
         if (!isset($args["general_info"]["color"])){

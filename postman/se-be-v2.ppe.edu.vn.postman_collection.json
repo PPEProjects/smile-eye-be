@@ -3256,8 +3256,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\r\n  $task_id: ID!\r\n  $checked_at: DateTime!\r\n  $name: String\r\n  $status: String\r\n  $general_info: JSON\r\n\r\n) {\r\n  upsert_todolist(\r\n    input: {\r\n      task_id: $task_id\r\n      checked_at: $checked_at\r\n      name: $name\r\n      status: $status\r\n      general_info: $general_info\r\n    }\r\n  ) {\r\n    id\r\n    name\r\n    status\r\n    created_at\r\n    updated_at\r\n    task{\r\n        id\r\n    }\r\n    goal{\r\n        id\r\n    }\r\n    general_info{\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n        created_at\r\n        updated_at\r\n    }\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"task_id\": 6,\r\n    \"checked_at\":\"2021-07-08 00:00:30\",\r\n    \"status\": \"todo\",\r\n    \"general_info\": {\r\n        \"action_at\": \"2021-07-06 02:30:00\",\r\n        \"color\" : \"ok nhe\",\r\n        \"color_change\" : \"all\"\r\n       \r\n    } \r\n}"
+								"query": "mutation(\r\n  $task_id: ID!\r\n  $checked_at: DateTime!\r\n  $name: String\r\n  $status: String\r\n  $edit_type : String\r\n  $general_info: JSON\r\n\r\n) {\r\n  upsert_todolist(\r\n    input: {\r\n      task_id: $task_id\r\n      checked_at: $checked_at\r\n      name: $name\r\n      edit_type : $edit_type\r\n      status: $status\r\n      general_info: $general_info\r\n    }\r\n  ) {\r\n    id\r\n    name\r\n    status\r\n    created_at\r\n    updated_at\r\n    task{\r\n        id\r\n    }\r\n    goal{\r\n        id\r\n    }\r\n    general_info{\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n        created_at\r\n        updated_at\r\n    }\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"task_id\": 6,\r\n    \"checked_at\":\"2021-07-08 00:00:30\",\r\n    \"status\": \"todo\",\r\n    \"edit_type\" : \"one\",\r\n    \"general_info\": {\r\n        \"action_at\": \"2021-07-06 02:30:00\",\r\n        \"zalo\":\"dathay doi ca 2\",\r\n        \"color\" : \"ok nhe\",\r\n        \"color_change\" : \"all\"\r\n       \r\n    } \r\n}"
 							}
 						},
 						"url": {
@@ -3346,7 +3346,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($checked_at: String, $sort_by:String){\r\n  my_todolists(checked_at:$checked_at, sort_by:$sort_by){\r\n    id\r\n    name\r\n    status\r\n    created_at\r\n    updated_at\r\n    task{\r\n        id\r\n    }\r\n    goal{\r\n        id\r\n    }\r\n    general_info{\r\n        id\r\n        action_at\r\n    }\r\n    type\r\n    task_id\r\n    todolist_id\r\n  }\r\n}",
+								"query": "query($checked_at: String, $sort_by:String){\r\n  my_todolists(checked_at:$checked_at, sort_by:$sort_by){\r\n    id\r\n    name\r\n    status\r\n    created_at\r\n    updated_at\r\n    task{\r\n        id\r\n    }\r\n    goal{\r\n        id\r\n    }\r\n    general_info{\r\n        id\r\n        action_at\r\n        color\r\n    }\r\n    type\r\n    task_id\r\n    todolist_id\r\n  }\r\n}",
 								"variables": "{\r\n    \"checked_at\":\"2021-07-06\",\r\n    \"sort_by\": \"by time\"\r\n}"
 							}
 						},
