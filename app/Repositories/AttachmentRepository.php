@@ -106,6 +106,7 @@ class AttachmentRepository
         if ($tasks)
         foreach ($tasks as $key=>$t){
             $attachment_ids = @$t->general_info->attachment_ids ;
+            if ($attachment_ids)
             foreach ($attachment_ids as $id){
                 if ($id == $id_attachment){
                     $arr["task"]["id"] = $key;
@@ -125,6 +126,7 @@ class AttachmentRepository
         if ($goals)
         foreach ($goals as $key=>$g){
             $attachment_ids = @$g->general_info->attachment_ids ;
+            if ($attachment_ids)
             foreach ($attachment_ids as $id){
                 if ($id == $id_attachment){
                     $arr["goal"]["id"] = $key;
@@ -139,6 +141,7 @@ class AttachmentRepository
         if ($comments)
         foreach ($comments as $key => $cmt){
             $attachment_ids = @$cmt->attachment_ids ;
+            if ($attachment_ids)
             foreach ($attachment_ids as $id){
                 if ($id == $id_attachment){
                     $arr["comment"]["id"] = $key;
