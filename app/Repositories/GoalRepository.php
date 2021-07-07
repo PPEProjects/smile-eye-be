@@ -9,7 +9,6 @@ use App\Models\Task;
 use App\Models\Todolist;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use ppeCore\dvtinh\Services\AttachmentService;
 
 class GoalRepository
@@ -19,6 +18,7 @@ class GoalRepository
     private $attachment_repository;
     private $generalinfo_repository;
     private $child_ids = [];
+
     public function __construct(
         UserRepository $UserRepository,
         AttachmentService $AttachmentService,
@@ -267,7 +267,7 @@ class GoalRepository
             ->get()
             ->pluck('count', 'status')
             ->toArray();
-        if (@$count["todo"]){
+        if (@$count["todo"]) {
             $count["todo"] += @$count[""];
             $count["todo"] += @$count["null"];
         }
@@ -411,21 +411,21 @@ class GoalRepository
                 $startDay = Carbon::parse($goal->start_day);
                 $endDay = Carbon::parse($goal->end_day);
 
-            $todolist = Todolist::where('task_id', $task['id'])
-                ->whereBetween('checked_at', [$startDay->format('Y-m-d'), $endDay->format('Y-m-d')])
-                ->where('status', 'done')
+                $todolist = Todolist::where('task_id', $task['id'])
+                    ->whereBetween('checked_at', [$startDay->format('Y-m-d'), $endDay->format('Y-m-d')])
+                    ->where('status', 'done')
 //                ->where('user_id', Auth::id())
-                ->get();
+                    ->get();
 //            dd($todolist);
-            $count = $todolist->count();
-            $day = $endDay->diffInDays($startDay) + 1;
-            $progress = round(($count / $day) * 100, 2);
-            $status = $progress >= 100 ? 'done' : 'todo';
+                $count = $todolist->count();
+                $day = $endDay->diffInDays($startDay) + 1;
+                $progress = round(($count / $day) * 100, 2);
+                $status = $progress >= 100 ? 'done' : 'todo';
 //            $goal->progress = $progress;
 //            $goal->status = $progress >= 100 ? 'done' : 'todo';
-            Goal::where('id', $goal->id)
-                ->update(['progress' => $progress, 'status' => $status]);
-        }
+                Goal::where('id', $goal->id)
+                    ->update(['progress' => $progress, 'status' => $status]);
+            }
         }
 //        return $this->calculatorProcessUpdate($goal);
     }
@@ -444,12 +444,15 @@ class GoalRepository
         $listP = [];
         $itemP = [];
 //        $listU = [];
+//        dd($goals);
         array_walk_recursive($goals, function ($val, $key) use (&$listP, &$itemP, &$listU) {
-            if ($key == 'id' || $key == 'parent_id' || $key == 'status') {
+            if (in_array($key, ['id', 'parent_id', 'status', 'progress'])) {
+//            if ($key == 'id' || $key == 'parent_id' || $key == 'status' || $key == 'progress') {
                 $itemP[$key] = $val;
             }
-            if ($key == 'status') {
-                $listP[$itemP['parent_id']][] = $itemP['status'];
+            if ($key == 'progress') {
+//                dd($itemP);
+                $listP[$itemP['parent_id']][] = $itemP['progress'] ?? 0;
 //                $listU[$itemP['parent_id']][] = $itemP;
             }
         });
@@ -468,8 +471,9 @@ class GoalRepository
 //        }
 //        dd($listP);
         foreach ($listP as $goalId => $item) {
-            $done = @array_count_values($item)['done'] ?? 0;
-            $progress = ($done / count($item)) * 100;
+//            $done = @array_count_values($item)['done'] ?? 0;
+            $done = array_sum($item);
+            $progress = ($done / (count($item) * 100)) * 100;
             $status = $progress == 100 ? 'done' : 'todo';
 //            if ($goal->id == $goalId) {
 //                $goal->progress = $progress;
@@ -481,30 +485,31 @@ class GoalRepository
 //        return $goal;
     }
 
-    public function reportGoal($args){
-        if (is_numeric($args["id"])){
-            $goal = Goal::where("id",$args["id"])
+    public function reportGoal($args)
+    {
+        if (is_numeric($args["id"])) {
+            $goal = Goal::where("id", $args["id"])
                 ->first();
             return $this->ASKSingleGoal($goal);
-        }else{
+        } else {
 
-            switch ($args["id"]){
+            switch ($args["id"]) {
                 case "all":
-                    $goals = Goal::where("user_id",Auth::id())
+                    $goals = Goal::where("user_id", Auth::id())
                         ->get()
                         ->keyBy("id");
-                    $goals = $goals->map(function ($g){
+                    $goals = $goals->map(function ($g) {
                         $g = $this->ASKSingleGoal($g);
                         return $g;
                     });
                     return $goals;
                     break;
                 case "root":
-                    $goals = Goal::where("user_id",Auth::id())
+                    $goals = Goal::where("user_id", Auth::id())
                         ->whereNull("parent_id")
                         ->get()
                         ->keyBy("id");
-                    $goals = $goals->map(function ($g){
+                    $goals = $goals->map(function ($g) {
                         $g = $this->ASKSingleGoal($g);
                         return $g;
                     });
@@ -515,98 +520,105 @@ class GoalRepository
 
 
     }
-    public function ASKSingleGoal($goal){
+
+    public function ASKSingleGoal($goal)
+    {
         $dayBefor = (new \DateTime())->modify('-7 day')->format('Y-m-d');
         $DadAndSon = $this->findAllIdChild($goal);
         $children_ids = $this->child_ids;
         $remove = [];
-        foreach ($children_ids as $id){
-            if (!$this->isSmallest(null,$id)){
-                array_push($remove,$id);
+        foreach ($children_ids as $id) {
+            if (!$this->isSmallest(null, $id)) {
+                array_push($remove, $id);
             }
         }
-        $children_ids = array_diff_key($children_ids,$remove);
+        $children_ids = array_diff_key($children_ids, $remove);
         //count total
-        $goals = Goal::whereIn("id",$children_ids)->get();
+        $goals = Goal::whereIn("id", $children_ids)->get();
         $arrayTotal = [];
-        foreach ($goals as $g){
+        foreach ($goals as $g) {
             $to = Carbon::createFromFormat('Y-m-d H:s:i', $g->start_day);
             $from = Carbon::createFromFormat('Y-m-d H:s:i', $g->end_day);
 
             $total = $to->diffInDays($from);
-            array_push($arrayTotal,$total);
+            array_push($arrayTotal, $total);
         }
         $total = array_sum($arrayTotal);
 
         //then get task->todolist between
-        $task_ids = Task::whereIn("goal_id",$children_ids)
+        $task_ids = Task::whereIn("goal_id", $children_ids)
             ->get()
             ->pluck("id");
 
         //get todolist between daybefor -> today
-        $todolists = Todolist::whereIn("task_id",$task_ids)
-            ->whereBetween("checked_at",[$dayBefor,new \DateTime()])
-            ->where("status","done")
+        $todolists = Todolist::whereIn("task_id", $task_ids)
+            ->whereBetween("checked_at", [$dayBefor, new \DateTime()])
+            ->where("status", "done")
             ->get();
 
-        $a = round(count($todolists)/$total *100,2);
+        $a = round(count($todolists) / $total * 100, 2);
 
         //get S(skill)
         $sTemp = $DadAndSon
-            ->where("report_type","s")
-            ->orWhere("report_type","s&k")
+            ->where("report_type", "s")
+            ->orWhere("report_type", "s&k")
             ->get();
         $sTemp2 = $DadAndSon
-            ->where("report_type","s")
-            ->orWhere("report_type","s&k")
-            ->where("status","done")
+            ->where("report_type", "s")
+            ->orWhere("report_type", "s&k")
+            ->where("status", "done")
             ->get();
-        $countS = count($sTemp) == 0 ? 1:count($sTemp);
+        $countS = count($sTemp) == 0 ? 1 : count($sTemp);
 
-        $s = round(count($sTemp2)/$countS*100,2);
+        $s = round(count($sTemp2) / $countS * 100, 2);
         //get k (knowlege)
         $kTemp = $DadAndSon
-            ->where("report_type","k")
-            ->orWhere("report_type","s&k")
+            ->where("report_type", "k")
+            ->orWhere("report_type", "s&k")
             ->get();
         $kTemp2 = $DadAndSon
-            ->where("report_type","k")
-            ->orWhere("report_type","s&k")
-            ->where("status","done")->get();
-        $countK = count($kTemp) ==0 ? 1 : count($kTemp) ;
-        $k = round(count($kTemp2)/$countK *100,2) ;
-        return ["A"=>$a,"S"=>$s,"K"=>$k];
+            ->where("report_type", "k")
+            ->orWhere("report_type", "s&k")
+            ->where("status", "done")->get();
+        $countK = count($kTemp) == 0 ? 1 : count($kTemp);
+        $k = round(count($kTemp2) / $countK * 100, 2);
+        return ["A" => $a, "S" => $s, "K" => $k];
     }
 
-    public function findAllIdChild($goal){
+    public function findAllIdChild($goal)
+    {
         $this->chid_ids = [];
         $arr = [];
-        $goalChild = Goal::where("parent_id",$goal->id)->get();
-        if ($goalChild){
+        $goalChild = Goal::where("parent_id", $goal->id)->get();
+        if ($goalChild) {
             foreach ($goalChild as $g) {
-                array_push($arr,$g);
-                array_push($this->child_ids,$g->id);
+                array_push($arr, $g);
+                array_push($this->child_ids, $g->id);
                 $this->findAllIdChild($g);
             }
         }
         $goal->goalChildIds = $arr;
         return $goal;
     }
-    public function isSmallest($goal = null ,$goal_id = null){
-        if ($goal){
-            $child = Goal::Where("parent_id",$goal->id)->get();
-            if (count($child) != 0){
+
+    public function isSmallest($goal = null, $goal_id = null)
+    {
+        if ($goal) {
+            $child = Goal::Where("parent_id", $goal->id)->get();
+            if (count($child) != 0) {
                 return false;
-            }else{
+            } else {
                 return true;
             }
-        }else if($goal_id){
-            $child = Goal::Where("parent_id",$goal_id)->get();
+        } else {
+            if ($goal_id) {
+                $child = Goal::Where("parent_id", $goal_id)->get();
 
-            if (count($child) != 0){
-                return false;
-            }else{
-                return true;
+                if (count($child) != 0) {
+                    return false;
+                } else {
+                    return true;
+                }
             }
         }
     }
