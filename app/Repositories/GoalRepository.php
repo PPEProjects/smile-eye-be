@@ -116,10 +116,11 @@ class GoalRepository
         foreach ($goals as $value){
             if ($value->task_id == null){
                 $value->is_add_branch = true;
+                $value->is_add_todo = true;
             }else $value->is_add_branch = false;
-            if(isset($tasks[$value->id])){
+            if(isset($tasks[$value->id]) || $value->task_id != null){
                 $value->is_add_todo = false;
-            }else $value->is_add_todo = true;
+            }
         }
         $tree = self::buildTree($goals->toArray(), $goalId);
         $pTree = $goals->where('id', $goalId)->first();
