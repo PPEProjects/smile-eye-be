@@ -42,6 +42,8 @@ type Goal{
     created_at: DateTime
     updated_at: DateTime
     general_info: GeneralInfo
+    is_add_branch: Boolean
+    is_add_todo: Boolean
     progress: Float
 }
 type CountGoal {
@@ -89,6 +91,7 @@ input CreateGoalInput{
 }
 
 input UpdateGoalInput{
+    is_change_all: Boolean
     id:ID! @rules(apply: ["required","App\\Rules\\OwnerCheckGoal"])
     parent_id: ID @rules(apply: ["nullable","integer","App\\Rules\\OwnerCheckGoal"])
     name: String

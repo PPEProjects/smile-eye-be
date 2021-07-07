@@ -101,13 +101,26 @@ class GoalRepository
 
     public function getTreeSortByGoalId($goalId, $userId = null)
     {
-        $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id')
+        $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id')
             ->orderBy('id', 'desc');
         if ($userId) {
             $goals = $goals->where("user_id", $userId);
         }
+
         $goals = $goals->get();
 
+        //Check goal have  task_id And Task have goal_id
+        $getIdGoal = $goals->pluck('id');
+        $task = Task::WhereIn('goal_id', $getIdGoal)->get()->keyBy('goal_id');
+        $tasks = $task->toArray();
+        foreach ($goals as $value){
+            if ($value->task_id == null){
+                $value->is_add_branch = true;
+            }else $value->is_add_branch = false;
+            if(isset($tasks[$value->id])){
+                $value->is_add_todo = false;
+            }else $value->is_add_todo = true;
+        }
         $tree = self::buildTree($goals->toArray(), $goalId);
         $pTree = $goals->where('id', $goalId)->first();
         if ($pTree) {

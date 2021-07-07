@@ -3,6 +3,7 @@
 namespace App\GraphQL\Queries;
 
 use App\Models\Goal;
+use App\Models\Task;
 use App\Repositories\GeneralInfoRepository;
 use App\Repositories\GoalRepository;
 use App\Repositories\TodolistRepository;
@@ -91,6 +92,7 @@ class GoalQueries
                 break;
         }
         $goals = $goals->get();
+
         $goals = $this->generalinfo_repository
             ->setType('goal')
             ->get($goals);
@@ -98,6 +100,17 @@ class GoalQueries
 //                return $this->goal_repository->calculatorProcessTodolist($goal);
 //            });
 //        dd($goals->first()->toArray());
+        $getIdGoal = $goals->pluck('id');
+        $task = Task::WhereIn('goal_id', $getIdGoal)->get()->keyBy('goal_id');
+        $tasks = $task->toArray();
+        foreach ($goals as $value){
+            if ($value->task_id == null){
+                $value->is_add_branch = true;
+            }else $value->is_add_branch = false;
+            if(isset($tasks[$value->id])){
+                $value->is_add_todo = false;
+            }else $value->is_add_todo = true;
+        }
         return $goals;
     }
 
