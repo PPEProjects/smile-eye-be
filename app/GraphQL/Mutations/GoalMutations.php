@@ -112,9 +112,18 @@ class GoalMutations
             }
         }
         $args['user_id'] = Auth::id();
-        $checkIdTask = $this->checkTaskId($args['parent_id']);
-        if(!$checkIdTask){
-            return $checkIdTask;
+        if(isset($args['task_id'])){
+            $goalHaveTaskId = Goal::where('task_id', $args['task_id'])->first();
+            $checkTaskToGoal = Task::find($args['task_id']);
+          if (isset($checkTaskToGoal->goal_id) || $goalHaveTaskId){
+               return ;
+          }
+        }
+        if (isset($args['parent_id'])) {
+            $checkIdTask = $this->checkTaskId($args['parent_id']);
+            if (!$checkIdTask) {
+                return $checkIdTask;
+            }
         }
         $goal = Goal::updateOrCreate(
             ['id' => @$args['id']],
