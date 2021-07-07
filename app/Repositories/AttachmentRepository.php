@@ -84,7 +84,7 @@ class AttachmentRepository
                 break;
         }
     }
-    public function beforDelete($args){
+    public function beforeDelete($args){
         $arr = [];
         $id_attachment = $args["id"];
         $user = Auth::user();
