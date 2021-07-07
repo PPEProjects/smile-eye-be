@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b37e96ba-633d-4d9f-b4f3-d9d2983e1c40",
+		"_postman_id": "7e8fde06-eda2-48b9-bf15-3a9b4bfeaeed",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -2295,461 +2295,6 @@
 			]
 		},
 		{
-			"name": "goal",
-			"item": [
-				{
-					"name": "upsert_goal",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "mutation(\r\n    $root_id:ID\r\n    $task_id : ID\r\n    $report_type : String\r\n  $parent_id: ID\r\n  $name: String!\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n) {\r\n  upsert_goal(\r\n    input: {\r\n        root_id : $root_id\r\n        task_id : $task_id\r\n        report_type : $report_type\r\n      parent_id: $parent_id\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      is_pined: $is_pined\r\n      general_info: $general_info\r\n    }\r\n  ) \r\n}\r\n",
-								"variables": "{\r\n    \"root_id\":null,\r\n    \"report_type\":\"s\",\r\n    \"task_id\" : null,\r\n    \"parent_id\": null,\r\n    \"name\": \"test goal\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"DC\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"everyday\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "goal_to_task",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "mutation(\r\n  $name : String!\r\n  $goal_id : ID\r\n) {\r\n  goal_to_task(\r\n    input: {\r\n      name: $name\r\n      goal_id: $goal_id\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    name\r\n    goal_id\r\n    created_at\r\n    updated_at\r\n  }\r\n}",
-								"variables": "{\r\n    \"name\" : \"day la goal chuyen sang\",\r\n    \"goal_id\":2\r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update_goal",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "mutation(\r\n  $id: ID!\r\n  $parent_id: ID\r\n  $report_type : String\r\n  $name: String\r\n  $start_day: DateTime\r\n  $end_day: DateTime\r\n  $status : String\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n) {\r\n  update_goal(\r\n    input: {\r\n      id: $id\r\n      parent_id: $parent_id\r\n      report_type : $report_type\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      is_pined: $is_pined\r\n      general_info: $general_info\r\n    }\r\n  ) {\r\n    id\r\n    name\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    general_info{\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n    progress\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"id\": 1,\r\n    \"report_type\": \"s&k\",\r\n    \"parent_id\": null,\r\n    \"name\": \"toang 444\",\r\n    \"status\": \"todo\",\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"ok\",\r\n        \"zalo\": \"adsd\",\r\n        \"repeat\": \"everyday\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that khong vui :D\",\r\n        \"attachment_ids\": [2,9],\r\n        \"publish\": \"public\",\r\n        \"color\": \"blu\",\r\n        \"todolist_id\": 1\r\n    } \r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete_goal",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "mutation($id:ID!) {\r\n  delete_goal(\r\n    input: {\r\n      id: $id\r\n    }\r\n  )\r\n}",
-								"variables": "{\r\n    \"id\":3\r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "report_goal",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query($id:ID!) {\r\n  report_goal(id: $id\r\n  )\r\n}",
-								"variables": "{\r\n    \"id\": \"root\"\r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "query my_goals",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query($parent_id: String!) {\r\n  my_goals(parent_id: $parent_id) {\r\n      id\r\n      name\r\n      start_day\r\n      end_day\r\n      status\r\n      is_pined\r\n      progress\r\n      general_info {\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments {\r\n          file\r\n          file_type\r\n          thumb\r\n        }\r\n        achieves {\r\n          id\r\n          user_invite {\r\n            id\r\n            name\r\n            attachment {\r\n              thumb\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n",
-								"variables": "{\r\n \"parent_id\": \"root\"\r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "query count_goal",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query($parent_id: String!) {\r\n  count_goal(parent_id: $parent_id) {\r\n      status\r\n      number\r\n  }\r\n  }\r\n",
-								"variables": "{\r\n \"parent_id\": \"all\"\r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "query my_goals_achieve",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query($parent_id: String!){\r\n  my_goals_achieve(parent_id: $parent_id) {\r\n    id\r\n    name\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    process\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n}\r\n}",
-								"variables": "{\r\n \"parent_id\": \"all\"\r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "query detail_goal",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query($id: ID!){\r\n  detail_goal(id: $id) {\r\n    id\r\n    name\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publishs{\r\n            id\r\n        }\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n        achieves{\r\n            id\r\n            user{\r\n                id\r\n                name\r\n            \r\n        }\r\n        \r\n    }\r\n  }\r\n}\r\n}",
-								"variables": "{\r\n    \"id\": 1\r\n}\r\n"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "query search_goals",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query($name: String!, $first: Int!, $page: Int!, $orderBy: [OrderByClause!]) {\r\n  search_goals(name: $name, first: $first, page: $page, orderBy: $orderBy) {\r\n    data {\r\n      id\r\n      user{\r\n          id\r\n      }\r\n      name\r\n      created_at\r\n      updated_at\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"name\": \"%\",\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"ASC\"\r\n    }]\r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "query_goals",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query {\r\n  goals(first:22, page:1) {\r\n    data {\r\n    id\r\n    parent{\r\n        id\r\n        name\r\n    }\r\n    name\r\n    user{\r\n        id\r\n    }\r\n    start_day\r\n    end_day\r\n    is_pined\r\n    created_at\r\n    updated_at\r\n  }\r\n  }\r\n}",
-								"variables": ""
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "query sort_goals",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_goals(\r\n      \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n      id\r\n      name\r\n      created_at\r\n      user{\r\n          id\r\n          name\r\n      }\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n\r\n",
-								"variables": "{\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "query my_goals_tree_sort",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query($id: ID) {\r\n  my_goals_tree_sort(id: $id)\r\n}",
-								"variables": "{\r\n    \"id\": 2  \r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "goals_achieve_tree_sort",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query($id: ID) {\r\n  goals_achieve_tree_sort(id: $id)\r\n}",
-								"variables": "{\r\n    \"id\":2\r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "query my_goals_tree_select",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query {\r\n  my_goals_tree_select\r\n}",
-								"variables": "{\r\n   \r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "task",
 			"item": [
 				{
@@ -2798,36 +2343,6 @@
 							"graphql": {
 								"query": "mutation(\r\n  $parent_id: ID\r\n  $name: String!\r\n  $attachment_ids:  JSON\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $task_id: ID\r\n  $is_pined: Boolean\r\n) {\r\n  task_to_goal(\r\n    input: {\r\n      parent_id: $parent_id\r\n      name: $name\r\n      attachment_ids: $attachment_ids\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      task_id: $task_id\r\n      is_pined: $is_pined\r\n    }\r\n  ) {\r\n    id\r\n    name\r\n    user{\r\n        id\r\n    }\r\n    start_day\r\n    end_day\r\n    status\r\n    task_id\r\n    is_pined\r\n    \r\n  }\r\n}",
 								"variables": "{\r\n    \"parent_id\": null,\r\n    \"name\": \"day la task\",\r\n    \"attachment_ids\": 1,\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"task_id\" : 2,\r\n    \"is_pined\": true \r\n    \r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update_task",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer  {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "mutation(\r\n    $id : ID!\r\n  $name : String!\r\n  $goal_id : ID\r\n  $general_info: JSON\r\n  \r\n) {\r\n  update_task(\r\n    input: {\r\n        id : $id\r\n      name: $name\r\n      goal_id : $goal_id\r\n      general_info : $general_info\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    name\r\n    goal_id\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n  }\r\n}",
-								"variables": "{\r\n    \"id\": 647,\r\n    \"name\": \"da doi\",\r\n    \"goal_id\": null,\r\n    \"general_info\": {\r\n        \"address\": \"Spider man\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-05-05 12:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1,3],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\",\r\n        \"todolist_id\": 1\r\n    } \r\n}"
 							}
 						},
 						"url": {
@@ -3008,6 +2523,36 @@
 							"graphql": {
 								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_tasks(\r\n      \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n      id\r\n      name\r\n      goal_id\r\n      created_at\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}",
 								"variables": "{\r\n    \r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n    $id : ID!\r\n    $is_change_all: Boolean\r\n  $name : String!\r\n  $goal_id : ID\r\n  $general_info: JSON\r\n  \r\n) {\r\n  update_task(\r\n    input: {\r\n        id : $id\r\n        is_change_all: $is_change_all\r\n        name: $name\r\n        goal_id : $goal_id\r\n        general_info : $general_info\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    name\r\n    goal_id\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n    \"id\": 19,\r\n    \"is_change_all\": true,\r\n    \"name\": \"Đọc sách\",\r\n    \"goal_id\": null,\r\n    \"general_info\": {\r\n        \"address\": \"Spider man\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"every week\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-06 01:20:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1,3],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
 							}
 						},
 						"url": {
@@ -3528,6 +3073,461 @@
 							"graphql": {
 								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_todolists(\r\n      \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n      id\r\n      name\r\n      status\r\n      checked_at\r\n      user{\r\n          id\r\n      }\r\n      goal{\r\n        id\r\n        user{\r\n            id\r\n        }\r\n     }\r\n     task{\r\n         id\r\n         name\r\n     }\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n\r\n",
 								"variables": "{\r\n    \r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "goal",
+			"item": [
+				{
+					"name": "upsert_goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n\r\n    $root_id:ID\r\n    $task_id : ID\r\n    $report_type : String\r\n  $parent_id: ID\r\n  $name: String!\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n) {\r\n  upsert_goal(\r\n    input: {\r\n     \r\n        root_id : $root_id\r\n        task_id : $task_id\r\n        report_type : $report_type\r\n      parent_id: $parent_id\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      is_pined: $is_pined\r\n      general_info: $general_info\r\n    }\r\n  ) \r\n}\r\n",
+								"variables": "{\r\n    \r\n    \"root_id\":1,\r\n    \"report_type\":null,\r\n    \"task_id\" : null,\r\n    \"parent_id\": 14,\r\n    \"name\": \"oye baby\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"ultimate\",\r\n        \"zalo\": \"034470383822\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-06 01:32:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "goal_to_task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n  $name : String!\r\n  $goal_id : ID\r\n) {\r\n  goal_to_task(\r\n    input: {\r\n      name: $name\r\n      goal_id: $goal_id\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    name\r\n    goal_id\r\n    created_at\r\n    updated_at\r\n  }\r\n}",
+								"variables": "{\r\n    \"name\" : \"day la goal chuyen sang\",\r\n    \"goal_id\":2\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n  $id: ID!\r\n  $is_change_all: Boolean\r\n  $parent_id: ID\r\n  $report_type : String\r\n  $name: String\r\n  $start_day: DateTime\r\n  $end_day: DateTime\r\n  $status : String\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n) {\r\n  update_goal(\r\n    input: {\r\n      id: $id\r\n      is_change_all: $is_change_all\r\n      parent_id: $parent_id\r\n      report_type : $report_type\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      is_pined: $is_pined\r\n      general_info: $general_info\r\n    }\r\n  ) {\r\n    id\r\n    name\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    general_info{\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n    progress\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"id\": 14,\r\n    \"is_change_all\": true,\r\n    \"report_type\": \"s\",\r\n    \"parent_id\": 10,\r\n    \"status\": \"todo\",\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"Hai Bà Trưng\",\r\n        \"zalo\": \"096o2233\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-06 04:10:00\",\r\n        \"note\": \"Hihi :D\",\r\n        \"attachment_ids\": [],\r\n        \"publish\": \"public\",\r\n        \"color\": \"blue\"\r\n    } \r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($id:ID!) {\r\n  delete_goal(\r\n    input: {\r\n      id: $id\r\n    }\r\n  )\r\n}",
+								"variables": "{\r\n    \"id\":3\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "report_goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id:ID!) {\r\n  report_goal(id: $id\r\n  )\r\n}",
+								"variables": "{\r\n    \"id\": \"root\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($parent_id: String!) {\r\n  my_goals(parent_id: $parent_id) {\r\n      id\r\n      name\r\n      start_day\r\n      end_day\r\n      status\r\n      task_id\r\n      is_pined\r\n      progress\r\n      general_info {\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments {\r\n          file\r\n          file_type\r\n          thumb\r\n        }\r\n        achieves {\r\n          id\r\n          user_invite {\r\n            id\r\n            name\r\n            attachment {\r\n              thumb\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n",
+								"variables": "{\r\n \"parent_id\": \"root\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query count_goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($parent_id: String!) {\r\n  count_goal(parent_id: $parent_id) {\r\n      status\r\n      number\r\n  }\r\n  }\r\n",
+								"variables": "{\r\n \"parent_id\": \"all\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_goals_achieve",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($parent_id: String!){\r\n  my_goals_achieve(parent_id: $parent_id) {\r\n    id\r\n    name\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    process\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n}\r\n}",
+								"variables": "{\r\n \"parent_id\": \"all\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query detail_goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID!){\r\n  detail_goal(id: $id) {\r\n    id\r\n    name\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publishs{\r\n            id\r\n        }\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n        achieves{\r\n            id\r\n            user{\r\n                id\r\n                name\r\n            \r\n        }\r\n        \r\n    }\r\n  }\r\n}\r\n}",
+								"variables": "{\r\n    \"id\": 1\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query search_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($name: String!, $first: Int!, $page: Int!, $orderBy: [OrderByClause!]) {\r\n  search_goals(name: $name, first: $first, page: $page, orderBy: $orderBy) {\r\n    data {\r\n      id\r\n      user{\r\n          id\r\n      }\r\n      name\r\n      created_at\r\n      updated_at\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"name\": \"%\",\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"ASC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  goals(first:22, page:1) {\r\n    data {\r\n    id\r\n    parent{\r\n        id\r\n        name\r\n    }\r\n    name\r\n    user{\r\n        id\r\n    }\r\n    start_day\r\n    end_day\r\n    is_pined\r\n    created_at\r\n    updated_at\r\n  }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query sort_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_goals(\r\n      \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n      id\r\n      name\r\n      created_at\r\n      user{\r\n          id\r\n          name\r\n      }\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n\r\n",
+								"variables": "{\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_goals_tree_sort",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID) {\r\n  my_goals_tree_sort(id: $id)\r\n}",
+								"variables": "{\r\n    \"id\": 467\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "goals_achieve_tree_sort",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID) {\r\n  goals_achieve_tree_sort(id: $id)\r\n}",
+								"variables": "{\r\n    \"id\":2\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_goals_tree_select",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  my_goals_tree_select\r\n}",
+								"variables": "{\r\n   \r\n}"
 							}
 						},
 						"url": {
