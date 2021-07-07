@@ -116,13 +116,13 @@ class GoalMutations
             $goalHaveTaskId = Goal::where('task_id', $args['task_id'])->first();
             $checkTaskToGoal = Task::find($args['task_id']);
           if (isset($checkTaskToGoal->goal_id) || $goalHaveTaskId){
-               return ;
+               return false;
           }
         }
         if (isset($args['parent_id'])) {
             $checkIdTask = $this->checkTaskId($args['parent_id']);
-            if (!$checkIdTask) {
-                return $checkIdTask;
+            if ($checkIdTask != false) {
+                return false;
             }
         }
         $goal = Goal::updateOrCreate(
@@ -156,14 +156,27 @@ class GoalMutations
         }
         if (isset($args['parent_id'])) {
             $checkIdTask = $this->checkTaskId($args['parent_id']);
-            if (!$checkIdTask) {
-                return;
+            if ($checkIdTask != false) {
+                return false;
             }
         }
 
         //self update
         $goalCheckUser = Goal::where("id",$args["id"])->first();
-
+        if (isset($args['is_change_all']) && $args['is_change_all'] == true) {
+            $getIdTask = Task::where('goal_id', $args['id'])->first();
+            $TaskIdFromGoal = $this->checkTaskId($args['id']);
+            $updateTask = array_diff_key($args, array_flip(['directive', 'id', 'parent_id', 'status', 'is_pined', 'report_type']));
+            if($getIdTask || $TaskIdFromGoal) {
+                if ($TaskIdFromGoal) {
+                    $updateTask['id'] = $TaskIdFromGoal->id;
+                }
+                if ($getIdTask) {
+                    $updateTask['id'] = $getIdTask->id;
+                }
+                $this->task_repository->updateTaskAndGeneral($updateTask);
+            }
+        }
         $generalInfo = $this->generalinfo_repository
             ->setType('goal')
             ->findByTypeId($goalCheckUser->id)
@@ -230,11 +243,11 @@ class GoalMutations
                 $taskId = $check->task_id;
                 $task = Task::find($taskId);
                 if ($task) {
-                    return false;
+                    return $task;
                 }
             }
         }
-        return true;
+        return false;
     }
 
 }

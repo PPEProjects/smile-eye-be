@@ -42,8 +42,6 @@ type Goal{
     created_at: DateTime
     updated_at: DateTime
     general_info: GeneralInfo
-    is_add_branch: Boolean
-    is_add_todo: Boolean
     progress: Float
 }
 type CountGoal {
