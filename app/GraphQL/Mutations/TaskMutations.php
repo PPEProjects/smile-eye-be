@@ -36,7 +36,7 @@ class TaskMutations
         if(isset($args['goal_id'])) {
             $checkGoalId = Task::where('goal_id', $args['goal_id'])->first();
             if ($checkGoalId) {
-                return;
+                throw new Error("This goal already add to task ");
             }
         }
         $task = $this->task_repository->createTask($args);

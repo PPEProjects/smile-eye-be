@@ -157,7 +157,7 @@ class GoalMutations
         if (isset($args['parent_id'])) {
             $checkIdTask = $this->checkTaskId($args['parent_id']);
             if ($checkIdTask != false) {
-                return false;
+                throw new Error("Can't add branch with this parent goal");;
             }
         }
 
