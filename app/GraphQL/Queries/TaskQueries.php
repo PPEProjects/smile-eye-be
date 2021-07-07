@@ -35,6 +35,9 @@ class TaskQueries
     {
 //        return $this->task_repository->detailTask($args);
         $task = Task::find($args['id']);
+        if(!$task){
+            return ;
+        }
         $generalInfo = $this->generalinfo_repository
             ->setType('task')
             ->upsert(array_merge($task->toArray(), $args))
