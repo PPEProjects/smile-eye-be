@@ -111,14 +111,16 @@ class GoalRepository
 
         //Check goal have  task_id And Task have goal_id
         $getIdGoal = $goals->pluck('id');
+        $getIdTask = $goals->pluck('task_id');
+        $findTask = Task::WhereIn('id', $getIdTask)->get()->keyBy('id');
         $task = Task::WhereIn('goal_id', $getIdGoal)->get()->keyBy('goal_id');
         $tasks = $task->toArray();
         foreach ($goals as $value){
-            if ($value->task_id == null){
+            if ($value->task_id == null || !isset($findTask[$value->task_id])){
                 $value->is_add_branch = true;
                 $value->is_add_todo = true;
             }else $value->is_add_branch = false;
-            if(isset($tasks[$value->id]) || $value->task_id != null){
+            if(isset($tasks[$value->id]) || isset($findTask[$value->task_id])){
                 $value->is_add_todo = false;
             }
         }
