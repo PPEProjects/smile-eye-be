@@ -3,6 +3,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Goal;
 use App\Models\Task;
 use App\Models\Todolist;
 use GraphQL\Error\Error;
@@ -13,7 +14,6 @@ use App\Repositories\GoalRepository;
 class TaskRepository
 {
     private $generalinfo_repository;
-
     public function __construct(
         GoalRepository $goal_repository,
         GeneralInfoRepository $generalInfo_repository
