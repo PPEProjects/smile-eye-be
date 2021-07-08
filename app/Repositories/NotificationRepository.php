@@ -216,6 +216,9 @@ class NotificationRepository
                     }else{
                         return;
                     }
+                    if(!@$PublishInfo->rule){
+                        $PublishInfo->rule = "view";
+                    }
                     $messages->push("with rule: ".$PublishInfo->rule);
                 break;
                 case 'comment':
