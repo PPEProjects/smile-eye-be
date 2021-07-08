@@ -216,10 +216,7 @@ class NotificationRepository
                     }else{
                         return;
                     }
-                    if($PublishInfo->rule == null){
-                        $PublishInfo->rule = "view";
-                    }
-                    $messages->push("with rule: ".$PublishInfo->rule);
+                    $messages->push("with rule: ".@$PublishInfo->rule);
                 break;
                 case 'comment':
                     $content = $noti->content;
