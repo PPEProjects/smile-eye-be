@@ -30,7 +30,7 @@ class TaskRepository
     public function deleteTask($args)
     {
         if ($args["delete_type"] == "todolist") {
-            $todo = Todolist::where('task_id', $args["id"])
+            /*$todo = Todolist::where('task_id', $args["id"])
                 ->where('checked_at', "like", $args['checked_at'] . "%")
                 ->first();
             $args["task_id"] = $args["id"];
@@ -39,7 +39,13 @@ class TaskRepository
             if ($todo) {
                 return $todo->update($args);
             }
-            return false;
+            return false;*/
+//            $args = array_diff_key($args, array_flip(['directive', 'id']));
+            $args['status'] = 'delete';
+            return Todolist::updateOrCreate(
+                ['task_id' => @$args['id'], 'checked_at' => $args['checked_at']],
+                $args
+            );
         } else {
             $args["task_id"] = $args["id"];
             $todo = Todolist::where('task_id', $args["id"])
