@@ -72,6 +72,6 @@ input UpsertTodolistInput{
     edit_type : String
     checked_at: DateTime!
     name: String
-    status: String @rules(apply: ["in:todo,done"])
+    status: String @rules(apply: ["in:todo,done,null"])
     general_info: JSON
 }
