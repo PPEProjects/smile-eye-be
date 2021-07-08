@@ -162,7 +162,9 @@ WHERE
                 $tasks = $actionAtNoNull->concat($actionAtNull);
                 break;
             case 'by done':
-                $tasks = $tasks->sortBy('-`status`');
+                $statusNoNull = $tasks->whereNotNull('status')->sortByDESC('status');
+                $statusNull = $tasks->WhereNull('status');
+                $tasks = $statusNull->concat($statusNoNull);
                 break;
             default:
                 $actionAtNull = $tasks->WhereNull('general_info.action_at')->sortBy(['general_info.action_at', 'ASC']);
