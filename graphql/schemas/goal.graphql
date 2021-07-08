@@ -109,6 +109,7 @@ input DeleteGoalInput{
 # Ver 2
 input UpsertGoalInput{
     id:ID
+    is_change_all: Boolean
     root_id: ID
     parent_id: ID
     name: String
