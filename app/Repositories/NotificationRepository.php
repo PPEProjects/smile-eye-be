@@ -216,7 +216,7 @@ class NotificationRepository
                     }else{
                         return;
                     }
-                    if(!@$PublishInfo->rule){
+                    if($PublishInfo->rule == null){
                         $PublishInfo->rule = "view";
                     }
                     $messages->push("with rule: ".$PublishInfo->rule);
