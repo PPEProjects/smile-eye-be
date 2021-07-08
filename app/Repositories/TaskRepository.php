@@ -43,6 +43,10 @@ class TaskRepository
 //            $args = array_diff_key($args, array_flip(['directive', 'id']));
             $args['status'] = 'delete';
             $data = array_diff_key($args, array_flip(['directive', 'id']));
+            \Illuminate\Support\Facades\Log::channel('single')->info('$data', [$data]);
+            \Illuminate\Support\Facades\Log::channel('single')->info('update', ['task_id' => @$args['id'], 'checked_at' => $args['checked_at']]);
+
+            
             return (bool) Todolist::updateOrCreate(
                 ['task_id' => @$args['id'], 'checked_at' => $args['checked_at']],
                 $data
