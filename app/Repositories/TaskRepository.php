@@ -42,9 +42,10 @@ class TaskRepository
             return false;*/
 //            $args = array_diff_key($args, array_flip(['directive', 'id']));
             $args['status'] = 'delete';
+            $data = array_diff_key($args, array_flip(['directive', 'id']));
             return (bool) Todolist::updateOrCreate(
                 ['task_id' => @$args['id'], 'checked_at' => $args['checked_at']],
-                $args
+                $data
             );
         } else {
             $args["task_id"] = $args["id"];
