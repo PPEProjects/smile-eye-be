@@ -39,6 +39,7 @@ class TaskRepository
             if ($todo) {
                 return $todo->update($args);
             }
+            return false;
         } else {
             $args["task_id"] = $args["id"];
             $todo = Todolist::where('task_id', $args["id"])
