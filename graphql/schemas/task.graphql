@@ -36,6 +36,7 @@ input DeleteTaskInput{
 }
 input UpdateTaskInput{
     id:ID!
+    is_change_all: Boolean
     name: String
     goal_id: ID
     general_info : JSON

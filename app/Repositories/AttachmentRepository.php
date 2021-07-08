@@ -84,7 +84,7 @@ class AttachmentRepository
                 break;
         }
     }
-    public function beforDelete($args){
+    public function beforeDelete($args){
         $arr = [];
         $id_attachment = $args["id"];
         $user = Auth::user();
@@ -97,16 +97,16 @@ class AttachmentRepository
         }
 
         //check in task
-        $tasks = Task::orderBy('id', 'desc')
-            ->where("user_id",Auth::id())
+        $tasks = Task::where("user_id",Auth::id())
             ->get();
         $tasks = $this->generalinfo_repository
             ->setType('task')
             ->get($tasks)
             ->keyBy("id");
-
+        if ($tasks)
         foreach ($tasks as $key=>$t){
             $attachment_ids = @$t->general_info->attachment_ids ;
+            if ($attachment_ids)
             foreach ($attachment_ids as $id){
                 if ($id == $id_attachment){
                     $arr["task"]["id"] = $key;
@@ -123,8 +123,10 @@ class AttachmentRepository
             ->setType('goal')
             ->get($goals)
             ->keyBy("id");
+        if ($goals)
         foreach ($goals as $key=>$g){
             $attachment_ids = @$g->general_info->attachment_ids ;
+            if ($attachment_ids)
             foreach ($attachment_ids as $id){
                 if ($id == $id_attachment){
                     $arr["goal"]["id"] = $key;
@@ -133,12 +135,13 @@ class AttachmentRepository
             }
         }
         // check in comment
-
         $comments = Comment::where("user_id",Auth::id())
             ->get()
             ->keyBy("id");
+        if ($comments)
         foreach ($comments as $key => $cmt){
             $attachment_ids = @$cmt->attachment_ids ;
+            if ($attachment_ids)
             foreach ($attachment_ids as $id){
                 if ($id == $id_attachment){
                     $arr["comment"]["id"] = $key;

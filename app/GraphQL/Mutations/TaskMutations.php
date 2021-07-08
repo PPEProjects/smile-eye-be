@@ -29,6 +29,15 @@ class TaskMutations
 
     public function createTask($_, array $args)
     {
+        if (!empty($args['goal_id'])) {
+            $checkGoalExists = Task::where('goal_id', $args['goal_id']);
+//            if (!empty($args['id'])) {
+//                $checkGoalExists = $checkGoalExists->where('id', '!=', $args['id']);
+//            }
+            if ($checkGoalExists->exists()) {
+                throw new Error('This goal already move to the task');
+            }
+        }
         if (isset($args['general_info']['repeat']) && !in_array($args['general_info']['repeat'],
                 [null, 'every day', 'every week', 'every month'])) {
             throw new Error('General Info Repeat invalid');
@@ -36,7 +45,7 @@ class TaskMutations
         if(isset($args['goal_id'])) {
             $checkGoalId = Task::where('goal_id', $args['goal_id'])->first();
             if ($checkGoalId) {
-                return;
+                throw new Error("This goal already add to task ");
             }
         }
         $task = $this->task_repository->createTask($args);
@@ -50,6 +59,26 @@ class TaskMutations
 
     public function updateTask($_, array $args)
     {
+        if (isset($args['is_change_all']) && $args['is_change_all'] == true){
+                $getGoalId = Goal::where('task_id', $args['id'])->first();
+                $GoalIdFromTask = $this->checkGoalId($args['id']);
+                $update = array_diff_key($args, array_flip(['directive', 'id','is_change_all']));
+                if ($getGoalId || $GoalIdFromTask) {
+                    if ($getGoalId) {
+                        $update['id'] = $getGoalId->id;
+                    }
+                    if ($GoalIdFromTask) {
+                        $update['id'] = $GoalIdFromTask->id;
+                    }
+                    $updateGoal = tap(Goal::findOrFail($update["id"]))
+                        ->update($update);
+                    $generalInfo = $this->generalinfo_repository
+                        ->setType('goal')
+                        ->upsert(array_merge($updateGoal->toArray(), $update))
+                        ->findByTypeId($updateGoal->id);
+                    $updateGoal->general_info = $generalInfo;
+                }
+        }
         $task = $this->task_repository->updateTaskAndGeneral($args);
         return $task;
     }
@@ -78,5 +107,17 @@ class TaskMutations
             return null;
         }
     }
-
+    public function checkGoalId($idTask){
+        $check = Task::find($idTask);
+        if ($check){
+            if ($check->goal_id){
+                $goalId = $check->goal_id;
+                $goal = Task::find($goalId);
+                if ($goal) {
+                    return $goal;
+                }
+            }
+        }
+        return false;
+    }
 }

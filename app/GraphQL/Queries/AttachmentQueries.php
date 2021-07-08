@@ -31,7 +31,7 @@ class AttachmentQueries
         });
         return $attachments;
     }
-    public function beforDelete($_,array $args){
-        return $this->attachment_repository->beforDelete($args);
+    public function beforeDelete($_,array $args){
+        return $this->attachment_repository->beforeDelete($args);
     }
 }

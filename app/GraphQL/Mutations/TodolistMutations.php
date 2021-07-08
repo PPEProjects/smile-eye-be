@@ -49,6 +49,8 @@ class TodolistMutations
 // Ver 2
     protected function _updateOrCreate($args)
     {
+        if (isset($args["general_info"]["id"]))
+            $args["general_info"] = array_diff_key($args["general_info"],array_flip(["id"]));
         $args['user_id'] = Auth::id();
         $goal = $this->goal_repository->findByTaskId($args['task_id']);
         $args['goal_id'] = @$goal->id;
@@ -59,6 +61,22 @@ class TodolistMutations
             ['task_id' => $args['task_id'], 'checked_at' => $args['checked_at']],
             $args
         );
+        if (isset($args["general_info"]["color_change"])){
+                $args1["id"] = $args["task_id"];
+                $args1["general_info"] = array_intersect_key($args["general_info"],array_flip(["color"]));
+                $this->task_repository->updateTaskAndGeneral($args1);
+        }
+        if (isset($args["edit_type"])){
+            switch ($args["edit_type"]){
+                case "all":
+                    $args1 = $args;
+                    $args1["id"] = $args["task_id"];
+                    $this->task_repository->updateTaskAndGeneral($args1);
+                    break;
+            }
+        }
+
+        $args["id"] = $todolist->id;
         if (!isset($args["general_info"]["color"])){
             $args["general_info"]["color"] = $generalTask->color;
         }

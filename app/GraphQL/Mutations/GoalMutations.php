@@ -5,16 +5,15 @@ namespace App\GraphQL\Mutations;
 use App\Models\GeneralInfo;
 use App\Models\Goal;
 use App\Models\Task;
-use App\Models\Todolist;
 use App\Repositories\AttachmentRepository;
 use App\Repositories\GeneralInfoRepository;
 use App\Repositories\GoalRepository;
+use App\Repositories\NotificationRepository;
 use App\Repositories\TaskRepository;
 use Carbon\Carbon;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use ppeCore\dvtinh\Services\AttachmentService;
-use App\Repositories\NotificationRepository;
 
 class GoalMutations
 {
@@ -102,8 +101,23 @@ class GoalMutations
 // Ver 2
     public function upsertGoal($_, array $args)
     {
-        \Illuminate\Support\Facades\Log::channel('single')->info('$args', [$args]);
-        
+//        if (isset($args["id"])) return $this->updateGoal(null,$args);
+        if (!empty($args['task_id'])) {
+            $checkTaskExists = Goal::where('task_id', $args['task_id']);
+            if (!empty($args['id'])) {
+                $checkTaskExists = $checkTaskExists->where('id', '!=', $args['id']);
+            }
+            if ($checkTaskExists->exists()) {
+                throw new Error('This task already move to the goal');
+            }
+        }
+        if (!empty($args['parent_id'])) {
+            $checkTaskParent = Goal::where('id', $args['parent_id'])
+                ->whereNotNull('task_id');
+            if ($checkTaskParent->exists()) {
+                throw new Error('Can\'t assign task to parent');
+            }
+        }
         if (isset($args['start_day'], $args['end_day'])) {
             $startDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['start_day']);
             $endDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['end_day']);
@@ -112,10 +126,21 @@ class GoalMutations
             }
         }
         $args['user_id'] = Auth::id();
-        $checkIdTask = $this->checkTaskId($args['parent_id']);
-        if(!$checkIdTask){
-            return $checkIdTask;
-        }
+//        if (isset($args['task_id'])) {
+//            $goalHaveTaskId = Goal::where('task_id', $args['task_id'])->first();
+//            $checkTaskToGoal = Task::find($args['task_id']);
+//            if (isset($checkTaskToGoal->goal_id) || $goalHaveTaskId) {
+//                return false;
+//            }
+//        }
+//        if (isset($args['parent_id'])) {
+//            $checkIdTask = $this->checkTaskId($args['parent_id']);
+//            if ($checkIdTask != false) {
+//                return false;
+//            }
+//        }
+//        \Illuminate\Support\Facades\Log::channel('single')->info('$args', [$args]);
+
         $goal = Goal::updateOrCreate(
             ['id' => @$args['id']],
             $args
@@ -123,19 +148,23 @@ class GoalMutations
         $this->generalinfo_repository
             ->setType('goal')
             ->upsert(array_merge($goal->toArray(), $args));
-
-        return $this->goal_repository->getTreeSortByGoalId($args['root_id'], Auth::id());
+        if (isset($args['root_id'])) {
+            return $this->goal_repository->getTreeSortByGoalId($args['root_id'], Auth::id());
+        }
+        return true;
     }
 
-   public function compare_goal($goalnew,$goalOld){
+    public function compare_goal($goalnew, $goalOld)
+    {
         $generalNew = $goalnew["general_info"];
         $generalOld = $goalOld->general_info;
 //        $generalOld->achieves->toArray();
 //        $generalOld->publishs->toArray();
-        dd(array_diff($generalNew,$generalOld));
+        dd(array_diff($generalNew, $generalOld));
 
 
     }
+
     public function updateGoal($_, array $args)
     {
         if (isset($args['start_day'], $args['end_day'])) {
@@ -147,21 +176,35 @@ class GoalMutations
         }
         if (isset($args['parent_id'])) {
             $checkIdTask = $this->checkTaskId($args['parent_id']);
-            if (!$checkIdTask) {
-                return;
+            if ($checkIdTask != false) {
+                throw new Error("Can't add branch with this parent goal");;
             }
         }
 
         //self update
-        $goalCheckUser = Goal::where("id",$args["id"])->first();
-
+        $goalCheckUser = Goal::where("id", $args["id"])->first();
+        if (isset($args['is_change_all']) && $args['is_change_all'] == true) {
+            $getIdTask = Task::where('goal_id', $args['id'])->first();
+            $TaskIdFromGoal = $this->checkTaskId($args['id']);
+            $updateTask = array_diff_key($args,
+                array_flip(['directive', 'id', 'parent_id', 'status', 'is_pined', 'report_type']));
+            if ($getIdTask || $TaskIdFromGoal) {
+                if ($TaskIdFromGoal) {
+                    $updateTask['id'] = $TaskIdFromGoal->id;
+                }
+                if ($getIdTask) {
+                    $updateTask['id'] = $getIdTask->id;
+                }
+                $this->task_repository->updateTaskAndGeneral($updateTask);
+            }
+        }
         $generalInfo = $this->generalinfo_repository
             ->setType('goal')
             ->findByTypeId($goalCheckUser->id)
             ->toArray();
         $goalCheckUser->general_info = $generalInfo;
 //        dd($goalCheckUser->toArray());
-        if (@$goalCheckUser->user_id == Auth::id()){
+        if (@$goalCheckUser->user_id == Auth::id()) {
             $goal = tap(Goal::findOrFail($args["id"]))
                 ->update($args);
             $generalInfo = $this->generalinfo_repository
@@ -169,40 +212,41 @@ class GoalMutations
                 ->upsert(array_merge($goal->toArray(), $args))
                 ->findByTypeId($goal->id);
             $goal->general_info = $generalInfo;
-        }else{
-            $goal = Goal::where("id",$args["id"])->first();
-            $goalOld = Goal::where("id",$args["id"])->first();
+        } else {
+            //not owner
+            $goal = Goal::where("id", $args["id"])->first();
+            $goalOld = Goal::where("id", $args["id"])->first();
 
             $goal->update($args);
 
-            $generalInfo = GeneralInfo::where("goal_id",$args["id"])->first();
-            $generalInfoOld = GeneralInfo::where("goal_id",$args["id"])->first();
+            $generalInfo = GeneralInfo::where("goal_id", $args["id"])->first();
+            $generalInfoOld = GeneralInfo::where("goal_id", $args["id"])->first();
 
             $generalInfo->update($args["general_info"]);
 //            GeneralInfo::where("goal_id",$args["id"])->update($args["general_info"]);
-            $goalChange = array_diff_key($goal->getChanges(),array_flip(["updated_at","is_pined"]));
-            $generalInfoChange = array_diff_key($generalInfo->getChanges(),array_flip(["updated_at","todolist_id"]));
+            $goalChange = array_diff_key($goal->getChanges(), array_flip(["updated_at", "is_pined"]));
+            $generalInfoChange = array_diff_key($generalInfo->getChanges(), array_flip(["updated_at", "todolist_id"]));
 
             //filler information change save as an array
             $temp = collect();
-            foreach ($goalChange as $key=>$value){
-                $arr[$key]["old"] =  $goalOld->$key;
-                $arr[$key]["new"] =  $goalChange[$key];
+            foreach ($goalChange as $key => $value) {
+                $arr[$key]["old"] = $goalOld->$key;
+                $arr[$key]["new"] = $goalChange[$key];
                 $temp->push($arr);
             }
-            foreach ($generalInfoChange as $key=>$value){
-                $arr[$key]["old"] =  $generalInfoOld->$key;
-                $arr[$key]["new"] =  $generalInfoChange[$key];
+            foreach ($generalInfoChange as $key => $value) {
+                $arr[$key]["old"] = $generalInfoOld->$key;
+                $arr[$key]["new"] = $generalInfoChange[$key];
                 $temp->push($arr);
             }
             $temp = @$temp->toArray()[1];
-            if ($temp){
-                foreach ($temp as $key=>$t){
+            if ($temp) {
+                foreach ($temp as $key => $t) {
                     $t2 = [];
                     $t2[$key] = $t;
                     $this->
                     notification_repository->
-                    saveNotification("edit_goal",$goal->id,$t2);
+                    saveNotification("edit_goal", $goal->id, $t2);
 
                 }
             }
@@ -214,18 +258,20 @@ class GoalMutations
         }
         return $goal;
     }
-    public function checkTaskId($idGoal){
+
+    public function checkTaskId($idGoal)
+    {
         $check = Goal::find($idGoal);
-        if ($check){
-            if ($check->task_id){
+        if ($check) {
+            if ($check->task_id) {
                 $taskId = $check->task_id;
                 $task = Task::find($taskId);
                 if ($task) {
-                    return false;
+                    return $task;
                 }
             }
         }
-        return true;
+        return false;
     }
 
 }

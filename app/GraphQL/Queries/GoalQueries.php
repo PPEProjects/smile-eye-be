@@ -3,6 +3,7 @@
 namespace App\GraphQL\Queries;
 
 use App\Models\Goal;
+use App\Models\Task;
 use App\Repositories\GeneralInfoRepository;
 use App\Repositories\GoalRepository;
 use App\Repositories\TodolistRepository;
@@ -91,6 +92,7 @@ class GoalQueries
                 break;
         }
         $goals = $goals->get();
+
         $goals = $this->generalinfo_repository
             ->setType('goal')
             ->get($goals);

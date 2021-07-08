@@ -89,6 +89,7 @@ input CreateGoalInput{
 }
 
 input UpdateGoalInput{
+    is_change_all: Boolean
     id:ID! @rules(apply: ["required","App\\Rules\\OwnerCheckGoal"])
     parent_id: ID @rules(apply: ["nullable","integer","App\\Rules\\OwnerCheckGoal"])
     name: String
