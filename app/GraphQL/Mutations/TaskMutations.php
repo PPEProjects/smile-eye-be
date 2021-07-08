@@ -29,6 +29,15 @@ class TaskMutations
 
     public function createTask($_, array $args)
     {
+        if (!empty($args['goal_id'])) {
+            $checkGoalExists = Task::where('goal_id', $args['goal_id']);
+//            if (!empty($args['id'])) {
+//                $checkGoalExists = $checkGoalExists->where('id', '!=', $args['id']);
+//            }
+            if ($checkGoalExists->exists()) {
+                throw new Error('This goal already move to the task');
+            }
+        }
         if (isset($args['general_info']['repeat']) && !in_array($args['general_info']['repeat'],
                 [null, 'every day', 'every week', 'every month'])) {
             throw new Error('General Info Repeat invalid');
