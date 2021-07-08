@@ -68,6 +68,10 @@ class TodolistMutations
             switch ($args["edit_type"]){
                 case "all":
                     $args1 = $args;
+                    if($args1["general_info"]["id"]){
+                        $args1["general_info"] = array_diff_key($args1["general_info"],array_flip(["id"]));
+
+                    };
                     $args1["id"] = $args["task_id"];
                     $this->task_repository->updateTaskAndGeneral($args1);
                     break;
