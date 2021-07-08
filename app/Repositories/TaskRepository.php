@@ -3,23 +3,21 @@
 
 namespace App\Repositories;
 
-use App\Models\Goal;
 use App\Models\Task;
 use App\Models\Todolist;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
-use App\Repositories\GeneralInfoRepository;
-use App\Repositories\GoalRepository;
 
 class TaskRepository
 {
     private $generalinfo_repository;
+
     public function __construct(
         GoalRepository $goal_repository,
         GeneralInfoRepository $generalInfo_repository
     ) {
         $this->goal_repository = $goal_repository;
-        $this->generalinfo_repository =$generalInfo_repository;
+        $this->generalinfo_repository = $generalInfo_repository;
     }
 
     public function createTask($payload)
@@ -31,21 +29,22 @@ class TaskRepository
 
     public function deleteTask($args)
     {
-        if ($args["delete_type"] == "todolist"){
+        if ($args["delete_type"] == "todolist") {
             $todo = Todolist::where('task_id', $args["id"])
-                ->where('checked_at',"like",$args['checked_at']."%")
+                ->where('checked_at', "like", $args['checked_at'] . "%")
                 ->first();
             $args["task_id"] = $args["id"];
             $args["status"] = "delete";
             $args = array_diff_key($args, array_flip(['directive', 'id']));
-            return $todo->update($args);
-
-        }else {
+            if ($todo) {
+                return $todo->update($args);
+            }
+        } else {
             $args["task_id"] = $args["id"];
             $todo = Todolist::where('task_id', $args["id"])
-                ->where('checked_at',"like",$args['checked_at']."%")
+                ->where('checked_at', "like", $args['checked_at'] . "%")
                 ->first();
-            if ($todo){
+            if ($todo) {
                 $args["status"] = "delete";
                 $args = array_diff_key($args, array_flip(['directive', 'id']));
                 $todo->update($args);
@@ -57,7 +56,9 @@ class TaskRepository
             return $task->delete();
         }
     }
-    public function updateTaskAndGeneral($args){
+
+    public function updateTaskAndGeneral($args)
+    {
         if (isset($args['general_info']['repeat']) && !in_array($args['general_info']['repeat'],
                 [null, 'every day', 'every week', 'every month'])) {
             throw new Error('General Info Repeat invalid');
@@ -70,6 +71,7 @@ class TaskRepository
         $task->general_info = $generalInfo;
         return $task;
     }
+
     public function updateTask($payload)
     {
         return tap(Task::findOrFail($payload["id"]))
@@ -115,7 +117,7 @@ class TaskRepository
         return $task;
     }
 
-    public function find($id, $select='*')
+    public function find($id, $select = '*')
     {
         return Task::selectRaw($select)
             ->where('id', $id)
