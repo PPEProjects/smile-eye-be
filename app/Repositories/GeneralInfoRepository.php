@@ -30,15 +30,15 @@ class GeneralInfoRepository
 
     public function upsert($payload)
     {
-//        if (!isset($payload['general_info'])) {
-//            return $this;
-//        }
         switch ($this->type) {
             case 'goal':
                 $data = array_merge($payload['general_info'] ?? [],
                     ['task_id' => null, 'todolist_id' => null],
                     ['user_id' => Auth::id()]
                 );
+                if(isset($payload['id']) && GeneralInfo::where('goal_id', $payload['id'])->exists()){
+                    unset($data['user_id']);
+                }
                 GeneralInfo::updateOrCreate(
                     ['goal_id' => $payload['id']],
                     $data
