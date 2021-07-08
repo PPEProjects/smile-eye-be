@@ -111,6 +111,13 @@ class GoalMutations
                 throw new Error('This task already move to the goal');
             }
         }
+        if (!empty($args['parent_id'])) {
+            $checkTaskParent = Goal::where('id', $args['parent_id'])
+                ->whereNotNull('task_id');
+            if ($checkTaskParent->exists()) {
+                throw new Error('Can\'t assign task to parent');
+            }
+        }
         if (isset($args['start_day'], $args['end_day'])) {
             $startDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['start_day']);
             $endDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['end_day']);
@@ -119,19 +126,21 @@ class GoalMutations
             }
         }
         $args['user_id'] = Auth::id();
-        if (isset($args['task_id'])) {
-            $goalHaveTaskId = Goal::where('task_id', $args['task_id'])->first();
-            $checkTaskToGoal = Task::find($args['task_id']);
-            if (isset($checkTaskToGoal->goal_id) || $goalHaveTaskId) {
-                return false;
-            }
-        }
-        if (isset($args['parent_id'])) {
-            $checkIdTask = $this->checkTaskId($args['parent_id']);
-            if ($checkIdTask != false) {
-                return false;
-            }
-        }
+//        if (isset($args['task_id'])) {
+//            $goalHaveTaskId = Goal::where('task_id', $args['task_id'])->first();
+//            $checkTaskToGoal = Task::find($args['task_id']);
+//            if (isset($checkTaskToGoal->goal_id) || $goalHaveTaskId) {
+//                return false;
+//            }
+//        }
+//        if (isset($args['parent_id'])) {
+//            $checkIdTask = $this->checkTaskId($args['parent_id']);
+//            if ($checkIdTask != false) {
+//                return false;
+//            }
+//        }
+//        \Illuminate\Support\Facades\Log::channel('single')->info('$args', [$args]);
+
         $goal = Goal::updateOrCreate(
             ['id' => @$args['id']],
             $args
