@@ -30,24 +30,15 @@ class TaskRepository
     public function deleteTask($args)
     {
         if ($args["delete_type"] == "todolist") {
-            /*$todo = Todolist::where('task_id', $args["id"])
-                ->where('checked_at', "like", $args['checked_at'] . "%")
-                ->first();
-            $args["task_id"] = $args["id"];
-            $args["status"] = "delete";
-            $args = array_diff_key($args, array_flip(['directive', 'id']));
-            if ($todo) {
-                return $todo->update($args);
+
+            $taskGeneralinfo = $this->generalinfo_repository->setType('task')
+                ->findByTypeId($args['id']);
+            if (empty($taskGeneralinfo->repeat)) {
+                Task::where('id', $args['id'])->delete();
             }
-            return false;*/
-//            $args = array_diff_key($args, array_flip(['directive', 'id']));
             $args['status'] = 'delete';
             $data = array_diff_key($args, array_flip(['directive', 'id']));
-            \Illuminate\Support\Facades\Log::channel('single')->info('$data', [$data]);
-            \Illuminate\Support\Facades\Log::channel('single')->info('update', ['task_id' => @$args['id'], 'checked_at' => $args['checked_at']]);
-
-            
-            return (bool) Todolist::updateOrCreate(
+            return (bool)Todolist::updateOrCreate(
                 ['task_id' => @$args['id'], 'checked_at' => $args['checked_at']],
                 $data
             );
