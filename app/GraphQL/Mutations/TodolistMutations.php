@@ -51,6 +51,9 @@ class TodolistMutations
     {
         if (isset($args["general_info"]["id"]))
             $args["general_info"] = array_diff_key($args["general_info"],array_flip(["id"]));
+        if (($args["name"]==null)){
+            $args["name"] = Task::where("id",$args["task_id"])->first()->name;
+        }
         $args['user_id'] = Auth::id();
         $goal = $this->goal_repository->findByTaskId($args['task_id']);
         $args['goal_id'] = @$goal->id;
@@ -80,6 +83,7 @@ class TodolistMutations
         if (!isset($args["general_info"]["color"])){
             $args["general_info"]["color"] = $generalTask->color;
         }
+
         $generalInfo = $this->generalinfo_repository
             ->setType('todolist')
             ->upsert(array_merge($todolist->toArray(), $args))
