@@ -9,6 +9,7 @@ use App\Repositories\GeneralInfoRepository;
 use App\Repositories\GoalRepository;
 use App\Repositories\TodolistRepository;
 use Carbon\Carbon;
+use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\TaskRepository;
 
@@ -53,6 +54,12 @@ class TodolistMutations
             $args["general_info"] = array_diff_key($args["general_info"],array_flip(["id"]));
         if (!isset($args["name"])){
                 $args["name"] = Task::where("id",$args["task_id"])->first()->name;
+        }
+        if (isset($args["status"])){
+            if ($args["status"] != "todo" && $args["status"] != "done")
+            throw new Error('Status invalid');
+        }else{
+            $args["status"] = "todo";
         }
         $args['user_id'] = Auth::id();
         $goal = $this->goal_repository->findByTaskId($args['task_id']);
