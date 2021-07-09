@@ -38,7 +38,8 @@ class TaskRepository
             }
             $args['status'] = 'delete';
             $data = array_diff_key($args, array_flip(['directive', 'id']));
-            return (bool)Todolist::updateOrCreate(
+            $data["user_id"] = Auth::id();
+            return (boolean) Todolist::updateOrCreate(
                 ['task_id' => @$args['id'], 'checked_at' => $args['checked_at']],
                 $data
             );
