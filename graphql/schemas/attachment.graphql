@@ -10,8 +10,13 @@ extend type Query {
     search_attachment(file: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [Attachment!]! @paginate(type: "paginator" model: "App\\Models\\Attachment")
     detail_attachment(id: ID! @eq): Attachment @find
     my_attachment: [Attachment] @guard @field(resolver:"AttachmentQueries@my_attachment")
-    before_delete(id : ID): JSON @guard @field(resolver:"AttachmentQueries@beforeDelete")
+    before_delete(id : ID): BeforeDelete @guard @field(resolver:"AttachmentQueries@beforeDelete")
 
+}
+type BeforeDelete{
+    attachment_id: ID,
+    delete_type: String,
+    delete_name:String
 }
 
 type Attachment{
