@@ -149,6 +149,10 @@ class AttachmentRepository
                 }
             }
         }
-        return $arr;
+        $result = [];
+        $result["attachment_id"] = $id_attachment;
+        $result["delete_type"] = array_key_first($arr);
+        $result["delete_name"] = @$arr[array_key_first($arr)]["name"];
+        return $result;
     }
 }

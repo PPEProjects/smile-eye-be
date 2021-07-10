@@ -9,6 +9,7 @@ use App\Repositories\GeneralInfoRepository;
 use App\Repositories\GoalRepository;
 use App\Repositories\TodolistRepository;
 use Carbon\Carbon;
+use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\TaskRepository;
 
@@ -49,8 +50,19 @@ class TodolistMutations
 // Ver 2
     protected function _updateOrCreate($args)
     {
+        $task = Task::where("id",$args["task_id"])->first();
         if (isset($args["general_info"]["id"]))
             $args["general_info"] = array_diff_key($args["general_info"],array_flip(["id"]));
+        if (!isset($args["name"])){
+                if (isset($task))
+                    $args["name"] = $task->name;
+        }
+        if (isset($args["status"])){
+            if ($args["status"] != "todo" && $args["status"] != "done")
+            throw new Error('Status invalid');
+        }else{
+            $args["status"] = "todo";
+        }
         $args['user_id'] = Auth::id();
         $goal = $this->goal_repository->findByTaskId($args['task_id']);
         $args['goal_id'] = @$goal->id;
@@ -61,17 +73,22 @@ class TodolistMutations
             ['task_id' => $args['task_id'], 'checked_at' => $args['checked_at']],
             $args
         );
+
         if (isset($args["general_info"]["color_change"])){
+            if ($args["general_info"]["color_change"] == "all") {
                 $args1["id"] = $args["task_id"];
-                $args1["general_info"] = array_intersect_key($args["general_info"],array_flip(["color"]));
+                $args1["general_info"] = array_intersect_key($args["general_info"], array_flip(["color"]));
                 $this->task_repository->updateTaskAndGeneral($args1);
+            }
         }
         if (isset($args["edit_type"])){
             switch ($args["edit_type"]){
                 case "all":
-                    $args1 = $args;
-                    $args1["id"] = $args["task_id"];
-                    $this->task_repository->updateTaskAndGeneral($args1);
+                    if($task) {
+                        $args1 = $args;
+                        $args1["id"] = $args["task_id"];
+                        $this->task_repository->updateTaskAndGeneral($args1);
+                    }
                     break;
             }
         }
@@ -80,6 +97,7 @@ class TodolistMutations
         if (!isset($args["general_info"]["color"])){
             $args["general_info"]["color"] = $generalTask->color;
         }
+
         $generalInfo = $this->generalinfo_repository
             ->setType('todolist')
             ->upsert(array_merge($todolist->toArray(), $args))

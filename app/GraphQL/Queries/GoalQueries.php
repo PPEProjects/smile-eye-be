@@ -123,6 +123,7 @@ class GoalQueries
 
     public function goalsAchieveTreeSort($_, array $args)
     {
+        if (!isset($args['id'])) return false;
         return $this->goal_repository->goalsAchieveTreeSort($args['id']);
     }
     public function reportGoal($_, array $args){

@@ -149,9 +149,9 @@ WHERE
         });
 
         $tasks = $tasks->concat($todolists)
-                ->where('status', '!=', 'delete');
+            ->where('status', '!=', 'delete');
         $sortBy = "default";
-        if (isset($args['sort_by'])){
+        if (isset($args['sort_by'])) {
             $sortBy = $args['sort_by'];
         }
         switch ($sortBy) {
@@ -162,12 +162,14 @@ WHERE
                 $tasks = $actionAtNoNull->concat($actionAtNull);
                 break;
             case 'by done':
-                $tasks = $tasks->sortBy('-`status`');
+                $statusNoNull = $tasks->whereNotNull('status')->sortByDESC('status');
+                $statusNull = $tasks->WhereNull('status');
+                $tasks = $statusNull->concat($statusNoNull);
                 break;
             default:
                 $actionAtNull = $tasks->WhereNull('general_info.action_at')->sortBy(['general_info.action_at', 'ASC']);
                 $actionAtNoNull = $tasks->WhereNotNull('general_info.action_at')->sortByDESC('task_id');
-            $tasks = $tasks = $actionAtNull->concat($actionAtNoNull);
+                $tasks = $tasks = $actionAtNull->concat($actionAtNoNull);
         }
 
         return $tasks;
@@ -199,7 +201,12 @@ WHERE
             $todolist->general_info = $generalInfo;
             return $todolist;
         }
-        return null;
+        $task = Task::where('id', $args['task_id'])->first();
+        $generalInfo = $this->generalinfo_repository
+            ->setType('task')
+            ->findByTypeId($task->id);
+        $task->general_info = $generalInfo;
+        return $task;
     }
 
 
@@ -211,7 +218,7 @@ WHERE
         $query = "SELECT tasks.id, DATE(IFNULL(gi.action_at, tasks.created_at)) as action_at
 FROM tasks
      left join general_infos gi on tasks.id = gi.task_id
-WHERE tasks.user_id=".Auth::id()." AND tasks.deleted_at IS NULL AND gi.`repeat` is NULL AND (action_at IS NULL AND DATE(tasks.created_at) BETWEEN '$startDate' AND '$endDate'
+WHERE tasks.user_id=" . Auth::id() . " AND tasks.deleted_at IS NULL AND gi.`repeat` is NULL AND (action_at IS NULL AND DATE(tasks.created_at) BETWEEN '$startDate' AND '$endDate'
    OR DATE(action_at) BETWEEN '$startDate' AND '$endDate')";
         $results = DB::select(DB::raw($query));
         $tasksAction = json_decode(json_encode($results), true);
@@ -223,7 +230,7 @@ WHERE tasks.user_id=".Auth::id()." AND tasks.deleted_at IS NULL AND gi.`repeat` 
         $query = "SELECT tasks.id, DATE(IFNULL(gi.action_at, tasks.created_at)) as action_at
 FROM tasks
      inner join general_infos gi on tasks.id = gi.task_id
-WHERE tasks.user_id=".Auth::id()." AND tasks.deleted_at IS NULL AND gi.`repeat`='every day'";
+WHERE tasks.user_id=" . Auth::id() . " AND tasks.deleted_at IS NULL AND gi.`repeat`='every day'";
         $results = DB::select(DB::raw($query));
         $tasksEveryDay = json_decode(json_encode($results), true);
         $tasksEveryDay = array_map(function ($item) {

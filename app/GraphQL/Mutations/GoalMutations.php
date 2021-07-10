@@ -125,7 +125,9 @@ class GoalMutations
                 throw new Error('Start day must less than end day');
             }
         }
-        $args['user_id'] = Auth::id();
+        if(!isset($args['id'])){
+            $args['user_id'] = Auth::id();
+        }
 //        if (isset($args['task_id'])) {
 //            $goalHaveTaskId = Goal::where('task_id', $args['task_id'])->first();
 //            $checkTaskToGoal = Task::find($args['task_id']);
