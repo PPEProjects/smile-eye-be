@@ -39,7 +39,7 @@ class JapaneseGoalRepository
            $attachment->file = $file;
            return $attachment;
        });
-       $temps = $japaneseGoal->map(function ($jpGoal) use ($attachments, $attachmentIds1, $attachmentIds2, $attachmentIds3){
+        $japaneseGoal = $japaneseGoal->map(function ($jpGoal) use ($attachments, $attachmentIds1, $attachmentIds2, $attachmentIds3){
            $jpGoal->attachments_1 = $attachmentIds1->map(function ($id) use ($attachments){
               return $attachments[$id];
           });
