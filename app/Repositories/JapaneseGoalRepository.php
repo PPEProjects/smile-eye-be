@@ -28,31 +28,31 @@ class JapaneseGoalRepository
     }
     public function detailJapaneseGoal($args){
         $temps = JapaneseGoal::where('id',$args["id"])->get();
-        $fIds1 = $temps->pluck('attachments_1')->flatten();
-        $fIds2 = $temps->pluck('attachments_2')->flatten();
-        $fIds3 = $temps->pluck('attachments_3')->flatten();
-        $fID = $fIds1->merge($fIds2)->merge($fIds3);
-       $attachments = Attachment::WhereIn('id', $fID)->get()->keyBy('id');
-       $temps = $temps->map(function ($temp) use ($attachments, $fIds1, $fIds2, $fIds3){
-          $temp->attachments_1 = $fIds1->map(function ($id) use ($attachments){
-             $data = @$this->getAttachments($attachments[$id]);
-              $result['id'] = @$data->id;
-              $result['thumb'] = @$data->thumb;
-              $result["file"] = @$data->file;
+        $attachmentIds1 = $temps->pluck('attachments_1')->flatten();
+        $attachmentIds2 = $temps->pluck('attachments_2')->flatten();
+        $attachmentIds3 = $temps->pluck('attachments_3')->flatten();
+        $attachmentIds = $attachmentIds1->merge($attachmentIds2)->merge($attachmentIds3);
+       $attachments = Attachment::WhereIn('id', $attachmentIds)->get()->keyBy('id');
+       $temps = $temps->map(function ($temp) use ($attachments, $attachmentIds1, $attachmentIds2, $attachmentIds3){
+          $temp->attachments_1 = $attachmentIds1->map(function ($id) use ($attachments){
+             $attachment = @$this->getAttachments($attachments[$id]);
+              $result['id'] = @$attachment->id;
+              $result['thumb'] = @$attachment->thumb;
+              $result["file"] = @$attachment->file;
               return $result;
           });
-           $temp->attachments_2 = $fIds2->map(function ($id) use ($attachments){
-               $data = @$this->getAttachments($attachments[$id]);
-               $result['id'] = @$data->id;
-               $result['thumb'] = @$data->thumb;
-               $result["file"] = @$data->file;
+           $temp->attachments_2 = $attachmentIds2->map(function ($id) use ($attachments){
+               $attachment = @$this->getAttachments($attachments[$id]);
+               $result['id'] = @$attachment->id;
+               $result['thumb'] = @$attachment->thumb;
+               $result["file"] = @$attachment->file;
                return $result;
            });
-           $temp->attachments_3 = $fIds3->map(function ($id) use ($attachments){
-               $data = @$this->getAttachments($attachments[$id]);
-               $result['id'] = @$data->id;
-               $result['thumb'] = @$data->thumb;
-               $result["file"] = @$data->file;
+           $temp->attachments_3 = $attachmentIds3->map(function ($id) use ($attachments){
+               $attachment = @$this->getAttachments($attachments[$id]);
+               $result['id'] = @$attachment->id;
+               $result['thumb'] = @$attachment->thumb;
+               $result["file"] = @$attachment->file;
                return $result;
            });
             return @$temp;
