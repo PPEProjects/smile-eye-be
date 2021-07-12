@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "cb490685-2395-4668-b6a2-bc3a7390b997",
+		"_postman_id": "492223a2-8a49-490e-8f81-aa39a354b28f",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -21,7 +21,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"tinhdoan\",\n    \"email\": \"ssasdasa@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
+							"raw": "{\n    \"name\": \"Hacker\",\n    \"email\": \"hacker123@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -957,8 +957,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\n    $goal_id : ID\n    $type : String\n    $more : JSON\n    $attachments_1 :[ID]\n    $attachments_2 :[ID]\n    $attachments_3 :[ID]\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    goal_id : $goal_id\n    type : $type\n    more : $more\n    attachments_1 :$attachments_1\n    attachments_2 :$attachments_2\n    attachments_3 :$attachments_3\n    score : $score\n    }) {\n        goal_id,\n        more,\n        attachments_1\n    }\n  \n}",
-								"variables": "{\n    \"goal_id\" : 1,\n    \"type\" : \"somethings\",\n    \"more\" : [{\n        \"file\" : \"https://\"\n    }],\n    \"attachments_1\" :[1,2],\n    \"attachments_2\" :[1,2],\n    \"attachments_3\" :[1,2],\n    \"score\" : 3.3\n}"
+								"query": "mutation(\n    $goal_id : ID\n    $type : String\n    $more : JSON\n    $attachments_1 :[ID]\n    $attachments_2 :[ID]\n    $attachments_3 :[ID]\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    goal_id : $goal_id\n    type : $type\n    more : $more\n    attachments_1 :$attachments_1\n    attachments_2 :$attachments_2\n    attachments_3 :$attachments_3\n    score : $score\n    }) {\n        id\n        goal_id,\n        type,\n        more,\n        attachments_1\n    }\n  \n}",
+								"variables": "{\n    \"goal_id\" : 1,\n    \"type\" : \"watch_video\",\n    \"more\" : [\n        {\n       \"character_name\": \"I'm Hacker\",\n       \"audio\": \n       { \n           \"attachment_id\": 4,\n           \"file\": \"http://smile-eyes.test/storage/media/videos/2021-07-12-1626072475-61465612-1.mp4\"},\n           \"content\": \"はじめまして!\\n始めまして!\\nHajimemashite!Rất hân hạn được làm quen với anh/chị/bạn!\"\n           }\n            ],\n    \"attachments_1\" :[3,2],\n    \"attachments_2\" :[1],\n    \"attachments_3\" :[],\n    \"score\" : 8.3\n}"
 							}
 						},
 						"url": {
@@ -1107,8 +1107,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($id:ID!) {\n  detail_japanese_goal(\n      id : $id\n  ) {\n     id\n    type\n    more\n  }\n}",
-								"variables": "{\r\n\"id\":2\r\n}\r\n"
+								"query": "query($id:ID!) {\n  detail_japanese_goal(\n      id : $id\n  ) {\n     id\n     goal_id\n    type\n    score\n    more\n    attachments_1\n    attachments_2\n    attachments_3\n  }\n}",
+								"variables": "{\r\n\"id\":5\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -1545,7 +1545,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/Admin/Desktop/cựu thiếu nhi.jpg"
+									"src": "/C:/Users/HoaiNam/Videos/VID_20210518_180156.mp4"
 								}
 							]
 						},
@@ -1727,7 +1727,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID!) {\n  detail_attachment(id: $id) {\n    id\n    user {\n      id\n      name\n      email\n      created_at\n      updated_at\n    }\n    \n    file_type\n    file\n    created_at\n    updated_at\n  }\n}\n",
-								"variables": "{\r\n\r\n    \"id\": 1\r\n}\r\n"
+								"variables": "{\r\n    \"id\": 5\r\n}\r\n"
 							}
 						},
 						"url": {
