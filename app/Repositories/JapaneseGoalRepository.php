@@ -27,44 +27,33 @@ class JapaneseGoalRepository
         return $delete->delete();
     }
     public function detailJapaneseGoal($args){
-        $temps = JapaneseGoal::where('id',$args["id"])->get();
-        $attachmentIds1 = $temps->pluck('attachments_1')->flatten();
-        $attachmentIds2 = $temps->pluck('attachments_2')->flatten();
-        $attachmentIds3 = $temps->pluck('attachments_3')->flatten();
+        $japaneseGoal = JapaneseGoal::where('id',$args["id"])->get();
+        $attachmentIds1 = $japaneseGoal->pluck('attachments_1')->flatten();
+        $attachmentIds2 = $japaneseGoal->pluck('attachments_2')->flatten();
+        $attachmentIds3 = $japaneseGoal->pluck('attachments_3')->flatten();
         $attachmentIds = $attachmentIds1->merge($attachmentIds2)->merge($attachmentIds3);
        $attachments = Attachment::WhereIn('id', $attachmentIds)->get()->keyBy('id');
-       $temps = $temps->map(function ($temp) use ($attachments, $attachmentIds1, $attachmentIds2, $attachmentIds3){
-          $temp->attachments_1 = $attachmentIds1->map(function ($id) use ($attachments){
-             $attachment = @$this->getAttachments($attachments[$id]);
-              $result['id'] = @$attachment->id;
-              $result['thumb'] = @$attachment->thumb;
-              $result["file"] = @$attachment->file;
-              return $result;
+       $attachments = $attachments->map(function ($attachment){
+           [$thumb,$file] = $this->attachment_service->getThumbFile($attachment->file_type,$attachment->file);
+           $attachment->thumb = $thumb;
+           $attachment->file = $file;
+           return $attachment;
+       });
+       $temps = $japaneseGoal->map(function ($jpGoal) use ($attachments, $attachmentIds1, $attachmentIds2, $attachmentIds3){
+           $jpGoal->attachments_1 = $attachmentIds1->map(function ($id) use ($attachments){
+              return $attachments[$id];
           });
-           $temp->attachments_2 = $attachmentIds2->map(function ($id) use ($attachments){
-               $attachment = @$this->getAttachments($attachments[$id]);
-               $result['id'] = @$attachment->id;
-               $result['thumb'] = @$attachment->thumb;
-               $result["file"] = @$attachment->file;
-               return $result;
+           $jpGoal->attachments_2 = $attachmentIds2->map(function ($id) use ($attachments){
+               return $attachments[$id];
            });
-           $temp->attachments_3 = $attachmentIds3->map(function ($id) use ($attachments){
-               $attachment = @$this->getAttachments($attachments[$id]);
-               $result['id'] = @$attachment->id;
-               $result['thumb'] = @$attachment->thumb;
-               $result["file"] = @$attachment->file;
-               return $result;
+           $jpGoal->attachments_3 = $attachmentIds3->map(function ($id) use ($attachments){
+               return $attachments[$id];
            });
-            return @$temp;
+            return @$jpGoal;
        });
 
+        $japaneseGoal = $japaneseGoal->first();
+        return $japaneseGoal;
+    }
 
-        return $temps->first();
-    }
-    public function getAttachments($attachments){
-        [$thumb,$file] = $this->attachment_service->getThumbFile($attachments->file_type,$attachments->file);
-        $attachments->thumb = $thumb;
-        $attachments->file = $file;
-        return $attachments;
-    }
 }
