@@ -17,4 +17,7 @@ class JapaneseGoalQueries
     public function detailJapaneseGoal($_,array $args){
      return $this->japanese_goal_repository->detailJapaneseGoal($args);
  }
+ public function searchByTypeJapaneseGoal($_,array $args){
+     return $this->japanese_goal_repository->searchByTypeJapaneseGoal($args);
+ }
 }
