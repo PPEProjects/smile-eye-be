@@ -20,4 +20,8 @@ class JapaneseGoalRepository
         $delete = JapaneseGoal::find($args['id']);
         return $delete->delete();
     }
+    public function detailJapaneseGoal($args){
+        $temp = JapaneseGoal::find($args["id"]);
+        return $temp = $temp ? $temp : null;
+    }
 }
