@@ -92,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"ssasda@gmail.com\",\n    \"password\": \"123456789\"\n}",
+							"raw": "{\n    \"email\": \"ssasdasa@gmail.com\",\n    \"password\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -924,6 +924,191 @@
 							"graphql": {
 								"query": "query($status: String){\n  list_pend_friends\n  (\n   status: $status\n   ){\n       friend{\n           id\n           status\n       }\n      id\n      messages\n      name\n      email\n      phone_number\n      quotes\n       attachment{\n          id\n          thumb\n      }\n       mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n       }\n      \n    \n   }\n}\n\n",
 								"variables": "{\r\n    \r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "japanese_goals",
+			"item": [
+				{
+					"name": "create_japanese_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $goal_id : ID\n    $type : String\n    $more : JSON\n    $attachments_1 :[ID]\n    $attachments_2 :[ID]\n    $attachments_3 :[ID]\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    goal_id : $goal_id\n    type : $type\n    more : $more\n    attachments_1 :$attachments_1\n    attachments_2 :$attachments_2\n    attachments_3 :$attachments_3\n    score : $score\n    }) {\n        goal_id,\n        more,\n        attachments_1\n    }\n  \n}",
+								"variables": "{\n    \"goal_id\" : 1,\n    \"type\" : \"somethings\",\n    \"more\" : [{\n        \"file\" : \"https://\"\n    }],\n    \"attachments_1\" :[1,2],\n    \"attachments_2\" :[1,2],\n    \"attachments_3\" :[1,2],\n    \"score\" : 3.3\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_japanese_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $id : ID\n    $goal_id : ID\n    $type : String\n    $more : JSON\n    $attachments_1 :[ID]\n    $attachments_2 :[ID]\n    $attachments_3 :[ID]\n    $score : Float\n    )\n{\n  update_japanese_goals(\n    input: \n    {\n        id: $id\n    goal_id : $goal_id\n    type : $type\n    more : $more\n    attachments_1 :$attachments_1\n    attachments_2 :$attachments_2\n    attachments_3 :$attachments_3\n    score : $score\n    }) {\n        goal_id,\n        more,\n        attachments_1\n    }\n  \n}",
+								"variables": "{\n    \"id\":1,\n    \"goal_id\" : 1,\n    \"type\" : \"dech\",\n    \"more\" : {\n        \"file\" : \"https://\"\n    },\n    \"attachments_1\" :[1,2],\n    \"attachments_2\" :[1,2],\n    \"attachments_3\" :[1,2],\n    \"score\" : 3.3\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_japanese_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation($id:ID!) \n    {\n    delete_japanese_goals(\n        id:$id\n    )\n}",
+								"variables": "{\r\n    \"id\": 1\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_japanese_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  japanese_goals(first:22, page:1) {\n    data {\n     id\n    type\n    more\n  }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_sort_japanese_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  sort_japanese_goals(first:22, page:1) {\n    data {\n     id\n    type\n    more\n  }\n  }\n}",
+								"variables": "{\r\n\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_detail_japanese_goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id:ID!) {\n  detail_japanese_goal(\n      id : $id\n  ) {\n     id\n    type\n    more\n  }\n}",
+								"variables": "{\r\n\"id\":2\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -2372,7 +2557,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation($id:ID!, $delete_type: String, $checked_at: String) {\r\n  delete_task(\r\n    input: {\r\n      id: $id\r\n      delete_type: $delete_type\r\n      checked_at: $checked_at\r\n    }\r\n  )\r\n}",
-								"variables": "{\r\n    \"id\": 3,\r\n    \"delete_type\": \"task\",\r\n    \"checked_at\": \"2021-05-06\"\r\n}"
+								"variables": "{\r\n    \"id\": 15,\r\n    \"delete_type\": \"todolist\",\r\n    \"checked_at\": \"2021-07-09\"\r\n}"
 							}
 						},
 						"url": {
@@ -2772,7 +2957,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n  $task_id: ID!\r\n  $checked_at: DateTime!\r\n  $name: String\r\n  $status: String\r\n  $edit_type : String\r\n  $general_info: JSON\r\n\r\n) {\r\n  upsert_todolist(\r\n    input: {\r\n      task_id: $task_id\r\n      checked_at: $checked_at\r\n      name: $name\r\n      edit_type : $edit_type\r\n      status: $status\r\n      general_info: $general_info\r\n    }\r\n  ) {\r\n    id\r\n    name\r\n    status\r\n    created_at\r\n    updated_at\r\n    task{\r\n        id\r\n    }\r\n    goal{\r\n        id\r\n    }\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n        created_at\r\n        updated_at\r\n    }\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"task_id\": 14,\r\n    \"checked_at\":\"2021-07-09 00:00:00\",\r\n    \"status\": null,\r\n    \"edit_type\" : \"all\",\r\n    \"name\":\"aloalo\",\r\n    \"general_info\": {\r\n        \"address\": \"duoc lam nha\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-08 00:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\",\r\n        \"color_change\" : \"\"\r\n    } \r\n}"
+								"variables": "{\r\n    \"task_id\": 1,\r\n    \"checked_at\":\"2021-07-09 00:00:00\",\r\n    \"status\": null,\r\n    \"name\":null,\r\n    \"edit_type\" : \"one\",\r\n    \"general_info\": {\r\n        \"address\": \"duoc lam nha\",\r\n        \"zalo\": \"0344703838\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-08 00:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
 							}
 						},
 						"url": {

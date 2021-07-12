@@ -1,0 +1,44 @@
+extend type Mutation {
+    delete_japanese_goals(id: ID! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@deletejapaneseGoal")
+    create_japanese_goals(input: CreateJapaneseGoalInput! @spread): JapaneseGoal @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@createJapaneseGoal")
+    update_japanese_goals(input: UpdateJapaneseGoalInput! @spread): JapaneseGoal @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@updateJapaneseGoal")
+}
+extend type Query {
+    japanese_goals: [JapaneseGoal] @paginate(type: "paginator" model: "App\\Models\\JapaneseGoal")
+    sort_japanese_goals(orderBy: [OrderByClause!] @orderBy): [JapaneseGoal!]! @paginate(type: "paginator" model: "App\\Models\\JapaneseGoal")
+    detail_japanese_goal(id: ID!): JapaneseGoal @field(resolver:"JapaneseGoalQueries@detailJapaneseGoal")
+#    my_japanese_goals(parent_id:String!): [JapaneseGoal] @guard @field(resolver:"JapaneseGoalQueries@myJapaneseGoals")
+
+}
+
+type JapaneseGoal{
+    id: ID
+    goal : Goal
+    goal_id : ID
+    type: String
+    more : JSON
+    attachments_1 : JSON
+    attachments_2 : JSON
+    attachments_3 : JSON
+}
+
+input CreateJapaneseGoalInput{
+    goal_id : ID
+    type : String
+    more : JSON
+    attachments_1 :[ID]
+    attachments_2 :[ID]
+    attachments_3 :[ID]
+    score : Float
+
+}
+input UpdateJapaneseGoalInput{
+    id : ID
+    goal_id : ID
+    type : String
+    more : JSON
+    attachments_1 :[ID]
+    attachments_2 :[ID]
+    attachments_3 :[ID]
+    score : Float
+}
