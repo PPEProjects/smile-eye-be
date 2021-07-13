@@ -105,6 +105,27 @@ class AttachmentController extends Controller
                 }
                 return response()->json(@$create);
                 break;
+            case 'audio':
+                $tail = $file->getClientOriginalExtension();
+                $fileName = date('Y-m-d') . '-' . time() . '-' . rand() . '-' . Auth::id() . '.' . $tail;
+                $filePath = storage_path() . "/app/public/media/audios";
+                $attachment = array_merge($request->all(), [
+                    'user_id'   => Auth::id(),
+                    'file'      => 'media/audios/' . $fileName,
+                    'file_type' => 'audio',
+                    'file_name' => $fileRootName,
+//                    'file_size' => @$file->getSize()
+                    'file_size' => filesize($filePath)
+                ]);
+                $create = Attachment::create($attachment);
+                if ($create) {
+                    $file->move($filePath, $fileName);
+                    [$thumb, $file] = $this->attachment_service->getThumbFile($create->file_type, $create->file);
+                    $create->thumb = $thumb;
+                    $create->file = $file;
+                }
+                return response()->json(@$create);
+                break;
             case 'application' :
                 $tail = (string)$file->getClientOriginalExtension();
                 $create = $this->saveFile($file, $request, $tail);
