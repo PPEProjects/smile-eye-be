@@ -1048,7 +1048,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\n    $goal_id : ID\n    $type : String\n    $more : JSON\n    $attachments_1 :[ID]\n    $attachments_2 :[ID]\n    $attachments_3 :[ID]\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    goal_id : $goal_id\n    type : $type\n    more : $more\n    attachments_1 :$attachments_1\n    attachments_2 :$attachments_2\n    attachments_3 :$attachments_3\n    score : $score\n    }) {\n        id\n        goal_id,\n        type,\n        more,\n        attachments_1,\n        attachments_2,\n        attachments_3\n    }\n  \n}",
-								"variables": "{\n    \"goal_id\" : 3,\n    \"type\" : \"alphabet\",\n    \"more\" : [\n        \n    ],\n    \"attachments_1\" :[],\n    \"attachments_2\" :[],\n    \"attachments_3\" :[],\n    \"score\" : 8.3\n}"
+								"variables": "{\n    \"goal_id\" : null,\n    \"type\" : \"alphabet\",\n    \"more\" : [\n    {\n        \"content\": \"はじめまして!\\n始めまして!\\nHajimemashite!Rất hân hạn được làm quen với anh/chị/bạn!\",\n        \"image\": \n        {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n        },\n        \n        \"audio\": \n        {\n            \"attachment_id\": 2,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n        },\n        \"video\": \n        {\n            \"attachment_id\": 3,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n        }\n    }\n],\n    \"attachments_1\" :[],\n    \"attachments_2\" :[],\n    \"attachments_3\" :[],\n    \"score\" : 2.3\n}"
 							}
 						},
 						"url": {
@@ -1198,7 +1198,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id:ID!) {\n  detail_japanese_goal(\n      id : $id\n  ) {\n     id\n     goal_id\n    type\n    score\n    more\n    attachments_1\n    attachments_2\n    attachments_3\n  }\n}",
-								"variables": "{\r\n\"id\":5\r\n}\r\n"
+								"variables": "{\r\n\"id\":9\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -1228,7 +1228,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($type: String) {\n  search_by_type_japanese_goal(\n      type : $type\n  ) {\n     id\n     goal_id\n    type\n    score\n    more\n    attachments_1\n    attachments_2\n    attachments_3\n  }\n}",
-								"variables": "{\r\n    \"type\":\"watch_video\"\r\n}\r\n"
+								"variables": "{\r\n    \"type\":\"alphabet\"\r\n}\r\n"
 							}
 						},
 						"url": {

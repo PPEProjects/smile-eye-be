@@ -45,7 +45,7 @@ class JapaneseGoalRepository
 
             return @$jpGoal;
         });
-        return $japaneseGoal;
+        return $japaneseGoal->sortByDESC('id');
     }
     public function getAttachments($ids){
         $attachments = Attachment::WhereIn('id', $ids)->get();
