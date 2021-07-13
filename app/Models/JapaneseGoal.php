@@ -32,6 +32,8 @@ class JapaneseGoal extends Model
         'attachments_2' => 'json',
         'attachments_3' => 'json',
     ];
-
+    public function goal(){
+        return $this->belongsTo(goal::class);
+    }
 
 }

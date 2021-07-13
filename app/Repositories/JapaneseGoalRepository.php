@@ -48,6 +48,9 @@ class JapaneseGoalRepository
         return $japaneseGoal->sortByDESC('id');
     }
     public function getAttachments($ids){
+        if (!isset($ids)){
+            return null;
+        }
         $attachments = Attachment::WhereIn('id', $ids)->get();
         $attachments = $attachments->map(function ($attachment){
             [$thumb,$file] = $this->attachment_service->getThumbFile($attachment->file_type,$attachment->file);
