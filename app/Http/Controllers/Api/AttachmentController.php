@@ -70,7 +70,7 @@ class AttachmentController extends Controller
                         'file'      => $fileName,
                         'file_type' => 'image',
                         'file_name' => $fileRootName,
-                        'file_size' => $file->getSize()
+                        'file_size' => @$file->getSize()
                     ]);
                     $create = Attachment::create($attachment);
                     if ($create) {
@@ -92,7 +92,7 @@ class AttachmentController extends Controller
                     'file'      => 'media/videos/' . $fileName,
                     'file_type' => 'video',
                     'file_name' => $fileRootName,
-                    'file_size' => $file->getSize()
+                    'file_size' => @$file->getSize()
                 ]);
                 $create = Attachment::create($attachment);
                 if ($create) {
@@ -165,7 +165,7 @@ class AttachmentController extends Controller
             'file'      => $fileName,
             'file_type' => $fileType,
             'file_name' => $file->getClientOriginalName(),
-            'file_size' => $file->getSize()
+            'file_size' => @$file->getSize()
         ]);
         $create = Attachment::create($attachment);
 
