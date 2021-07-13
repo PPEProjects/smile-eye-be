@@ -29,16 +29,26 @@ class JapaneseGoalRepository
 
     public function getJapaneseGoal($args){
         if (isset($args['id'])) {
-            $japaneseGoal = JapaneseGoal::where('id', $args["id"])->get();
+            $japaneseGoal = JapaneseGoal::where('id', $args["id"])->get()->keyBy('id');
         }
         if(isset($args["type"])){
-            $japaneseGoal = JapaneseGoal::where('type', $args["type"])->get();
+            $japaneseGoal = JapaneseGoal::where('type', $args["type"])->get()->keyBy('id');
         }
-        $attachmentIds1 = $japaneseGoal->pluck('attachments_1')->flatten();
-        $attachmentIds2 = $japaneseGoal->pluck('attachments_2')->flatten();
-        $attachmentIds3 = $japaneseGoal->pluck('attachments_3')->flatten();
-        $attachmentIds = $attachmentIds1->merge($attachmentIds2)->merge($attachmentIds3);
-        $attachments = Attachment::WhereIn('id', $attachmentIds)->get()->keyBy('id');
+        $japaneseGoal = $japaneseGoal->map(function ($jpGoal) use ($japaneseGoal){
+           $attachmentIds_1 = @$japaneseGoal[$jpGoal->id]->attachments_1;
+           $attachmentIds_2 = @$japaneseGoal[$jpGoal->id]->attachments_2;
+           $attachmentIds_3 = @$japaneseGoal[$jpGoal->id]->attachments_3;
+
+           $jpGoal->attachments_1 = $this->getAttachments($attachmentIds_1);
+           $jpGoal->attachments_2 = $this->getAttachments($attachmentIds_2);
+           $jpGoal->attachments_3 = $this->getAttachments($attachmentIds_3);
+
+            return @$jpGoal;
+        });
+        return $japaneseGoal;
+    }
+    public function getAttachments($id){
+        $attachments = Attachment::WhereIn('id', $id)->get();
         $attachments = $attachments->map(function ($attachment){
             [$thumb,$file] = $this->attachment_service->getThumbFile($attachment->file_type,$attachment->file);
             $getAttachment = collect();
@@ -48,22 +58,8 @@ class JapaneseGoalRepository
             $getAttachment['thumb'] = $thumb;
             return $getAttachment;
         });
-        $japaneseGoal = $japaneseGoal->map(function ($jpGoal) use ($attachments, $attachmentIds1, $attachmentIds2, $attachmentIds3){
-            $jpGoal->attachments_1 = $attachmentIds1->map(function ($id) use ($attachments){
-                return $attachments[$id];
-            });
-            $jpGoal->attachments_2 = $attachmentIds2->map(function ($id) use ($attachments){
-                return $attachments[$id];
-            });
-            $jpGoal->attachments_3 = $attachmentIds3->map(function ($id) use ($attachments){
-                return $attachments[$id];
-            });
-            return @$jpGoal;
-        });
-
-        return $japaneseGoal;
+        return $attachments;
     }
-
     public function detailJapaneseGoal($args){
 
        $japaneseGoal = $this->getJapaneseGoal($args);
