@@ -18,6 +18,7 @@ class JapaneseGoalMutations{
        return $this->japanese_goal_repository->createJapaneseGoal($args);
     }
     public function updateJapaneseGoal($_,array $args){
+        $args = array_diff_key($args, array_flip(['type']));
         return $this->japanese_goal_repository->updateJapaneseGoal($args);
     }
     public function deletejapaneseGoal($_,array $args){
