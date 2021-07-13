@@ -24,8 +24,7 @@ class JapaneseGoalMutations{
         if (!isset($args['name_goal'])) {
             throw new Error('You must input name goal');
         }
-        $data = ['name' => $args['name_goal'], 'user_id', Auth::id()];
-        $goal = Goal::create($data);
+        $goal = Goal::create(['name' => $args['name_goal'], 'user_id'=> Auth::id()]);
         $generalInfo = $this->generalinfo_repository
             ->setType('goal')
             ->upsert(array_merge($goal->toArray(), $args))
