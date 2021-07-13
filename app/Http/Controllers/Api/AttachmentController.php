@@ -70,7 +70,8 @@ class AttachmentController extends Controller
                         'file'      => $fileName,
                         'file_type' => 'image',
                         'file_name' => $fileRootName,
-                        'file_size' => @$file->getSize()
+//                        'file_size' => @$file->getSize()
+                        'file_size' => filesize($filePath)
                     ]);
                     $create = Attachment::create($attachment);
                     if ($create) {
@@ -92,7 +93,8 @@ class AttachmentController extends Controller
                     'file'      => 'media/videos/' . $fileName,
                     'file_type' => 'video',
                     'file_name' => $fileRootName,
-                    'file_size' => @$file->getSize()
+//                    'file_size' => @$file->getSize()
+                    'file_size' => filesize($filePath)
                 ]);
                 $create = Attachment::create($attachment);
                 if ($create) {
@@ -159,13 +161,13 @@ class AttachmentController extends Controller
         }
         $fileName = 'application/' . $folder . '/' . date('Y-m-d') . '-' . time() . '-' . rand() . '-' . Auth::id() . '.' . $tail;
         $file->move($filePath, $fileName);
-
         $attachment = array_merge($request->all(), [
             'user_id'   => Auth::id(),
             'file'      => $fileName,
             'file_type' => $fileType,
             'file_name' => $file->getClientOriginalName(),
-            'file_size' => @$file->getSize()
+//            'file_size' => @$file->getSize()
+            'file_size' => filesize($filePath)
         ]);
         $create = Attachment::create($attachment);
 
