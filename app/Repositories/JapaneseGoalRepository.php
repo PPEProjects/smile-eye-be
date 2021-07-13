@@ -47,8 +47,8 @@ class JapaneseGoalRepository
         });
         return $japaneseGoal;
     }
-    public function getAttachments($id){
-        $attachments = Attachment::WhereIn('id', $id)->get();
+    public function getAttachments($ids){
+        $attachments = Attachment::WhereIn('id', $ids)->get();
         $attachments = $attachments->map(function ($attachment){
             [$thumb,$file] = $this->attachment_service->getThumbFile($attachment->file_type,$attachment->file);
             $getAttachment = collect();

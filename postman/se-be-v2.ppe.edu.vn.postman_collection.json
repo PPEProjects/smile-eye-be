@@ -944,7 +944,7 @@
 			"name": "japanese_goals",
 			"item": [
 				{
-					"name": "create_japanese_goals",
+					"name": "create_communication_japanese_goals",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -959,6 +959,96 @@
 							"graphql": {
 								"query": "mutation(\n    $goal_id : ID\n    $type : String\n    $more : JSON\n    $attachments_1 :[ID]\n    $attachments_2 :[ID]\n    $attachments_3 :[ID]\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    goal_id : $goal_id\n    type : $type\n    more : $more\n    attachments_1 :$attachments_1\n    attachments_2 :$attachments_2\n    attachments_3 :$attachments_3\n    score : $score\n    }) {\n        id\n        goal_id,\n        type,\n        more,\n        attachments_1,\n        attachments_2,\n        attachments_3\n    }\n  \n}",
 								"variables": "{\n    \"goal_id\" : 3,\n    \"type\" : \"communication\",\n    \"more\" : [\n        {\n         \"main_meaning\": \"Chào khi gặp lần đầu tiên.\",\n         \"sentence_example\": \"始めまして!Hajimemashite!\"\n        },\n        {\n         \"main_meaning\": \"Giới thiệu tên.\",\n         \"sentence_example\": \"[Ten] です。\\n[Ten] desu.\"\n        }\n    ],\n    \"attachments_1\" :[3,2],\n    \"attachments_2\" :[1],\n    \"attachments_3\" :[],\n    \"score\" : 8.3\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create_watch_video_japanese_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $goal_id : ID\n    $type : String\n    $more : JSON\n    $attachments_1 :[ID]\n    $attachments_2 :[ID]\n    $attachments_3 :[ID]\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    goal_id : $goal_id\n    type : $type\n    more : $more\n    attachments_1 :$attachments_1\n    attachments_2 :$attachments_2\n    attachments_3 :$attachments_3\n    score : $score\n    }) {\n        id\n        goal_id,\n        type,\n        more,\n        attachments_1,\n        attachments_2,\n        attachments_3\n    }\n  \n}",
+								"variables": "{\n    \"goal_id\" : 3,\n    \"type\" : \"watch_video\",\n    \"more\" : [\n        {\n        \"character_name\": \"Nam Hoai\",\n         \"audio\": \n         {\n          \"attachment_id\": 1,\n          \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"},\n          \"content\": \"はじめまして!\\n始めまして!\\nHajimemashite!Rất hân hạn được làm quen với anh/chị/bạn!\"\n          }\n    ],\n    \"attachments_1\" :[3,2],\n    \"attachments_2\" :[1],\n    \"attachments_3\" :[],\n    \"score\" : 8.3\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create_vocabulary_grammar_japanese_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $goal_id : ID\n    $type : String\n    $more : JSON\n    $attachments_1 :[ID]\n    $attachments_2 :[ID]\n    $attachments_3 :[ID]\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    goal_id : $goal_id\n    type : $type\n    more : $more\n    attachments_1 :$attachments_1\n    attachments_2 :$attachments_2\n    attachments_3 :$attachments_3\n    score : $score\n    }) {\n        id\n        goal_id,\n        type,\n        more,\n        attachments_1,\n        attachments_2,\n        attachments_3\n    }\n  \n}",
+								"variables": "{\n    \"goal_id\" : 3,\n    \"type\" : \"vocabulary_grammar\",\n    \"more\" : [\n       {\n        \"image\": \n        {\n        \"attachment_id\": 1,\n        \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"}, \n        \"video\":\n         {\n             \"attachment_id\": 1,\n             \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n            }\n       }\n    ],\n    \"attachments_1\" :[3,2],\n    \"attachments_2\" :[1],\n    \"attachments_3\" :[],\n    \"score\" : 8.3\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create_alphabet_japanese_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $goal_id : ID\n    $type : String\n    $more : JSON\n    $attachments_1 :[ID]\n    $attachments_2 :[ID]\n    $attachments_3 :[ID]\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    goal_id : $goal_id\n    type : $type\n    more : $more\n    attachments_1 :$attachments_1\n    attachments_2 :$attachments_2\n    attachments_3 :$attachments_3\n    score : $score\n    }) {\n        id\n        goal_id,\n        type,\n        more,\n        attachments_1,\n        attachments_2,\n        attachments_3\n    }\n  \n}",
+								"variables": "{\n    \"goal_id\" : 3,\n    \"type\" : \"alphabet\",\n    \"more\" : [\n        \n    ],\n    \"attachments_1\" :[],\n    \"attachments_2\" :[],\n    \"attachments_3\" :[],\n    \"score\" : 8.3\n}"
 							}
 						},
 						"url": {
@@ -1108,7 +1198,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id:ID!) {\n  detail_japanese_goal(\n      id : $id\n  ) {\n     id\n     goal_id\n    type\n    score\n    more\n    attachments_1\n    attachments_2\n    attachments_3\n  }\n}",
-								"variables": "{\r\n\"id\":7\r\n}\r\n"
+								"variables": "{\r\n\"id\":5\r\n}\r\n"
 							}
 						},
 						"url": {
