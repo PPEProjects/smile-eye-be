@@ -21,6 +21,9 @@ class JapaneseGoalMutations{
         if (!isset($args['type'])){
             throw new Error('You must input type');
         }
+        if (!isset($args['name_goal']) && !isset($args['goal_id'])){
+            throw new Error('You must input name goal');
+        }
         if (isset($args['name_goal'])) {
             $goal = Goal::create(['name' => $args['name_goal'], 'user_id' => Auth::id()]);
             $this->generalinfo_repository
