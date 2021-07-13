@@ -25,10 +25,10 @@ class JapaneseGoalMutations{
             throw new Error('You must input name goal');
         }
         if (isset($args['name_goal'])) {
+            $dataGoal = ['name' => $args['name_goal'], 'user_id' => Auth::id()];
             if (isset($args['parent_id'])){
-                $dataGoal = ['name' => $args['name_goal'], 'user_id' => Auth::id(), 'parent_id' => $args['parent_id']];
+                $dataGoal['parent_id'] =  $args['parent_id'];
             }
-            else $dataGoal = ['name' => $args['name_goal'], 'user_id' => Auth::id()];
             $goal = Goal::create($dataGoal);
             $this->generalinfo_repository
                 ->setType('goal')
