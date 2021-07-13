@@ -80,7 +80,7 @@ Route::get('/test-model', function () {
 });
 
 Route::get('/tt', function () {
-dd(\App\Models\User::find(1)->goals->toArray());
+phpinfo();
 
 });
 
@@ -125,3 +125,5 @@ Route::post('/sender', function () {
     $data = request()->data;
     event(new \App\Events\LoginMessage($data));
 });
+// WEB RTC
+//Route::post('/pusher/auth',)
