@@ -21,11 +21,15 @@ class JapaneseGoalMutations{
         if (!isset($args['type'])){
             throw new Error('You must input type');
         }
-        if (!isset($args['name_goal']) && !isset($args['goal_id'])){
+        if (!isset($args['name_goal'])){
             throw new Error('You must input name goal');
         }
         if (isset($args['name_goal'])) {
-            $goal = Goal::create(['name' => $args['name_goal'], 'user_id' => Auth::id()]);
+            if (isset($args['parent_id'])){
+                $dataGoal = ['name' => $args['name_goal'], 'user_id' => Auth::id(), 'parent_id' => $args['parent_id']];
+            }
+            else $dataGoal = ['name' => $args['name_goal'], 'user_id' => Auth::id()];
+            $goal = Goal::create($dataGoal);
             $this->generalinfo_repository
                 ->setType('goal')
                 ->upsert(array_merge($goal->toArray(), $args))

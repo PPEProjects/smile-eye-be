@@ -27,6 +27,7 @@ type JapaneseGoal{
 input CreateJapaneseGoalInput{
     name_goal: String
     goal_id: ID
+    parent_id: ID
     type : String @rules(apply:["nullable","in:watch_video,communication,vocabulary_grammar,alphabet"])
     more : JSON
     attachments_1 :[ID]
