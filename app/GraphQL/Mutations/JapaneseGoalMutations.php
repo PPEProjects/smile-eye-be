@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Mutations;
 use App\Repositories\JapaneseGoalRepository;
+use GraphQL\Error\Error;
 
 class JapaneseGoalMutations{
     private $japanese_goal_repository;
@@ -11,6 +12,9 @@ class JapaneseGoalMutations{
     }
 
     public function createJapaneseGoal($_,array $args){
+        if (!isset($args['type'])){
+            throw new Error('You must input type');
+        }
        return $this->japanese_goal_repository->createJapaneseGoal($args);
     }
     public function updateJapaneseGoal($_,array $args){
