@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Achieve;
 use App\Models\GeneralInfo;
 use App\Models\Goal;
+use App\Models\JapaneseGoal;
 use App\Models\Task;
 use App\Models\Todolist;
 use Carbon\Carbon;
@@ -108,7 +109,10 @@ class GoalRepository
         }
 
         $goals = $goals->get();
-
+        $goalIds = $goals->pluck('id');
+        $checkJPGoals = JapaneseGoal::select('id', 'type', 'goal_id')
+                                    ->whereIn('goal_id', $goalIds)
+                                    ->get()->keyBy('goal_id');
         //Check goal have  task_id And Task have goal_id
         $getIdGoals = $goals->pluck('id');
         $getIdTasks = $goals->pluck('task_id');
@@ -118,6 +122,7 @@ class GoalRepository
 
         foreach ($goals as $value)
         {
+            $value->japanese_goal = @$checkJPGoals[$value->id];
             if ($value->task_id == null || !isset($findIdTasks[$value->task_id]))
             {
                 $value->is_add_branch = true;
