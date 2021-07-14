@@ -68,13 +68,15 @@ class JapaneseGoalRepository
         }
         $value = $args[$nameCollum];
         $detailJPGoal = $this->getJapaneseGoal($nameCollum, $value)->first();
-        $goal = $this->findParentGoal($args['goal_id']);
-        while(true) {
-            if (isset($goal->parent_id)){
-                $goal = $this->findParentGoal($goal->parent_id);
-            }else break;
+        if (isset($detailJPGoal->goal_id)) {
+            $goal = $this->findParentGoal($detailJPGoal->goal_id);
+            while (true) {
+                if (isset($goal->parent_id)) {
+                    $goal = $this->findParentGoal($goal->parent_id);
+                } else break;
+            }
+            $detailJPGoal->goal_root = $goal;
         }
-        $detailJPGoal->goal_root = $goal;
         return $detailJPGoal;
     }
     public function findParentGoal($id){
