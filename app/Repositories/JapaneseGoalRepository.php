@@ -27,16 +27,10 @@ class JapaneseGoalRepository
         return $delete->delete();
     }
 
-    public function getJapaneseGoal($args){
-        if (isset($args['goal_id'])) {
-            $japaneseGoal = JapaneseGoal::where('goal_id', $args["goal_id"])->get()->keyBy('id');
-        }
-        if (isset($args['id'])) {
-            $japaneseGoal = JapaneseGoal::where('id', $args["id"])->get()->keyBy('id');
-        }
-        if(isset($args["type"])){
-            $japaneseGoal = JapaneseGoal::where('type', $args["type"])->get()->keyBy('id');
-        }
+    public function getJapaneseGoal($nameCollum, $value){
+
+        $japaneseGoal = JapaneseGoal::where($nameCollum, $value)->get()->keyBy('id');
+
         $japaneseGoal = $japaneseGoal->map(function ($jpGoal) use ($japaneseGoal){
            $attachmentIds_1 = @$japaneseGoal[$jpGoal->id]->attachments_1;
            $attachmentIds_2 = @$japaneseGoal[$jpGoal->id]->attachments_2;
@@ -67,11 +61,16 @@ class JapaneseGoalRepository
         return $attachments;
     }
     public function detailJapaneseGoal($args){
-
-        return $this->getJapaneseGoal($args)->first();
+        $nameCollum = "id";
+        if (isset($args['goal_id'])){
+           $nameCollum = "goal_id";
+        }
+        $value = $args[$nameCollum];
+        $detailJPGoal = $this->getJapaneseGoal($nameCollum, $value);
+        return $detailJPGoal->first();
     }
     public function searchByTypeJapaneseGoal($args){
 
-        return $this->getJapaneseGoal($args);
+        return $this->getJapaneseGoal("type", $args['type']);
     }
 }
