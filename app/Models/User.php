@@ -57,5 +57,8 @@ class User extends \ppeCore\dvtinh\Models\User implements MustVerifyEmail
     public function notification(){
         return $this->hasMany(Notification::class);
     }
+    public function notes(){
+        return $this->hasMany(Note::class,'user_id','id');
+    }
 
 }

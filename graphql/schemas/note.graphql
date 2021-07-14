@@ -1,0 +1,39 @@
+
+extend type Mutation {
+    create_note(input: CreateNoteInput! @spread): Note @guard @field(resolver: "App\\GraphQL\\Mutations\\NoteMutations@createNote")
+    update_note(input: UpdateNoteInput! @spread): Note @guard @field(resolver: "App\\GraphQL\\Mutations\\NoteMutations@updateNote")
+    delete_note(input: DeleteNoteInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\NoteMutations@deleteNote")
+}
+
+extend type Query {
+    notes: [Note] @paginate(type: "paginator" model: "App\\Models\\Note")
+    sort_notes(orderBy: [OrderByClause!] @orderBy): [Note] @paginate(type: "paginator" model: "App\\Models\\Note")
+    my_notes(checked_at : Date): [Note] @guard @field(resolver:"NoteQueries@myNotes")
+    detail_note(id : ID!): Note @guard @field(resolver:"NoteQueries@detailNotes")
+}
+
+type Note {
+    id: ID
+    user: User
+    user_id : ID
+    checked_at : DateTime
+    content : String
+    created_at: DateTime
+    updated_at: DateTime
+}
+input CreateNoteInput{
+    checked_at : DateTime
+    content : String
+}
+
+input UpdateNoteInput{
+    id: ID!
+    checked_at : DateTime
+    content : String
+}
+
+input DeleteNoteInput{
+    id: ID!
+}
+
+
