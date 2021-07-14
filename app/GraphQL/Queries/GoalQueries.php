@@ -3,6 +3,7 @@
 namespace App\GraphQL\Queries;
 
 use App\Models\Goal;
+use App\Models\JapaneseGoal;
 use App\Models\Task;
 use App\Repositories\GeneralInfoRepository;
 use App\Repositories\GoalRepository;
@@ -91,7 +92,15 @@ class GoalQueries
                 $goals = $goals->where('parent_id', $args['parent_id']);
                 break;
         }
-        $goals = $goals->get();
+        $goals = $goals->get()->keyBy('id');
+        $goalIds = $goals->pluck('id');
+        $checkJPGoals = JapaneseGoal::whereIn('goal_id', $goalIds)->get();
+        $JPGoalIds = $checkJPGoals->pluck('goal_id')->toArray();
+        foreach ($goals as $value){
+            if (array_intersect([$value->id], $JPGoalIds)){
+                $value->type = "Japanese_goal";
+            }else $value->type = "Goal";
+        }
 
         $goals = $this->generalinfo_repository
             ->setType('goal')
