@@ -654,6 +654,7 @@ class GoalRepository
         else{
             $goalRoot = Goal::create(array_diff_key($goal->toArray(),array_flip(["id","directive"])));
             $goalChilds = $this->findChilds($goal);
+            //provide idRoot and it's childs
             return $this->dulicate($goalRoot,$goalChilds);
         }
 
