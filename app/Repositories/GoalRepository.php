@@ -111,7 +111,7 @@ class GoalRepository
         $goals = $goals->get();
 
         $getIdGoals = $goals->pluck('id');
-        $checkJPGoals = JapaneseGoal::select('id', 'type', 'goal_id')
+        $japaneseGoals = JapaneseGoal::select('id', 'type', 'goal_id')
                                      ->whereIn('goal_id', $getIdGoals)
                                      ->get()->keyBy('goal_id');
 
@@ -121,21 +121,23 @@ class GoalRepository
         $findIdTasks = Task::WhereIn('id', $getIdTasks)->get()->keyBy('id');
         $findIdGoals = Task::WhereIn('goal_id', $getIdGoals)->get()->keyBy('goal_id');
 
-        foreach ($goals as $value)
-        {
-            $value->japanese_goal = @$checkJPGoals[$value->id];
-            if ($value->task_id == null || !isset($findIdTasks[$value->task_id]))
-            {
-                $value->is_add_branch = true;
-                $value->is_add_todo = true;
-            }
-            else $value->is_add_branch = false;
+        $goals = $goals->map(function ($goal) use ($japaneseGoals , $findIdGoals, $findIdTasks){
+            $goal->japanese_goal = @$japaneseGoals[$goal->id];
 
-            if(isset($findIdGoals[$value->id]) || isset($findIdTasks[$value->task_id]))
+            if ($goal->task_id == null || !isset($findIdTasks[$goal->task_id]))
             {
-                $value->is_add_todo = false;
+                $goal->is_add_branch = true;
+                $goal->is_add_todo = true;
             }
-        }
+            else $goal->is_add_branch = false;
+
+            if(isset($findIdGoals[$goal->id]) || isset($findIdTasks[$goal->task_id]))
+            {
+                $goal->is_add_todo = false;
+            }
+            return $goal;
+        });
+
         $tree = self::buildTree($goals->toArray(), $goalId);
         $pTree = $goals->where('id', $goalId)->first();
         if ($pTree) {

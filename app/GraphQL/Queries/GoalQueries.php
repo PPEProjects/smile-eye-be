@@ -94,10 +94,10 @@ class GoalQueries
         }
         $goals = $goals->get()->keyBy('id');
         $goalIds = $goals->pluck('id');
-        $checkJPGoals = JapaneseGoal::whereIn('goal_id', $goalIds)->get()->keyBy('goal_id');
+        $japaneseGoals = JapaneseGoal::whereIn('goal_id', $goalIds)->get()->keyBy('goal_id');
 
-       $goals = $goals->map(function ($goal) use ($checkJPGoals){
-           $goal->japanese_goal = @$checkJPGoals[$goal->id];;
+       $goals = $goals->map(function ($goal) use ($japaneseGoals){
+           $goal->japanese_goal = @$japaneseGoals[$goal->id];;
            return $goal;
        });
 
