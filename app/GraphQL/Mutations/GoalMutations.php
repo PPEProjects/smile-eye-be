@@ -73,6 +73,9 @@ class GoalMutations
         $deleteGoal = Goal::find($args['id']);
         return $deleteGoal->delete();
     }
+    public function duplicateGoals($_,array $args){
+        return $this->goal_repository->duplicateGoals($args);
+    }
 
     public function taskToGoal($_, array $args)
     {

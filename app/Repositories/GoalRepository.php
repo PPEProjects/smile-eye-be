@@ -644,4 +644,42 @@ class GoalRepository
             }
         }
     }
+
+    public function duplicateGoals($args){
+        //directive
+        $goal = Goal::find($args["id"]);
+        if ($this->isSmallest($goal)){
+            return (boolean) Goal::create(array_diff_key($goal->toArray(),array_flip(["id","directive"])));
+        }
+        else{
+            $goalRoot = Goal::create(array_diff_key($goal->toArray(),array_flip(["id","directive"])));
+            $goalChilds = $this->findChilds($goal);
+            return $this->dulicate($goalRoot,$goalChilds);
+        }
+
+    }
+    public function dulicate($goalRoot,$goalChilds){
+
+        if (count($goalChilds) != 0){
+//            dd(count($goalChilds));
+            foreach ($goalChilds as $g){
+                $arr = $g->toArray();
+                $arr["parent_id"] = $goalRoot->id;
+                $dupG = Goal::create(array_diff_key($arr,array_flip(["id","directive"])));
+                $gChilds = $this->findChilds($g);
+                $this->dulicate($dupG,$gChilds);
+            }
+            return true;
+        }
+        else{
+//            dd("else",count($goalChilds));
+            return true;
+        }
+    }
+
+
+    public function findChilds($goal){
+        $goals = Goal::where("parent_id",$goal->id)->get();
+        return $goals;
+    }
 }
