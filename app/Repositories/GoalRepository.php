@@ -109,12 +109,13 @@ class GoalRepository
         }
 
         $goals = $goals->get();
-        $goalIds = $goals->pluck('id');
-        $checkJPGoals = JapaneseGoal::select('id', 'type', 'goal_id')
-                                    ->whereIn('goal_id', $goalIds)
-                                    ->get()->keyBy('goal_id');
-        //Check goal have  task_id And Task have goal_id
+
         $getIdGoals = $goals->pluck('id');
+        $checkJPGoals = JapaneseGoal::select('id', 'type', 'goal_id')
+                                     ->whereIn('goal_id', $getIdGoals)
+                                     ->get()->keyBy('goal_id');
+
+        //Check goal have  task_id And Task have goal_id
         $getIdTasks = $goals->pluck('task_id');
 
         $findIdTasks = Task::WhereIn('id', $getIdTasks)->get()->keyBy('id');
