@@ -28,6 +28,9 @@ class JapaneseGoalRepository
     }
 
     public function getJapaneseGoal($args){
+        if (isset($args['goal_id'])) {
+            $japaneseGoal = JapaneseGoal::where('goal_id', $args["goal_id"])->get()->keyBy('id');
+        }
         if (isset($args['id'])) {
             $japaneseGoal = JapaneseGoal::where('id', $args["id"])->get()->keyBy('id');
         }
@@ -65,8 +68,7 @@ class JapaneseGoalRepository
     }
     public function detailJapaneseGoal($args){
 
-       $japaneseGoal = $this->getJapaneseGoal($args);
-       return $japaneseGoal->first();
+        return $this->getJapaneseGoal($args)->first();
     }
     public function searchByTypeJapaneseGoal($args){
 
