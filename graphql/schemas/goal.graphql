@@ -37,7 +37,7 @@ type Goal{
     end_day: DateTime
     status : String
     task_id: ID
-    type: String
+    japanese_goal: JapaneseGoal
 #    process : Float
     is_pined : Boolean
     created_at: DateTime

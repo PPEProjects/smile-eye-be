@@ -94,13 +94,12 @@ class GoalQueries
         }
         $goals = $goals->get()->keyBy('id');
         $goalIds = $goals->pluck('id');
-        $checkJPGoals = JapaneseGoal::whereIn('goal_id', $goalIds)->get();
-        $JPGoalIds = $checkJPGoals->pluck('goal_id')->toArray();
-        foreach ($goals as $value){
-            if (array_intersect([$value->id], $JPGoalIds)){
-                $value->type = "Japanese_goal";
-            }else $value->type = "Goal";
-        }
+        $checkJPGoals = JapaneseGoal::whereIn('goal_id', $goalIds)->get()->keyBy('goal_id');
+
+       $goals = $goals->map(function ($goal) use ($checkJPGoals){
+           $goal->japanese_goal = @$checkJPGoals[$goal->id];;
+           return $goal;
+       });
 
         $goals = $this->generalinfo_repository
             ->setType('goal')
