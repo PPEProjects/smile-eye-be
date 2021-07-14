@@ -15,6 +15,7 @@ extend type Query {
 type JapaneseGoal{
     id: ID
     goal : Goal
+    goal_root: Goal
     goal_id : ID
     type: String
     more : JSON

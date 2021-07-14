@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 
 use App\Models\Attachment;
+use App\Models\Goal;
 use App\Models\JapaneseGoal;
 use ppeCore\dvtinh\Services\AttachmentService;
 
@@ -66,8 +67,19 @@ class JapaneseGoalRepository
            $nameCollum = "goal_id";
         }
         $value = $args[$nameCollum];
-        $detailJPGoal = $this->getJapaneseGoal($nameCollum, $value);
-        return $detailJPGoal->first();
+        $detailJPGoal = $this->getJapaneseGoal($nameCollum, $value)->first();
+        $goal = $this->findParentGoal($args['goal_id']);
+        while(true) {
+            if (isset($goal->parent_id)){
+                $goal = $this->findParentGoal($goal->parent_id);
+            }else break;
+        }
+        $detailJPGoal->goal_root = $goal;
+        return $detailJPGoal;
+    }
+    public function findParentGoal($id){
+        $goal = Goal::where('id',$id)->first();
+        return $goal;
     }
     public function searchByTypeJapaneseGoal($args){
 
