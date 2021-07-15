@@ -277,7 +277,7 @@ class FriendRepository
         return $users;
     }
     public function searchPeople($userId, $name = null){
-        $myFriends = $this->getByNameStatus($userId);
+        $myFriends = $this->getByNameStatus($userId)->sortBy("friend_status");
         $pendFriends = $this->pendFriend($userId);
         $listFriends = $myFriends->concat($pendFriends);
         $recommentFriends = $this->recommentFriends($userId);
