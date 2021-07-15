@@ -56,34 +56,34 @@ class FriendRepository
         return $users;
     }
 
-//    public function pendFriend($userId, $status = null)
-//    {
-//        $friendFriends = Friend::whereRaw("user_id_friend={$userId} AND status = 'pending'")->get()->keyBy('user_id');
-//        $fIds = $friendFriends->pluck('user_id');
-//
-//        $users = $this->user_repository->getByIds($fIds);
-//        $friends =$friendFriends->toArray();
-//
-//        $mutualFriend = $this->mutualFriends($userId, $fIds, $fIds);
-//
-//        $users = $users->map(function($user) use($friends, $mutualFriend){
-//            $friend = @$friends[$user->id];
-//            $user->friend = $friend;
-//            $user->number_mutual = count($mutualFriend[$user->id]);
-//            $user->mutual_friend = $mutualFriend[$user->id];
-//            $user->friend_status = @$friend['status'];
-//            return $user;
-//        });
-//        $user = $users->map(function ($u){
-//            $u = $this->attachment_service->mappingAvatarBackgroud($u);
-//            return $u;
-//        });
-//
-//        $sortUsers = $users->sortByDESC(function ($item, $key){
-//            return $item->friend["id"];
-//        });
-//        return $sortUsers;
-//    }
+    public function pendFriend($userId, $status = null)
+    {
+        $friendFriends = Friend::whereRaw("user_id_friend={$userId} AND status = 'pending'")->get()->keyBy('user_id');
+        $fIds = $friendFriends->pluck('user_id');
+
+        $users = $this->user_repository->getByIds($fIds);
+        $friends =$friendFriends->toArray();
+
+        $mutualFriend = $this->mutualFriends($userId, $fIds, $fIds);
+
+        $users = $users->map(function($user) use($friends, $mutualFriend){
+            $friend = @$friends[$user->id];
+            $user->friend = $friend;
+            $user->number_mutual = count($mutualFriend[$user->id]);
+            $user->mutual_friend = $mutualFriend[$user->id];
+            $user->friend_status = @$friend['status'];
+            return $user;
+        });
+        $user = $users->map(function ($u){
+            $u = $this->attachment_service->mappingAvatarBackgroud($u);
+            return $u;
+        });
+
+        $sortUsers = $users->sortByDESC(function ($item, $key){
+            return $item->friend["id"];
+        });
+        return $sortUsers;
+    }
 
     public function recommentFriends($userId, $name = null)
     {
@@ -277,7 +277,9 @@ class FriendRepository
         return $users;
     }
     public function searchPeople($userId, $name = null){
-        $listFriends = $this->getByNameStatus($userId)->sortBy("friend_status");
+        $myFriends = $this->getByNameStatus($userId);
+        $pendFriends = $this->pendFriend($userId);
+        $listFriends = $myFriends->concat($pendFriends);
         $recommentFriends = $this->recommentFriends($userId);
 
         $people = $listFriends->concat($recommentFriends);
