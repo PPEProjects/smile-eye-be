@@ -30,7 +30,7 @@ class FriendQueries
 
     public function pendFriend($_, array $args)
     {
-        return $this->friend_repository->pendFriend(Auth::id(), @$args['status']);
+        return $this->friend_repository->getByNameStatus(Auth::id(), @$args['name'], "pending");
     }
 
     public function recommentFriends($_, array $args)
