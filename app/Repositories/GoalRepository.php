@@ -649,7 +649,14 @@ class GoalRepository
         //directive
         $goal = Goal::find($args["id"]);
         if ($this->isSmallest($goal)){
-            return (boolean) Goal::create(array_diff_key($goal->toArray(),array_flip(["id","directive"])));
+            $goalNew = Goal::create(array_diff_key($goal->toArray(),array_flip(["id","directive"])));
+            $general = @GeneralInfo::where("goal_id",$goal->id)->first();
+            if ($general){
+                $generalArr = @$general->toArray();
+                $generalArr["goal_id"] = $goalNew->id;
+                GeneralInfo::create(array_diff_key($generalArr,array_flip(["id","directive"])));
+            }
+            return true ;
         }
         else{
             $goalRoot = Goal::create(array_diff_key($goal->toArray(),array_flip(["id","directive"])));
