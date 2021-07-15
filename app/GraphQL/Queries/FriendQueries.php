@@ -41,5 +41,9 @@ class FriendQueries
     {
         return $this->friend_repository->friendAndGoal(Auth::id(), @$args['name'], @$args['status']);
     }
+    public function searchPeople($_, array $args)
+    {
+        return $this->friend_repository->searchPeople(Auth::id(), @$args['name']);
+    }
 
 }

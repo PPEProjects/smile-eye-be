@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "cb490685-2395-4668-b6a2-bc3a7390b997",
+		"_postman_id": "25e2fc76-09c4-434f-b2ea-d2e0a77fa6d1",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -21,7 +21,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"tinhdoan\",\n    \"email\": \"tinh5969@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
+							"raw": "{\n    \"name\": \"khoa\",\n    \"email\": \"khoa69@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -92,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"tinh5969@gmail.com\",\n    \"password\": \"123456789\"\n}",
+							"raw": "{\n    \"email\": \"hoainam123@gmail.com\",\n    \"password\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -780,7 +780,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\n    $user_id_friend:ID!, \n    $status:String\n    )\n{\n  create_friend(\n    input: \n    {\n      user_id_friend: $user_id_friend\n      status: $status\n    }) \n  \n}",
-								"variables": "{\n    \"user_id_friend\": 58,\n    \"status\": \"accept\"\n}"
+								"variables": "{\n    \"user_id_friend\": 11,\n    \"status\": \"accept\"\n}"
 							}
 						},
 						"url": {
@@ -961,6 +961,36 @@
 							"graphql": {
 								"query": "query($status: String){\n  list_pend_friends\n  (\n   status: $status\n   ){\n       friend{\n           id\n           status\n       }\n      id\n      messages\n      name\n      email\n      phone_number\n      quotes\n       attachment{\n          id\n          thumb\n      }\n       mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n       }\n      \n    \n   }\n}\n\n",
 								"variables": "{\r\n    \r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query search_people",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($name: String){\n  search_people(\n   name: $name){\n      id\n      name\n      email\n      phone_number\n      friend_status\n      attachment{\n          id\n          thumb\n      }\n      background_attachment{\n            id\n            thumb\n        }\n      mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n        \n   }\n  }\n}\n",
+								"variables": "{\n \"name\": null\n}"
 							}
 						},
 						"url": {

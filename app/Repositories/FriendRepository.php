@@ -276,4 +276,17 @@ class FriendRepository
 
         return $users;
     }
+    public function searchPeople($userId, $name = null){
+        $myFriends = $this->getByNameStatus($userId, null,"accept");
+        $recommentFriends = $this->recommentFriends($userId);
+        $pendFriends = $this->getByNameStatus($userId, null,"pending");
+        $people = ($myFriends->concat($pendFriends))->concat($recommentFriends);
+        if($name){
+            $people = $people->filter(function ($user) use ($name) {
+                return false !== stristr($user->name, $name);
+            });
+        }
+
+        return $people;
+    }
 }
