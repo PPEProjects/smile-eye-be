@@ -32,7 +32,9 @@ class NoteRepository
             return $notes->where("checked_at",$args["checked_at"]);
         }else {
             $id = Auth::id();
-            return User::find($id)->notes;
+            return Note::where("user_id",$id)
+                ->orderBy("id","DESC")
+                ->get();
         }
     }
     public function detailNotes($args)
