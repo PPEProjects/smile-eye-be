@@ -14,7 +14,7 @@ input UpdateUserInput{
     email: String
     username: String
     quotes: String
-    phone_number: String @rules(apply : ["string","min:8","max:14"])
+    phone_number: String
     avatar_attachment_id: ID
     background_attachment_id : ID
 

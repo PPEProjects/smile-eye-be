@@ -3,12 +3,10 @@
 namespace App\Repositories;
 
 use App\Models\Friend;
-use App\Models\Goal;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use GraphQL\Error\Error;
 use ppeCore\dvtinh\Services\AttachmentService;
-use App\Repositories\FriendRepository;
-use App\Repositories\GeneralInfoRepository;
 
 class UserRepository
 {
@@ -104,6 +102,10 @@ class UserRepository
     }
     public function updateUser($args)
     {
+        $phone = $args["phone_number"];
+        if (strlen($phone) > 14 || strlen($phone) < 8){
+            throw new Error("phone number must be > 8 and < 14");
+        }
         $args = array_diff_key($args, array_flip(['directive', 'email']));
         $update = tap(User::findOrFail(Auth::id()))
             ->update($args);
