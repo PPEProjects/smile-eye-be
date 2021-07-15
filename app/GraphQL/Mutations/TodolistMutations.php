@@ -60,8 +60,6 @@ class TodolistMutations
         if (isset($args["status"])){
             if ($args["status"] != "todo" && $args["status"] != "done")
             throw new Error('Status invalid');
-        }else{
-            $args = array_diff_key($args ,array_flip(["status"]));
         }
         $args['user_id'] = Auth::id();
         $goal = $this->goal_repository->findByTaskId($args['task_id']);
