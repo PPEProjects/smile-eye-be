@@ -653,6 +653,13 @@ class GoalRepository
         }
         else{
             $goalRoot = Goal::create(array_diff_key($goal->toArray(),array_flip(["id","directive"])));
+            $general = @GeneralInfo::where("goal_id",$goal->id)->first();
+            if ($general){
+                $generalArr = @$general->toArray();
+                $generalArr["goal_id"] = $goalRoot->id;
+                GeneralInfo::create(array_diff_key($generalArr,array_flip(["id","directive"])));
+            }
+
             $goalChilds = $this->findChilds($goal);
             //provide idRoot and it's childs
             return $this->dulicate($goalRoot,$goalChilds);
@@ -662,18 +669,22 @@ class GoalRepository
     public function dulicate($goalRoot,$goalChilds){
 
         if (count($goalChilds) != 0){
-//            dd(count($goalChilds));
             foreach ($goalChilds as $g){
                 $arr = $g->toArray();
                 $arr["parent_id"] = $goalRoot->id;
                 $dupG = Goal::create(array_diff_key($arr,array_flip(["id","directive"])));
+                $general = @GeneralInfo::where("goal_id",$goalRoot->id)->first();
+                if ($general){
+                    $generalArr = @$general->toArray();
+                    $generalArr["goal_id"] = $dupG->id;
+                    GeneralInfo::create(array_diff_key($generalArr,array_flip(["id","directive"])));
+                }
                 $gChilds = $this->findChilds($g);
                 $this->dulicate($dupG,$gChilds);
             }
             return true;
         }
         else{
-//            dd("else",count($goalChilds));
             return true;
         }
     }
