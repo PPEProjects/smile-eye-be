@@ -69,17 +69,17 @@ class JapaneseGoalRepository
         $value = $args[$nameCollum];
         $detailJPGoal = $this->getJapaneseGoal($nameCollum, $value)->first();
         if (isset($detailJPGoal->goal_id)) {
-            $goal = $this->findParentGoal($detailJPGoal->goal_id);
+            $goalRoot = $this->findGoal($detailJPGoal->goal_id);
             while (true) {
-                if (isset($goal->parent_id)) {
-                    $goal = $this->findParentGoal($goal->parent_id);
+                if (isset($goalRoot->parent_id)) {
+                    $goalRoot = $this->findGoal($goalRoot->parent_id);
                 } else break;
             }
-            $detailJPGoal->goal_root = $goal;
+            $detailJPGoal->goal_root = $goalRoot;
         }
         return $detailJPGoal;
     }
-    public function findParentGoal($id){
+    public function findGoal($id){
         $goal = Goal::where('id',$id)->first();
         return $goal;
     }
