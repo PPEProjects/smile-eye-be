@@ -28,8 +28,11 @@ class NoteRepository
     {
         if (isset($args["checked_at"])){
             $id = Auth::id();
-            $notes = User::find($id)->notes;
-            return $notes->where("checked_at",$args["checked_at"]);
+            $date = date_format($args["checked_at"],"Y-m-d");
+            $notes = Note::where("user_id",$id)
+                ->where("checked_at","like",$date."%")
+                ->get();
+            return $notes;
         }else {
             $id = Auth::id();
             return Note::where("user_id",$id)
