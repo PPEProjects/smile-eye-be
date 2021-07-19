@@ -166,6 +166,20 @@ class AchieveRepository
         $achieve = Achieve::where("general_id",$args["general_id"])
             ->where("user_invite_id",Auth::id())
             ->first();
+        if(isset($args['status']) && $args['status'] == "accept" ){
+            $general = GeneralInfo::find($args['general_id']);
+            if(isset($general->task_id)){
+                 $task = Task::find($general->task_id);           
+                 $createTask = Task::create([
+                                            "name" => $task->name,
+                                            "user_id" => Auth::id()
+                                            ]);
+                  $this->generalinfo_repository
+                                     ->setType('task')
+                                    ->upsert(array_merge($createTask->toArray(), $args))
+                                    ->findByTypeId($createTask->id);
+            }
+        }
         $args = array_diff_key($args,array_flip(["directive","general_id"]));
         $achieve->update($args);
         return $achieve;
