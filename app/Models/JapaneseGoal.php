@@ -20,18 +20,12 @@ class JapaneseGoal extends Model
         'user_id',
         'type',
         'more',
-        'attachments_1',
-        'attachments_2',
-        'attachments_3',
         'score',
         'created_at',
         'updated_at'
     ];
     protected $casts = [
         'more' => 'json',
-        'attachments_1' => 'json',
-        'attachments_2' => 'json',
-        'attachments_3' => 'json',
     ];
     public function goal(){
         return $this->belongsTo(goal::class);
