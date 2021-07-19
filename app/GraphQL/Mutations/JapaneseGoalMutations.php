@@ -3,6 +3,7 @@
 namespace App\GraphQL\Mutations;
 use App\Models\GeneralInfo;
 use App\Models\Goal;
+use App\Models\JapaneseGoal;
 use App\Repositories\GeneralInfoRepository;
 use App\Repositories\JapaneseGoalRepository;
 use GraphQL\Error\Error;
@@ -44,6 +45,32 @@ class JapaneseGoalMutations{
     }
     public function deletejapaneseGoal($_,array $args){
         return $this->japanese_goal_repository->deletejapaneseGoal($args);
+    }
+
+    public function createBasketCard($_,array $args){
+        $args["user_id"] = Auth::id();
+        return JapaneseGoal::create($args);
+    }
+
+    public function updateBasketCard($_,array $args){
+        return tap(JapaneseGoal::findOrFail($args["id"]))
+            ->update($args);
+    }
+    public function deleteBasketCard($_,array $args){
+        return JapaneseGoal::find($args["id"])
+            ->delete();
+    }
+    public function createFlashCard($_, array $args){
+        $args["user_id"] = Auth::id();
+        return JapaneseGoal::create($args);
+    }
+    public function updateFlashCard($_,array $args){
+        return tap(JapaneseGoal::findOrFail($args["id"]))
+            ->update($args);
+    }
+    public function deleteFlashCard($_,array $args){
+        return JapaneseGoal::find($args["id"])
+            ->delete();
     }
 
 }

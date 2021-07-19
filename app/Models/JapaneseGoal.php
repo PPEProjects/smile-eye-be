@@ -17,6 +17,7 @@ class JapaneseGoal extends Model
     protected $fillable = [
         'id',
         'goal_id',
+        'user_id',
         'type',
         'more',
         'attachments_1',

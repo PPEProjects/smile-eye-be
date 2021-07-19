@@ -17,6 +17,7 @@ class CreateJapaneseGoalsTable extends Migration
         Schema::create('japanese_goals', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("goal_id")->nullable();
+            $table->unsignedBigInteger("user_id")->nullable();
             $table->string("type")->nullable();
             $table->json("more")->nullable();
             $table->float("score")->nullable();

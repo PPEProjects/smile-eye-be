@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "492223a2-8a49-490e-8f81-aa39a354b28f",
+		"_postman_id": "9c804391-ef6c-42c8-b85c-5ff5ec97fad3",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1229,6 +1229,376 @@
 							"graphql": {
 								"query": "query($type: String) {\n  search_by_type_japanese_goal(\n      type : $type\n  ) {\n     id\n     goal{\n         id\n         name\n     }\n     goal_id\n    type\n    score\n    more\n    attachments_1\n    attachments_2\n    attachments_3\n  }\n}",
 								"variables": "{\r\n    \"type\":\"watch_video\"\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "basket_card",
+			"item": [
+				{
+					"name": "create_basket_card",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $type : String\n    $more : JSON\n    )\n{\n  create_basket_card(\n    input: \n    {\n    type : $type\n    more : $more\n    }) {\n        type,\n        more\n    }\n  \n}",
+								"variables": "{\n    \"type\" : \"basket_card\",\n    \"more\" : {\n        \"name\": \"giỏ card về thức ăn\",\n        \" image\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n        }\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_basket_card",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $id : ID\n    $more : JSON\n    )\n{\n  update_basket_card(\n    input: \n    {\n    id : $id\n    more : $more\n    }) {\n        type,\n        more\n    }\n  \n}",
+								"variables": "{\n    \"id\":1,\n    \"more\" : {\n        \"name\": \"con chym\",\n        \" image\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n        }\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_basket_card",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $id : ID!  )\n{\n  delete_basket_card(\n      id : $id\n  )\n  \n}",
+								"variables": "{\n    \"id\" : 1\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_basket_cards",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  basket_cards {\n     id\n    type\n    more\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_detail_basket_card",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id:ID) {\n  detail_basket_card(\n      id : $id\n  ) {\n     id\n     \n    type\n    more\n  }\n}",
+								"variables": "{\r\n\"id\": 2\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "my_basket_cards",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query\n{\n  my_basket_cards{\n        type,\n        more\n    }\n  \n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "flash_card",
+			"item": [
+				{
+					"name": "create_flash_card",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $type : String\n    $more : JSON\n    )\n{\n  create_flash_card(\n    input: \n    {\n    type : $type\n    more : $more\n    }) {\n        type,\n        more\n    }\n  \n}",
+								"variables": "{\n    \"type\" : \"flash_card\",\n    \"more\" : {\n        \"name\": \"card về thức ăn\",\n        \" image\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n        }\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_flash_card",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $id : ID\n    $more : JSON\n    )\n{\n  update_flash_card(\n    input: \n    {\n    id : $id\n    more : $more\n    }) {\n        type,\n        more\n    }\n  \n}",
+								"variables": "{\n    \"id\":5,\n    \"more\" : {\n        \"name\": \"con chym\",\n        \" image\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n        }\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_flash_card",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $id : ID!  )\n{\n  delete_flash_card(\n      id : $id\n  )\n  \n}",
+								"variables": "{\n    \"id\" : 5\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_flash_cards",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  flash_cards {\n     id\n    type\n    more\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_detail_flash_card",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id:ID) {\n  detail_basket_card(\n      id : $id\n  ) {\n     id\n     \n    type\n    more\n  }\n}",
+								"variables": "{\r\n\"id\": 2\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "my_flash_cards",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query\n{\n  my_flash_cards{\n        type,\n        more\n    }\n  \n}",
+								"variables": ""
 							}
 						},
 						"url": {
