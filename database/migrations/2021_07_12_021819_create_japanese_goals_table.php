@@ -13,20 +13,17 @@ class CreateJapaneseGoalsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('japanese_goals');
         Schema::create('japanese_goals', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("goal_id")->nullable();
             $table->string("type")->nullable();
             $table->json("more")->nullable();
-            $table->json("attachments_1")->nullable();
-            $table->json("attachments_2")->nullable();
-            $table->json("attachments_3")->nullable();
             $table->float("score")->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -34,6 +31,6 @@ class CreateJapaneseGoalsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('japanese_goal');
+        Schema::dropIfExists('japanese_goals');
     }
 }
