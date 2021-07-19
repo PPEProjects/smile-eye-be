@@ -4,6 +4,7 @@ namespace App\Repositories;
 use App\Models\Note;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class NoteRepository
 {
@@ -44,5 +45,19 @@ class NoteRepository
     {
         $id = $args["id"];
         return Note::find($id);
+    }
+    public function notesGroupByDate()
+    {
+       $myNotes = Note::selectRaw("*, DATE(checked_at) as day")->where("user_id", Auth::id());
+        $notesByDate = $myNotes->OrderBy('id','DESC')->get()->groupBy('day')->toArray();
+        $getDay = $myNotes->groupBy("day")->get();
+        $notes = $getDay->map(function ($note) use ($notesByDate){
+           $data = collect();
+           $data['day'] = @$note->day;
+           $data['list'] = $notesByDate[@$note->day];
+           return $data;
+      });
+       return $notes->sortByDESC('day');
+
     }
 }

@@ -10,6 +10,7 @@ extend type Query {
     sort_notes(orderBy: [OrderByClause!] @orderBy): [Note] @paginate(type: "paginator" model: "App\\Models\\Note")
     my_notes(checked_at : DateTime): [Note] @guard @field(resolver:"NoteQueries@myNotes")
     detail_note(id : ID!): Note @guard @field(resolver:"NoteQueries@detailNotes")
+    notes_group_by_date: [Note] @guard @field(resolver:"NoteQueries@notesGroupByDate")
 }
 
 type Note {
@@ -20,6 +21,8 @@ type Note {
     content : String
     created_at: DateTime
     updated_at: DateTime
+    day: Date
+    list: [Note]
 }
 input CreateNoteInput{
     checked_at : DateTime

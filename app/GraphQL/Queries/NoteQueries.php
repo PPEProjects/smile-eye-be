@@ -21,4 +21,8 @@ class NoteQueries
     {
         return $this->note_repository->detailNotes($args);
     }
+    public function notesGroupByDate($_,array $args)
+    {
+        return $this->note_repository->notesGroupByDate();
+    }
 }
