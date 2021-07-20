@@ -58,6 +58,8 @@ input CreateJapaneseGoalInput{
 input CreateBasketCardInput{
     type : String
     more : JSON
+    name_goal: String
+    parent_id: ID
 
 }
 input UpdateJapaneseGoalInput{

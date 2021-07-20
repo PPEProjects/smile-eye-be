@@ -62,6 +62,18 @@ class JapaneseGoalMutations{
     }
     public function createFlashCard($_, array $args){
         $args["user_id"] = Auth::id();
+        if (isset($args['name_goal'])) {
+            $dataGoal = ['name' => $args['name_goal'], 'user_id' => $args["user_id"]];
+            if (isset($args['parent_id'])){
+                $dataGoal['parent_id'] =  $args['parent_id'];
+            }
+            $goal = Goal::create($dataGoal);
+            $this->generalinfo_repository
+                ->setType('goal')
+                ->upsert(array_merge($goal->toArray(), $args))
+                ->findByTypeId($goal->id);
+            $args['goal_id'] = $goal->id;
+        }
         return JapaneseGoal::create($args);
     }
     public function updateFlashCard($_,array $args){
