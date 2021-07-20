@@ -32,6 +32,7 @@ class NoteRepository
             $date = date_format($args["checked_at"],"Y-m-d");
             $notes = Note::where("user_id",$id)
                 ->where("checked_at","like",$date."%")
+                ->orderBy("id","DESC")
                 ->get();
             return $notes;
         }else {
