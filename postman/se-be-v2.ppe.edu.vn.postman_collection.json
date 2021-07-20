@@ -2283,8 +2283,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($checked_at : DateTime) {\r\n  my_notes(\r\n      checked_at: $checked_at\r\n  ){\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    checked_at\r\n    content\r\n  }\r\n    \r\n}",
-								"variables": "{\r\n    \"checked_at\" : \"2021-07-14 00:00:00\"\r\n}"
+								"query": "query($checked_at : Date) {\r\n  my_notes(\r\n      checked_at: $checked_at\r\n  ){\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    checked_at\r\n    content\r\n  }\r\n    \r\n}",
+								"variables": "{\r\n    \"checked_at\" : \"2021-07-14\"\r\n}"
 							}
 						},
 						"url": {
