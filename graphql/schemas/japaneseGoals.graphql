@@ -9,17 +9,6 @@ extend type Query {
     detail_japanese_goal(id: ID, goal_id: ID): JapaneseGoal @field(resolver:"JapaneseGoalQueries@detailJapaneseGoal")
     search_by_type_japanese_goal(type:String): [JapaneseGoal] @field(resolver:"JapaneseGoalQueries@searchByTypeJapaneseGoal")
 #    my_japanese_goals(parent_id:String!): [JapaneseGoal] @guard @field(resolver:"JapaneseGoalQueries@myJapaneseGoals")
-# backet and card
-
-    basket_cards: [JapaneseGoal]@field(resolver:"JapaneseGoalQueries@basketCards")
-    detail_basket_card(id: ID): JapaneseGoal @field(resolver:"JapaneseGoalQueries@detailBasketCard")
-    my_basket_cards: [JapaneseGoal] @guard @field(resolver:"JapaneseGoalQueries@myBasketCards")
-
-    #flash card
-
-    flash_cards: [JapaneseGoal]@field(resolver:"JapaneseGoalQueries@flashCards")
-    detail_flash_card(id: ID): JapaneseGoal @field(resolver:"JapaneseGoalQueries@detailFlashCard")
-    my_flash_cards: [JapaneseGoal] @guard @field(resolver:"JapaneseGoalQueries@myFlashCards")
 }
 
 type JapaneseGoal{
@@ -45,24 +34,11 @@ input CreateJapaneseGoalInput{
     score : Float
 
 }
-input CreateBasketCardInput{
-    type : String
-    more : JSON
-    name_goal: String
-    parent_id: ID
-
-}
 input UpdateJapaneseGoalInput{
     id : ID
     goal_id : ID
-    type : String @rules(apply:["nullable","in:watch_video,communication,vocabulary_grammar,alphabet"])
+    # type : String @rules(apply:["nullable","in:watch_video,communication,vocabulary_grammar,alphabet"])
+    type : String
     more : JSON
-    attachments_1 :[ID]
-    attachments_2 :[ID]
-    attachments_3 :[ID]
     score : Float
-}
-input UpdateBasketCardInput{
-    id : ID
-    more : JSON
 }
