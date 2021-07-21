@@ -987,7 +987,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\n    $parent_id: ID\n    $name_goal: String\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    parent_id: $parent_id \n    name_goal: $name_goal\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        type,\n        more,\n        attachments_1,\n        attachments_2,\n        attachments_3\n    }\n  \n}",
+								"query": "mutation(\n    $parent_id: ID\n    $name_goal: String\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    parent_id: $parent_id \n    name_goal: $name_goal\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        goal{\n            id,\n            name,\n            parent{\n                id\n                name\n            }\n        }\n        type,\n        more\n    }\n  \n}",
 								"variables": "{\n  \"name_goal\": \"learn japanese\",\n  \"type\": \"watch_video\",\n  \"more\": {\n    \"video\": {\n      \"attachment_id\": 1,\n      \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n    },\n    \"video_skit\": {\n      \"attachment_id\": 1,\n      \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n    },\n    \"table\": [\n      {\n        \"character_name\": \"Nam Hoai\",\n        \"audio\": {\n          \"attachment_id\": 1,\n          \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n        },\n        \"content\": \"はじめまして!\\n始めまして!\\nHajimemashite!Rất hân hạn được làm quen với anh/chị/bạn!\"\n      },\n      {\n        \"character_name\": \"Nam Hoai\",\n        \"audio\": {\n          \"attachment_id\": 1,\n          \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n        },\n        \"content\": \"はじめまして!\\n始めまして!\\nHajimemashite!Rất hân hạn được làm quen với anh/chị/bạn!\"\n      }\n    ]\n  },\n  \"score\": 8.3\n}"
 							}
 						},
@@ -1017,7 +1017,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\n    $parent_id: ID\n    $name_goal: String\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    parent_id: $parent_id \n    name_goal: $name_goal\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        type,\n        more\n    }\n  \n}",
+								"query": "mutation(\n    $parent_id: ID\n    $name_goal: String\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    parent_id: $parent_id \n    name_goal: $name_goal\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        goal{\n            id,\n            name,\n            parent{\n                id\n                name\n            }\n        }\n        type,\n        more\n    }\n  \n}",
 								"variables": "{\n    \"name_goal\":\"Let go\",\n    \"type\" : \"vocabulary_grammar\",\n    \"more\" : [\n        {\n        \"content\":\"こにちわみなさん\",\n        \"image\": \n        {\n        \"attachment_id\": 1,\n        \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"}, \n        \"video\":\n         {\n             \"attachment_id\": 1,\n             \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n            }\n       }\n    ],\n    \"score\" : 8.3\n}"
 							}
 						},
@@ -1047,7 +1047,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\n    $parent_id: ID\n    $name_goal: String\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    parent_id: $parent_id \n    name_goal: $name_goal\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        type,\n        more\n    }\n  \n}",
+								"query": "mutation(\n    $parent_id: ID\n    $name_goal: String\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    parent_id: $parent_id \n    name_goal: $name_goal\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        goal{\n            id,\n            name,\n            parent{\n                id\n                name\n            }\n        }\n        type,\n        more\n    }\n  \n}",
 								"variables": "{\n    \"name_goal\":\"learn english\",\n    \"type\" : \"alphabet\",\n    \"more\" : [\n    {\n        \"content_1\": \"こにちわ\",\n        \"content_2\": \"おｈしよ\",\n        \"content_3\": \"こんばわ\",\n        \"image\": \n        {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n        },\n        \n        \"audio\": \n        {\n            \"attachment_id\": 2,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n        },\n        \"video\": \n        {\n            \"attachment_id\": 3,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n        }\n    }\n],\n    \"score\" : 2.3\n}"
 							}
 						},
@@ -1077,7 +1077,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\n    $parent_id: ID\n    $name_goal: String\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    parent_id: $parent_id \n    name_goal: $name_goal\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        type,\n        more\n    }\n  \n}",
+								"query": "mutation(\n    $parent_id: ID\n    $name_goal: String\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    parent_id: $parent_id \n    name_goal: $name_goal\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        goal{\n            id,\n            name,\n            parent{\n                id\n                name\n            }\n        }\n        type,\n        more\n    }\n  \n}",
 								"variables": "{\n    \"parent_id\": null,\n    \"name_goal\": \"hoc japanese\",\n    \"type\" : \"flash_card\",\n    \"more\" : {\n        \"name\": \"card về thức ăn\",\n        \" image\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n        }\n    }\n}"
 							}
 						},
@@ -1107,8 +1107,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\n    $parent_id: ID\n    $name_goal: String\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    parent_id: $parent_id \n    name_goal: $name_goal\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        type,\n        more\n    }\n  \n}",
-								"variables": "{\n    \"parent_id\": null,\n    \"name_goal\": \"chay bo\",\n    \"type\" : \"basket_card\",\n    \"more\" : {\n        \"name\": \"giỏ card về thức ăn\",\n        \" image\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n        }\n    }\n}"
+								"query": "mutation(\n    $parent_id: ID\n    $name_goal: String\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    parent_id: $parent_id \n    name_goal: $name_goal\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        goal{\n            id,\n            name,\n            parent{\n                id\n                name\n            }\n        }\n        type,\n        more\n    }\n  \n}",
+								"variables": "{\n    \"parent_id\": 1,\n    \"name_goal\": \"chay bo\",\n    \"type\" : \"basket_card\",\n    \"more\" : {\n        \"name\": \"giỏ card về thức ăn\",\n        \" image\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n        }\n    }\n}"
 							}
 						},
 						"url": {
@@ -1138,7 +1138,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\n    $id : ID\n    $goal_id : ID\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  update_japanese_goals(\n    input: \n    {\n        id: $id\n    goal_id : $goal_id\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        type\n        score,\n        more\n\n    }\n  \n}",
-								"variables": "{\n    \"id\": 10,\n    \"type\" : \"vocabulary_grammar\",\n    \"more\" : [\n        {\n        \"content\":\"こんにちわみなさん\",\n        \"image\": \n        {\n        \"attachment_id\": 1,\n        \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"}, \n        \"video\":\n         {\n             \"attachment_id\": 1,\n             \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n            }\n       }\n    ],\n    \"score\" : 8.3\n}\n           "
+								"variables": "{\n\"id\": 7,\n  \"type\": \"watch_video\",\n  \"more\": {\n    \"video\": {\n      \"attachment_id\": 2,\n      \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n    },\n    \"video_skit\": {\n      \"attachment_id\": 1,\n      \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n    },\n    \"table\": [\n      {\n        \"character_name\": \"Nam Hoai\",\n        \"audio\": {\n          \"attachment_id\": 1,\n          \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n        },\n        \"content\": \"はじめまして!\\n始めまして!\\nHajimemashite!Rất hân hạn được làm quen với anh/chị/bạn!\"\n      },\n      {\n        \"character_name\": \"Nam Hoai\",\n        \"audio\": {\n          \"attachment_id\": 1,\n          \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n        },\n        \"content\": \"はじめまして!\\n始めまして!\\nHajimemashite!Rất hân hạn được làm quen với anh/chị/bạn!\"\n      }\n    ]\n  },\n  \"score\": 8.3\n}\n           "
 							}
 						},
 						"url": {
@@ -1287,8 +1287,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($type: String) {\n  search_by_type_japanese_goal(\n      type : $type\n  ) {\n     id\n     goal{\n         id\n         name\n     }\n     goal_id\n    type\n    score\n    more\n  }\n}",
-								"variables": "{\r\n    \"type\":\"flash_card\"\r\n}\r\n"
+								"query": "query($type: String) {\n  search_by_type_japanese_goal(\n      type : $type\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n     goal_id\n    type\n    score\n    more\n  }\n}",
+								"variables": "{\r\n    \"type\":\"basket_card\"\r\n}\r\n"
 							}
 						},
 						"url": {
