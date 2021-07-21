@@ -2,16 +2,6 @@ extend type Mutation {
     delete_japanese_goals(id: ID! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@deletejapaneseGoal")
     create_japanese_goals(input: CreateJapaneseGoalInput! @spread): JapaneseGoal @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@createJapaneseGoal")
     update_japanese_goals(input: UpdateJapaneseGoalInput! @spread): JapaneseGoal @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@updateJapaneseGoal")
-
-    #basket and card
-    create_basket_card(input: CreateBasketCardInput! @spread): JapaneseGoal @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@createBasketCard")
-    update_basket_card(input: UpdateBasketCardInput! @spread): JapaneseGoal @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@updateBasketCard")
-    delete_basket_card(id: ID! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@deleteBasketCard")
-
-    #flash card
-    create_flash_card(input: CreateBasketCardInput! @spread): JapaneseGoal @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@createFlashCard")
-    update_flash_card(input: UpdateBasketCardInput! @spread): JapaneseGoal @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@updateFlashCard")
-    delete_flash_card(id: ID! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@deleteFlashCard")
 }
 extend type Query {
     japanese_goals: [JapaneseGoal] @paginate(type: "paginator" model: "App\\Models\\JapaneseGoal")

@@ -30,37 +30,10 @@ class JapaneseGoalRepository
 
     public function getJapaneseGoal($nameCollum, $value){
 
-        $japaneseGoal = JapaneseGoal::where($nameCollum, $value)->get()->keyBy('id');
-
-        $japaneseGoal = $japaneseGoal->map(function ($jpGoal) use ($japaneseGoal){
-           $attachmentIds_1 = @$japaneseGoal[$jpGoal->id]->attachments_1;
-           $attachmentIds_2 = @$japaneseGoal[$jpGoal->id]->attachments_2;
-           $attachmentIds_3 = @$japaneseGoal[$jpGoal->id]->attachments_3;
-
-           $jpGoal->attachments_1 = $this->getAttachments($attachmentIds_1);
-           $jpGoal->attachments_2 = $this->getAttachments($attachmentIds_2);
-           $jpGoal->attachments_3 = $this->getAttachments($attachmentIds_3);
-
-            return @$jpGoal;
-        });
+        $japaneseGoal = JapaneseGoal::where($nameCollum, $value)->get();
         return $japaneseGoal->sortByDESC('id');
     }
-    public function getAttachments($ids){
-        if (!isset($ids)){
-            return null;
-        }
-        $attachments = Attachment::WhereIn('id', $ids)->get();
-        $attachments = $attachments->map(function ($attachment){
-            [$thumb,$file] = $this->attachment_service->getThumbFile($attachment->file_type,$attachment->file);
-            $getAttachment = collect();
-            $getAttachment['id'] = $attachment->id;
-            $getAttachment['file'] = $file;
-            $getAttachment['file_type'] = $attachment->file_type;
-            $getAttachment['thumb'] = $thumb;
-            return $getAttachment;
-        });
-        return $attachments;
-    }
+   
     public function detailJapaneseGoal($args){
         $nameCollum = "id";
         if (isset($args['goal_id'])){
