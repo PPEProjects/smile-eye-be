@@ -1124,6 +1124,36 @@
 					"response": []
 				},
 				{
+					"name": "create_diary_japanese_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        type,\n        more\n    }\n  \n}",
+								"variables": "{\n    \"type\" : \"diary\",\n    \"more\" : [\n        {\n         \"date\": \"2021-07-22\",\n         \"content\":\"<p style='text-align: justify;'>8月26日（土）<br />8 gatsu 26-nichi (do)<br />August 26th (Saturday).</p><p style='text-align: justify;'>10時ごろに宅配便で目がさめる。<br />10-ji-goro ni takuhaibin de me ga sameru.<br />I wake up around 10 a.m. because I have an express home delivery parcel.</p><p style='text-align: justify;'>ヨーグルトとビスケットを食べて二度寝する。<br />Yooguruto to bisuketto wo tabete nido nesuru.<br />I eat yogurt and biscuits and then sleep again.</p><p style='text-align: justify;'>起きたら16時だった。<br />Okitara 16-jidatta.\",\n         \"user_invited_ids\":[1,2,3]\n        }\n    ]\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "update_japanese_goals",
 					"request": {
 						"method": "POST",
@@ -1258,7 +1288,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id:ID, $goal_id: ID) {\n  detail_japanese_goal(\n      id : $id\n      goal_id: $goal_id\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n     goal_root{\n         id\n         name\n     }\n    type\n    score\n    more\n  }\n}",
-								"variables": "{\r\n\"goal_id\": 5\r\n}\r\n"
+								"variables": "{\r\n\"id\": 12\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -1288,7 +1318,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($type: String) {\n  search_by_type_japanese_goal(\n      type : $type\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n     goal_id\n    type\n    score\n    more\n  }\n}",
-								"variables": "{\r\n    \"type\":\"basket_card\"\r\n}\r\n"
+								"variables": "{\r\n    \"type\":\"diary\"\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -1538,7 +1568,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "\nmutation(\n    $name:String, \n    $email:String, \n    $username:String, \n    $quotes: String,\n    $phone_number: String ,\n    $avatar_attachment_id: ID,\n    $background_attachment_id: ID\n    ) \n{\n  update_user(\n    input: \n    {\n        name: $name\n        email: $email\n        username: $username\n        quotes: $quotes\n        phone_number: $phone_number\n        avatar_attachment_id: $avatar_attachment_id\n        background_attachment_id : $background_attachment_id\n    }) \n    {\n            id\n            name\n            email\n            username\n            quotes\n            phone_number\n            created_at\n            updated_at\n            attachment{\n                id\n                file\n                thumb\n            }\n            background_attachment{\n                id\n                file\n                thumb\n            }\n        }\n}",
-								"variables": "{\n\n    \"avatar_attachment_id\":1,\n    \"background_attachment_id\":1\n}"
+								"variables": "{\n    \"quotes\":\"\"\n}"
 							}
 						},
 						"url": {
