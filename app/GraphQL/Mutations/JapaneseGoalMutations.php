@@ -8,14 +8,17 @@ use App\Repositories\GeneralInfoRepository;
 use App\Repositories\JapaneseGoalRepository;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\NotificationRepository;
 
 class JapaneseGoalMutations{
     private $japanese_goal_repository;
     private $generalinfo_repository;
-    public function __construct(JapaneseGoalRepository $japanese_goal_repository, GeneralInfoRepository $generalinfo_repository)
+    private $notification_repository;
+    public function __construct(JapaneseGoalRepository $japanese_goal_repository, GeneralInfoRepository $generalinfo_repository, NotificationRepository $notificationRepository)
     {
         $this->japanese_goal_repository = $japanese_goal_repository;
         $this->generalinfo_repository = $generalinfo_repository;
+        $this->notification_repository = $notificationRepository;
     }
 
     public function createJapaneseGoal($_,array $args){
@@ -23,6 +26,8 @@ class JapaneseGoalMutations{
         if (!isset($args['type'])){
             throw new Error('You must input type');
         }
+
+
         // if (!isset($args['name_goal'])){
         //     throw new Error('You must input name goal');
         // }
@@ -38,7 +43,13 @@ class JapaneseGoalMutations{
                 ->findByTypeId($goal->id);
             $args['goal_id'] = $goal->id;
         }
-       return $this->japanese_goal_repository->createJapaneseGoal($args);
+       $jpGoal = $this->japanese_goal_repository->createJapaneseGoal($args);
+        if ($args["type"] == "diary"){
+            $more = $jpGoal->more;
+            $user_invited_ids = $more[0]["user_invited_ids"];
+            $this->notification_repository->staticNotification("diary",$jpGoal->id,$jpGoal,$user_invited_ids);
+        }
+        return $jpGoal;
     }
     public function updateJapaneseGoal($_,array $args){
         $args = array_diff_key($args, array_flip(['type']));

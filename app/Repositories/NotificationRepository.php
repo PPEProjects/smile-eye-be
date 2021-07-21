@@ -9,6 +9,7 @@ use App\Models\Comment;
 use App\Models\Friend;
 use App\Models\GeneralInfo;
 use App\Models\Goal;
+use App\Models\JapaneseGoal;
 use App\Models\Notification;
 use App\Models\PublishInfo;
 use App\Models\Task;
@@ -264,6 +265,18 @@ class NotificationRepository
                             $key." ".$content[$key]["old"]." to ".$content[$key]["new"].
                             " at your goal name ".$goal->name );
                     break;
+                case 'diary':
+                    $content = $noti->content;
+                    $user = User::where("id",$noti["user_id"])->first();
+                    $diary = JapaneseGoal::find($content["id"]);
+                    $more = $diary->more;
+                    $user_invited_ids = $more[0]["user_invited_ids"];
+                    $check = array_search(9, $user_invited_ids);
+                    if (is_numeric($check)){
+                        $messages
+                            ->push($user->name ." invited you to edit diary" );
+                    }else return;
+                    break;
             }
             $noti->messages = $messages;
             return $noti;
@@ -376,6 +389,19 @@ class NotificationRepository
             ->pluck('count', 'type')
             ->toArray();
         event(new \App\Events\NotificationMessage($noti,$user_recive));
+    }
+    public function staticNotification($type,$typeId,$content,$user_invited_ids){
+        foreach ($user_invited_ids as $userId){
+            $noti = Notification::create([
+                'type' => $type,
+                'type_id' => $typeId,
+                'user_id' => Auth::id(),
+                'user_receive_id' => $userId,
+                'content' => $content,
+            ]);
+            $this->sendPushNotifi($userId);
+        }
+
     }
 
 }
