@@ -1214,6 +1214,36 @@
 					"response": []
 				},
 				{
+					"name": "create_post_japanese_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        type,\n        more\n    }\n  \n}",
+								"variables": "{\n  \"type\": \"post\",\n  \"more\": {\n    \"name\": \"Video hướng dẫn nấu ăn bằng tiếng Nhật\",\n    \"video\": {\n      \"attachment_id\": 1,\n      \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n    },\n    \"conversations\": [\n      {\n        \"actor\": \"Tien さん\",\n        \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n      },\n      {\n        \"actor\": \"Tien さん\",\n        \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n      },\n      {\n        \"actor\": \"Tien さん\",\n        \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n      }\n    ]\n  }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "update_japanese_goals",
 					"request": {
 						"method": "POST",
