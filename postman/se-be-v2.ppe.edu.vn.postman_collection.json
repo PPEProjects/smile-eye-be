@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "152d8176-a858-4acb-8339-cd9a72a80dc5",
+		"_postman_id": "6265dcf2-6e02-4264-a5b2-12f09ac3eb17",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1198,7 +1198,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        type,\n        more\n    }\n  \n}",
-								"variables": "{\n  \"type\": \"make_video_share\",\n  \"more\": {\n    \"user_invite_ids\": [\n      1,\n      2,\n      3\n    ],\n    \"name\": \"Video hướng dẫn nấu ăn bằng tiếng Nhật\",\n    \"video\": {\n      \"attachment_id\": 1,\n      \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n    },\n    \"conversations\": [\n      {\n        \"actor\": \"Tien さん\",\n        \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n      },\n      {\n        \"actor\": \"Tien さん\",\n        \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n      },\n      {\n        \"actor\": \"Tien さん\",\n        \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n      }\n    ]\n  }\n}"
+								"variables": "{\n  \"type\": \"make_video_share\",\n  \"more\": {\n    \"user_invite_ids\": [\n      1,\n      2,\n      3\n    ],\n    \"name\": \"Chiều nay đá cầu uống nước mía FREE\",\n    \"video\": {\n      \"attachment_id\": 1,\n      \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n    },\n    \"content\": [\n      {\n        \"title\": \"Tình huống\",\n        \"description\": \"Đá cầu là môn thể thao nhẹ nhàng được nhiều người ưa chuộng. Đá cầu bắt nguồn từ Trung Quốc và hiện nay đã phổ biến ở nhiều quốc gia. Tuy nhiên môn đá cầu tiếng anh là gì vẫn là câu hỏi thắc mắc của nhiều người.\"\n      },\n      {\n        \"title\": \"Ý nghĩa\",\n        \"description\": \"Đá cầu là môn thể thao nhẹ nhàng được nhiều người ưa chuộng. Đá cầu bắt nguồn từ Trung Quốc và hiện nay đã phổ biến ở nhiều quốc gia. Tuy nhiên môn đá cầu tiếng anh là gì vẫn là câu hỏi thắc mắc của nhiều người.\"\n      },\n      {\n        \"title\": \"Nhân vật\",\n        \"description\": \"Sĩ, Khoa, Tiến, Phi, Chị Phương\"\n      },\n      {\n        \"title\": \"Nội dung chi tiết\",\n        \"description\": \"Đá cầu giải trí là hình thức đá cầu tự phát không có sự ràng buộc. Thông thường có thể có từ 1-2 người hoặc hơn chơi đá cầu để rèn luyện sức khỏe và giải trí. Đây là loại hình không có quy luật cụ thể mà chủ yếu là quy định của những người chơi. Cách chơi vẫn theo sự thống nhất không được dùng tay tâng cầu và không được tiếp đất.\"\n      }\n    ],\n    \"sub\": [\n      {\n        \"name\": \"Vietsub\",\n        \"list\": [\n          {\n            \"time_at\": \"05:00\",\n            \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n          },\n          {\n            \"time_at\": \"05:00\",\n            \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n          },\n          {\n            \"time_at\": \"05:00\",\n            \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n          }\n        ]\n      },\n      {\n        \"name\": \"Engsub\",\n        \"list\": [\n          {\n            \"time_at\": \"05:00\",\n            \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n          },\n          {\n            \"time_at\": \"05:00\",\n            \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n          },\n          {\n            \"time_at\": \"05:00\",\n            \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n          }\n        ]\n      }\n    ]\n  }\n}"
 							}
 						},
 						"url": {
@@ -1408,7 +1408,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($type:String!) {\n  my_basket_or_card(\n      type : $type\n  ) \n}",
-								"variables": "{\r\n\"type\": \"flash_card\"\r\n}\r\n"
+								"variables": "{\r\n\"type\": \"post\"\r\n}\r\n"
 							}
 						},
 						"url": {
