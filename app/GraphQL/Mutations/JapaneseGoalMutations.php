@@ -59,6 +59,13 @@ class JapaneseGoalMutations{
                 $this->notification_repository->staticNotification("share_card_with_friend",$jpGoal->id,$jpGoal,$user_invited_ids);
             }
         }
+        if ($args["type"] == "make_video_share"){
+            $more = $jpGoal->more;
+            if (isset($more["user_invite_ids"])){
+                $user_invited_ids = $more["user_invite_ids"];
+                $this->notification_repository->staticNotification("make_video_share",$jpGoal->id,$jpGoal,$user_invited_ids);
+            }
+        }
         return $jpGoal;
     }
     public function updateJapaneseGoal($_,array $args){

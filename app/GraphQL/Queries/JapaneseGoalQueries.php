@@ -49,6 +49,20 @@ class JapaneseGoalQueries
                 $result = $result->merge($basket->more);
             }
             return ($result);
+        }else if ($args["type"] == "make_video_share") {
+            $temps = User::find(Auth::id())->japanese_goals;
+            $temps = $temps->where("type","make_video_share");
+            foreach ($temps as $temp){
+                $result = $result->push($temp->more);
+            }
+            return $result;
+        }else if ($args["type"] == "post") {
+            $temps = User::find(Auth::id())->japanese_goals;
+            $temps = $temps->where("type","post");
+            foreach ($temps as $temp){
+                $result = $result->push($temp->more);
+            }
+            return $result;
         }
         return ;
  }

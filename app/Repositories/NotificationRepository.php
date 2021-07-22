@@ -301,6 +301,18 @@ class NotificationRepository
                             ->push($user->name ." invited you to play card" );
                     }else return;
                     break;
+                case 'make_video_share':
+                    $content = $noti->content;
+                    $user = User::where("id",$noti["user_id"])->first();
+                    $diary = JapaneseGoal::find($content["id"]);
+                    $more = $diary->more;
+                    $user_invited_ids = $more["user_invite_ids"];
+                    $check = array_search(Auth::id(), $user_invited_ids);
+                    if (is_numeric($check)){
+                        $messages
+                            ->push($user->name ." share video with you" );
+                    }else return;
+                    break;
             }
             $noti->messages = $messages;
             return $noti;
