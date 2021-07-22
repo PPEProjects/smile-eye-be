@@ -33,9 +33,24 @@ class JapaneseGoalQueries
         return JapaneseGoal::findOrFail($args["id"]);
  }
 
- public function myBasketCards(){
-        $baskets = User::find(Auth::id())->japanese_goals;
-        return $baskets->where("type","basket_card");
+ public function myBasketOrCard($_,array $args){
+        $result = collect();
+        if ($args["type"] == "flash_card"){
+            $cards = User::find(Auth::id())->japanese_goals;
+            $cards = $cards->where("type","flash_card");
+            foreach ($cards as $card){
+                $result = $result->merge($card->more);
+            }
+            return ($result);
+        }else if ($args["type"] == "basket_card") {
+            $baskets = User::find(Auth::id())->japanese_goals;
+            $baskets = $baskets->where("type","basket_card");
+            foreach ($baskets as $basket){
+                $result = $result->merge($basket->more);
+            }
+            return ($result);
+        }
+        return ;
  }
 
  public function flashCards(){
@@ -45,9 +60,5 @@ class JapaneseGoalQueries
  }
  public function detailFlashCard($_,array $args){
      return JapaneseGoal::findOrFail($args["id"]);
- }
- public function myFlashCards(){
-     $baskets = User::find(Auth::id())->japanese_goals;
-     return $baskets->where("type","flash_card");
  }
 }

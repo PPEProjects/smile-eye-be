@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "0b3427ba-6150-46ad-bbfa-649ae52a14a8",
+		"_postman_id": "d966e2df-d3f5-49a7-afae-df449d32ee92",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -708,7 +708,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "  query($types: [String]!){\r\n  my_notifications(\r\n      types: $types\r\n  ){\r\n    id\r\n    user{\r\n        id\r\n        name\r\n        attachment{\r\n            file_type\r\n            thumb\r\n            file\r\n        }\r\n    }\r\n    type\r\n    type_id\r\n    messages\r\n    created_at\r\n    updated_at\r\n  }\r\n}",
-								"variables": "{\r\n    \"types\":[\"edit_goal\"]\r\n}"
+								"variables": "{\r\n    \"types\":[\"share_card_with_friend\"]\r\n}"
 							}
 						},
 						"url": {
@@ -1319,6 +1319,36 @@
 							"graphql": {
 								"query": "query($id:ID, $goal_id: ID) {\n  detail_japanese_goal(\n      id : $id\n      goal_id: $goal_id\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n     goal_root{\n         id\n         name\n     }\n    type\n    score\n    more\n  }\n}",
 								"variables": "{\r\n\"id\": 12\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "my_basket_or_card",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($type:String!) {\n  my_basket_or_card(\n      type : $type\n  ) \n}",
+								"variables": "{\r\n\"type\": \"basket_card\"\r\n}\r\n"
 							}
 						},
 						"url": {

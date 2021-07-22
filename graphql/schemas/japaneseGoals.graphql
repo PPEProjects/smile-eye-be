@@ -8,7 +8,7 @@ extend type Query {
     sort_japanese_goals(orderBy: [OrderByClause!] @orderBy): [JapaneseGoal!]! @paginate(type: "paginator" model: "App\\Models\\JapaneseGoal")
     detail_japanese_goal(id: ID, goal_id: ID): JapaneseGoal @field(resolver:"JapaneseGoalQueries@detailJapaneseGoal")
     search_by_type_japanese_goal(type:String): [JapaneseGoal] @field(resolver:"JapaneseGoalQueries@searchByTypeJapaneseGoal")
-#    my_japanese_goals(parent_id:String!): [JapaneseGoal] @guard @field(resolver:"JapaneseGoalQueries@myJapaneseGoals")
+    my_basket_or_card(type:String!): JSON @guard @field(resolver:"JapaneseGoalQueries@myBasketOrCard")
 }
 
 type JapaneseGoal{
