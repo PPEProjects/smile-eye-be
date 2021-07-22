@@ -27,10 +27,6 @@ class JapaneseGoalMutations{
             throw new Error('You must input type');
         }
 
-
-        // if (!isset($args['name_goal'])){
-        //     throw new Error('You must input name goal');
-        // }
         if (isset($args['name_goal'])) {
             $dataGoal = ['name' => $args['name_goal'], 'user_id' => $args["user_id"]];
             if (isset($args['parent_id'])){
@@ -48,6 +44,20 @@ class JapaneseGoalMutations{
             $more = $jpGoal->more;
             $user_invited_ids = $more[0]["user_invited_ids"];
             $this->notification_repository->staticNotification("diary",$jpGoal->id,$jpGoal,$user_invited_ids);
+        }
+        if ($args["type"] == "flash_card"){
+            $more = $jpGoal->more;
+            if (isset($more["user_invited_ids"])){
+                $user_invited_ids = $more["user_invited_ids"];
+                $this->notification_repository->staticNotification("flash_card",$jpGoal->id,$jpGoal,$user_invited_ids);
+            }
+        }
+        if ($args["type"] == "share_card_with_friend"){
+            $more = $jpGoal->more;
+            if (isset($more["user_invite_ids"])){
+                $user_invited_ids = $more["user_invite_ids"];
+                $this->notification_repository->staticNotification("share_card_with_friend",$jpGoal->id,$jpGoal,$user_invited_ids);
+            }
         }
         return $jpGoal;
     }

@@ -271,10 +271,34 @@ class NotificationRepository
                     $diary = JapaneseGoal::find($content["id"]);
                     $more = $diary->more;
                     $user_invited_ids = $more[0]["user_invited_ids"];
-                    $check = array_search(9, $user_invited_ids);
+                    $check = array_search(Auth::id(), $user_invited_ids);
                     if (is_numeric($check)){
                         $messages
                             ->push($user->name ." invited you to edit diary" );
+                    }else return;
+                    break;
+                case 'flash_card':
+                    $content = $noti->content;
+                    $user = User::where("id",$noti["user_id"])->first();
+                    $diary = JapaneseGoal::find($content["id"]);
+                    $more = $diary->more;
+                    $user_invited_ids = $more["user_invited_ids"];
+                    $check = array_search(Auth::id(), $user_invited_ids);
+                    if (is_numeric($check)){
+                        $messages
+                            ->push($user->name ." invited you to edit flash_card" );
+                    }else return;
+                    break;
+                case 'share_card_with_friend':
+                    $content = $noti->content;
+                    $user = User::where("id",$noti["user_id"])->first();
+                    $diary = JapaneseGoal::find($content["id"]);
+                    $more = $diary->more;
+                    $user_invited_ids = $more["user_invite_ids"];
+                    $check = array_search(Auth::id(), $user_invited_ids);
+                    if (is_numeric($check)){
+                        $messages
+                            ->push($user->name ." invited you to play card" );
                     }else return;
                     break;
             }
