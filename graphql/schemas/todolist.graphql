@@ -30,6 +30,8 @@ type Todolist{
     type: String
     task_id: ID
     todolist_id: ID
+    is_reminder: Boolean
+    is_action_at: Boolean
 }
 
 input CreateTodolistInput{

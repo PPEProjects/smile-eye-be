@@ -62,7 +62,11 @@ class TodolistMutations
             throw new Error('Status invalid');
         }
         else $args = array_diff_key($args,array_flip(["status"]));
-
+        $date = date_create(@$args['general_info']['action_at']);
+        $time = date_format($date, 'H:i:s');
+        if($time == "00:00:00"){
+            $args['general_info']['action_at'] = null;
+        }
         $args['user_id'] = Auth::id();
         $goal = $this->goal_repository->findByTaskId($args['task_id']);
         $args['goal_id'] = @$goal->id;

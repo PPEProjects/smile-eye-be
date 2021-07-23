@@ -51,12 +51,28 @@ class NotificationRepository
     public function detailNotifications(array $args)
     {
         $notifications = Notification::where("id",$args["id"])->get();
-
+        $userInvited = $notifications->pluck('user_receive_id');
+      
         //map user and avatar
-        $notifications = $notifications->map(function ($noti){
+        $notifications = $notifications->map(function ($noti) use($userInvited){
             $type = $noti->type ;
-            $general_id = $noti->content["general_id"];
+            $general_id = @$noti->content["general_id"];
             switch ($type){
+                case'share_user_info':              
+                    $member = User::whereIn('id',$userInvited)->get();
+                    $member= $member->map(function ($user){
+                        $attachment = Attachment::where('id',$user->avatar_attachment_id)->first();
+                        if ($attachment) {
+                            [$thumb, $file] = $this->attachment_service->getThumbFile($attachment->file_type, $attachment->file);
+                            $attachment->thumb = $thumb;
+                            $attachment->file = $file;
+                        }
+                        $user->attachment = $attachment;
+                        return $user;
+                    });
+                    $noti->detail = $noti->content;
+                    $noti->member = $member;
+                    break;
                 case 'achieve' :
                     $general = GeneralInfo::where("id",$general_id)->first()->toArray();
                     $day = 0;
@@ -135,6 +151,9 @@ class NotificationRepository
                     });
                     $noti->detail = $general;
                     $noti->member = $member;
+                
+              
+                   
             }
             return $noti;
         });
@@ -149,7 +168,6 @@ class NotificationRepository
             ->whereIn("type",$args["types"]);
         $notifications1 =  $notifications;
         $notifications = $notifications->get();
-
         $notifications1->update(['is_read' => 1]);
         $notifications = $notifications->map(function ($noti) {
             $user = User::where("id",$noti->user_id)->first();
@@ -157,6 +175,9 @@ class NotificationRepository
             $noti->user = $user;
             $messages = collect();
             switch ($noti->type) {
+                case 'share_user_info':
+                    $messages->push('invite', @$noti->content['message']);
+                    break;
                 case 'achieve':
                     $content = $noti->content;
                     if (@$content['status'] == 'pending') {
@@ -274,7 +295,9 @@ class NotificationRepository
     public function createNotification($args)
     {
         $args['user_id'] = Auth::id();
-        return Notification::create($args);
+        $noti = Notification::create($args);
+        $this->sendPushNotifi($args['user_receive_id']);
+        return $noti;
     }
 
     public function updateNotification($args)

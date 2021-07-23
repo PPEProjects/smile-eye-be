@@ -171,7 +171,18 @@ WHERE
                 $actionAtNoNull = $tasks->WhereNotNull('general_info.action_at')->sortByDESC('task_id');
                 $tasks = $tasks = $actionAtNull->concat($actionAtNoNull);
         }
-
+        $tasks = $tasks->map(function($task){
+            $task->is_action_at = true;
+            $task->is_reminder = true;
+            if($task->general_info['action_at'] == null){
+                $task->is_action_at = false;
+            }
+            if($task->general_info['reminder'] == null){
+                $task->is_reminder = false;
+            }
+        return $task;
+            
+        });
         return $tasks;
     }
 

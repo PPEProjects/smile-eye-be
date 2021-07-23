@@ -39,6 +39,7 @@ type Notification{
     is_read : Boolean
     member : [User]
     detail : JSON
+    content: JSON
     general_id : ID
     task_id : ID
     goal_id : ID
