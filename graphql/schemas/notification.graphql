@@ -54,7 +54,7 @@ type Content{
     content : String
 }
 input CreateNotificationInput{
-    user_receive_id : ID
+    user_receive_id : [ID]
     type : String
     type_id : ID
     content: JSON

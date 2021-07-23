@@ -21,7 +21,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Hac\",\n    \"email\": \"Hacker1232@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
+							"raw": "{\n    \"name\": \"nam\",\n    \"email\": \"nhnam1632@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -126,7 +126,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"tinh5969@gmail.com\"\n}",
+							"raw": "{\n    \"email\": \"nhnam1632@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -564,8 +564,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\r\n    $user_receive_id : ID\r\n    $type : String\r\n    $type_id : ID\r\n    $content: JSON\r\n    $is_read : Boolean\r\n) {\r\n  create_notification(\r\n    input: {\r\n    user_receive_id : $user_receive_id\r\n    type : $type\r\n    type_id : $type_id\r\n    content: $content\r\n    is_read : $is_read\r\n    }\r\n  ) {\r\n   id\r\n        user{\r\n            id\r\n        }\r\n       content\r\n        \r\n        created_at\r\n        updated_at\r\n}\r\n}\r\n",
-								"variables": "{\r\n    \"user_receive_id\" : 2,\r\n    \"type\" : \"share_user_info\",\r\n    \"type_id\" : null,\r\n    \"content\": {\r\n        \"title\":\"share user info\",\r\n        \"message\" : \"visit my profile\"\r\n    },\r\n    \"is_read\" : false\r\n}"
+								"query": "mutation(\r\n    $user_receive_id : [ID]\r\n    $type : String\r\n    $type_id : ID\r\n    $content: JSON\r\n    $is_read : Boolean\r\n) {\r\n  create_notification(\r\n    input: {\r\n    user_receive_id : $user_receive_id\r\n    type : $type\r\n    type_id : $type_id\r\n    content: $content\r\n    is_read : $is_read\r\n    }\r\n  ) {\r\n   id\r\n        user{\r\n            id\r\n        }\r\n       content\r\n        \r\n        created_at\r\n        updated_at\r\n}\r\n}\r\n",
+								"variables": "{\r\n    \"user_receive_id\" : [1,2,3],\r\n    \"type\" : \"share_user_info\",\r\n    \"content\": {\r\n        \"title\":\"share user info\",\r\n        \"message\" : \"visit my profile\"\r\n    },\r\n    \"is_read\" : false\r\n}"
 							}
 						},
 						"url": {
@@ -2839,7 +2839,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n  $name : String!\r\n  $goal_id : ID\r\n  $general_info: JSON\r\n  \r\n) {\r\n  create_task(\r\n    input: {\r\n      name: $name\r\n      goal_id : $goal_id\r\n      general_info : $general_info\r\n    }\r\n  ) {\r\n    id\r\n    goal_id\r\n    user{\r\n        id\r\n    }\r\n    name\r\n    goal_id\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n  }\r\n}",
-								"variables": "{\r\n    \"goal_id\":null,\r\n    \"name\" : \"task23 \",\r\n    \"general_info\": {\r\n        \"address\": \"ultimate\",\r\n        \"zalo\": \"034470383822\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-06 00:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n    \r\n}"
+								"variables": "{\r\n    \"goal_id\":null,\r\n    \"name\" : \"task 45 \",\r\n    \"general_info\": {\r\n        \"address\": \"ultimate\",\r\n        \"zalo\": \"034470383822\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-06 00:00:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n    \r\n}"
 							}
 						},
 						"url": {
