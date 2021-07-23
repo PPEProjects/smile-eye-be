@@ -73,7 +73,10 @@ class GoalQueries
     {
         return $this->goal_repository->myGoals($args);
     }
-
+    public function ganttChartSort($_, array $args)
+    {
+        return $this->goal_repository->ganttChartSort($args['id'], Auth::id());
+    }
     public function myGoals($_, array $args)
     {
         $this->goal_repository->calculatorProcessTodolist();

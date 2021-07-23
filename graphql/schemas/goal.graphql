@@ -23,6 +23,7 @@ extend type Query {
     my_goals_achieve(parent_id:String!): [Goal] @guard @field(resolver:"GoalQueries@myGoalsAchieve")
     count_goal (parent_id:String!): [CountGoal] @guard @field(resolver:"GoalQueries@countGoals")
     report_goal (id:ID!): JSON @guard @field(resolver:"GoalQueries@reportGoal")
+    gantt_chart_sort(id:ID, not_auth:Boolean): JSON @guard @field(resolver:"GoalQueries@ganttChartSort")
 }
 type ReportGoal{
     A : Float

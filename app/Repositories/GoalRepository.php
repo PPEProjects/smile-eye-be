@@ -98,12 +98,45 @@ class GoalRepository
             ->where('tasks.id', $taskId)
             ->first();
     }
+    public function ganttChartSort($goalId, $userId = null){
+
+        $this->calculatorProcessTodolist();
+        $this->calculatorProcessUpdate();
+        $goals = Goal::selectRaw('id, name, parent_id, progress, start_day, end_day')
+            ->orderBy('id', 'desc');
+        if ($userId) {
+            $goals = $goals->where("user_id", $userId);
+        }
+
+        $goals = $goals->get();
+
+        $tree = self::ganttBuildTree($goals->toArray(), $goalId);
+        $pTree = $goals->where('id', $goalId)->first();
+        if ($pTree) {
+            $pTree->sub_tasks = $tree;
+            return ['tree' => [$pTree], 'goals' => $goals];
+        }
+        return ['tree' => [], 'goals' => $goals];
+    }
+
+    public function ganttBuildTree(array $elements, $parentId = 0)
+    {
+        $branch = array();
+        foreach ($elements as $element) {
+            if ($element['parent_id'] == $parentId) {
+                $subTasks = self::ganttBuildTree($elements, $element['id']);
+                if ($subTasks) {
+                    $element['sub_tasks'] = $subTasks;
+                }
+                $branch[] = $element;
+            }
+        }
+        return $branch;
+    }
 
     public function getTreeSortByGoalId($goalId, $userId = null)
     {
-        $this->calculatorProcessTodolist();
-        $this->calculatorProcessUpdate();
-        $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, progress, task_id, start_day, end_day')
+        $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id')
             ->orderBy('id', 'desc');
         if ($userId) {
             $goals = $goals->where("user_id", $userId);
