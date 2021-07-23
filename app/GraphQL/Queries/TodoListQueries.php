@@ -167,9 +167,7 @@ WHERE
                 $tasks = $statusNull->concat($statusNoNull);
                 break;
             default:
-                $actionAtNull = $tasks->WhereNull('general_info.action_at')->sortBy(['general_info.action_at', 'ASC']);
-                $actionAtNoNull = $tasks->WhereNotNull('general_info.action_at')->sortByDESC('task_id');
-                $tasks = $tasks = $actionAtNull->concat($actionAtNoNull);
+                $tasks = $tasks->sortByDESC('task_id');
         }
         $tasks = $tasks->map(function($task){
             $task->is_action_at = true;
@@ -237,7 +235,6 @@ WHERE tasks.user_id=" . Auth::id() . " AND tasks.deleted_at IS NULL AND gi.`repe
             return $item['action_at'];
         }, $tasksAction);
         $tasksAction = array_count_values($tasksAction);
-
         $query = "SELECT tasks.id, DATE(IFNULL(gi.action_at, tasks.created_at)) as action_at
 FROM tasks
      inner join general_infos gi on tasks.id = gi.task_id
@@ -247,7 +244,6 @@ WHERE tasks.user_id=" . Auth::id() . " AND tasks.deleted_at IS NULL AND gi.`repe
         $tasksEveryDay = array_map(function ($item) {
             return $item['action_at'];
         }, $tasksEveryDay);
-
         $workloads = [];
         foreach (CarbonPeriod::create($startDate, $endDate) as $date) {
             $date = $date->format('Y-m-d');

@@ -49,10 +49,12 @@ class TaskMutations
             }
         }
         $date = date_create(@$args['general_info']['action_at']);
-        $time = date_format($date, 'H:i:s');
-        if($time == "00:00:00"){
-            $args['general_info']['action_at'] = null;
-        }
+        if($date){
+            $time = date_format($date, 'H:i:s');
+            if($time == "00:00:00"){
+                $args['general_info']['action_at'] = null;
+            }
+        }else $args['general_info']['action_at'] = null;
         $task = $this->task_repository->createTask($args);
         $generalInfo = $this->generalinfo_repository
             ->setType('task')
