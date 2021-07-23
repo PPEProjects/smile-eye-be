@@ -295,7 +295,7 @@ class NotificationRepository
     public function createNotification($args)
     {
         $args['user_id'] = Auth::id();
-        foreach ($args['user_receive_id'] as $single){
+        foreach ($args['user_receive_ids'] as $single){
             $notiData = $args;
             $notiData['user_receive_id'] = $single;
             $noti = Notification::create($notiData);

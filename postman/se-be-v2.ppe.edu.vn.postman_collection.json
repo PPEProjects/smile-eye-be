@@ -564,8 +564,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\r\n    $user_receive_id : [ID]\r\n    $type : String\r\n    $type_id : ID\r\n    $content: JSON\r\n    $is_read : Boolean\r\n) {\r\n  create_notification(\r\n    input: {\r\n    user_receive_id : $user_receive_id\r\n    type : $type\r\n    type_id : $type_id\r\n    content: $content\r\n    is_read : $is_read\r\n    }\r\n  ) {\r\n   id\r\n        user{\r\n            id\r\n        }\r\n       content\r\n        \r\n        created_at\r\n        updated_at\r\n}\r\n}\r\n",
-								"variables": "{\r\n    \"user_receive_id\" : [1,2,3],\r\n    \"type\" : \"share_user_info\",\r\n    \"content\": {\r\n        \"title\":\"share user info\",\r\n        \"message\" : \"visit my profile\"\r\n    },\r\n    \"is_read\" : false\r\n}"
+								"query": "mutation(\r\n    $user_receive_ids : [ID]\r\n    $type : String\r\n    $type_id : ID\r\n    $content: JSON\r\n    $is_read : Boolean\r\n) {\r\n  create_notification(\r\n    input: {\r\n    user_receive_ids : $user_receive_ids\r\n    type : $type\r\n    type_id : $type_id\r\n    content: $content\r\n    is_read : $is_read\r\n    }\r\n  ) {\r\n   id\r\n        user{\r\n            id\r\n        }\r\n       content\r\n        \r\n        created_at\r\n        updated_at\r\n}\r\n}\r\n",
+								"variables": "{\r\n    \"user_receive_ids\" : [1,2,3],\r\n    \"type\" : \"share_user_info\",\r\n    \"content\": {\r\n        \"title\":\"share user info\",\r\n        \"message\" : \"visit my profile\"\r\n    },\r\n    \"is_read\" : false\r\n}"
 							}
 						},
 						"url": {
