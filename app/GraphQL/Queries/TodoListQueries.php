@@ -246,16 +246,17 @@ WHERE tasks.user_id=" . Auth::id() . " AND tasks.deleted_at IS NULL AND gi.`repe
         }, $tasksEveryDay);
         $checkTasksEveryDay = array_count_values($tasksEveryDay);
         $workloads = [];
+        $numberDay = 0;
         foreach (CarbonPeriod::create($startDate, $endDate) as $date) {
             $date = $date->format('Y-m-d');
             if(isset($checkTasksEveryDay[$date])){
-                $check = $date;
                 $day[] = $date;
+               $numberDay = count(array_intersect($tasksEveryDay, $day));
             }
             $workload = [
                 'date'     => $date,
                 'workload' => 
-                (@$tasksAction[$date] ?? 0) + (isset($check) && $check <= $date) ? count(array_intersect($tasksEveryDay, $day)) : 0
+                (@$tasksAction[$date] ?? 0)  + $numberDay
             ];
             if (!empty($workload['workload'])) {
                 $workloads[] = $workload;
