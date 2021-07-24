@@ -172,14 +172,15 @@ WHERE
         $tasks = $tasks->map(function($task){
             $task->is_action_at = true;
             $task->is_reminder = true;
-            if($task->general_info['action_at'] == null){
+            $checkTime = strpos(@$task->general_info['action_at'], "00:00:00");
+            if($task->general_info['action_at'] == null || $checkTime ){
                 $task->is_action_at = false;
             }
             if($task->general_info['reminder'] == null){
                 $task->is_reminder = false;
             }
         return $task;
-            
+
         });
         return $tasks;
     }
