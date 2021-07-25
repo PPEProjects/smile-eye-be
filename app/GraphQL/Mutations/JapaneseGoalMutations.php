@@ -42,7 +42,8 @@ class JapaneseGoalMutations{
        $jpGoal = $this->japanese_goal_repository->createJapaneseGoal($args);
         if ($args["type"] == "diary"){
             $more = $jpGoal->more;
-            $user_invited_ids = $more[0]["user_invited_ids"];
+            $more = array_shift($more);
+            $user_invited_ids = $more["user_invited_ids"];
             $this->notification_repository->staticNotification("diary",$jpGoal->id,$jpGoal,$user_invited_ids);
         }
         if ($args["type"] == "flash_card"){
