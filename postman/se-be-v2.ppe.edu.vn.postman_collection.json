@@ -148,6 +148,40 @@
 					"response": []
 				},
 				{
+					"name": "{{url}}/ppe-core/auth/email-check",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"tinh5969ád@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/ppe-core/auth/email-check",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ppe-core",
+								"auth",
+								"email-check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "{{url}}/ppe-core/auth/reset",
 					"request": {
 						"method": "POST",
