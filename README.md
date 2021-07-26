@@ -32,8 +32,19 @@ composer dump-autoload
 --add provider config/app.php--
 \ppeCore\dvtinh\Providers\CoreDBServiceProvider::class,
 ````
-```
-run migrate: 
+This is important
+
+Change file passport.php on vendor/laravel/passport/config/passport.php for move passport's table to core database
+````
+'storage' => [
+'database' => [
+'connection' => env('DB_CORE_CONNECTION', 'ppe_core'),
+],
+],
+````
+After that do all things need to do at ppe-core/ReadMe.md
+````
+run migrate
 php artisan migrate
 
 run factory: 
