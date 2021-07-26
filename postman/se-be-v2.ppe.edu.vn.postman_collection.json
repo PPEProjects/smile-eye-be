@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6265dcf2-6e02-4264-a5b2-12f09ac3eb17",
+		"_postman_id": "ce0be90d-bead-4bb6-8267-8119267ff4a6",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1168,7 +1168,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        type,\n        more\n    }\n  \n}",
-								"variables": "{\n    \"type\" : \"diary\",\n    \"more\" : [\n        {\n         \"date\": \"2021-07-22\",\n         \"content\":\"<p style='text-align: justify;'>8月26日（土）<br />8 gatsu 26-nichi (do)<br />August 26th (Saturday).</p><p style='text-align: justify;'>10時ごろに宅配便で目がさめる。<br />10-ji-goro ni takuhaibin de me ga sameru.<br />I wake up around 10 a.m. because I have an express home delivery parcel.</p><p style='text-align: justify;'>ヨーグルトとビスケットを食べて二度寝する。<br />Yooguruto to bisuketto wo tabete nido nesuru.<br />I eat yogurt and biscuits and then sleep again.</p><p style='text-align: justify;'>起きたら16時だった。<br />Okitara 16-jidatta.\",\n         \"user_invited_ids\":[1,2,3]\n        }\n    ]\n}"
+								"variables": "{\n    \"type\" : \"diary\",\n    \"more\" : [\n        {\n         \"date\": \"2021-07-22\",\n         \"content\":\"<p style='text-align: justify;'>8月26日（土）<br />8 gatsu 26-nichi (do)<br />August 26th (Saturday).</p><p style='text-align: justify;'>10時ごろに宅配便で目がさめる。<br />10-ji-goro ni takuhaibin de me ga sameru.<br />I wake up around 10 a.m. because I have an express home delivery parcel.</p><p style='text-align: justify;'>ヨーグルトとビスケットを食べて二度寝する。<br />Yooguruto to bisuketto wo tabete nido nesuru.<br />I eat yogurt and biscuits and then sleep again.</p><p style='text-align: justify;'>起きたら16時だった。<br />Okitara 16-jidatta.\",\n         \"user_invite_ids\":[44,55]\n        }\n    ]\n}"
 							}
 						},
 						"url": {
@@ -1199,6 +1199,36 @@
 							"graphql": {
 								"query": "mutation(\n    \n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        type,\n        more\n    }\n  \n}",
 								"variables": "{\n  \"type\": \"make_video_share\",\n  \"more\": {\n    \"user_invite_ids\": [\n      1,\n      2,\n      3\n    ],\n    \"name\": \"Chiều nay đá cầu uống nước mía FREE\",\n    \"video\": {\n      \"attachment_id\": 1,\n      \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n    },\n    \"content\": [\n      {\n        \"title\": \"Tình huống\",\n        \"description\": \"Đá cầu là môn thể thao nhẹ nhàng được nhiều người ưa chuộng. Đá cầu bắt nguồn từ Trung Quốc và hiện nay đã phổ biến ở nhiều quốc gia. Tuy nhiên môn đá cầu tiếng anh là gì vẫn là câu hỏi thắc mắc của nhiều người.\"\n      },\n      {\n        \"title\": \"Ý nghĩa\",\n        \"description\": \"Đá cầu là môn thể thao nhẹ nhàng được nhiều người ưa chuộng. Đá cầu bắt nguồn từ Trung Quốc và hiện nay đã phổ biến ở nhiều quốc gia. Tuy nhiên môn đá cầu tiếng anh là gì vẫn là câu hỏi thắc mắc của nhiều người.\"\n      },\n      {\n        \"title\": \"Nhân vật\",\n        \"description\": \"Sĩ, Khoa, Tiến, Phi, Chị Phương\"\n      },\n      {\n        \"title\": \"Nội dung chi tiết\",\n        \"description\": \"Đá cầu giải trí là hình thức đá cầu tự phát không có sự ràng buộc. Thông thường có thể có từ 1-2 người hoặc hơn chơi đá cầu để rèn luyện sức khỏe và giải trí. Đây là loại hình không có quy luật cụ thể mà chủ yếu là quy định của những người chơi. Cách chơi vẫn theo sự thống nhất không được dùng tay tâng cầu và không được tiếp đất.\"\n      }\n    ],\n    \"sub\": [\n      {\n        \"name\": \"Engsub\",\n        \"list\": [\n          {\n            \"time_at\": \"05:00\",\n            \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n          },\n          {\n            \"time_at\": \"05:00\",\n            \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n          },\n          {\n            \"time_at\": \"05:00\",\n            \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n          }\n        ]\n      },\n      {\n        \"name\": \"Engsub\",\n        \"list\": [\n          {\n            \"time_at\": \"05:00\",\n            \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n          },\n          {\n            \"time_at\": \"05:00\",\n            \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n          },\n          {\n            \"time_at\": \"05:00\",\n            \"content\": \"Sure, I’ll send you an e-mail. See you soon!もちろん。メールを送ります。では、また会いましょう！Mochiron. Meeru wo okurimasu. Dewa mata aimashou\"\n          }\n        ]\n      }\n    ]\n  }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create_sing_with_friend",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    \n    $type : String\n    $more : JSON\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    type : $type\n    more : $more\n    }) {\n        id\n        type,\n        more\n    }\n  \n}",
+								"variables": "  {\n    \"type\": \"sing_with_friend\",\n    \"more\": {\n      \"user_invite_ids\": [\n        1,\n        2,\n        3\n      ],\n      \"name\": \"Học hát: Sakura\",\n      \"video\": {\n        \"attachment_id\": 1,\n        \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp4\"\n      },\n      \"lyrics\": [\n        {\n          \"words\": \"夜中過ぎの夢に うなされて\",\n          \"audio\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n          }\n        },\n        {\n          \"words\": \"夜中過ぎの夢に うなされて\",\n          \"audio\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n          }\n        },\n        {\n          \"words\": \"夜中過ぎの夢に うなされて\",\n          \"audio\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n          }\n        }\n      ]\n    }\n  }"
 							}
 						},
 						"url": {

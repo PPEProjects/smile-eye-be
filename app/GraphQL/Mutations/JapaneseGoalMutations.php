@@ -43,16 +43,27 @@ class JapaneseGoalMutations{
         if ($args["type"] == "diary"){
             $more = $jpGoal->more;
             $more = array_shift($more);
-            if (isset($more["user_invited_ids"])){
-                $user_invited_ids = $more["user_invited_ids"];
+            if (isset($more["user_invite_ids"])){
+                $user_invited_ids = $more["user_invite_ids"];
                 $this->notification_repository->staticNotification("diary",$jpGoal->id,$jpGoal,$user_invited_ids);
+            }else if(isset($more["user_invited_ids"])){
+                throw new Error("'user_invited_ids' => 'user_invite_ids'");
             }
         }
         if ($args["type"] == "flash_card"){
             $more = $jpGoal->more;
-            if (isset($more["user_invited_ids"])){
-                $user_invited_ids = $more["user_invited_ids"];
+            if (isset($more["user_invite_ids"])){
+                $user_invited_ids = $more["user_invite_ids"];
                 $this->notification_repository->staticNotification("flash_card",$jpGoal->id,$jpGoal,$user_invited_ids);
+            }else if(isset($more["user_invited_ids"])){
+                throw new Error("'user_invited_ids' => 'user_invite_ids'");
+            }
+        }
+        if ($args["type"] == "sing_with_friend"){
+            $more = $jpGoal->more;
+            if (isset($more["user_invite_ids"])){
+                $user_invited_ids = $more["user_invite_ids"];
+                $this->notification_repository->staticNotification("sing_with_friend",$jpGoal->id,$jpGoal,$user_invited_ids);
             }
         }
         if ($args["type"] == "share_card_with_friend"){
