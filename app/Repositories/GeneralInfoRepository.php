@@ -30,6 +30,12 @@ class GeneralInfoRepository
 
     public function upsert($payload)
     {
+        if(isset($payload['general_info']['action_at_time'])){
+            $time = date_create($payload['general_info']['action_at_time']);
+            if(!$time || $payload['general_info']['action_at_time'] == "00:00:00"){
+                 $payload['general_info']['action_at_time'] = null;
+             }
+        }
         switch ($this->type) {
             case 'goal':
                 $data = array_merge($payload['general_info'] ?? [],

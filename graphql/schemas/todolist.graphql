@@ -31,7 +31,7 @@ type Todolist{
     task_id: ID
     todolist_id: ID
     is_reminder: Boolean
-    is_action_at: Boolean
+    is_action_at_time: Boolean
 }
 
 input CreateTodolistInput{

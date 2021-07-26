@@ -23,7 +23,8 @@ class CreateGeneralInfo extends Migration
             $table->string('zalo')->nullable();
             $table->string('repeat')->nullable();
             $table->string('reminder')->nullable();
-            $table->dateTime('action_at')->nullable();
+            $table->date('action_at')->nullable();
+            $table->time('action_at_time')->nullable();
             $table->text('note')->nullable();
             $table->json('attachment_ids')->nullable();
             $table->string('publish')->nullable();

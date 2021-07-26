@@ -157,8 +157,8 @@ WHERE
         switch ($sortBy) {
             case 'by time':
                 $tasks = $tasks->sortByDESC('task_id');
-                $actionAtNoNull = $tasks->WhereNotNull('general_info.action_at')->sortBy('general_info.action_at');
-                $actionAtNull = $tasks->WhereNull('general_info.action_at');
+                $actionAtNoNull = $tasks->WhereNotNull('general_info.action_at_time')->sortBy('general_info.action_at_time');
+                $actionAtNull = $tasks->WhereNull('general_info.action_at_time');
                 $tasks = $actionAtNoNull->concat($actionAtNull);
                 break;
             case 'by done':
@@ -170,11 +170,10 @@ WHERE
                 $tasks = $tasks->sortByDESC('task_id');
         }
         $tasks = $tasks->map(function($task){
-            $task->is_action_at = true;
+            $task->is_action_at_time = true;
             $task->is_reminder = true;
-            $checkTime = strpos(@$task->general_info['action_at'], "00:00:00");
-            if($task->general_info['action_at'] == null || $checkTime ){
-                $task->is_action_at = false;
+            if($task->general_info['action_at_time'] == null){
+                $task->is_action_at_time = false;
             }
             if($task->general_info['reminder'] == null){
                 $task->is_reminder = false;

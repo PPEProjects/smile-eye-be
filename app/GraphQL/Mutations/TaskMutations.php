@@ -48,7 +48,7 @@ class TaskMutations
                 throw new Error("This goal already add to task ");
             }
         }
-       
+        
         $task = $this->task_repository->createTask($args);
         $generalInfo = $this->generalinfo_repository
             ->setType('task')

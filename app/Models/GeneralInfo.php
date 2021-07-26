@@ -24,6 +24,7 @@ class GeneralInfo extends Model
         'repeat',
         'reminder',
         'action_at',
+        'action_at_time',
         'note',
         'attachment_ids',
         'publish',

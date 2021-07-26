@@ -23,7 +23,8 @@ type GeneralInfo{
     zalo : String
     repeat : String
     reminder : String
-    action_at : DateTime
+    action_at : Date
+    action_at_time: String
     note : String
     attachments : [Attachment]
     publish : String
@@ -43,7 +44,8 @@ input CreateGeneralInfoInput{
     zalo : String
     repeat : String  @rules(apply: ["in:null,every day,every week,every month"])
     reminder : String
-    action_at : DateTime
+    action_at : Date
+    action_at_time: String
     note : String
     attachment_ids : JSON
     publish : String
@@ -63,7 +65,8 @@ input UpdateGeneralInfoInput{
     zalo : String
     repeat : String @rules(apply: ["in:null,every day,every week,every month"])
     reminder : String
-    action_at : DateTime
+    action_at : Date
+    action_at_time: String
     note : String
     attachment_ids : JSON
     publish : String
