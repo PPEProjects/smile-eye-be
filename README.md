@@ -76,3 +76,7 @@ php artisan passport:install;
 php artisan storage:link
 mkdir -m 777 -p storage/app/public/media/images storage/app/public/media/thumb-images
 ```
+
+# phpMyadmin
+http://se-be-v2.ppe.edu.vn:88
+tiennv/tiennv
