@@ -38,7 +38,7 @@ class JapaneseGoalQueries
         $cards = User::find(Auth::id())->japanese_goals;
         $cards = $cards->where("type",$args["type"]);
         foreach ($cards as $card){
-            $result = $result->merge($card->more);
+            $result = $result->push($card->more);
         }
         return $result;
  }
