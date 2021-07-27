@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "45e9fbe8-a4a5-4a7b-ad53-66df502e8b97",
+		"_postman_id": "3929b993-c6fb-4619-8781-14231714f2c6",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -295,6 +295,40 @@
 								"email",
 								"verify",
 								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{url}}/ppe-core/auth/email-check",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"nhnamsđas2@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/ppe-core/auth/email-check",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ppe-core",
+								"auth",
+								"email-check"
 							]
 						}
 					},
