@@ -35,36 +35,12 @@ class JapaneseGoalQueries
 
  public function myBasketOrCard($_,array $args){
         $result = collect();
-        if ($args["type"] == "flash_card"){
-            $cards = User::find(Auth::id())->japanese_goals;
-            $cards = $cards->where("type","flash_card");
-            foreach ($cards as $card){
-                $result = $result->merge($card->more);
-            }
-            return ($result);
-        }else if ($args["type"] == "basket_card") {
-            $baskets = User::find(Auth::id())->japanese_goals;
-            $baskets = $baskets->where("type","basket_card");
-            foreach ($baskets as $basket){
-                $result = $result->merge($basket->more);
-            }
-            return ($result);
-        }else if ($args["type"] == "make_video_share") {
-            $temps = User::find(Auth::id())->japanese_goals;
-            $temps = $temps->where("type","make_video_share");
-            foreach ($temps as $temp){
-                $result = $result->push($temp->more);
-            }
-            return $result;
-        }else if ($args["type"] == "post") {
-            $temps = User::find(Auth::id())->japanese_goals;
-            $temps = $temps->where("type","post");
-            foreach ($temps as $temp){
-                $result = $result->push($temp->more);
-            }
-            return $result;
+        $cards = User::find(Auth::id())->japanese_goals;
+        $cards = $cards->where("type",$args["type"]);
+        foreach ($cards as $card){
+            $result = $result->merge($card->more);
         }
-        return ;
+        return ($result);
  }
 
  public function flashCards(){
