@@ -40,7 +40,7 @@ class JapaneseGoalQueries
         foreach ($cards as $card){
             $result = $result->merge($card->more);
         }
-        return ($result);
+        return $result;
  }
 
  public function flashCards(){
