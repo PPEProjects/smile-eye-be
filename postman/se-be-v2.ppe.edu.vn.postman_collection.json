@@ -92,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"hacker123@gmail.com\",\n    \"password\": \"123456789\"\n}",
+							"raw": "{\n    \"email\": \"tinh5969@gmail.com\",\n    \"password\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -160,7 +160,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"tinh5969ád@gmail.com\"\n}",
+							"raw": "{\n    \"email\": \"tinh5969ádasd@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -168,13 +168,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/ppe-core/auth/email-check",
+							"raw": "{{url}}/email-check",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"ppe-core",
-								"auth",
 								"email-check"
 							]
 						}
@@ -1142,7 +1140,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\n    $parent_id: ID\n    $name_goal: String\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    parent_id: $parent_id \n    name_goal: $name_goal\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        goal{\n            id,\n            name,\n            parent{\n                id\n                name\n            }\n        }\n        type,\n        more\n    }\n  \n}",
-								"variables": "{\n    \"type\": \"basket_card\",\n    \"more\": [\n      {\n        \"name\": \"giỏ card về ẩm thực\",\n        \"image\": {\n          \"attachment_id\": 1,\n          \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n        }\n      },\n      {\n        \"name\": \"giỏ card về du lịch\",\n        \"image\": {\n          \"attachment_id\": 1,\n          \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n        }\n      }\n    ]\n  }"
+								"variables": "{\n    \"parent_id\":1,\n    \"type\": \"basket_card\",\n    \"more\": [\n      {\n        \"name\": \"giỏ card về ẩm thực\",\n        \"image\": {\n          \"attachment_id\": 1,\n          \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n        }\n      },\n      {\n        \"name\": \"giỏ card về du lịch\",\n        \"image\": {\n          \"attachment_id\": 1,\n          \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n        }\n      }\n    ]\n  }"
 							}
 						},
 						"url": {
@@ -1202,7 +1200,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        type,\n        more\n    }\n  \n}",
-								"variables": "{\n    \"type\" : \"diary\",\n    \"more\" : [\n        {\n         \"date\": \"2021-07-22\",\n         \"content\":\"<p style='text-align: justify;'>8月26日（土）<br />8 gatsu 26-nichi (do)<br />August 26th (Saturday).</p><p style='text-align: justify;'>10時ごろに宅配便で目がさめる。<br />10-ji-goro ni takuhaibin de me ga sameru.<br />I wake up around 10 a.m. because I have an express home delivery parcel.</p><p style='text-align: justify;'>ヨーグルトとビスケットを食べて二度寝する。<br />Yooguruto to bisuketto wo tabete nido nesuru.<br />I eat yogurt and biscuits and then sleep again.</p><p style='text-align: justify;'>起きたら16時だった。<br />Okitara 16-jidatta.\",\n         \"user_invite_ids\":[44,55]\n        }\n    ]\n}"
+								"variables": "{\n    \"type\" : \"diary\",\n    \"more\" : [\n        {\n         \"date\": \"2021-07-22\",\n         \"content\":\"okoko\",\n         \"user_invite_ids\":[44,55]\n        }\n    ]\n}"
 							}
 						},
 						"url": {
@@ -1471,8 +1469,38 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($type:String!) {\n  my_basket_or_card(\n      type : $type\n  ) \n}",
-								"variables": "{\r\n\"type\": \"post\"\r\n}\r\n"
+								"query": "query($type:String!) {\n  my_basket_or_card(\n      type : $type\n  )\n}",
+								"variables": "{\r\n\"type\": \"flash_card\"\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "my_diary",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($type:String!) {\n  my_diary(\n      type : $type\n  )\n}",
+								"variables": "{\r\n\"type\": \"diary\"\r\n}\r\n"
 							}
 						},
 						"url": {

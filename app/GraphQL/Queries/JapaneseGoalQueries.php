@@ -37,11 +37,22 @@ class JapaneseGoalQueries
         $result = collect();
         $cards = User::find(Auth::id())->japanese_goals;
         $cards = $cards->where("type",$args["type"]);
-        foreach ($cards as $card){
-            $result = $result->push($card->more);
+        foreach ($cards as $card) {
+            $result = $result->merge($card->more);
         }
         return $result;
  }
+    public function myDiary($_,array $args){
+        $result = collect();
+        $cards = User::find(Auth::id())->japanese_goals;
+        $cards = $cards->where("type",$args["type"]);
+        if ($args["type"] == "diary") {
+            foreach ($cards as $card) {
+                $result = $result->push($card->more);
+            }
+        }
+        return $result;
+    }
 
  public function flashCards(){
      return JapaneseGoal::where("type","flash_card")
