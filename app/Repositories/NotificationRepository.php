@@ -178,8 +178,8 @@ class NotificationRepository
                 case 'share_user_info':
                     $user = User::where("id",$noti->user_id)->first();
                     $user_share_by = User::where("id",$noti->type_id)->first();
-                    $messages->push($user->name ." share info ".$user_share_by->name." with you");
-                    $noti->user_share_by = $user_share_by->id;
+                    $messages->push(@$user->name ." share info ".@$user_share_by->name." with you");
+                    $noti->user_share_by = @$user_share_by->id;
                     break;
                 case 'achieve':
                     $content = $noti->content;
