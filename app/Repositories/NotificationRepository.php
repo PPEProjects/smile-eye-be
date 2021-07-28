@@ -150,7 +150,6 @@ class NotificationRepository
             ->whereIn("type",$args["types"]);
         $notifications1 =  $notifications;
         $notifications = $notifications->get();
-
         $notifications1->update(['is_read' => 1]);
         $notifications = $notifications->map(function ($noti) {
             $user = User::where("id",$noti->user_id)->first();
@@ -270,7 +269,8 @@ class NotificationRepository
                     $user = User::where("id",$noti["user_id"])->first();
                     $diary = JapaneseGoal::find($content["id"]);
                     $more = $diary->more;
-                    $user_invited_ids = $more[0]["user_invited_ids"];
+                    $more = array_shift($more);
+                    $user_invited_ids = $more["user_invite_ids"];
                     $check = array_search(Auth::id(), $user_invited_ids);
                     if (is_numeric($check)){
                         $messages
@@ -312,6 +312,12 @@ class NotificationRepository
                         $messages
                             ->push($user->name ." share video with you" );
                     }else return;
+                case 'share_user_info':
+                    $content = $noti->content;
+                    $user = User::where("id",$noti->user_id)->first();
+                    $user_share_by = User::where("id",$content["user_id"])->first();
+                    $messages->push($user->name ." share info ".$user_share_by->name." with you");
+                    $noti->user_share_by = $user_share_by->id;
                     break;
             }
             $noti->messages = $messages;

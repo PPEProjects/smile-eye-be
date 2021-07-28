@@ -32,9 +32,11 @@ type Notification1{
 type Notification{
     id: ID
     user: User
+    user_share_by : ID
     type : String
     type_id : ID
     messages: JSON
+    content : JSON
     general_info : GeneralInfo
     is_read : Boolean
     member : [User]
