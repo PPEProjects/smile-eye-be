@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3929b993-c6fb-4619-8781-14231714f2c6",
+		"_postman_id": "95077e6e-a0e7-48ce-9b7d-fdeb000c6fe9",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -808,7 +808,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "  query($types: [String]!){\r\n  my_notifications(\r\n      types: $types\r\n  ){\r\n    id\r\n    user{\r\n        id\r\n        name\r\n        attachment{\r\n            file_type\r\n            thumb\r\n            file\r\n        }\r\n    }\r\n    type\r\n    type_id\r\n    messages\r\n    created_at\r\n    updated_at\r\n  }\r\n}",
+								"query": "  query($types: [String]!){\r\n  my_notifications(\r\n      types: $types\r\n  ){\r\n    id\r\n    user_share_by\r\n    user{\r\n        id\r\n        name\r\n        attachment{\r\n            file_type\r\n            thumb\r\n            file\r\n        }\r\n    }\r\n    type\r\n    type_id\r\n    messages\r\n    created_at\r\n    updated_at\r\n  }\r\n}",
 								"variables": "{\r\n    \"types\":[\"share_user_info\"]\r\n}"
 							}
 						},

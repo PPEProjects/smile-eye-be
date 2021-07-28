@@ -35,6 +35,8 @@ type Notification{
     type : String
     type_id : ID
     messages: JSON
+    user_share_by : ID
+    content : JSON
     general_info : GeneralInfo
     is_read : Boolean
     member : [User]
