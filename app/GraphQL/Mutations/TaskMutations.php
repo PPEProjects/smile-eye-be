@@ -48,9 +48,9 @@ class TaskMutations
                 throw new Error("This goal already add to task ");
             }
         }
-        if(!isset($args['general_info']['reminder'])){
-            $args['general_info']['reminder'] = "At the time";
-        }
+//        if(!isset($args['general_info']['reminder'])){
+//            $args['general_info']['reminder'] = "At the time";
+//        }
         $task = $this->task_repository->createTask($args);
         $generalInfo = $this->generalinfo_repository
             ->setType('task')
