@@ -2,7 +2,7 @@
 
 namespace App\GraphQL\Queries;
 
-
+use App\Models\Goal;
 use App\Models\JapaneseGoal;
 use App\Models\User;
 use App\Repositories\JapaneseGoalRepository;
@@ -45,10 +45,16 @@ class JapaneseGoalQueries
     public function myDiary($_,array $args){
         $result = collect();
         $cards = User::find(Auth::id())->japanese_goals;
+        $findIdGoals = $cards->pluck('goal_id');
+        $getGoals = Goal::whereIn('id', $findIdGoals)->get()->keyBy('id');
+        $nameGoals = $getGoals->toArray();
         $cards = $cards->where("type",$args["type"]);
         if ($args["type"] == "diary") {
-            foreach ($cards as $card) {
-                $result = $result->push($card->more);
+            foreach ($cards as $card) {        
+                if(isset($nameGoals[$card->goal_id]['name'])){
+                    $result->push(["goal_name"=>$nameGoals[$card->goal_id]['name'], "more"=>$card->more]);
+                }else
+                $result = $result->push(["goal_name"=> Null,"more"=>$card->more]);         
             }
         }
         return $result;
