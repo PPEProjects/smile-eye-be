@@ -6,19 +6,43 @@ namespace App\Repositories;
 use App\Models\Attachment;
 use App\Models\Goal;
 use App\Models\JapaneseGoal;
+use Illuminate\Support\Facades\Auth;
 use ppeCore\dvtinh\Services\AttachmentService;
 
 class JapaneseGoalRepository
 {
-    public function __construct(AttachmentService $attachment_service)
+    public function __construct(AttachmentService $attachment_service, NotificationRepository $notificationRepository)
     {
         $this->attachment_service = $attachment_service;
+        $this->notification_repository = $notificationRepository;
     }
     public function createJapaneseGoal($args){
         $japanese = JapaneseGoal::create($args);
         return $japanese;
     }
     public function updateJapaneseGoal($args){
+        $diary = JapaneseGoal::find($args['id']);
+        $userId = Auth::id();
+        if($diary->type == "diary")
+        {   
+            $checkIdUser = array_intersect($diary->more[0]['user_invite_ids'], [$userId]);
+            if($checkIdUser != [] && isset($args['more'][0]['other']))
+            {
+                $other = $args['more'][0]['other'];
+                $args['more'] = $diary->more;
+                $args['more'][0]['other_'.$userId] = $other;
+                $args['more'][0]['review_'.$userId] = $other;
+                $diary->more = $args['more'];
+                $useInvite[] = $diary->user_id;
+                $this->notification_repository->staticNotification("edit_diary",$diary->id,$diary, $useInvite);
+            }
+            else if($diary->user_id == $userId && isset($args['more'][0]['content']))
+            {
+                $content = $args['more'][0]['content'];
+                $args['more'] = $diary->more;
+                $args['more'][0]['content'] = $content;
+            }else $args = array_diff_key($args, array_flip(['more']));
+        }
         return tap(JapaneseGoal::findOrFail($args["id"]))
             ->update($args);
     }
