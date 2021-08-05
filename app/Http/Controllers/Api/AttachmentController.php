@@ -54,17 +54,24 @@ class AttachmentController extends Controller
         } catch (Exception $e) {
             $type = preg_replace('#\/.*?$#mis', '', $file->getClientMimeType());
         }
-
         $fileRootName = $file->getClientOriginalName();
 
         switch ($type) {
             case 'image':
                 $path = $file->getRealPath();
+
+                $extension = $file->extension();
                 $fileName = 'media/images/' . date('Y-m-d') . '-' . time() . '-' . rand() . '-' . Auth::id() . '.wepb';
                 $filePath = storage_path() . "/app/public/$fileName";
-                $isConverted = $this->attachment_service->jcphp01_generate_webp_image($path, $filePath);
-                $this->attachment_service->saveThumbImage($path, $filePath);
-                if ($isConverted) {
+                $convertStatus = $this->attachment_service->jcphp01_generate_webp_image($path, $filePath);
+                $type_gif = str_replace('image/', '', $file->getMimeType());
+                $this->attachment_service->saveThumbImage($path, $filePath, $type_gif);
+                if ($convertStatus == 'NOT_SUPPORT') {
+                    $fileName = 'media/images_NOT_SUPPORT/' . date('Y-m-d') . '-' . time() . '-' . rand() . '-' . Auth::id() . '.' . $extension;
+                    $filePath = storage_path() . "/app/public";
+                    $file->move($filePath . '/media/images_NOT_SUPPORT', $fileName);
+                }
+//                if ($convertStatus) {
                     $attachment = array_merge($request->all(), [
                         'user_id'   => Auth::id(),
                         'file'      => $fileName,
@@ -75,13 +82,13 @@ class AttachmentController extends Controller
                     ]);
                     $create = Attachment::create($attachment);
                     if ($create) {
-                        [$thumb, $file] = $this->attachment_service->getThumbFile($create->file_type, $create->file);
+                        [$thumb, $file] = $this->attachment_service->getThumbFile($create->file_type, $create->file, $type_gif);
 
 //                        $image =  asset('storage/' .$create->file);
                         $create->file = $file;
                         $create->thumb = $thumb;
                     }
-                }
+//                }
                 return response()->json(@$create);
                 break;
             case 'video':
