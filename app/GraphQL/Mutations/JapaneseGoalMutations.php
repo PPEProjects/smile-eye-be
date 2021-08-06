@@ -26,7 +26,7 @@ class JapaneseGoalMutations{
         if (!isset($args['type'])){
             throw new Error('You must input type');
         }
-        if($args['type'] == "diary"){
+        if($args['type'] == "diary" && isset($args['more'][0]['user_invite_ids'])){
             $idUserInvited = $args['more'][0]['user_invite_ids'];
             foreach($idUserInvited as $value){
                  $args['more'][0]['other_'.$value] = $args['more'][0]['content'];
