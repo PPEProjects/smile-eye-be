@@ -7,6 +7,7 @@ extend type Mutation {
 
 extend type Query {
     me_attachment: JSON @guard @field(resolver:"UserQueries@me_attachment")
+    list_user: JSON  @field(resolver:"UserQueries@listUser")
 }
 
 input UpdateUserInput{

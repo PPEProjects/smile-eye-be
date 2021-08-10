@@ -92,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"tinh5969@gmail.com\",\n    \"password\": \"123456789\"\n}",
+							"raw": "{\n    \"email\": \"hac123@gmail.com\",\n    \"password\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1870,7 +1870,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "\nmutation(\n    $name:String, \n    $email:String, \n    $username:String, \n    $quotes: String,\n    $phone_number: String ,\n    $avatar_attachment_id: ID,\n    $background_attachment_id: ID\n    ) \n{\n  update_user(\n    input: \n    {\n        name: $name\n        email: $email\n        username: $username\n        quotes: $quotes\n        phone_number: $phone_number\n        avatar_attachment_id: $avatar_attachment_id\n        background_attachment_id : $background_attachment_id\n    }) \n    {\n            id\n            name\n            email\n            username\n            quotes\n            phone_number\n            created_at\n            updated_at\n            attachment{\n                id\n                file\n                thumb\n            }\n            background_attachment{\n                id\n                file\n                thumb\n            }\n        }\n}",
-								"variables": "{\n    \"quotes\":\"\"\n}"
+								"variables": "{\n    \"avatar_attachment_id\": 59\n}"
 							}
 						},
 						"url": {
@@ -1976,6 +1976,36 @@
 					"response": []
 				},
 				{
+					"name": "query list_users",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\n    list_user\n}\n\n",
+								"variables": "{\r\n\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "query me",
 					"request": {
 						"method": "POST",
@@ -2057,7 +2087,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/HoaiNam/OneDrive/Pictures/runSport.jpg"
+									"src": "/C:/Users/HoaiNam/OneDrive/Pictures/how-to-become-a-web-developer-featured-new.o.jpg"
 								}
 							]
 						},

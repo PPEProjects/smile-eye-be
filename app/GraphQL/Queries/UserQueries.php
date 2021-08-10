@@ -35,7 +35,20 @@ class UserQueries
         $user = $this->attachment_service->mappingAvatarBackgroud($user);
         return $user;
     }
-
+    public function listUser($_, array $args)
+    {
+        $users = User::selectRaw("id,name,email,phone_number,avatar_attachment_id")->get()->keyBy('id');
+        $users = $users->map(function($user){ 
+             $avatar = $this->attachment_service->mappingAvatarBackgroud($user);
+             if($avatar->attachment != null)
+             {
+                $user->attachment = array_intersect_key(($user->attachment)->toArray(), array_flip(['id','thumb']));
+             }
+             else $user->attachment = null;
+            return $user;
+        });
+        return $users;
+    }
     public function user($_, array $args)
     {
         return $this->user_repository->user($args);
