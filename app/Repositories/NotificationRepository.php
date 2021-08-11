@@ -408,5 +408,17 @@ class NotificationRepository
             ->toArray();
         event(new \App\Events\NotificationMessage($noti,$user_recive));
     }
+    public function staticNotification($type,$typeId,$content,$user_invited_ids){
+        foreach ($user_invited_ids as $userId){
+            $noti = Notification::create([
+                'type' => $type,
+                'type_id' => $typeId,
+                'user_id' => Auth::id(),
+                'user_receive_id' => $userId,
+                'content' => $content,
+            ]);
+            $this->sendPushNotifi($userId);
+        }
 
+    }
 }
