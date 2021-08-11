@@ -552,6 +552,221 @@
 			]
 		},
 		{
+			"name": "japanese_learn",
+			"item": [
+				{
+					"name": "create_japanese_learn",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n    $goal_id : ID\r\n) {\r\n  create_japanese_learn(\r\n    input: {\r\n    goal_id:$goal_id\r\n    }\r\n  ) {\r\n   id\r\n    user_id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal_id\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n}\r\n}\r\n",
+								"variables": "{\r\n    \"goal_id\":6\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_japanese_learn",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n    $id: ID!\r\n    $goal_id : ID\r\n) {\r\n  update_japanese_learn(\r\n    input: {\r\n    id:$id\r\n    goal_id:$goal_id\r\n    }\r\n  ) {\r\n   id\r\n    user_id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal_id\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n}\r\n}\r\n",
+								"variables": "{\r\n    \"id\":7,\r\n    \"goal_id\":2\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_japanese_learn",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($id:ID!) {\r\n  delete_japanese_learn(\r\n    input: {\r\n      id: $id\r\n    }\r\n  )\r\n}",
+								"variables": "{\r\n    \"id\": 3\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query detail_ japanese_learn",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID!){\r\n  detail_japanese_learn(\r\n      id: $id  \r\n    ) {\r\n       id\r\n    user_id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal_id\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    goal_no_childs{\r\n        id\r\n        parent{\r\n            id\r\n        }\r\n        name\r\n    }\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"id\": 4\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_japanese_learn",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  japanese_learn(first:200, page:1) {\r\n    data {\r\n    id\r\n    user{\r\n        id\r\n        name\r\n        email\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    created_at\r\n    updated_at\r\n  }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query sort_japanese_learn",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_japanese_learn(   \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n      id\r\n      user{\r\n          id\r\n          name\r\n      }\r\n      goal{\r\n          id\r\n          name\r\n      }\r\n      created_at\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n\r\n",
+								"variables": "{\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_japanese_learn",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "  query{\r\n  my_japanese_learn{\r\n     id\r\n    user_id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal_id\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "notification",
 			"item": [
 				{
@@ -810,251 +1025,6 @@
 							"graphql": {
 								"query": "  query($types: [String]!){\r\n  my_notifications(\r\n      types: $types\r\n  ){\r\n    id\r\n    user_share_by\r\n    user{\r\n        id\r\n        name\r\n        attachment{\r\n            file_type\r\n            thumb\r\n            file\r\n        }\r\n    }\r\n    type\r\n    type_id\r\n    messages\r\n    created_at\r\n    updated_at\r\n  }\r\n}",
 								"variables": "{\r\n    \"types\":[\"share_user_info\"]\r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "friend",
-			"item": [
-				{
-					"name": "create_friend",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "mutation(\n    $user_id_friend:ID!, \n    $status:String\n    )\n{\n  create_friend(\n    input: \n    {\n      user_id_friend: $user_id_friend\n      status: $status\n    }) \n  \n}",
-								"variables": "{\n    \"user_id_friend\": 2,\n    \"status\": \"accept\"\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete_friend",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "\nmutation($user_id_friend:ID!) \n    {\n    delete_friend(\n    input: \n        {\n        user_id_friend: $user_id_friend\n        }\n  )\n}",
-								"variables": "{\r\n    \"user_id_friend\": 5\r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update_friend",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "\nmutation(\n    $goal_ids:[ID]\n    $id: ID) \n    {\n  update_friend(\n    input:{\n        id: $id\n        goal_ids: $goal_ids\n    }\n   )\n    {\n        id\n        goals{\n            id\n            name\n        }\n    }\n  \n}",
-								"variables": "{   \n    \"id\": 30,\n    \"goal_ids\": [7,5,6]\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "query friends",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query {\n  friends(first:22, page:1) {\n    data {\n     id\n        user{\n            id\n            name\n            email\n            created_at\n            updated_at\n        }\n        user_id_friend\n        status\n        goals{\n            id\n            name\n        }\n        created_at\n        updated_at\n  }\n  }\n}",
-								"variables": ""
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "query recomment_friends",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query($name: String){\n    recomment_friends(\n        name: $name\n    ){\n        number_goals\n        id\n        name\n        email\n        phone_number\n        number_mutual\n        attachment{\n            id\n            thumb\n        }\n        mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n        }\n    }\n}",
-								"variables": "{\r\n    \"name\": null\r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "query my_friends",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query($name: String, $status: String){\n  my_friends(\n   name: $name\n   status: $status){\n    friend{\n          id\n        }\n      id\n      name\n      email\n      phone_number\n      friend_status\n      attachment{\n          id\n          thumb\n      }\n      background_attachment{\n            id\n            thumb\n        }\n      mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n        \n   }\n  }\n}\n",
-								"variables": "{\n \"name\": null,\n \"status\": \"accept\"\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "query list_pend_friends",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query($status: String){\n  list_pend_friends\n  (\n   status: $status\n   ){\n       friend{\n           id\n           status\n       }\n      id\n      messages\n      name\n      email\n      phone_number\n      quotes\n       attachment{\n          id\n          thumb\n      }\n       mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n       }\n      \n    \n   }\n}\n\n",
-								"variables": "{\r\n    \r\n}\r\n"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "query search_people",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query($name: String){\n  search_people(\n   name: $name){\n    \n      id\n      name\n      email\n      phone_number\n      friend_status\n      attachment{\n          id\n          thumb\n      }\n      background_attachment{\n            id\n            thumb\n        }\n         friend{\n           id\n       }\n      mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n        \n   }\n  }\n}\n",
-								"variables": "{\n \"name\": null\n}"
 							}
 						},
 						"url": {
@@ -1720,6 +1690,251 @@
 							"graphql": {
 								"query": "query($type: String) {\n  search_by_type_japanese_goal(\n      type : $type\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n     goal_id\n    type\n    score\n    more\n  }\n}",
 								"variables": "{\r\n    \"type\":\"diary\"\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "friend",
+			"item": [
+				{
+					"name": "create_friend",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $user_id_friend:ID!, \n    $status:String\n    )\n{\n  create_friend(\n    input: \n    {\n      user_id_friend: $user_id_friend\n      status: $status\n    }) \n  \n}",
+								"variables": "{\n    \"user_id_friend\": 2,\n    \"status\": \"accept\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_friend",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation($user_id_friend:ID!) \n    {\n    delete_friend(\n    input: \n        {\n        user_id_friend: $user_id_friend\n        }\n  )\n}",
+								"variables": "{\r\n    \"user_id_friend\": 5\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_friend",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation(\n    $goal_ids:[ID]\n    $id: ID) \n    {\n  update_friend(\n    input:{\n        id: $id\n        goal_ids: $goal_ids\n    }\n   )\n    {\n        id\n        goals{\n            id\n            name\n        }\n    }\n  \n}",
+								"variables": "{   \n    \"id\": 30,\n    \"goal_ids\": [7,5,6]\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query friends",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  friends(first:22, page:1) {\n    data {\n     id\n        user{\n            id\n            name\n            email\n            created_at\n            updated_at\n        }\n        user_id_friend\n        status\n        goals{\n            id\n            name\n        }\n        created_at\n        updated_at\n  }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query recomment_friends",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($name: String){\n    recomment_friends(\n        name: $name\n    ){\n        number_goals\n        id\n        name\n        email\n        phone_number\n        number_mutual\n        attachment{\n            id\n            thumb\n        }\n        mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n        }\n    }\n}",
+								"variables": "{\r\n    \"name\": null\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_friends",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($name: String, $status: String){\n  my_friends(\n   name: $name\n   status: $status){\n    friend{\n          id\n        }\n      id\n      name\n      email\n      phone_number\n      friend_status\n      attachment{\n          id\n          thumb\n      }\n      background_attachment{\n            id\n            thumb\n        }\n      mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n        \n   }\n  }\n}\n",
+								"variables": "{\n \"name\": null,\n \"status\": \"accept\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query list_pend_friends",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($status: String){\n  list_pend_friends\n  (\n   status: $status\n   ){\n       friend{\n           id\n           status\n       }\n      id\n      messages\n      name\n      email\n      phone_number\n      quotes\n       attachment{\n          id\n          thumb\n      }\n       mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n       }\n      \n    \n   }\n}\n\n",
+								"variables": "{\r\n    \r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query search_people",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($name: String){\n  search_people(\n   name: $name){\n    \n      id\n      name\n      email\n      phone_number\n      friend_status\n      attachment{\n          id\n          thumb\n      }\n      background_attachment{\n            id\n            thumb\n        }\n         friend{\n           id\n       }\n      mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n        \n   }\n  }\n}\n",
+								"variables": "{\n \"name\": null\n}"
 							}
 						},
 						"url": {

@@ -1,0 +1,34 @@
+
+extend type Mutation {
+    delete_japanese_learn (input: DeletejapaneseLearnInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\japaneseLearnMutations@deletejapaneseLearn")
+    create_japanese_learn(input: CreatejapaneseLearnInput! @spread): japaneseLearn @guard @field(resolver: "App\\GraphQL\\Mutations\\japaneseLearnMutations@createjapaneseLearn")
+    update_japanese_learn(input: UpdatejapaneseLearnInput! @spread): japaneseLearn @guard @field(resolver: "App\\GraphQL\\Mutations\\japaneseLearnMutations@updatejapaneseLearn")
+}
+extend type Query {
+    japanese_learn: [japaneseLearn] @paginate(type: "paginator" model: "App\\Models\\japaneseLearn")
+    sort_japanese_learn(orderBy: [OrderByClause!] @orderBy): [japaneseLearn!]! @paginate(type: "paginator" model: "App\\Models\\japaneseLearn")
+    my_japanese_learn: [japaneseLearn] @field(resolver:"japaneseLearnQueries@myJapaneseLearn")
+    detail_japanese_learn(id:ID): japaneseLearn @field(resolver:"japaneseLearnQueries@detailJapaneseLearn")
+}
+
+type japaneseLearn{
+    id: ID
+    user_id: ID
+    user: User
+    goal_id : ID
+    goal: Goal
+    goal_no_childs: [Goal]
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreatejapaneseLearnInput{
+    goal_id: ID
+}
+input UpdatejapaneseLearnInput{
+    id : ID!
+    goal_id: ID
+}
+input DeletejapaneseLearnInput{
+    id : ID!
+}
