@@ -54,8 +54,7 @@ class TodolistMutations
         if (isset($args["general_info"]["id"]))
             $args["general_info"] = array_diff_key($args["general_info"],array_flip(["id"]));
         if (!isset($args["name"])){
-                if (isset($task))
-                    $args["name"] = $task->name;
+            $args = array_diff_key($args,array_flip(["name"]));
         }
         if (isset($args["status"])){
             if ($args["status"] != "todo" && $args["status"] != "done")
