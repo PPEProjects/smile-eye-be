@@ -4,7 +4,6 @@ namespace App\GraphQL\Mutations;
 
 
 use App\Models\JapaneseLearn;
-use App\Models\JapaneseLearn as ModelsJapaneseLearn;
 use App\Repositories\JapaneseLearnRepository;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
