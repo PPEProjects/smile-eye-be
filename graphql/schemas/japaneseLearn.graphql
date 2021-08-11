@@ -6,7 +6,7 @@ extend type Mutation {
 }
 extend type Query {
     japanese_learn: [japaneseLearn] @paginate(type: "paginator" model: "App\\Models\\japaneseLearn")
-    sort_japanese_learn(orderBy: [OrderByClause!] @orderBy): [japaneseLearn!]! @paginate(type: "paginator" model: "App\\Models\\japaneseLearn")
+#    sort_japanese_learn(orderBy: [OrderByClause!] @orderBy): [japaneseLearn!]! @paginate(type: "paginator" model: "App\\Models\\japaneseLearn")
     my_japanese_learn: [japaneseLearn] @field(resolver:"japaneseLearnQueries@myJapaneseLearn")
     detail_japanese_learn(id:ID): japaneseLearn @field(resolver:"japaneseLearnQueries@detailJapaneseLearn")
 }
