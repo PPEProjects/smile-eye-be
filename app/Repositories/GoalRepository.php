@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Achieve;
 use App\Models\GeneralInfo;
 use App\Models\Goal;
+use App\Models\JapaneseGoal;
 use App\Models\Task;
 use App\Models\Todolist;
 use Carbon\Carbon;
@@ -137,41 +138,48 @@ class GoalRepository
     public function getTreeSortByGoalId($goalId, $userId = null)
     {
         $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id')
-            ->orderBy('id', 'desc');
-        if ($userId) {
-            $goals = $goals->where("user_id", $userId);
-        }
+        ->orderBy('id', 'desc');
+    if ($userId) {
+        $goals = $goals->where("user_id", $userId);
+    }
 
-        $goals = $goals->get();
+    $goals = $goals->get();
 
-        //Check goal have  task_id And Task have goal_id
-        $getIdGoals = $goals->pluck('id');
-        $getIdTasks = $goals->pluck('task_id');
+    $getIdGoals = $goals->pluck('id');
+    $japaneseGoals = JapaneseGoal::select('id', 'type', 'goal_id')
+                                 ->whereIn('goal_id', $getIdGoals)
+                                 ->get()->keyBy('goal_id');
 
-        $findIdTasks = Task::WhereIn('id', $getIdTasks)->get()->keyBy('id');
-        $findIdGoals = Task::WhereIn('goal_id', $getIdGoals)->get()->keyBy('goal_id');
+    //Check goal have  task_id And Task have goal_id
+    $getIdTasks = $goals->pluck('task_id');
 
-        foreach ($goals as $value)
+    $findIdTasks = Task::WhereIn('id', $getIdTasks)->get()->keyBy('id');
+    $findIdGoals = Task::WhereIn('goal_id', $getIdGoals)->get()->keyBy('goal_id');
+
+    $goals = $goals->map(function ($goal) use ($japaneseGoals , $findIdGoals, $findIdTasks){
+        $goal->japanese_goal = @$japaneseGoals[$goal->id];
+
+        if ($goal->task_id == null || !isset($findIdTasks[$goal->task_id]))
         {
-            if ($value->task_id == null || !isset($findIdTasks[$value->task_id]))
-            {
-                $value->is_add_branch = true;
-                $value->is_add_todo = true;
-            }
-            else $value->is_add_branch = false;
+            $goal->is_add_branch = true;
+            $goal->is_add_todo = true;
+        }
+        else $goal->is_add_branch = false;
 
-            if(isset($findIdGoals[$value->id]) || isset($findIdTasks[$value->task_id]))
-            {
-                $value->is_add_todo = false;
-            }
+        if(isset($findIdGoals[$goal->id]) || isset($findIdTasks[$goal->task_id]))
+        {
+            $goal->is_add_todo = false;
         }
-        $tree = self::buildTree($goals->toArray(), $goalId);
-        $pTree = $goals->where('id', $goalId)->first();
-        if ($pTree) {
-            $pTree->children = $tree;
-            return ['tree' => [$pTree], 'goals' => $goals];
-        }
-        return ['tree' => [], 'goals' => $goals];
+        return $goal;
+    });
+
+    $tree = self::buildTree($goals->toArray(), $goalId);
+    $pTree = $goals->where('id', $goalId)->first();
+    if ($pTree) {
+        $pTree->children = $tree;
+        return ['tree' => [$pTree], 'goals' => $goals];
+    }
+    return ['tree' => [], 'goals' => $goals];
     }
 
     public function goalsAchieveTreeSort($goalId)
