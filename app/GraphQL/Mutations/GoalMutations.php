@@ -145,7 +145,16 @@ class GoalMutations
 //            }
 //        }
 //        \Illuminate\Support\Facades\Log::channel('single')->info('$args', [$args]);
-
+        if(isset($args['id'])){
+            $findGoal = Goal::find($args['id']);
+            $checkUser = array_intersect(@$findGoal->locks['user_ids'] ?? [], [Auth::id()]);
+            if($checkUser){
+                if($findGoal->is_lock){
+                    return false;
+                }
+                $args = array_diff_key($args, array_flip(['locks', 'is_lock']));
+            }
+        }
         $goal = Goal::updateOrCreate(
             ['id' => @$args['id']],
             $args

@@ -39,7 +39,10 @@ type Goal{
     end_day: DateTime
     status : String
     task_id: ID
+    japanese_goal: JapaneseGoal
 #    process : Float
+    locks:JSON
+    is_lock: Boolean
     is_pined : Boolean
     created_at: DateTime
     updated_at: DateTime
@@ -121,5 +124,7 @@ input UpsertGoalInput{
     status : String @rules(apply:["nullable", "in:todo,done"])
     task_id : ID
     is_pined : Boolean
+    locks: JSON
+    is_lock: Boolean
     general_info: JSON
 }

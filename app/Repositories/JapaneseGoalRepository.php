@@ -73,8 +73,32 @@ class JapaneseGoalRepository
                 } else break;
             }
             $detailJPGoal->goal_root = $goalRoot;
+            $childrenIds = $this->goalNochild([$goalRoot->id]);
+            $findIds = array_search($detailJPGoal->goal_id,$childrenIds,true);
+            $nextGoal =  @$this->findGoal($childrenIds[$findIds + 1]);
+            $gettype = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds + 1])->first();
+            $nextGoal->type = $gettype->type;
+            $detailJPGoal->next_goal = $nextGoal;
         }
         return $detailJPGoal;
+    }
+    public function goalNochild($ids, $children = [])
+    {
+        $getchildren = $children;
+        foreach($ids as $value)
+        {
+          $find = Goal::where('parent_id', $value)->orderBy('id', 'desc')->get();
+          if($find->toArray() != []){
+              $idParent = $find->pluck('id')->toArray();      
+          }
+           else{
+            $getchildren[] = $value;
+           }   
+       }
+       if(isset($idParent)){
+        $getchildren = self::goalNochild($idParent, $getchildren);
+       }
+       return $getchildren;
     }
     public function findGoal($id){
         $goal = Goal::where('id',$id)->first();

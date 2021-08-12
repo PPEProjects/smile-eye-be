@@ -23,11 +23,15 @@ class Goal extends Model
         'progress',
         'status',
         'task_id',
+        'locks',
+        'is_lock',
         'is_pined',
         'report_type',
         'user_id'
     ];
-
+    protected $casts = [
+        'locks' => 'json',
+    ];
     public function todolists()
     {
         return $this->hasMany(Todolist::class, 'goal_id');

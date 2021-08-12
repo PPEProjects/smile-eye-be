@@ -17,6 +17,7 @@ type JapaneseGoal{
     goal : Goal
     goal_root: Goal
     goal_id : ID
+    next_goal: NextGoal
     type: String
     more : JSON
     score: Float
@@ -24,7 +25,11 @@ type JapaneseGoal{
     attachments_2 : JSON
     attachments_3 : JSON
 }
-
+type NextGoal{
+    id: ID
+    name: String
+    type: String
+}
 input CreateJapaneseGoalInput{
     name_goal: String
     goal_id: ID
