@@ -21,7 +21,7 @@ class JapaneseLearnRepository
         return tap(JapaneseLearn::findOrFail($args["id"]))
                ->update($args);
     }   
-    public function deletejapaneseLearn($args)
+    public function deleteJapaneseLearn($args)
     {
         $delete = JapaneseLearn::find($args['id']);
         return $delete->delete();
@@ -37,14 +37,14 @@ class JapaneseLearnRepository
         $japaneseLearn = JapaneseLearn::findOrFail($args["id"]);
         $goals = Goal::where('parent_id', $japaneseLearn->goal_id)->get();
         $getIds = $goals->pluck('id')->toArray();
-        $childs = self::goalNochild($getIds);
-        $goalNoChilds = Goal::whereIn('id', $childs)->get();
+        $children  = self::goalNochild($getIds);
+        $goalNoChilds = Goal::whereIn('id', $children)->get();
         $japaneseLearn->goal_no_childs =  $goalNoChilds;
         return $japaneseLearn;
     }
-    public function goalNochild($ids, $childs = [])
+    public function goalNochild($ids, $children = [])
     {
-        $child = $childs;
+        $getchildren = $children;
         foreach($ids as $value)
         {
           $find = Goal::where('parent_id', $value)->get();
@@ -52,12 +52,12 @@ class JapaneseLearnRepository
               $idParent = $find->pluck('id')->toArray();      
           }
            else{
-              $child[] = $value;
+            $getchildren[] = $value;
            }   
        }
        if(isset($idParent)){
-         $child = self::goalNochild($idParent, $child);
+        $getchildren = self::goalNochild($idParent, $getchildren);
        }
-       return $child;
+       return $getchildren;
     }
 }

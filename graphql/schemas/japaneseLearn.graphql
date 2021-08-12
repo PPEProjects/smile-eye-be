@@ -1,17 +1,17 @@
 
 extend type Mutation {
-    delete_japanese_learn (input: DeletejapaneseLearnInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\japaneseLearnMutations@deletejapaneseLearn")
-    create_japanese_learn(input: CreatejapaneseLearnInput! @spread): japaneseLearn @guard @field(resolver: "App\\GraphQL\\Mutations\\japaneseLearnMutations@createjapaneseLearn")
-    update_japanese_learn(input: UpdatejapaneseLearnInput! @spread): japaneseLearn @guard @field(resolver: "App\\GraphQL\\Mutations\\japaneseLearnMutations@updatejapaneseLearn")
+    delete_japanese_learn (input: DeleteJapaneseLearnInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseLearnMutations@deleteJapaneseLearn")
+    create_japanese_learn(input: CreateJapaneseLearnInput! @spread): JapaneseLearn @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseLearnMutations@createJapaneseLearn")
+    update_japanese_learn(input: UpdateJapaneseLearnInput! @spread): JapaneseLearn @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseLearnMutations@updateJapaneseLearn")
 }
 extend type Query {
-    japanese_learn: [japaneseLearn] @paginate(type: "paginator" model: "App\\Models\\JapaneseLearn")
-    sort_japanese_learn(orderBy: [OrderByClause!] @orderBy): [japaneseLearn!]! @paginate(type: "paginator" model: "App\\Models\\JapaneseLearn")
-    my_japanese_learn: [japaneseLearn] @field(resolver:"japaneseLearnQueries@myJapaneseLearn")
-    detail_japanese_learn(id:ID): japaneseLearn @field(resolver:"japaneseLearnQueries@detailJapaneseLearn")
+    japanese_learn: [JapaneseLearn] @paginate(type: "paginator" model: "App\\Models\\JapaneseLearn")
+    sort_japanese_learn(orderBy: [OrderByClause!] @orderBy): [JapaneseLearn!]! @paginate(type: "paginator" model: "App\\Models\\JapaneseLearn")
+    my_japanese_learn: [JapaneseLearn] @field(resolver:"JapaneseLearnQueries@myJapaneseLearn")
+    detail_japanese_learn(id:ID): JapaneseLearn @field(resolver:"JapaneseLearnQueries@detailJapaneseLearn")
 }
 
-type japaneseLearn{
+type JapaneseLearn{
     id: ID
     user_id: ID
     user: User
@@ -22,13 +22,13 @@ type japaneseLearn{
     updated_at: DateTime
 }
 
-input CreatejapaneseLearnInput{
+input CreateJapaneseLearnInput{
     goal_id: ID
 }
-input UpdatejapaneseLearnInput{
+input UpdateJapaneseLearnInput{
     id : ID!
     goal_id: ID
 }
-input DeletejapaneseLearnInput{
+input DeleteJapaneseLearnInput{
     id : ID!
 }

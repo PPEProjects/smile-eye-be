@@ -22,8 +22,8 @@ class JapaneseLearnMutations{
         return $this->japanese_learn_repository->updateJapaneseLearn($args);
     
     }
-    public function deletejapaneseLearn($_,array $args){
-        return $this->japanese_learn_repository->deletejapaneseLearn($args);
+    public function deleteJapaneseLearn($_,array $args){
+        return $this->japanese_learn_repository->deleteJapaneseLearn($args);
     }
     
 }
