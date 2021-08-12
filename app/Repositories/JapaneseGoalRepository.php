@@ -77,7 +77,7 @@ class JapaneseGoalRepository
             $findIds = array_search($detailJPGoal->goal_id,$childrenIds,true);
             $nextGoal =  @$this->findGoal($childrenIds[$findIds + 1]);
             $gettype = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds + 1])->first();
-            $nextGoal->type = @$gettype->type;
+            $nextGoal->type = @$gettype->type ?? null;
             $detailJPGoal->next_goal = $nextGoal;
         }
         return $detailJPGoal;
