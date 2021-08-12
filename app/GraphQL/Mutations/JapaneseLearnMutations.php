@@ -15,8 +15,8 @@ class JapaneseLearnMutations{
         $this->japanese_learn_repository = $japanese_learn_repository;
     }
 
-    public function createJapaneseLearn($_,array $args){
-            return $this->japanese_learn_repository->createJapaneseLearn($args);
+    public function upsertJapaneseLearn($_,array $args){
+            return $this->japanese_learn_repository->upsertJapaneseLearn($args);
     }
     public function updateJapaneseLearn($_,array $args){
         return $this->japanese_learn_repository->updateJapaneseLearn($args);

@@ -1,7 +1,7 @@
 
 extend type Mutation {
     delete_japanese_learn (input: DeleteJapaneseLearnInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseLearnMutations@deleteJapaneseLearn")
-    create_japanese_learn(input: CreateJapaneseLearnInput! @spread): JapaneseLearn @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseLearnMutations@createJapaneseLearn")
+    upsert_japanese_learn(input: UpsertJapaneseLearnInput! @spread): JapaneseLearn @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseLearnMutations@upsertJapaneseLearn")
     update_japanese_learn(input: UpdateJapaneseLearnInput! @spread): JapaneseLearn @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseLearnMutations@updateJapaneseLearn")
 }
 extend type Query {
@@ -22,7 +22,8 @@ type JapaneseLearn{
     updated_at: DateTime
 }
 
-input CreateJapaneseLearnInput{
+input UpsertJapaneseLearnInput{
+    id : ID
     goal_id: ID
 }
 input UpdateJapaneseLearnInput{

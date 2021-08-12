@@ -1568,8 +1568,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($id:ID, $goal_id: ID) {\n  detail_japanese_goal(\n      id : $id\n      goal_id: $goal_id\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n     goal_root{\n         id\n         name\n     }\n    type\n    score\n    more\n  }\n}",
-								"variables": "{\r\n\"id\": 28\r\n}\r\n"
+								"query": "query($id:ID, $goal_id: ID) {\n  detail_japanese_goal(\n      id : $id\n      goal_id: $goal_id\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n     goal_root{\n         id\n         name\n     }\n     next_goal{\n         id\n         name\n         type\n     }\n    type\n    score\n    more\n  }\n}",
+								"variables": "{\r\n\"goal_id\": 6\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -4332,8 +4332,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\r\n    $id : ID\r\n    $root_id:ID\r\n    $task_id : ID\r\n    $report_type : String\r\n  $parent_id: ID\r\n  $name: String!\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n) {\r\n  upsert_goal(\r\n    input: {\r\n        id : $id\r\n        root_id : $root_id\r\n        task_id : $task_id\r\n        report_type : $report_type\r\n      parent_id: $parent_id\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      is_pined: $is_pined\r\n      general_info: $general_info\r\n    }\r\n  ) \r\n}\r\n",
-								"variables": "{\r\n    \"root_id\":null,\r\n    \"report_type\":null,\r\n    \"task_id\" : null,\r\n    \"parent_id\": 3,\r\n    \"name\": \"goal 4\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"ultimate\",\r\n        \"zalo\": \"034470383822\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-06\",\r\n        \"action_at_time\": \"00:20:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
+								"query": "mutation(\r\n    $id : ID\r\n    $root_id:ID\r\n    $task_id : ID\r\n    $report_type : String\r\n  $parent_id: ID\r\n  $name: String!\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $locks: JSON\r\n  $is_lock: Boolean\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n) {\r\n  upsert_goal(\r\n    input: {\r\n        id : $id\r\n        root_id : $root_id\r\n        task_id : $task_id\r\n        report_type : $report_type\r\n      parent_id: $parent_id\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      locks: $locks\r\n      is_lock: $is_lock\r\n      is_pined: $is_pined\r\n      general_info: $general_info\r\n    }\r\n  ) \r\n}\r\n",
+								"variables": "{\r\n    \"root_id\":null,\r\n    \"report_type\":null,\r\n    \"task_id\" : null,\r\n    \"parent_id\": null,\r\n    \"name\": \"goal haha\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"locks\":{\r\n        \"user_ids\":[2,3]\r\n    },\r\n    \"is_lock\": false,\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"ultimate\",\r\n        \"zalo\": \"034470383822\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-06\",\r\n        \"action_at_time\": \"00:20:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
 							}
 						},
 						"url": {
@@ -4512,7 +4512,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($parent_id: String!) {\r\n  my_goals(parent_id: $parent_id) {\r\n      id\r\n      name\r\n      start_day\r\n      end_day\r\n      status\r\n      task_id\r\n      is_pined\r\n      progress\r\n      general_info {\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publish\r\n        color\r\n        attachments {\r\n          file\r\n          file_type\r\n          thumb\r\n        }\r\n        achieves {\r\n          id\r\n          user_invite {\r\n            id\r\n            name\r\n            attachment {\r\n              thumb\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n",
+								"query": "query($parent_id: String!) {\r\n  my_goals(parent_id: $parent_id) {\r\n      id\r\n      name\r\n      start_day\r\n      end_day\r\n      status\r\n      task_id\r\n      locks\r\n      is_lock\r\n      is_pined\r\n      progress\r\n      general_info {\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publish\r\n        color\r\n        attachments {\r\n          file\r\n          file_type\r\n          thumb\r\n        }\r\n        achieves {\r\n          id\r\n          user_invite {\r\n            id\r\n            name\r\n            attachment {\r\n              thumb\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n",
 								"variables": "{\r\n \"parent_id\": \"all\"\r\n}"
 							}
 						},

@@ -4,16 +4,20 @@ namespace App\Repositories;
 use App\Models\JapaneseLearn;
 use App\Models\User;
 use App\Models\Goal;
+use App\Models\JapaneseGoal;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
 class JapaneseLearnRepository
 {
     // Mutations
-    public function createJapaneseLearn($args)
+    public function upsertJapaneseLearn($args)
     {
         $args['user_id'] = Auth::id();
-        return JapaneseLearn::create($args);
+        $japaneseLearn = JapaneseLearn::updateOrCreate(
+            ['user_id' => $args['user_id'], 'goal_id' => $args['goal_id']],
+            $args
+        );
+        return $japaneseLearn;
     }   
     public function updateJapaneseLearn($args)
     {
