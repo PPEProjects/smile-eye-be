@@ -38,7 +38,7 @@ class JapaneseLearnRepository
         $goals = Goal::where('parent_id', $japaneseLearn->goal_id)->get();
         $getIds = $goals->pluck('id')->toArray();
         $children  = self::goalNochild($getIds);
-        $goalNoChilds = Goal::whereIn('id', $children)->get();
+        $goalNoChilds = Goal::whereIn('id', $children)->OrderBy('parent_id', 'desc')->get();
         $japaneseLearn->goal_no_childs =  $goalNoChilds;
         return $japaneseLearn;
     }
