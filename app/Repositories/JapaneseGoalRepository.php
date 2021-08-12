@@ -73,14 +73,15 @@ class JapaneseGoalRepository
                 } else break;
             }
             $detailJPGoal->goal_root = $goalRoot;
-            // $childrenIds = $this->goalNochild([$goalRoot->id]);
-            // $findIds = array_search($detailJPGoal->goal_id,$childrenIds,true);
-            // $nextGoal =  @$this->findGoal($childrenIds[$findIds + 1]);
-            // $gettype = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds + 1])->first();
-            // if(isset($gettype->type)){
-            // $nextGoal->type = $gettype->type;
-            // }else $nextGoal->type = null;
-            // $detailJPGoal->next_goal = $nextGoal;
+            $childrenIds = $this->goalNochild([$goalRoot->id]);
+            $findIds = array_search($detailJPGoal->goal_id,$childrenIds,true);
+
+            $nextGoal =  @$this->findGoal($childrenIds[$findIds + 1]);
+            $getType = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds + 1])->first();
+            if(isset($nextGoal)){
+                $nextGoal->type = @$getType->type;
+            }       
+            $detailJPGoal->next_goal = $nextGoal;
         }
         return $detailJPGoal;
     }
