@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7995c614-5172-4b85-b9de-ed64906a4084",
+		"_postman_id": "f99c9686-a6c8-4ce9-b5d9-665a1b52e562",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -568,38 +568,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\r\n    $goal_id : ID\r\n) {\r\n  upsert_japanese_learn(\r\n    input: {\r\n    goal_id:$goal_id\r\n    }\r\n  ) {\r\n   id\r\n    user_id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal_id\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    created_at\r\n    updated_at\r\n}\r\n}\r\n",
-								"variables": "{\r\n    \"goal_id\":16\r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create_japanese_learn",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "mutation(\r\n    $goal_id : ID\r\n) {\r\n  create_japanese_learn(\r\n    input: {\r\n    goal_id:$goal_id\r\n    }\r\n  ) {\r\n   id\r\n    user_id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal_id\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n}\r\n}\r\n",
-								"variables": "{\r\n    \"goal_id\":6\r\n}"
+								"query": "mutation(\r\n    $goal_id : ID\r\n) {\r\n  upsert_japanese_learn(\r\n    input: {\r\n    goal_id:$goal_id\r\n    }\r\n  ) {\r\n   id\r\n    user_id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal_id\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n}\r\n}\r\n",
+								"variables": "{\r\n    \"goal_id\":5\r\n}"
 							}
 						},
 						"url": {
@@ -689,7 +659,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID!){\r\n  detail_japanese_learn(\r\n      id: $id  \r\n    ) {\r\n       id\r\n    user_id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal_id\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    goal_no_childs{\r\n        id\r\n        parent{\r\n            id\r\n        }\r\n        name\r\n    }\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"id\": 4\r\n}\r\n"
+								"variables": "{\r\n    \"id\": 1\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -1054,7 +1024,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "  query($types: [String]!){\r\n  my_notifications(\r\n      types: $types\r\n  ){\r\n    id\r\n    user_share_by\r\n    user{\r\n        id\r\n        name\r\n        attachment{\r\n            file_type\r\n            thumb\r\n            file\r\n        }\r\n    }\r\n    type\r\n    type_id\r\n    messages\r\n    created_at\r\n    updated_at\r\n  }\r\n}",
-								"variables": "{\r\n    \"types\":[\"share_user_info\"]\r\n}"
+								"variables": "{\r\n    \"types\":[\"achieve\"]\r\n}"
 							}
 						},
 						"url": {
@@ -1599,7 +1569,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id:ID, $goal_id: ID) {\n  detail_japanese_goal(\n      id : $id\n      goal_id: $goal_id\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n     goal_root{\n         id\n         name\n     }\n     next_goal{\n         id\n         name\n         type\n     }\n    type\n    score\n    more\n  }\n}",
-								"variables": "{\r\n\"goal_id\": 6\r\n}\r\n"
+								"variables": "{\r\n\"goal_id\": 7\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -1999,7 +1969,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "\nmutation($general_id:ID!,$user_invite_ids:[ID]!,$status:String) {\n  create_achieve(\n    input: {\n      general_id: $general_id\n      user_invite_ids: $user_invite_ids\n      status: $status\n    }\n  )\n  }",
-								"variables": "{\n     \"general_id\" : 44,\n    \"user_invite_ids\" : [2],\n    \"status\" : \"pending\"\n}"
+								"variables": "{\n     \"general_id\" : 18,\n    \"user_invite_ids\" : [2],\n    \"status\" : \"pending\"\n}"
 							}
 						},
 						"url": {
@@ -2029,7 +1999,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "\nmutation($id:ID!,$general_id:ID,$user_invite_ids:ID,$status:String) {\n  update_achieve_with_general_id(\n    input: {\n        id : $id\n      general_id: $general_id\n      user_invite_ids: $user_invite_ids\n      status: $status\n      \n    }\n  ) {\n      id\n      general{id}\n      user_invite{id}\n    \n  }\n}",
-								"variables": "{\n    \"id\": 9,\n    \"general_id\": 45,\n    \"status\" : \"accept\"\n}"
+								"variables": "{\n    \"id\": 2,\n    \"general_id\": 18,\n    \"status\" : \"accept\"\n}"
 							}
 						},
 						"url": {
@@ -4542,8 +4512,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($parent_id: String!) {\r\n  my_goals(parent_id: $parent_id) {\r\n      id\r\n      name\r\n      start_day\r\n      end_day\r\n      status\r\n      task_id\r\n      locks\r\n      is_lock\r\n      is_pined\r\n      progress\r\n      general_info {\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publish\r\n        color\r\n        attachments {\r\n          file\r\n          file_type\r\n          thumb\r\n        }\r\n        achieves {\r\n          id\r\n          user_invite {\r\n            id\r\n            name\r\n            attachment {\r\n              thumb\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n",
-								"variables": "{\r\n \"parent_id\": \"all\"\r\n}"
+								"query": "query($parent_id: String!) {\r\n  my_goals(parent_id: $parent_id) {\r\n      id\r\n      name\r\n      start_day\r\n      end_day\r\n      status\r\n      task_id\r\n      locks\r\n      is_lock\r\n      is_pined\r\n      progress\r\n      next_goal\r\n      general_info {\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publish\r\n        color\r\n        attachments {\r\n          file\r\n          file_type\r\n          thumb\r\n        }\r\n        achieves {\r\n          id\r\n          user_invite {\r\n            id\r\n            name\r\n            attachment {\r\n              thumb\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n",
+								"variables": "{\r\n \"parent_id\": \"root\"\r\n}"
 							}
 						},
 						"url": {
@@ -4602,8 +4572,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($parent_id: String!){\r\n  my_goals_achieve(parent_id: $parent_id) {\r\n    id\r\n    name\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    process\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n}\r\n}",
-								"variables": "{\r\n \"parent_id\": \"all\"\r\n}"
+								"query": "query($parent_id: String!){\r\n  my_goals_achieve(parent_id: $parent_id) {\r\n    id\r\n    name\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    progress\r\n    next_goal\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publish\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n    }\r\n}\r\n}",
+								"variables": "{\r\n \"parent_id\": \"root\"\r\n}"
 							}
 						},
 						"url": {
@@ -4753,7 +4723,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID) {\r\n  my_goals_tree_sort(id: $id)\r\n}",
-								"variables": "{\r\n    \"id\": 1\r\n}"
+								"variables": "{\r\n    \"id\":1\r\n}"
 							}
 						},
 						"url": {

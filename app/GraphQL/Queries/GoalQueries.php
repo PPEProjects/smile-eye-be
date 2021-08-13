@@ -3,26 +3,37 @@
 namespace App\GraphQL\Queries;
 
 use App\Models\Goal;
+use App\Models\JapaneseGoal;
+use App\Models\JapaneseLearn;
 use App\Models\Task;
 use App\Repositories\GeneralInfoRepository;
 use App\Repositories\GoalRepository;
+use App\Repositories\JapaneseGoalRepository;
+use App\Repositories\JapaneseLearnRepository;
 use App\Repositories\TodolistRepository;
 use Illuminate\Support\Facades\Auth;
+
+use function Safe\sort;
 
 class GoalQueries
 {
     private $generalinfo_repository;
     private $goal_repository;
     private $todolist_repository;
-
+    private $japaneseLearn_repository;
+    private $japaneseGoal_repository;
     public function __construct(
         GeneralInfoRepository $generalinfo_repository,
         GoalRepository $GoalRepository,
-        TodoListRepository $TodoListRepository
+        TodoListRepository $TodoListRepository,
+        JapaneseLearnRepository $japaneseLearn_repository,
+        JapaneseGoalRepository $japaneseGoal_repository
     ) {
         $this->generalinfo_repository = $generalinfo_repository;
         $this->goal_repository = $GoalRepository;
         $this->todolist_repository = $TodoListRepository;
+        $this->japaneseLearn_repository = $japaneseLearn_repository;
+        $this->japaneseGoal_repository = $japaneseGoal_repository;
     }
 
     public function goalsChildren($_, array $args)
@@ -95,7 +106,8 @@ class GoalQueries
                 break;
         }
         $goals = $goals->get();
-
+        $goalIds = $goals->pluck('id')->toArray();
+        $nextGoal = $this->nextGoal($goalIds);
         $goals = $this->generalinfo_repository
             ->setType('goal')
             ->get($goals);
@@ -103,9 +115,54 @@ class GoalQueries
 //                return $this->goal_repository->calculatorProcessTodolist($goal);
 //            });
 //        dd($goals->first()->toArray());
+            $goals = $goals->map(function($goal) use ($nextGoal){
+                    $goal->next_goal = @$nextGoal[$goal->id];
+                    return $goal;
+            });
         return $goals;
     }
+    public function nextGoal($goalIds = []){
+        foreach($goalIds as $value)
+        {
+            $children[$value] =$this->japaneseLearn_repository->goalNochild([$value]);
+        }
 
+        $japaneseLearn = JapaneseLearn::where('user_id', Auth::id())->get();
+        $getIds = $japaneseLearn->pluck('goal_id')->toArray();
+        $nextGoal = [];
+        foreach($goalIds as $value)
+        {
+             $findIdLearn = array_intersect($children[$value], $getIds);
+             if($findIdLearn != [])
+             {
+                $JapaneseLearn = JapaneseLearn::whereIn('goal_id', $findIdLearn)->where('user_id', Auth::id())->OrderBy('id', 'desc')->first();                  
+                $getJapanseseLearn = $this->findNextGoals($JapaneseLearn->goal_id);
+                if(isset($getJapanseseLearn))
+                {
+                    $nextGoal[$value] = $getJapanseseLearn;
+                }
+             }
+             if(!isset($nextGoal[$value]))
+             {
+                $getInfoGoal = $this->findNextGoals(current($children[$value]));
+                if(isset($getInfoGoal))
+                {
+                     $nextGoal[$value] = $getInfoGoal;
+                 }
+            }
+        }
+        return $nextGoal;
+    }
+    public function findNextGoals($id)
+    {
+        $japaneseGoal = $this->japaneseGoal_repository->getJapaneseGoal('goal_id', $id)->first();
+        $getNameGoal = $this->japaneseGoal_repository->findGoal($id);
+        $nextGoal = null;
+        if(isset($japaneseGoal)){
+            $nextGoal = ['id' => @$japaneseGoal->goal_id, 'name' => @$getNameGoal->name, 'type' => @$japaneseGoal->type];
+        }
+        return $nextGoal;
+    }
     public function countGoals($_, array $args)
     {
         return $this->goal_repository->countGoals($args);
@@ -113,7 +170,15 @@ class GoalQueries
 
     public function myGoalsAchieve($_, array $args)
     {
-        return $this->goal_repository->myGoalsAchieve($args);
+        $goals = $this->goal_repository->myGoalsAchieve($args);
+          //NEXT GOAL
+        $goalIds = $goals->pluck('id')->toArray();
+        $nextGoal = $this->nextGoal($goalIds);
+        $goals = $goals->map(function($goal) use ($nextGoal){
+        $goal->next_goal = @$nextGoal[$goal->id];
+        return $goal;
+      });
+      return $goals;
     }
 
     public function myGoalsTreeSort($_, array $args)

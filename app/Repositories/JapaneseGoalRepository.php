@@ -6,15 +6,23 @@ namespace App\Repositories;
 use App\Models\Attachment;
 use App\Models\Goal;
 use App\Models\JapaneseGoal;
+use App\Models\JapaneseLearn;
+use App\Repositories\JapaneseLearnRepository;
 use Illuminate\Support\Facades\Auth;
 use ppeCore\dvtinh\Services\AttachmentService;
 
 class JapaneseGoalRepository
 {
-    public function __construct(AttachmentService $attachment_service, NotificationRepository $notificationRepository)
+    private $japaneseLearn_repository;
+    public function __construct(
+        AttachmentService $attachment_service,
+         NotificationRepository $notificationRepository,
+         JapaneseLearnRepository $japaneseLearn_repository
+         )
     {
         $this->attachment_service = $attachment_service;
         $this->notification_repository = $notificationRepository;
+        $this->japaneseLearn_repository = $japaneseLearn_repository;
     }
     public function createJapaneseGoal($args){
         $japanese = JapaneseGoal::create($args);
@@ -73,7 +81,7 @@ class JapaneseGoalRepository
                 } else break;
             }
             $detailJPGoal->goal_root = $goalRoot;
-            $childrenIds = $this->goalNochild([$goalRoot->id]);
+            $childrenIds = $this->japaneseLearn_repository->goalNochild([$goalRoot->id]);
             $findIds = array_search($detailJPGoal->goal_id,$childrenIds,true);
             $nextGoal =  @$this->findGoal($childrenIds[$findIds + 1]);
             $getType = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds + 1])->first();
@@ -84,21 +92,7 @@ class JapaneseGoalRepository
         }
         return $detailJPGoal;
     }
-    public function goalNochild($ids, $children = [])
-    {
-        $getchildren = $children;
-        foreach($ids as $value)
-        {
-          $find = Goal::where('parent_id', $value)->orderBy('id', 'desc')->get(); 
-            if($find->toArray() != []){
-                $idParent = $find->pluck('id')->toArray();
-                $getchildren =  self::goalNochild($idParent, $getchildren);
 
-            } else 
-             $getchildren[] = $value;  
-       }
-       return $getchildren;
-    }
     public function findGoal($id){
         $goal = Goal::where('id',$id)->first();
         return $goal;

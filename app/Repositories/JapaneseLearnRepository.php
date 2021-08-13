@@ -51,16 +51,12 @@ class JapaneseLearnRepository
         $getchildren = $children;
         foreach($ids as $value)
         {
-          $find = Goal::where('parent_id', $value)->get();
-          if($find->toArray() != []){
-              $idParent = $find->pluck('id')->toArray();      
-          }
-           else{
-            $getchildren[] = $value;
-           }   
-       }
-       if(isset($idParent)){
-        $getchildren = self::goalNochild($idParent, $getchildren);
+          $find = Goal::where('parent_id', $value)->orderBy('id', 'desc')->get(); 
+            if($find->toArray() != []){
+                $idParent = $find->pluck('id')->toArray();
+                $getchildren =  self::goalNochild($idParent, $getchildren);
+            }
+            else  $getchildren[] = $value;  
        }
        return $getchildren;
     }
