@@ -41,7 +41,6 @@ type Goal{
     task_id: ID
     japanese_goal: JapaneseGoal
     next_goal: JSON
-    prev_goal: JSON
 #    process : Float
     locks:JSON
     is_lock: Boolean
