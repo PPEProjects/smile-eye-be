@@ -107,9 +107,7 @@ class GoalQueries
         }
         $goals = $goals->get();
         $goalIds = $goals->pluck('id')->toArray();
-        $nextAndPrev = $this->nextGoalAndPrevGoal($goalIds);
-        $nextGoal = $nextAndPrev['next_goal'];
-        $prevGoal = $nextAndPrev['prev_goal'];
+        $nextGoal= $this->nextGoal($goalIds);
         $goals = $this->generalinfo_repository
             ->setType('goal')
             ->get($goals);
@@ -117,14 +115,13 @@ class GoalQueries
 //                return $this->goal_repository->calculatorProcessTodolist($goal);
 //            });
 //        dd($goals->first()->toArray());
-            $goals = $goals->map(function($goal) use ($nextGoal, $prevGoal){
+            $goals = $goals->map(function($goal) use ($nextGoal){
                     $goal->next_goal = @$nextGoal[$goal->id];
-                    $goal->prev_goal = @$prevGoal[$goal->id];
                     return $goal;
             });
         return $goals;
     }
-    public function nextGoalAndPrevGoal($goalIds = []){
+    public function nextGoal($goalIds = []){
         foreach($goalIds as $value)
         {
             $children[$value] =$this->japaneseLearn_repository->goalNochild([$value]);
@@ -133,23 +130,17 @@ class GoalQueries
         $japaneseLearn = JapaneseLearn::where('user_id', Auth::id())->get();
         $getIds = $japaneseLearn->pluck('goal_id')->toArray();
         $nextGoal = [];
-        $prevGoal = [];
         foreach($goalIds as $value)
         {
              $findIdLearn = array_intersect($children[$value], $getIds);
              if($findIdLearn != [])
              {
-                $JapaneseLearn = JapaneseLearn::whereIn('goal_id', $findIdLearn)->where('user_id', Auth::id())->OrderBy('id', 'desc');   
-                $next =  $JapaneseLearn->first();               
-                $nextJapanseseLearn = $this->findNextGoals($next->goal_id);
-                $prev =  $JapaneseLearn->skip(1)->take(1)->first();    
-                if(isset($prev)){           
-                    $prevJapanseseLearn = $this->findNextGoals($prev->goal_id);
-                }
+                $JapaneseLearn = JapaneseLearn::whereIn('goal_id', $findIdLearn)->where('user_id', Auth::id())->OrderBy('id', 'desc')->first();               
+                $nextJapanseseLearn = $this->findNextGoals($JapaneseLearn->goal_id);
+
                 if(isset($nextJapanseseLearn) || isset($prevJapanseseLearn))
                 {
                     $nextGoal[$value] = $nextJapanseseLearn;
-                    $prevGoal[$value] = @$prevJapanseseLearn;
                 }
              }
              if(!isset($nextGoal[$value]))
@@ -161,7 +152,7 @@ class GoalQueries
                  }
             }
         }
-        return ['next_goal'=>$nextGoal,'prev_goal'=>$prevGoal];
+        return $nextGoal;
     }
     public function findNextGoals($id)
     {
@@ -183,7 +174,7 @@ class GoalQueries
         $goals = $this->goal_repository->myGoalsAchieve($args);
           //NEXT GOAL
         $goalIds = $goals->pluck('id')->toArray();
-        $nextGoal = $this->nextGoalAndPrevGoal($goalIds);
+        $nextGoal = $this->nextGoal($goalIds);
         $goals = $goals->map(function($goal) use ($nextGoal){
         $goal->next_goal = @$nextGoal[$goal->id];
         return $goal;

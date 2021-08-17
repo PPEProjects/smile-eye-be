@@ -1568,8 +1568,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($id:ID, $goal_id: ID) {\n  detail_japanese_goal(\n      id : $id\n      goal_id: $goal_id\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n     goal_root{\n         id\n         name\n     }\n     next_goal{\n         id\n         name\n         type\n     }\n    type\n    score\n    more\n  }\n}",
-								"variables": "{\r\n\"goal_id\": 8\r\n}\r\n"
+								"query": "query($id:ID, $goal_id: ID) {\n  detail_japanese_goal(\n      id : $id\n      goal_id: $goal_id\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n     goal_root{\n         id\n         name\n     }\n     next_goal{\n         id\n         name\n         type\n     }\n     prev_goal{\n         id\n         name\n         type\n     }\n    type\n    score\n    more\n  }\n}",
+								"variables": "{\r\n\"goal_id\": 5\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -4512,7 +4512,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($parent_id: String!) {\r\n  my_goals(parent_id: $parent_id) {\r\n      id\r\n      name\r\n      start_day\r\n      end_day\r\n      status\r\n      task_id\r\n      locks\r\n      is_lock\r\n      is_pined\r\n      progress\r\n      next_goal\r\n      prev_goal\r\n      general_info {\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publish\r\n        color\r\n        attachments {\r\n          file\r\n          file_type\r\n          thumb\r\n        }\r\n        achieves {\r\n          id\r\n          user_invite {\r\n            id\r\n            name\r\n            attachment {\r\n              thumb\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n",
+								"query": "query($parent_id: String!) {\r\n  my_goals(parent_id: $parent_id) {\r\n      id\r\n      name\r\n      start_day\r\n      end_day\r\n      status\r\n      task_id\r\n      locks\r\n      is_lock\r\n      is_pined\r\n      progress\r\n      next_goal\r\n      general_info {\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publish\r\n        color\r\n        attachments {\r\n          file\r\n          file_type\r\n          thumb\r\n        }\r\n        achieves {\r\n          id\r\n          user_invite {\r\n            id\r\n            name\r\n            attachment {\r\n              thumb\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n",
 								"variables": "{\r\n \"parent_id\": \"root\"\r\n}"
 							}
 						},
