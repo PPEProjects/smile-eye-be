@@ -133,6 +133,7 @@ class GoalQueries
         $japaneseLearn = JapaneseLearn::where('user_id', Auth::id())->get();
         $getIds = $japaneseLearn->pluck('goal_id')->toArray();
         $nextGoal = [];
+        $prevGoal = [];
         foreach($goalIds as $value)
         {
              $findIdLearn = array_intersect($children[$value], $getIds);
