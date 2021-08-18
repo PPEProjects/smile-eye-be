@@ -83,10 +83,26 @@ class JapaneseGoalRepository
             $detailJPGoal->goal_root = $goalRoot;
             $childrenIds = $this->japaneseLearn_repository->goalNochild([$goalRoot->id]);
             $findIds = array_search($detailJPGoal->goal_id,$childrenIds,true);
-            $nextGoal =  @$this->findGoal($childrenIds[$findIds + 1]);
-            $prevGoal =  @$this->findGoal($childrenIds[$findIds - 1]);
-            $getTypeNextGoal = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds + 1])->first();
-            $getTypePrevGoal = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds - 1])->first();
+            $keyNext = 0;
+            $keyPrev = 0;
+            foreach ($childrenIds as $key => $value) {
+                if ($key > $findIds) {
+                    if (isset($getTypeNextGoal)){
+                        continue;
+                    }
+                    $getTypeNextGoal = @$this->getJapaneseGoal('goal_id', $value)->first();
+                    $keyNext = $value;
+                }
+                if ($key > 0  && $key <= $findIds) {
+                    if (isset($getTypePrevGoal)){
+                        continue;
+                    }
+                    $getTypePrevGoal = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds - $key])->first();
+                    $keyPrev = $childrenIds[$findIds - $key];
+                }
+            }
+            $nextGoal =  @$this->findGoal($keyNext);
+            $prevGoal =  @$this->findGoal($keyPrev);
             if(isset($nextGoal)){
                 $nextGoal->type = @$getTypeNextGoal->type;      
             }       
