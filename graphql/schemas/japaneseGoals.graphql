@@ -2,6 +2,7 @@ extend type Mutation {
     delete_japanese_goals(id: ID! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@deletejapaneseGoal")
     create_japanese_goals(input: CreateJapaneseGoalInput! @spread): JapaneseGoal @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@createJapaneseGoal")
     update_japanese_goals(input: UpdateJapaneseGoalInput! @spread): JapaneseGoal @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@updateJapaneseGoal")
+    updateMeetUrl_sing_with_friend(input: UpdateMeetUrlInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@updateMeetUrl_sing_with_friend")
 }
 extend type Query {
     japanese_goals: [JapaneseGoal] @paginate(type: "paginator" model: "App\\Models\\JapaneseGoal")
@@ -48,4 +49,8 @@ input UpdateJapaneseGoalInput{
     type : String
     more : JSON
     score : Float
+}
+input UpdateMeetUrlInput{
+    goal_id : ID!
+    meet: JSON
 }
