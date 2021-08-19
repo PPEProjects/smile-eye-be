@@ -1,11 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-
 use App\Http\Controllers\Api\AttachmentController;
 use App\Http\Controllers\Api\GoalController;
+use App\Services\GoogleService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +16,27 @@ use App\Http\Controllers\Api\GoalController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+//https://03766a3ff816.ngrok.io/api/auth-service?platform=google
+//https://accounts.google.com/AccountChooser/signinchooser?continue=https://g.co/meet/yourmeetingname
+//https://accounts.google.com/AccountChooser/signinchooser?continue=https://g.co/meet/tiennv.ppe@gmail.com
 
-Route::get('/test', function (Request $request) {
-       dd("hello");
+Route::prefix('/auth-service')->group(function () {
+    Route::get('/', function (Request $request) {
+        switch ($request->platform) {
+            case 'google':
+                $url = GoogleService::generateUrl();
+                return redirect($url);
+        }
+    });
+    Route::get('/handle', function (Request $request) {
+        $state = json_decode($request->state, true);
+        switch ($state['platform']) {
+            case 'google':
+                $user = GoogleService::handle($request->code);
+                dd($user);
+                break;
+        }
+    });
 });
 
 Route::resource('attachment', AttachmentController::class)

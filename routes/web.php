@@ -66,51 +66,6 @@ Route::get('/sign-in/facebook/redirect', function () {
     dd($user);
 });
 
-Route::get('/test-model', function () {
-    $Log = \App\Models\Daily_note::create([
-        'user_id' => '1'
-
-    ]);
-
-//Check if user was created
-    if ($Log) {
-        dd($Log);
-    }
-
-});
-
-Route::get('/tt', function () {
-dd(\App\Models\User::find(1)->goals->toArray());
-
-});
-
-
-Route::get('/test_seed_canh', function () {
-
-    $listFriend = \App\Models\User::find(6)->friend;
-    $user_avatar = \App\Models\UserAvatar::find(5)->user;
-    $history_friend = \App\Models\User::find(13)->historyFriend;
-
-    dd([
-        'Bạn bè của id thứ 25'          => $listFriend,
-        'Avatar của người dùng'         => $user_avatar,
-        'Lịch sử bạn bè của người dùng' => $history_friend,
-    ]);
-
-});
-Route::get('/test_seed_Tu', function () {
-    $goal = \App\Models\Goal::find(20)->user->toArray();
-    $todolist = \App\Models\Todolist::find(20)->toArray();
-    $log = \App\Models\Log::find(20)->toArray();
-    $notification = \App\Models\Notification::find(20)->toArray();
-    dd([
-        'User'                   => $goal,
-        'Danh sách việc cần làm' => $todolist,
-        '$logs'                  => $log,
-        'Thông báo'              => $notification
-    ]);
-});
-
 Route::get('/counter', function () {
     return view('counter');
 });
