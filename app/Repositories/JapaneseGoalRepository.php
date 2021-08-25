@@ -27,8 +27,10 @@ class JapaneseGoalRepository
     public function createJapaneseGoal($args){
         if($args['type'] == 'flashcard_category'){
             $cate = $this->getJapaneseGoal('type', $args['type'])->first();
-            $args['more'] = array_diff($args['more'], $cate->more);
-            $args['more'] = array_merge($cate->more,$args['more'] );
+            if(isset($cate)) {
+                $args['more'] = array_diff($args['more'], $cate->more);
+                $args['more'] = array_merge($cate->more, $args['more']);
+            }
             $japaneseGoal =  JapaneseGoal::updateOrCreate(['type' => $args['type']],$args);
             return $japaneseGoal;
         }
