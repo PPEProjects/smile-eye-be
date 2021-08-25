@@ -1179,7 +1179,67 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\n    $parent_id: ID\n    $name_goal: String\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    parent_id: $parent_id \n    name_goal: $name_goal\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        goal{\n            id,\n            name,\n            parent{\n                id\n                name\n            }\n        }\n        type,\n        more\n    }\n  \n}",
-								"variables": "{\n     \"parent_id\":1,\n    \"type\": \"flash_card\",\n    \"more\": [\n      {\n        \"front\": {\n          \"name\": \"食べます\",\n          \" image\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n          },\n          \" audio\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n          },\n          \" video\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n          }\n        },\n        \"back\": {\n          \"name\": \"ăn\",\n          \" image\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n          },\n          \" audio\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n          },\n          \" video\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n          }\n        }\n      },\n      {\n        \"front\": {\n          \"name\": \"飲みます\",\n          \" image\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n          },\n          \" audio\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n          },\n          \" video\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n          }\n        },\n        \"back\": {\n          \"name\": \"uống\",\n          \" image\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n          },\n          \" audio\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n          },\n          \" video\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.jpg\"\n          }\n        }\n      }\n    ]\n  }"
+								"variables": "{\n    \"type\": \"flashcard\",\n    \"more\": {\n    \"flashcard_category\": \"Động vật\",\n    \"name\": \"con khỉ\",\n    \"front\": {\n      \"text\": \"Cún yêu rất dễ thương\",\n      \"video\": {\n        \"id\": 177,\n        \"file_type\": \"image\",\n        \"file\": \"https://jp-be.ppe.edu.vn/storage/media/images/2021-08-13-1628826855-948696562-28.wepb\",\n        \"thumb\": \"https://jp-be.ppe.edu.vn/storage/media/thumb-images/2021-08-13-1628826855-948696562-28.jpg\"\n      },\n      \"image\": {\n        \"id\": 177,\n        \"file_type\": \"image\",\n        \"file\": \"https://jp-be.ppe.edu.vn/storage/media/images/2021-08-13-1628826855-948696562-28.wepb\",\n        \"thumb\": \"https://jp-be.ppe.edu.vn/storage/media/thumb-images/2021-08-13-1628826855-948696562-28.jpg\"\n      },\n      \"audio\": {\n        \"id\": 177,\n        \"file_type\": \"image\",\n        \"file\": \"https://jp-be.ppe.edu.vn/storage/media/images/2021-08-13-1628826855-948696562-28.wepb\",\n        \"thumb\": \"https://jp-be.ppe.edu.vn/storage/media/thumb-images/2021-08-13-1628826855-948696562-28.jpg\"\n      }\n    },\n    \"back\": {\n      \"text\": \"Cún yêu rất dễ thương\",\n      \"video\": {\n        \"id\": 177,\n        \"file_type\": \"image\",\n        \"file\": \"https://jp-be.ppe.edu.vn/storage/media/images/2021-08-13-1628826855-948696562-28.wepb\",\n        \"thumb\": \"https://jp-be.ppe.edu.vn/storage/media/thumb-images/2021-08-13-1628826855-948696562-28.jpg\"\n      },\n      \"image\": {\n        \"id\": 177,\n        \"file_type\": \"image\",\n        \"file\": \"https://jp-be.ppe.edu.vn/storage/media/images/2021-08-13-1628826855-948696562-28.wepb\",\n        \"thumb\": \"https://jp-be.ppe.edu.vn/storage/media/thumb-images/2021-08-13-1628826855-948696562-28.jpg\"\n      },\n      \"audio\": {\n        \"id\": 177,\n        \"file_type\": \"image\",\n        \"file\": \"https://jp-be.ppe.edu.vn/storage/media/images/2021-08-13-1628826855-948696562-28.wepb\",\n        \"thumb\": \"https://jp-be.ppe.edu.vn/storage/media/thumb-images/2021-08-13-1628826855-948696562-28.jpg\"\n      }\n    }\n  }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upsert_flash_card_category_japanese_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $parent_id: ID\n    $name_goal: String\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    parent_id: $parent_id \n    name_goal: $name_goal\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        goal{\n            id,\n            name,\n            parent{\n                id\n                name\n            }\n        }\n        type,\n        more\n    }\n  \n}",
+								"variables": "{\n  \"type\": \"flashcard_category\",\n  \"more\": [\n    \"Nhà cửa\",\n    \"Động vật\",\n    \"Xe hơi\",\n    \"Thiên nhiên\"\n  ]\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create_flash_card_study_japanese_goals Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $parent_id: ID\n    $name_goal: String\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    parent_id: $parent_id \n    name_goal: $name_goal\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        goal{\n            id,\n            name,\n            parent{\n                id\n                name\n            }\n        }\n        type,\n        more\n    }\n  \n}",
+								"variables": "{\n  \"type\": \"flashcard_study\",\n  \"name_goal\": \"Bài học về chó mèo\",\n  \"parent_id\": 1,\n  \"more\": {\n    \"flashcard_category\": [\n      \"Động vật\",\n      \"Thực vật\",\n      \"Thiên nhiên\"\n    ]\n  }\n}"
 							}
 						},
 						"url": {
@@ -1569,7 +1629,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id:ID, $goal_id: ID) {\n  detail_japanese_goal(\n      id : $id\n      goal_id: $goal_id\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n     goal_root{\n         id\n         name\n     }\n     next_goal{\n         id\n         name\n         type\n     }\n     prev_goal{\n         id\n         name\n         type\n     }\n    type\n    score\n    more\n  }\n}",
-								"variables": "{\r\n\"goal_id\": 484\r\n}\r\n"
+								"variables": "{\r\n\"goal_id\": 8\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -1599,7 +1659,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id:ID) {\n  detail_japanese_goal(\n      id : $id\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n     goal_root{\n         id\n         name\n     }\n    type\n    score\n    more\n  }\n}",
-								"variables": "{\r\n\"id\": 28\r\n}\r\n"
+								"variables": "{\r\n\"id\": 2\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -1675,6 +1735,36 @@
 					"response": []
 				},
 				{
+					"name": "query_flashcard_category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($type:String!) {\n  flashcard_category(\n      type : $type\n  )\n}",
+								"variables": "{\r\n\"type\": \"flashcard_category\"\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "query search_by_type_japanese_goal",
 					"request": {
 						"method": "POST",
@@ -1689,7 +1779,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($type: String) {\n  search_by_type_japanese_goal(\n      type : $type\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n     goal_id\n    type\n    score\n    more\n  }\n}",
-								"variables": "{\r\n    \"type\":\"kanji\"\r\n}\r\n"
+								"variables": "{\r\n    \"type\":\"flashcard\"\r\n}\r\n"
 							}
 						},
 						"url": {

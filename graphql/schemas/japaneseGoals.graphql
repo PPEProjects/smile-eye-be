@@ -11,6 +11,7 @@ extend type Query {
     search_by_type_japanese_goal(type:String): [JapaneseGoal] @field(resolver:"JapaneseGoalQueries@searchByTypeJapaneseGoal")
     my_basket_or_card(type:String!): JSON @guard @field(resolver:"JapaneseGoalQueries@myBasketOrCard")
     my_diary(type:String!): JSON @guard @field(resolver:"JapaneseGoalQueries@myDiary")
+    flashcard_category(type:String!): JSON @guard @field(resolver:"JapaneseGoalQueries@flashcardCategory")
 }
 
 type JapaneseGoal{

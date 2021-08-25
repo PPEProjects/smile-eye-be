@@ -25,6 +25,13 @@ class JapaneseGoalRepository
         $this->japaneseLearn_repository = $japaneseLearn_repository;
     }
     public function createJapaneseGoal($args){
+        if($args['type'] == 'flashcard_category'){
+            $cate = $this->getJapaneseGoal('type', $args['type'])->first();
+            $args['more'] = array_diff($args['more'], $cate->more);
+            $args['more'] = array_merge($cate->more,$args['more'] );
+            $japaneseGoal =  JapaneseGoal::updateOrCreate(['type' => $args['type']],$args);
+            return $japaneseGoal;
+        }
         $japanese = JapaneseGoal::create($args);
         return $japanese;
     }
@@ -123,4 +130,34 @@ class JapaneseGoalRepository
 
         return $this->getJapaneseGoal("type", $args['type']);
     }
+
+   public function flashcardCategory($args){
+        $getCate = $this->getJapaneseGoal('type', 'flashcard');
+        $cate = $this->getJapaneseGoal('type', 'flashcard_category')->first();
+        if(!isset($getCate) || !isset($cate)){
+            return  [];
+        }
+        $category = array_flip($cate->more);
+        foreach($category as $key => $value){
+            $category[$key] = [];
+        }
+       foreach($getCate as $value){
+            $category[$value->more["flashcard_category"]][] = $value->more;
+        }
+
+       switch ($args['type']) {
+           case "flashcard_category":
+               //query sum card by category
+               $flashCardCate = [];
+               foreach($category as $key => $value){
+                   $flashCardCate[] =[ 'name' => $key,'count' => count($category[$key]),
+                                        'image' => current(@$category[$key])["front"]['image'] ?? [] ];
+               }
+               break;
+           default:
+               $flashCardCate = [ 'name' => $args['type'], 'list' => @$category[$args['type']] ?? [] ];
+       }
+       return $flashCardCate;
+   }
+
 }

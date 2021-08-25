@@ -68,4 +68,9 @@ class JapaneseGoalQueries
  public function detailFlashCard($_,array $args){
      return JapaneseGoal::findOrFail($args["id"]);
  }
+
+ public function flashcardCategory($_,array $args){
+        return $this->japanese_goal_repository->flashcardCategory($args);
+ }
+
 }
