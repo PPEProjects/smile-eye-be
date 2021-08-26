@@ -24,6 +24,7 @@ type JapaneseGoal{
     type: String
     more : JSON
     score: Float
+    list_users: [User]
     attachments_1 : JSON
     attachments_2 : JSON
     attachments_3 : JSON

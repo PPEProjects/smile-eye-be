@@ -13,6 +13,7 @@ class JapaneseLearnRepository
     public function upsertJapaneseLearn($args)
     {
         $args['user_id'] = Auth::id();
+        $args['updated_at'] = date('Y-m-d H:m:s');
         $japaneseLearn = JapaneseLearn::updateOrCreate(
             ['user_id' => $args['user_id'], 'goal_id' => $args['goal_id']],
             $args

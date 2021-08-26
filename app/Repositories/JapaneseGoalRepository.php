@@ -7,6 +7,7 @@ use App\Models\Attachment;
 use App\Models\Goal;
 use App\Models\JapaneseGoal;
 use App\Models\JapaneseLearn;
+use App\Models\User;
 use App\Repositories\JapaneseLearnRepository;
 use Illuminate\Support\Facades\Auth;
 use ppeCore\dvtinh\Services\AttachmentService;
@@ -90,6 +91,18 @@ class JapaneseGoalRepository
                 } else break;
             }
             $detailJPGoal->goal_root = $goalRoot;
+            if($detailJPGoal->type == 'communication' || $detailJPGoal->type == 'sing_with_friend' ) {
+                $getListUsers = JapaneseLearn::where('goal_id', $detailJPGoal->goal_id)
+                                                ->whereNotIn('user_id', [Auth::id()])
+                                                ->OrDerBy('updated_at', 'DESC')->get();
+                $listUsers = $getListUsers->pluck('user_id');
+                $users =[];
+                foreach ($listUsers as $id) {
+                    $findUser = User::find($id);
+                    $users[] = $this->attachment_service->mappingAvatarBackgroud($findUser)->toArray();
+                }
+                $detailJPGoal->list_users = @$users;
+            }
             $childrenIds = $this->japaneseLearn_repository->goalNochild([$goalRoot->id]);
             $findIds = array_search($detailJPGoal->goal_id,$childrenIds,true);
             $keyNext = 0;
