@@ -39,27 +39,36 @@ class JapaneseGoalRepository
         return $japanese;
     }
     public function updateJapaneseGoal($args){
-        $diary = JapaneseGoal::find($args['id']);
+        $japaneseGoal = JapaneseGoal::find($args['id']);
         $userId = Auth::id();
-        if($diary->type == "diary")
+        if($japaneseGoal->type == "diary")
         {   
-            $checkIdUser = array_intersect($diary->more[0]['user_invite_ids'], [$userId]);
+            $checkIdUser = array_intersect($japaneseGoal->more[0]['user_invite_ids'], [$userId]);
             if($checkIdUser != [] && isset($args['more'][0]['other']))
             {
                 $other = $args['more'][0]['other'];
-                $args['more'] = $diary->more;
+                $args['more'] = $japaneseGoal->more;
                 $args['more'][0]['other_'.$userId] = $other;
                 $args['more'][0]['review_'.$userId] = $other;
-                $diary->more = $args['more'];
-                $useInvite[] = $diary->user_id;
-                $this->notification_repository->staticNotification("edit_diary",$diary->id,$diary, $useInvite);
+                $japaneseGoal->more = $args['more'];
+                $useInvite[] = $japaneseGoal->user_id;
+                $this->notification_repository->staticNotification("edit_diary",$japaneseGoal->id,$japaneseGoal, $useInvite);
             }
-            else if($diary->user_id == $userId && isset($args['more'][0]['content']))
+            else if($japaneseGoal->user_id == $userId && isset($args['more'][0]['content']))
             {
                 $content = $args['more'][0]['content'];
-                $args['more'] = $diary->more;
+                $args['more'] = $japaneseGoal->more;
                 $args['more'][0]['content'] = $content;
             }else $args = array_diff_key($args, array_flip(['more']));
+        }
+
+        if($japaneseGoal->type == 'sing_with_friend')
+        {      
+            $user_invited_ids = array_diff($args['more']['user_invite_ids'], $japaneseGoal->more['user_invite_ids']);
+            $userInvite = $args['more']['user_invite_ids'];
+            $args['more'] = $japaneseGoal->more;
+            $args['more']['user_invite_ids'] = $userInvite;         
+            $this->notification_repository->staticNotification("sing_with_friend", $japaneseGoal->id, $japaneseGoal,$user_invited_ids);
         }
         return tap(JapaneseGoal::findOrFail($args["id"]))
             ->update($args);

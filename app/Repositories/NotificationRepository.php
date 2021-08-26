@@ -288,6 +288,15 @@ class NotificationRepository
                             $key." ".$content[$key]["old"]." to ".$content[$key]["new"].
                             " at your goal name ".$goal->name );
                     break;
+                case 'sing_with_friend':
+                        $content = $noti->content;
+                        $key = array_key_first($content);
+                        $user = User::where("id",$noti["user_id"])->first();
+                        $goal = Goal::where("id",$noti->type_id)->first();   
+                        $messages
+                            ->push($user->name ." invite you join '".$goal->name."'" );
+                    break;
+    
 
             }
             $noti->messages = $messages;
