@@ -64,7 +64,7 @@ class JapaneseGoalRepository
 
         if($japaneseGoal->type == 'sing_with_friend')
         {      
-            $user_invited_ids = array_diff($args['more']['user_invite_ids'], $japaneseGoal->more['user_invite_ids']);
+            $user_invited_ids = array_diff($args['more']['user_invite_ids'], @$japaneseGoal->more['user_invite_ids'] ?? []);
             $userInvite = $args['more']['user_invite_ids'];
             $args['more'] = $japaneseGoal->more;
             $args['more']['user_invite_ids'] = $userInvite;         
