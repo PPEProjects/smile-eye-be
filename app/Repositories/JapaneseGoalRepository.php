@@ -177,7 +177,7 @@ class JapaneseGoalRepository
                $flashCardCate = [];
                foreach($category as $key => $value){
                    $flashCardCate[] =[ 'name' => $key,'count' => count($category[$key]),
-                                        'media' => current(@$category[$key])["front"]['media']];
+                                        'media' => @$category[$key][0]["front"]['media']];
                }
                break;
            default:
