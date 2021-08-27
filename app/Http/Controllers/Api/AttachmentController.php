@@ -7,7 +7,6 @@ use App\Models\Attachment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use ppeCore\dvtinh\Services\AttachmentService;
-use Exception;
 
 class AttachmentController extends Controller
 {
@@ -50,11 +49,11 @@ class AttachmentController extends Controller
     {
         $file = $request->file('file');
         $audio_base64 = base64_encode($request->audio_base64);
-       
-        if(base64_encode(base64_decode($request->audio_base64, true)) === $request->audio_base64){
-            $isset_base64 = true;
-        }
-        else $isset_base64 = false;
+        $isset_base64 = $request->audio_base64 ? true : false;
+//        if(base64_encode(base64_decode($request->audio_base64, true)) === $request->audio_base64){
+//            $isset_base64 = true;
+//        }
+//        else $isset_base64 = false;
 
         if (!$isset_base64)
         {
@@ -65,12 +64,9 @@ class AttachmentController extends Controller
                 $type = preg_replace('#\/.*?$#mis', '', $file->getClientMimeType());
             }
         } 
-        else $type = 'audio';
-        
-      
-       
+        else
+        $type = 'audio';
 
-        
 
         switch ($type) {
             case 'image':
@@ -118,39 +114,48 @@ class AttachmentController extends Controller
                 }
                 return response()->json(@$create);
                 break;
-                case 'audio':
-                    $filePath = storage_path() . "/app/public/media/audios";
-                    if ($isset_base64){
-                       $tail = "wav";
-                       $size = (int) (strlen(rtrim($audio_base64, '=')) * 3 / 4);
-                       
+            case 'audio':
+                $filePath = storage_path() . "/app/public/media/audios";
+                if ($isset_base64) {
+                    $tail = "mp3";
+                    $size = (int)(strlen(rtrim($audio_base64, '=')) * 3 / 4);
+                } else {
+                    $tail = $file->getClientOriginalExtension();
+                    $size = $file->getSize();
+                }
+                $fileName = date('Y-m-d') . '-' . time() . '-' . rand() . '-' . Auth::id() . '.' . $tail;
+                if (!isset($fileRootName)) {
+                    $fileRootName = $fileName;
+                }
+                $attachment = array_merge($request->all(), [
+                    'user_id'   => Auth::id(),
+                    'file'      => 'media/audios/' . $fileName,
+                    'file_type' => 'audio',
+                    'file_name' => $fileRootName,
+                    'file_size' => $size
+                ]);
+                $create = Attachment::create($attachment);
+                if ($create) {
+                    if ($isset_base64) {
+//                            \Illuminate\Support\Facades\Log::channel('single')->info('$filePath.\'/\'.$fileName', [$filePath.'/'.$fileName]);
+//
+//                            \Illuminate\Support\Facades\Log::channel('single')->info('base64_decode($request->audio_base64)', [base64_decode($request->audio_base64)]);
+                        $data = $request->audio_base64;
+//                        list($type, $data) = explode(';', $data);
+//                        list(, $data) = explode(',', $data);
+//                        $data = base64_decode($data);
+                        $data = base64_decode(explode(',',$data)[1]);
+                        file_put_contents($filePath . '/' . $fileName, $data);
                     } else {
-                        $tail = $file->getClientOriginalExtension();
-                        $size = $file->getSize();
+                        $file->move($filePath, $fileName);
                     }
-                    $fileName = date('Y-m-d') . '-' . time() . '-' . rand() . '-' . Auth::id() . '.' . $tail;    
-                   if(!isset($fileRootName)){
-                       $fileRootName = $fileName;
-                   }
-                    $attachment = array_merge($request->all(), [
-                        'user_id'   => Auth::id(),
-                        'file'      => 'media/audios/'.$fileName,
-                        'file_type' => 'audio',
-                        'file_name' => $fileRootName,
-                        'file_size' => $size
-                    ]);
-                    $create = Attachment::create($attachment);
-                    if ($create) {
-                        if($isset_base64){
-                            file_put_contents($filePath.'/'.$fileName, base64_decode($request->audio_base64));
-                        }else $file->move($filePath, $fileName);
-                        
-                        [$thumb, $file] = $this->attachment_service->getThumbFile($create->file_type, $create->file);
-                        $create->thumb = $thumb;
-                        $create->file = $file;
-                    }
-                    return response()->json(@$create);
-                    break;
+
+                    [$thumb, $file] = $this->attachment_service->getThumbFile($create->file_type, $create->file);
+                    $create->thumb = $thumb;
+                    $create->file = $file;
+                }
+                return response()->json(@$create);
+                break;
             case 'application' :
                 $tail = (string)$file->getClientOriginalExtension();
                 $create = $this->saveFile($file, $request, $tail);
