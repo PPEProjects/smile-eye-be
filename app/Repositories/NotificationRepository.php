@@ -9,6 +9,7 @@ use App\Models\Comment;
 use App\Models\Friend;
 use App\Models\GeneralInfo;
 use App\Models\Goal;
+use App\Models\JapaneseGoal;
 use App\Models\Notification;
 use App\Models\PublishInfo;
 use App\Models\Task;
@@ -291,13 +292,12 @@ class NotificationRepository
                 case 'sing_with_friend':
                         $content = $noti->content;
                         $key = array_key_first($content);
+                        $japaneseGoal = JapaneseGoal::find($noti->type_id);
                         $user = User::where("id",$noti["user_id"])->first();
-                        $goal = Goal::where("id",$noti->type_id)->first();   
-                        $messages
-                            ->push($user->name ." invite you join '".$goal->name."'" );
+                        $goal = Goal::where("id",$japaneseGoal->goal_id)->first();   
+                        $messages->push("Invite you join '".$goal->name."'" );
+                        $noti->type_id = $goal->id;
                     break;
-    
-
             }
             $noti->messages = $messages;
             return $noti;
