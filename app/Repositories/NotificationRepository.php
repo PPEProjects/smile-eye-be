@@ -298,6 +298,24 @@ class NotificationRepository
                         $messages->push("Invite you join '".$goal->name."'" );
                         $noti->type_id = $goal->id;
                     break;
+                case 'diary':
+                        $content = $noti->content;
+                        $key = array_key_first($content);
+                        $japaneseGoal = JapaneseGoal::find($noti->type_id);
+                        $user = User::where("id",$noti["user_id"])->first();
+                        $goal = Goal::where("id",$japaneseGoal->goal_id)->first();   
+                        $messages->push("Invite see diary'".$goal->name."'" );
+                        $noti->type_id = $goal->id;
+                    break;
+                case 'edit_diary':
+                        $content = $noti->content;
+                        $key = array_key_first($content);
+                        $japaneseGoal = JapaneseGoal::find($noti->type_id);
+                        $user = User::where("id",$noti["user_id"])->first();
+                        $goal = Goal::where("id",$japaneseGoal->goal_id)->first();   
+                        $messages->push("edit diary '".$goal->name."'" );
+                        $noti->type_id = $goal->id;
+                    break;
             }
             $noti->messages = $messages;
             return $noti;
