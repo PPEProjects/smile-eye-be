@@ -1,0 +1,44 @@
+extend type Mutation {
+    create_japanese_posts(input: CreateJapanesePostInput! @spread): JapanesePost @guard @field(resolver: "App\\GraphQL\\Mutations\\JapanesePostMutations@createJapanesePost")
+    update_japanese_posts(input: UpdateJapanesePostInput! @spread): JapanesePost @guard @field(resolver: "App\\GraphQL\\Mutations\\JapanesePostMutations@updateJapanesePost")
+    delete_japanese_posts(input: DeleteJapanesePostInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\JapanesePostMutations@deleteJapanesePost")
+}
+extend type Query {
+    japanese_posts: [JapanesePost] @paginate(type: "paginator" model: "App\\Models\\JapanesePost")
+    sort_japanese_posts(orderBy: [OrderByClause!] @orderBy): [JapanesePost!]! @paginate(type: "paginator" model: "App\\Models\\JapanesePost")
+    detail_japanese_posts(id: ID, goal_id: ID): JapanesePost @field(resolver:"JapanesePostQueries@detailJapanesePost")
+    my_japanese_posts: [JapanesePost] @field(resolver:"JapanesePostQueries@myJapanesePost")
+}
+
+type JapanesePost{
+    id: ID
+    user_id: ID
+    user: User
+    goal_id: ID
+    goal: Goal
+    title:String
+    description: String
+    media : JSON
+    likes : JSON
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateJapanesePostInput{
+    goal_id: ID
+    title:String
+    description: String
+    media : JSON
+    likes : JSON
+}
+input UpdateJapanesePostInput{
+    id : ID
+    goal_id: ID
+    title:String
+    description: String
+    media : JSON
+    likes : JSON
+}
+input DeleteJapanesePostInput{
+    id: ID!
+}
