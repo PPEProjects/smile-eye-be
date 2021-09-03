@@ -17,6 +17,11 @@ class JapanesePostRepository{
 
     public function updateJapanesePost($args)
     {    
+        if(isset($args['goal_id'])){
+            $getId = JapanesePost::where('goal_id', $args['goal_id'])->first();
+            $args['id'] = $getId->id;
+        }
+       $args = array_diff_key($args, array_flip(['goal_id']));
         return tap(JapanesePost::findOrFail($args["id"]))
         ->update($args);
     }
