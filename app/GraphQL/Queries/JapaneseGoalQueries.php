@@ -52,9 +52,9 @@ class JapaneseGoalQueries
         if ($args["type"] == "diary") {
             foreach ($cards as $card) {        
                 if(isset($nameGoals[$card->goal_id]['name'])){
-                    $result->push(["goal_name"=>$nameGoals[$card->goal_id]['name'], "more"=>$card->more]);
+                    $result->push(["id" => $card->id ,"goal_name"=>$nameGoals[$card->goal_id]['name'], "more"=>$card->more]);
                 }else
-                $result = $result->push(["goal_name"=> Null,"more"=>$card->more]);         
+                $result = $result->push(["id" => $card->id,"goal_name"=> Null,"more"=>$card->more]);         
             }
         }
         return $result;
