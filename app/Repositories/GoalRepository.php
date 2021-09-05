@@ -175,9 +175,10 @@ class GoalRepository
 
     $tree = self::buildTree($goals->toArray(), $goalId);
     $pTree = $goals->where('id', $goalId)->first();
+    $treeEmpty = @$goals->where('title', '')->pluck('id');
     if ($pTree) {
         $pTree->children = $tree;
-        return ['tree' => [$pTree], 'goals' => $goals];
+        return ['tree' => [$pTree], 'tree_empty' => $treeEmpty, 'goals' => $goals];
     }
     return ['tree' => [], 'goals' => $goals];
     }
