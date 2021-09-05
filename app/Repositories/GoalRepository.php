@@ -174,15 +174,34 @@ class GoalRepository
     });
 
     $tree = self::buildTree($goals->toArray(), $goalId);
+    $getIds = self::buildTreeEmpty($tree);
+    $checktreeEmpty = $getIds['tree_empty'];
     $pTree = $goals->where('id', $goalId)->first();
-    $treeEmpty = @$goals->where('title', '')->pluck('id');
+    $treeEmpty = $goals->where('title', "")->pluck('id');
+    $treeEmpty = array_intersect($treeEmpty->toArray(), $checktreeEmpty);
     if ($pTree) {
         $pTree->children = $tree;
-        return ['tree' => [$pTree], 'tree_empty' => $treeEmpty, 'goals' => $goals];
+        return ['tree' => [$pTree],'tree_empty' => $treeEmpty ,'goals' => $goals];
     }
     return ['tree' => [], 'goals' => $goals];
     }
-
+    public function buildTreeEmpty($trees, $empty = [])
+    {
+        $branch = array();
+        $empty = array();
+        foreach($trees as $tree) { 
+            $empty[] = $tree['id'];
+            if (isset($tree['children'])) {
+                $next = self::buildTreeEmpty($tree['children']);
+               $empty = array_merge($empty,$next['tree_empty']);
+                if($next['tree']){
+                    $tree[] = $next['tree'];
+                }
+            }
+            $branch[] = $tree;
+        }
+        return ['tree' => $branch, 'tree_empty'=>$empty];
+    }
     public function goalsAchieveTreeSort($goalId)
     {
         $goal_ids = $this->myGoalsAchieve()->pluck("id")->toArray();
