@@ -138,13 +138,12 @@ class GoalRepository
     public function getTreeSortByGoalId($goalId, $userId = null)
     {
         $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id')
-        ->orderBy('id', 'desc');
+        ->orderBy('updated_at', 'DESC');
     if ($userId) {
         $goals = $goals->where("user_id", $userId);
     }
 
     $goals = $goals->get();
-
     $getIdGoals = $goals->pluck('id');
     $japaneseGoals = JapaneseGoal::select('id', 'type', 'goal_id')
                                  ->whereIn('goal_id', $getIdGoals)
@@ -779,11 +778,15 @@ class GoalRepository
     public function updateGoalMove($args)
     {
         $idGoalRoot = $args['goal_move'][0]['id'];
+        $i = 0;
         foreach($args['goal_move'] as $value){
+            $minute = date('m') - $i;
+            $value['updated_at'] = date('Y-m-d H:'.$minute.':s');
             if(empty($value['parent_id'])){
                 $value['parent_id'] = null;
             }
            $goalMove = tap(Goal::findOrFail($value["id"]))->update($value);
+           $i++;
         }   
         $goals = $this->getTreeSortByGoalId($idGoalRoot);
        return $goals;

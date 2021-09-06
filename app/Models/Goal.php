@@ -27,7 +27,8 @@ class Goal extends Model
         'is_lock',
         'is_pined',
         'report_type',
-        'user_id'
+        'user_id',
+        'updated_at'
     ];
     protected $casts = [
         'locks' => 'json',
