@@ -52,9 +52,9 @@ class JapaneseGoalQueries
         if ($args["type"] == "diary") {
             foreach ($cards as $card) {        
                 if(isset($nameGoals[$card->goal_id]['name'])){
-                    $result->push(["id" => $card->id ,"goal_name"=>$nameGoals[$card->goal_id]['name'], "more"=>current($card->more)]);
+                    $result->push(["id" => $card->id ,"goal_name"=>$nameGoals[$card->goal_id]['name'], "more"=>$card->more]);
                 }else
-                $result = $result->push(["id" => $card->id,"goal_name"=> Null,"more"=>current($card->more)]);         
+                $result = $result->push(["id" => $card->id,"goal_name"=> Null,"more"=>$card->more]);         
             }
         }
         return $result;
@@ -75,9 +75,9 @@ class JapaneseGoalQueries
     $nameGoals = $getGoals->toArray();
         foreach ($cards as $card) {        
             if(isset($nameGoals[$card->goal_id]['name'])){
-                $result->push(["id" => $card->id ,"goal_name"=>$nameGoals[$card->goal_id]['name'], "more"=>current($card->more)]);
+                $result->push(["id" => $card->id ,"goal_name"=>$nameGoals[$card->goal_id]['name'], "more"=>$card->more]);
             }else
-            $result = $result->push(["id" => $card->id,"goal_name"=> Null,"more"=>current($card->more)]);         
+            $result = $result->push(["id" => $card->id,"goal_name"=> Null,"more"=>$card->more]);         
         }
     return $result;
   }
