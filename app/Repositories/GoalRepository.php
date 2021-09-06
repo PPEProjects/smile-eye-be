@@ -778,12 +778,14 @@ class GoalRepository
 
     public function updateGoalMove($args)
     {
+        $idGoalRoot = $args['goal_move'][0]['id'];
         foreach($args['goal_move'] as $value){
             if(!is_numeric($value['parent_id'])){
                 $value['parent_id'] = null;
             }
            $goalMove = tap(Goal::findOrFail($value["id"]))->update($value);
         }   
-       return $goalMove;
+        $goals = $this->getTreeSortByGoalId($idGoalRoot);
+       return $goals;
     }
 }
