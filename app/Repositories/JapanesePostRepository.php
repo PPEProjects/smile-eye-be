@@ -39,4 +39,9 @@ class JapanesePostRepository{
     public function myJapanesePost(){     
         return JapanesePost::where('user_id',Auth::id())->get();
     }
+    public function otherJapanesePost()
+    {
+        $userId = Auth::id();
+        return JapanesePost::whereNotIn('user_id', [$userId])->get();
+    }
 }

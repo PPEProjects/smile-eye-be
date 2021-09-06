@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e9e49f98-76e8-4945-8b6a-0fb82fb0fffb",
+		"_postman_id": "04461d31-33bf-41b3-b347-c6512938c5f2",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -784,7 +784,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $goal_id : ID\r\n    $title: String\r\n    $description: String\r\n    $media: JSON\r\n    $likes: JSON\r\n) {\r\n  create_japanese_posts(\r\n    input: {\r\n        goal_id:$goal_id\r\n        title:$title\r\n        description:$description\r\n        media:$media\r\n        likes:$likes\r\n    }\r\n  ) {\r\n   id\r\n    user_id\r\n    goal_id\r\n    title\r\n    description\r\n    media\r\n    likes\r\n    created_at\r\n    updated_at\r\n}\r\n}\r\n",
-								"variables": "{\r\n  \"goal_id\": \"6\",\r\n  \"title\": \"Trứng chiên nước mắm\",\r\n  \"description\": \"Với nguyên liệu và cách làm đơn giản, bạn có thể tạo nên một món ăn thưởng thức cùng cơm trắng cho ngày cuối tuần.\",\r\n  \"media\": {\r\n    \"radioKey\": \"Audio\",\r\n    \"file\": \"http://japanese-dev-be.test/storage/media/audios/2021-08-27-1630055113-356968074-10.mp3\",\r\n    \"file_type\": \"audio\",\r\n    \"thumb\": \"http://japanese-dev-be.test/storage/media/audios/2021-08-27-1630055113-356968074-10.mp3\"\r\n  },\r\n  \"likes\": [\r\n    1,\r\n    2,\r\n    3\r\n  ]\r\n}"
+								"variables": "{\r\n  \"goal_id\": 7,\r\n  \"title\": \"Trứng chiên nước mắm\",\r\n  \"description\": \"Với nguyên liệu và cách làm đơn giản, bạn có thể tạo nên một món ăn thưởng thức cùng cơm trắng cho ngày cuối tuần.\",\r\n  \"media\": {\r\n    \"radioKey\": \"Audio\",\r\n    \"file\": \"http://japanese-dev-be.test/storage/media/audios/2021-08-27-1630055113-356968074-10.mp3\",\r\n    \"file_type\": \"audio\",\r\n    \"thumb\": \"http://japanese-dev-be.test/storage/media/audios/2021-08-27-1630055113-356968074-10.mp3\"\r\n  },\r\n  \"likes\": [\r\n    1,\r\n    2,\r\n    3\r\n  ]\r\n}"
 							}
 						},
 						"url": {
@@ -964,6 +964,36 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "  query{\r\n  my_japanese_posts{\r\n     id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    title\r\n    description\r\n    media\r\n    likes\r\n  }\r\n}",
+								"variables": "{\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query other_japanese_posts",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "  query{\r\n  other_japanese_posts{\r\n     id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    title\r\n    description\r\n    media\r\n    likes\r\n  }\r\n}",
 								"variables": "{\r\n}"
 							}
 						},

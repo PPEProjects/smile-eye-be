@@ -22,4 +22,8 @@ class JapanesePostQueries
   public function myJapanesePost($_,array $args){ 
         return  $this->japanese_post_repository->myJapanesePost();
     }
+    public function otherJapanesePost($_,array $args)
+    {
+        return  $this->japanese_post_repository->otherJapanesePost();
+    }
 }
