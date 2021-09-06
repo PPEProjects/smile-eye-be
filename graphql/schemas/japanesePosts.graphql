@@ -8,7 +8,7 @@ extend type Query {
     sort_japanese_posts(orderBy: [OrderByClause!] @orderBy): [JapanesePost!]! @paginate(type: "paginator" model: "App\\Models\\JapanesePost")
     detail_japanese_posts(id: ID, goal_id: ID): JapanesePost @field(resolver:"JapanesePostQueries@detailJapanesePost")
     my_japanese_posts: [JapanesePost] @field(resolver:"JapanesePostQueries@myJapanesePost")
-    other_japanese_posts: [JapanesePost] @field(resolver:"JapanesePostQueries@otherJapanesePost")
+    other_japanese_posts(goal_id: ID): [JapanesePost] @field(resolver:"JapanesePostQueries@otherJapanesePost")
 }
 
 type JapanesePost{

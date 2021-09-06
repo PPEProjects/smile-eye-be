@@ -993,8 +993,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "  query{\r\n  other_japanese_posts{\r\n     id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    title\r\n    description\r\n    media\r\n    likes\r\n  }\r\n}",
-								"variables": "{\r\n}"
+								"query": "query($goal_id: ID){\r\n    other_japanese_posts(\r\n      goal_id: $goal_id  \r\n    ){\r\n     id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    title\r\n    description\r\n    media\r\n    likes\r\n  }\r\n}",
+								"variables": "{\r\n    \"goal_id\":20\r\n}"
 							}
 						},
 						"url": {
