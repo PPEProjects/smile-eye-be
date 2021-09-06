@@ -52,14 +52,35 @@ class JapaneseGoalQueries
         if ($args["type"] == "diary") {
             foreach ($cards as $card) {        
                 if(isset($nameGoals[$card->goal_id]['name'])){
-                    $result->push(["id" => $card->id ,"goal_name"=>$nameGoals[$card->goal_id]['name'], "more"=>$card->more]);
+                    $result->push(["id" => $card->id ,"goal_name"=>$nameGoals[$card->goal_id]['name'], "more"=>current($card->more)]);
                 }else
-                $result = $result->push(["id" => $card->id,"goal_name"=> Null,"more"=>$card->more]);         
+                $result = $result->push(["id" => $card->id,"goal_name"=> Null,"more"=>current($card->more)]);         
             }
         }
         return $result;
     }
-
+  public function myDiaryInvited($_,array $args){
+    $result = collect();
+    $userId = Auth::id();
+    $diary = JapaneseGoal::where('type', 'diary')->get();
+    $ids = [];
+    foreach($diary as $value){
+        if(array_intersect([$userId], @$value->more[0]['user_invite_ids'] ?? [])){
+            $ids[] = $value->id;
+        }
+    }
+    $cards = JapaneseGoal::whereIn('id', $ids)->get();
+    $findIdGoals = $cards->pluck('goal_id');
+    $getGoals = Goal::whereIn('id', $findIdGoals)->get()->keyBy('id');
+    $nameGoals = $getGoals->toArray();
+        foreach ($cards as $card) {        
+            if(isset($nameGoals[$card->goal_id]['name'])){
+                $result->push(["id" => $card->id ,"goal_name"=>$nameGoals[$card->goal_id]['name'], "more"=>current($card->more)]);
+            }else
+            $result = $result->push(["id" => $card->id,"goal_name"=> Null,"more"=>current($card->more)]);         
+        }
+    return $result;
+  }
  public function flashCards(){
      return JapaneseGoal::where("type","flash_card")
          ->orderBy("id","desc")
