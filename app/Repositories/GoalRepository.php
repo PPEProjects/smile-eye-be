@@ -775,4 +775,15 @@ class GoalRepository
         $goals = Goal::where("parent_id",$goal->id)->get();
         return $goals;
     }
+
+    public function updateGoalMove($args)
+    {
+        foreach($args['goal_move'] as $value){
+            if(!is_numeric($value['parent_id'])){
+                $value['parent_id'] = null;
+            }
+           $goalMove = tap(Goal::findOrFail($value["id"]))->update($value);
+        }   
+       return $goalMove;
+    }
 }

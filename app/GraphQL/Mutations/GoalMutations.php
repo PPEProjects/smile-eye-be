@@ -287,5 +287,8 @@ class GoalMutations
         }
         return false;
     }
-
+    public function updateGoalMove($_array, $args)
+    {
+       return $this->goal_repository->updateGoalMove($args);
+    }
 }
