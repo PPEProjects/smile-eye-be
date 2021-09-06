@@ -779,7 +779,7 @@ class GoalRepository
     public function updateGoalMove($args)
     {
         foreach($args['goal_move'] as $value){
-            if(!is_numeric($value['parent_id'])){
+            if(empty($value['parent_id'])){
                 $value['parent_id'] = null;
             }
            $goalMove = tap(Goal::findOrFail($value["id"]))->update($value);

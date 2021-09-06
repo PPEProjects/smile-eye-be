@@ -131,20 +131,6 @@ class GoalMutations
         if(!isset($args['id'])){
             $args['user_id'] = Auth::id();
         }
-//        if (isset($args['task_id'])) {
-//            $goalHaveTaskId = Goal::where('task_id', $args['task_id'])->first();
-//            $checkTaskToGoal = Task::find($args['task_id']);
-//            if (isset($checkTaskToGoal->goal_id) || $goalHaveTaskId) {
-//                return false;
-//            }
-//        }
-//        if (isset($args['parent_id'])) {
-//            $checkIdTask = $this->checkTaskId($args['parent_id']);
-//            if ($checkIdTask != false) {
-//                return false;
-//            }
-//        }
-//        \Illuminate\Support\Facades\Log::channel('single')->info('$args', [$args]);
         if(isset($args['id'])){
             $findGoal = Goal::find($args['id']);
             $checkUser = array_intersect(@$findGoal->locks['user_ids'] ?? [], [Auth::id()]);
