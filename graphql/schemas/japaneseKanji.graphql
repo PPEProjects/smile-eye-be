@@ -1,0 +1,36 @@
+
+extend type Mutation {
+    delete_japanese_kanji (input: DeleteJapaneseKanjiInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseKanjiMutations@deleteJapaneseKanji")
+    create_japanese_kanji(input: CreateJapaneseKanjiInput! @spread): JapaneseKanji @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseKanjiMutations@createJapaneseKanji")
+    update_japanese_kanji(input: UpdateJapaneseKanjiInput! @spread): JapaneseKanji @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseKanjiMutations@updateJapaneseKanji")
+}
+extend type Query {
+    japanese_kanji: [JapaneseKanji] @paginate(type: "paginator" model: "App\\Models\\JapaneseKanji")
+    sort_japanese_kanji(orderBy: [OrderByClause!] @orderBy): [JapaneseKanji!]! @paginate(type: "paginator" model: "App\\Models\\JapaneseKanji")
+    my_japanese_kanji: [JapaneseKanji] @field(resolver:"JapaneseKanjiQueries@myJapaneseKanji")
+    detail_japanese_kanji(id:ID): JapaneseKanji @field(resolver:"JapaneseKanjiQueries@detailJapaneseKanji")
+}
+
+type JapaneseKanji{
+    id: ID
+    user_id: ID
+    user: User
+    name: String
+    more: JSON
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateJapaneseKanjiInput{
+    id : ID
+    name: String
+    more: JSON
+}
+input UpdateJapaneseKanjiInput{
+    id : ID!
+    name: String
+    more: JSON
+}
+input DeleteJapaneseKanjiInput{
+    id : ID!
+}
