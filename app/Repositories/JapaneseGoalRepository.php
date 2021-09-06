@@ -39,11 +39,19 @@ class JapaneseGoalRepository
         return $japanese;
     }
     public function updateJapaneseGoal($args){
-        $japaneseGoal = JapaneseGoal::find($args['id']);
+            if(isset($args['goal_id']))
+            {
+                $japaneseGoal = JapaneseGoal::where('goal_id',$args['goal_id'])->first();
+            }
+            else 
+            { 
+                $japaneseGoal = JapaneseGoal::find($args['id']);
+            }
         $userId = Auth::id();
         if($japaneseGoal->type == "diary")
-        {   
+        {  
             $checkIdUser = array_intersect($japaneseGoal->more[0]['user_invite_ids'], [$userId]);
+
             if($checkIdUser != [] && isset($args['more'][0]['other']))
             {
                 $other = $args['more'][0]['other'];
@@ -70,7 +78,7 @@ class JapaneseGoalRepository
             $args['more']['user_invite_ids'] = $userInvite;         
             $this->notification_repository->staticNotification("sing_with_friend", $japaneseGoal->id, $japaneseGoal,$user_invited_ids);
         }
-        return tap(JapaneseGoal::findOrFail($args["id"]))
+        return tap(JapaneseGoal::findOrFail($japaneseGoal->id))
             ->update($args);
     }
     public function deletejapaneseGoal($args){
