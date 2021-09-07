@@ -34,8 +34,9 @@ class JapanesePostRepository{
     }
 
     public function detailJapanesePost($args){
+        $userId = Auth::id();
         if(isset($args['goal_id'])){
-            $japanesePost = JapanesePost::Where('goal_id', $args['goal_id'])->first();
+            $japanesePost = JapanesePost::where('user_id', $userId)->where('goal_id', $args['goal_id'])->first();
         }
         else{
             $japanesePost = JapanesePost::find($args['id']);
