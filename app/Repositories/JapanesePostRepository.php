@@ -34,7 +34,13 @@ class JapanesePostRepository{
     }
 
     public function detailJapanesePost($args){
-        return JapanesePost::find($args['id']);
+        if(isset($args['goal_id'])){
+            $japanesePost = JapanesePost::Where('goal_id', $args['goal_id'])->first();
+        }
+        else{
+            $japanesePost = JapanesePost::find($args['id']);
+        }
+        return $japanesePost;
     }
 
     public function myJapanesePost(){     

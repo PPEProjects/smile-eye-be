@@ -1088,8 +1088,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($id: ID!){\r\n  detail_japanese_posts(\r\n      id: $id  \r\n    )\r\n    {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    title\r\n    description\r\n    media\r\n    likes\r\n    created_at\r\n    updated_at\r\n}\r\n}\r\n",
-								"variables": "{\r\n    \"id\": 6\r\n}\r\n"
+								"query": "query($id: ID, $goal_id:ID){\r\n  detail_japanese_posts(\r\n      id: $id  \r\n      goal_id: $goal_id\r\n    )\r\n    {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    title\r\n    description\r\n    media\r\n    likes\r\n    created_at\r\n    updated_at\r\n}\r\n}\r\n",
+								"variables": "{\r\n    \"goal_id\": 2\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -1792,7 +1792,7 @@
 									"mode": "graphql",
 									"graphql": {
 										"query": "mutation(\n    $type : String\n    $more : JSON\n    $score : Float\n    $name_goal: String\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    type : $type\n    name_goal:$name_goal\n    more : $more\n    score : $score\n    }) {\n        id\n         goal_id,\n        goal{\n            id,\n            name,\n            parent{\n                id\n                name\n            }\n        }\n        type,\n        more\n    }\n  \n}",
-										"variables": "{\n    \"name_goal\":\"hoc bai haha\",\n    \"type\" : \"diary\",\n    \"more\" : \n        {\n         \"date\": \"2021-08-04\",\n         \"user_invite_ids\":[1,3,6],\n         \"content\":\"hom nay toi buon\"\n        }\n    \n}"
+										"variables": "{\n    \"name_goal\":\"hoc bai haha\",\n    \"type\" : \"diary\",\n    \"more\" : [\n        {\n         \"date\": \"2021-08-04\",\n         \"user_invite_ids\":[1,3,6],\n         \"content\":\"hom nay toi buon\"\n        }\n    ]\n}"
 									}
 								},
 								"url": {
@@ -1976,7 +1976,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "mutation(\n    $id : ID\n    $goal_id : ID\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  update_japanese_goals(\n    input: \n    {\n        id: $id\n    goal_id : $goal_id\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        type\n        score,\n        more\n\n    }\n  \n}",
+										"query": "mutation(\n    $id : ID\n    $goal_id : ID\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  update_japanese_goals(\n    input: \n    {\n    id: $id\n    goal_id : $goal_id\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        type\n        score,\n        more\n\n    }\n  \n}",
 										"variables": "{\n    \"id\": 21,\n  \"type\": \"diary\",\n  \"more\": [\n    {\n       \"other\":\"hom nay vui haha\"\n    }\n  ]\n}\n           "
 									}
 								},
@@ -2007,7 +2007,7 @@
 									"mode": "graphql",
 									"graphql": {
 										"query": "mutation(\n    $id : ID\n    $goal_id : ID\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  update_japanese_goals(\n    input: \n    {\n        id: $id\n    goal_id : $goal_id\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        type\n        score,\n        more\n\n    }\n  \n}",
-										"variables": "{\n\"id\": 20,\n  \"type\": \"diary\",\n  \"more\": [\n    {\n       \"content\":\"hom nay\"\n    }\n  ]\n}\n           "
+										"variables": "{\n    \"goal_id\": 1123,\n  \"type\": \"diary\",\n  \"more\": [\n    {\n       \"content\":\"hom nay chay bo\"\n    }\n  ]\n}\n           "
 									}
 								},
 								"url": {
@@ -4958,7 +4958,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $id : ID\r\n    $root_id:ID\r\n    $task_id : ID\r\n    $report_type : String\r\n  $parent_id: ID\r\n  $name: String!\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $locks: JSON\r\n  $is_lock: Boolean\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n) {\r\n  upsert_goal(\r\n    input: {\r\n        id : $id\r\n        root_id : $root_id\r\n        task_id : $task_id\r\n        report_type : $report_type\r\n      parent_id: $parent_id\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      locks: $locks\r\n      is_lock: $is_lock\r\n      is_pined: $is_pined\r\n      general_info: $general_info\r\n    }\r\n  ) \r\n}\r\n",
-								"variables": "{\r\n    \"root_id\":null,\r\n    \"report_type\":null,\r\n    \"task_id\" : null,\r\n    \"parent_id\": null,\r\n    \"name\": \"hoc tap\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"locks\":{\r\n        \"user_ids\":[2,3]\r\n    },\r\n    \"is_lock\": false,\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"ultimate\",\r\n        \"zalo\": \"034470383822\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-06\",\r\n        \"action_at_time\": \"00:20:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
+								"variables": "{\r\n    \"root_id\":null,\r\n    \"report_type\":null,\r\n    \"task_id\" : null,\r\n    \"parent_id\": 2,\r\n    \"name\": \"hoc tap\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"locks\":{\r\n        \"user_ids\":[2,3]\r\n    },\r\n    \"is_lock\": false,\r\n    \"is_pined\": true,\r\n    \"general_info\": {\r\n        \"address\": \"ultimate\",\r\n        \"zalo\": \"034470383822\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-06\",\r\n        \"action_at_time\": \"00:20:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
 							}
 						},
 						"url": {
@@ -5048,7 +5048,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n  $goal_move: JSON\r\n) {\r\n  update_goal_move(\r\n    input: {\r\n      goal_move: $goal_move\r\n    }\r\n  ) \r\n}\r\n",
-								"variables": "{\r\n\"goal_move\":[\r\n    {\"id\": 1, \"parent_id\": \"undefined\"},\r\n    {\"id\": 5, \"parent_id\": 1},\r\n    {\"id\": 4, \"parent_id\": 6},\r\n    {\"id\": 6, \"parent_id\": 3}\r\n    ]\r\n}"
+								"variables": "{\r\n\"goal_move\":[\r\n    {\"id\": 1, \"parent_id\": \"undefined\"},\r\n    {\"id\": 5, \"parent_id\": 1},\r\n    {\"id\": 3, \"parent_id\":5},\r\n    {\"id\": 2, \"parent_id\": 1},\r\n    {\"id\": 4, \"parent_id\": 2}\r\n    ]\r\n}"
 							}
 						},
 						"url": {
@@ -5258,7 +5258,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID!){\r\n  detail_goal(id: $id) {\r\n    id\r\n    name\r\n    parent{\r\n        id\r\n    }\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publishs{\r\n            id\r\n        }\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n        achieves{\r\n            id\r\n            user{\r\n                id\r\n                name\r\n            \r\n        }\r\n        \r\n    }\r\n  }\r\n}\r\n}",
-								"variables": "{\r\n    \"id\": 901\r\n}\r\n"
+								"variables": "{\r\n    \"id\": 1304\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -5378,7 +5378,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID) {\r\n  my_goals_tree_sort(id: $id)\r\n}",
-								"variables": "{\r\n    \"id\":1\r\n}"
+								"variables": "{\r\n    \"id\": 1\r\n}"
 							}
 						},
 						"url": {
