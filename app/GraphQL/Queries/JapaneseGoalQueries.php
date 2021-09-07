@@ -43,24 +43,16 @@ class JapaneseGoalQueries
         return $result;
  }
     public function myDiary($_,array $args){
-        $result = collect();
-        $cards = User::find(Auth::id())->japanese_goals;
-        $findIdGoals = $cards->pluck('goal_id');
-        $getGoals = Goal::whereIn('id', $findIdGoals)->get()->keyBy('id');
-        $nameGoals = $getGoals->toArray();
-        $cards = $cards->where("type",$args["type"]);
+       
+        $diary = User::find(Auth::id())->japanese_goals;
+        $diary = $diary->where("type",$args["type"]);
         if ($args["type"] == "diary") {
-            foreach ($cards as $card) {        
-                if(isset($nameGoals[$card->goal_id]['name'])){
-                    $result->push(["id" => $card->id ,"goal_name"=>$nameGoals[$card->goal_id]['name'], "more"=>$card->more]);
-                }else
-                $result = $result->push(["id" => $card->id,"goal_name"=> Null,"more"=>$card->more]);         
-            }
+          $result = $this->getDiary($diary);
+          return $result;
         }
-        return $result;
+        else return ;
     }
   public function myDiaryInvited($_,array $args){
-    $result = collect();
     $userId = Auth::id();
     $diary = JapaneseGoal::where('type', 'diary')->get();
     $ids = [];
@@ -69,16 +61,27 @@ class JapaneseGoalQueries
             $ids[] = $value->id;
         }
     }
-    $cards = JapaneseGoal::whereIn('id', $ids)->get();
-    $findIdGoals = $cards->pluck('goal_id');
+    $diary = JapaneseGoal::whereIn('id', $ids)->get();   
+    $result = $this->getDiary($diary);
+    return $result;
+  }
+  public function getDiary($diary)
+  {
+    $result = collect();
+    $findIdGoals = $diary->pluck('goal_id');
     $getGoals = Goal::whereIn('id', $findIdGoals)->get()->keyBy('id');
     $nameGoals = $getGoals->toArray();
-        foreach ($cards as $card) {        
-            if(isset($nameGoals[$card->goal_id]['name'])){
-                $result->push(["id" => $card->id ,"goal_name"=>$nameGoals[$card->goal_id]['name'], "more"=>$card->more]);
-            }else
-            $result = $result->push(["id" => $card->id,"goal_name"=> Null,"more"=>$card->more]);         
-        }
+    foreach ($diary as $value) { 
+        if(isset($value->more[0])){
+            $more = current($value->more);
+        }else $more = $value->more;    
+        $users = User::select('id','name')->whereIn('id', @$more['user_invite_ids'] ?? [])->get();    
+        $more['user_invite_ids'] = $users->toArray();
+       if(isset($nameGoals[$value->goal_id]['name'])){
+            $result->push(["id" => $value->id ,"goal_name"=>$nameGoals[$value->goal_id]['name'], "more"=>$more]);
+        }else
+        $result = $result->push(["id" => $value->id,"goal_name"=> Null,"more"=>$more]);         
+    }
     return $result;
   }
  public function flashCards(){
