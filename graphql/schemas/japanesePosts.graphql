@@ -33,8 +33,7 @@ input CreateJapanesePostInput{
     likes : JSON
 }
 input UpdateJapanesePostInput{
-    id : ID
-    goal_id: ID
+    id : ID!
     title:String
     description: String
     media : JSON

@@ -24,7 +24,7 @@ class JapanesePostMutations{
     }
     public function updateJapanesePost($_,array $args)
     {
-        $args['user_id'] = Auth::id();     
+//        $args['user_id'] = Auth::id();
         return $this->japanese_post_repository->updateJapanesePost($args);
     }
     public function deleteJapanesePost($_,array $args)
