@@ -781,6 +781,7 @@ class GoalRepository
         $i = 0;
         foreach($args['goal_move'] as $value){
             $minute = date('m') - $i;
+            $minute = $minute < 0 ? 0 : $minute;
             $value['updated_at'] = date('Y-m-d H:'.$minute.':s');
             if(empty($value['parent_id'])){
                 $value['parent_id'] = null;
