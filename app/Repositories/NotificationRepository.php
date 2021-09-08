@@ -300,7 +300,7 @@ class NotificationRepository
                         if(isset($japaneseGoal)){
                             $user = User::where("id",$noti["user_id"])->first();
                             $goal = Goal::where("id",$japaneseGoal->goal_id)->first();   
-                            if(isset($content))
+                            if(isset($content['message']))
                             {
                                 $messages->push($content['message']);
                             }
