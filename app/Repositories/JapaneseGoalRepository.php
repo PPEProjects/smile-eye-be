@@ -94,11 +94,19 @@ class JapaneseGoalRepository
     }
    
     public function detailJapaneseGoal($args){
-        $nameCollum = "id";
+        
         if (isset($args['goal_id'])){
+           $value = $args['goal_id'];
            $nameCollum = "goal_id";
         }
-        $value = $args[$nameCollum];
+        else if(isset($args['id']))
+        {
+            $value = $args['id'];
+            $nameCollum = "id";
+        }
+        else{ 
+            return;
+        }
         $detailJPGoal = $this->getJapaneseGoal($nameCollum, $value)->first();
         if (isset($detailJPGoal->goal_id)) {
             $goalRoot = $this->findGoal($detailJPGoal->goal_id);
