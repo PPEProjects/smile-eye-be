@@ -71,8 +71,8 @@ class JapaneseGoalQueries
     $findIdGoals = $diary->pluck('goal_id');
     $getGoals = Goal::whereIn('id', $findIdGoals)->get()->keyBy('id');
     $nameGoals = $getGoals->toArray();
-    foreach ($diary as $value) { 
-        $user = User::select('id','name')->where('id', $value->user_id)->first();
+    $user = User::select('id','name')->where('id', Auth::id())->first();
+    foreach ($diary as $value) {     
        if(isset($nameGoals[$value->goal_id]['name'])){
             $result->push(["id" => $value->id, "user" => $user->toArray() ,"goal_name"=>$nameGoals[$value->goal_id]['name'], "more"=>$value->more]);
         }else
