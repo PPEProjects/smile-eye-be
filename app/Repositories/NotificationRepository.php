@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use ppeCore\dvtinh\Services\AttachmentService;
 use App\Repositories\TodolistRepository;
 use App\Repositories\PublishInfoRepository;
+use GraphQL\Error\Error;
 
 class NotificationRepository
 {
@@ -369,17 +370,16 @@ class NotificationRepository
                 break;
             default:
         }
-        if($args['user_receive_ids'] != []){
-            foreach ($args['user_receive_ids'] as $single){
-                $notiData = $args;
-                $notiData['user_receive_id'] = $single;
-                $noti = Notification::create($notiData);
-                $this->sendPushNotifi($notiData['user_receive_id']);
-            }
-            return $noti;
+        if($args['user_receive_ids'] == []){
+            throw new Error("you don't have any once to invite");
         }
-        return;
-      
+        foreach ($args['user_receive_ids'] as $single){
+            $notiData = $args;
+            $notiData['user_receive_id'] = $single;
+            $noti = Notification::create($notiData);
+            $this->sendPushNotifi($notiData['user_receive_id']);
+        }
+        return $noti;
     }
 
     public function updateNotification($args)
