@@ -302,7 +302,7 @@ class NotificationRepository
                             $goal = Goal::where("id",$japaneseGoal->goal_id)->first();   
                             if(isset($content['message']))
                             {
-                                $messages->push($content['message']);
+                                $messages->push($content['message']." ".$goal->name);
                             }
                             else
                             {
@@ -322,7 +322,7 @@ class NotificationRepository
                             $goal = Goal::where("id",$japaneseGoal->goal_id)->first();   
                             if(isset($content['message']))
                             {
-                                $messages->push($content['message']);
+                                $messages->push($content['message']." ".$goal->name);
                             }
                             else
                             {
