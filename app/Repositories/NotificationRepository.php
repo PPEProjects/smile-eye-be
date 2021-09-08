@@ -369,13 +369,17 @@ class NotificationRepository
                 break;
             default:
         }
-        foreach ($args['user_receive_ids'] as $single){
-            $notiData = $args;
-            $notiData['user_receive_id'] = $single;
-            $noti = Notification::create($notiData);
-            $this->sendPushNotifi($notiData['user_receive_id']);
+        if($args['user_receive_ids'] != []){
+            foreach ($args['user_receive_ids'] as $single){
+                $notiData = $args;
+                $notiData['user_receive_id'] = $single;
+                $noti = Notification::create($notiData);
+                $this->sendPushNotifi($notiData['user_receive_id']);
+            }
+            return $noti;
         }
-        return $noti;
+        return;
+      
     }
 
     public function updateNotification($args)
