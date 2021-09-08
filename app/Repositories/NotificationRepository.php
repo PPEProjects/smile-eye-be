@@ -371,7 +371,7 @@ class NotificationRepository
             default:
         }
         if($args['user_receive_ids'] == []){
-            throw new Error("you don't have any once to invite");
+            throw new Error("You don't have anyone to invite");
         }
         foreach ($args['user_receive_ids'] as $single){
             $notiData = $args;
