@@ -16,7 +16,15 @@ class NotificationMutations
     public function createNotification($_, array $args){
         return $this->notification_repository->createNotification($args);
     }
-
+    public function createInviteAny($_, array $args){
+        return $this->notification_repository->createNotification($args, "invite_any");
+    }
+    public function createInviteFriend($_, array $args){
+        return $this->notification_repository->createNotification($args, "invite_friend");
+    }
+    public function createInviteAnyPass($_, array $args){
+        return $this->notification_repository->createNotification($args, "invite_any_pass");
+    }
     public function updateNotification($_, array $args){
         return $this->notification_repository->updateNotification($args);
     }

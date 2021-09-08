@@ -76,7 +76,7 @@ class JapaneseGoalRepository
             $userInvite = $args['more']['user_invite_ids'];
             $args['more'] = $japaneseGoal->more;
             $args['more']['user_invite_ids'] = $userInvite;         
-            $this->notification_repository->staticNotification("sing_with_friend", $japaneseGoal->id, $japaneseGoal,$user_invited_ids);
+            $this->notification_repository->staticNotification("sing_with_friend", $japaneseGoal->goal_id, $japaneseGoal,$user_invited_ids);
         }
         return tap(JapaneseGoal::findOrFail($japaneseGoal->id))
             ->update($args);

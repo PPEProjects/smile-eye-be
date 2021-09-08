@@ -1,5 +1,9 @@
 extend type Mutation {
     create_notification(input: CreateNotificationInput! @spread): Notification @guard @field(resolver: "App\\GraphQL\\Mutations\\NotificationMutations@createNotification")
+    create_invite_any(input: CreateNotificationInput! @spread): Notification @guard @field(resolver: "App\\GraphQL\\Mutations\\NotificationMutations@createInviteAny")
+    create_invite_friend(input: CreateNotificationInput! @spread): Notification @guard @field(resolver: "App\\GraphQL\\Mutations\\NotificationMutations@createInviteFriend")
+    create_invite_any_pass(input: CreateNotificationInput! @spread): Notification @guard @field(resolver: "App\\GraphQL\\Mutations\\NotificationMutations@createInviteAnyPass")
+    
     delete_notification(input: DeleteNotificationInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\NotificationMutations@deleteNotification")
     update_notification(input: UpdateNotificationInput! @spread): Notification @guard @field(resolver: "App\\GraphQL\\Mutations\\NotificationMutations@updateNotification")
 }

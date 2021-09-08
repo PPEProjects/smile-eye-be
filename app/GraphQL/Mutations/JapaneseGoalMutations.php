@@ -79,7 +79,7 @@ class JapaneseGoalMutations
             $more = $jpGoal->more;
             if (isset($more["user_invite_ids"])) {
                 $user_invited_ids = $more["user_invite_ids"];
-                $this->notification_repository->staticNotification("sing_with_friend", $jpGoal->id, $jpGoal,
+                $this->notification_repository->staticNotification("sing_with_friend", $jpGoal->goal_id, $jpGoal,
                     $user_invited_ids);
             }
         }

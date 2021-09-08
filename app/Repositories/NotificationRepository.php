@@ -10,6 +10,7 @@ use App\Models\Friend;
 use App\Models\GeneralInfo;
 use App\Models\Goal;
 use App\Models\JapaneseGoal;
+use App\Models\JapaneseLearn;
 use App\Models\Notification;
 use App\Models\PublishInfo;
 use App\Models\Task;
@@ -290,13 +291,24 @@ class NotificationRepository
                             " at your goal name ".$goal->name );
                     break;
                 case 'sing_with_friend':
-                        $content = $noti->content;
-                        $key = array_key_first($content);
-                        $japaneseGoal = JapaneseGoal::find($noti->type_id);
-                        $user = User::where("id",$noti["user_id"])->first();
-                        $goal = Goal::where("id",$japaneseGoal->goal_id)->first();   
-                        $messages->push("Invite you join '".$goal->name."'" );
-                        $noti->type_id = $goal->id;
+                        $content = @$noti->content;
+                        if(isset($content)){
+                            $key = array_key_first($content);
+                        }
+                        $japaneseGoal = JapaneseGoal::where('goal_id',$noti->type_id)->first();
+                        if(isset($japaneseGoal)){
+                            $user = User::where("id",$noti["user_id"])->first();
+                            $goal = Goal::where("id",$japaneseGoal->goal_id)->first();   
+                            if(isset($content))
+                            {
+                                $messages->push($content['message']);
+                            }
+                            else
+                            {
+                                $messages->push("Invite you join '".$goal->name."'");
+                            }
+                            $noti->type_id = $goal->id;
+                        } else return;
                     break;
                 case 'diary':
                         $content = $noti->content;
@@ -332,9 +344,31 @@ class NotificationRepository
         return $notifications->filter();
     }
 
-    public function createNotification($args)
+    public function createNotification($args, $type = null)
     {
-        $args['user_id'] = Auth::id();
+         $userId = Auth::id();
+         $args['user_id'] = $userId;
+        switch($type){
+            case "invite_any":
+                $allUser = User::whereNotIn('id', [$userId])->get();
+                $getIds = $allUser->pluck('id')->toArray();
+                $args['user_receive_ids'] = $getIds;
+                break;
+            case "invite_friend":
+                $myFriends = Friend::whereRaw("status like 'accept' AND user_id={$userId} OR user_id_friend={$userId}")->get();
+                $getUserIds = $myFriends->pluck('user_id')->toArray();
+                $getUserIdFriends = $myFriends->pluck('user_id_friend')->toArray();
+                $getIds = array_merge($getUserIds, $getUserIdFriends);
+                $getIds = array_diff($getIds, [$userId]);
+                $args['user_receive_ids'] = $getIds;
+                break;
+            case "invite_any_pass":
+                $japaneseLearn = JapaneseLearn::where('goal_id', $args['type_id'])->whereNotIn('user_id', [$userId])->get();
+                $getIds = $japaneseLearn->pluck('user_id')->toArray();
+                $args['user_receive_ids'] = $getIds;
+                break;
+            default:
+        }
         foreach ($args['user_receive_ids'] as $single){
             $notiData = $args;
             $notiData['user_receive_id'] = $single;
