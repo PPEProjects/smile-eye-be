@@ -311,6 +311,26 @@ class NotificationRepository
                             $noti->type_id = $goal->id;
                         } else return;
                     break;
+                    case 'communication':
+                        $content = @$noti->content;
+                        if(isset($content)){
+                            $key = array_key_first($content);
+                        }
+                        $japaneseGoal = JapaneseGoal::where('goal_id',$noti->type_id)->first();
+                        if(isset($japaneseGoal)){
+                            $user = User::where("id",$noti["user_id"])->first();
+                            $goal = Goal::where("id",$japaneseGoal->goal_id)->first();   
+                            if(isset($content['message']))
+                            {
+                                $messages->push($content['message']);
+                            }
+                            else
+                            {
+                                $messages->push("Invite you join '".$goal->name."'");
+                            }
+                            $noti->type_id = $goal->id;
+                        } else return;
+                    break;
                 case 'diary':
                         $content = $noti->content;
                         $key = array_key_first($content);
