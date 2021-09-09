@@ -106,6 +106,12 @@ class GoalQueries
                 break;
         }
         $goals = $goals->get();
+        $getgoalIds = $goals->pluck('id')->toArray();
+        $japaneseGoals = JapaneseGoal::whereIn('goal_id', $getgoalIds)->where('type', 'diary')->get();
+        if(isset($japaneseGoals)){
+            $getIdJapaneseGoals = $japaneseGoals->pluck('goal_id')->toArray();
+            $goals = $goals->whereNotIn('id', $getIdJapaneseGoals);
+        }
         $goalIds = $goals->pluck('id')->toArray();
         $nextGoal= $this->nextGoal($goalIds);
         $goals = $this->generalinfo_repository
