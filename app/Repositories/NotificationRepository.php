@@ -300,15 +300,17 @@ class NotificationRepository
                         if(isset($japaneseGoal)){
                             $user = User::where("id",$noti["user_id"])->first();
                             $goal = Goal::where("id",$japaneseGoal->goal_id)->first();   
-                            if(isset($content['message']))
-                            {
-                                $messages->push($content['message']." ".$goal->name);
-                            }
-                            else
-                            {
-                                $messages->push("Invite you join '".$goal->name."'");
-                            }
-                            $noti->type_id = $goal->id;
+                            if(isset($goal)){
+                                if(isset($content['message']))
+                                {
+                                    $messages->push($content['message']." ".$goal->name);
+                                }
+                                else
+                                {
+                                  $messages->push("Invite you join '".$goal->name."'");
+                                }
+                                $noti->type_id = $goal->id;
+                            } else return;
                         } else return;
                     break;
                     case 'communication':
@@ -319,16 +321,18 @@ class NotificationRepository
                         $japaneseGoal = JapaneseGoal::where('goal_id',$noti->type_id)->first();
                         if(isset($japaneseGoal)){
                             $user = User::where("id",$noti["user_id"])->first();
-                            $goal = Goal::where("id",$japaneseGoal->goal_id)->first();   
-                            if(isset($content['message']))
-                            {
-                                $messages->push($content['message']." ".$goal->name);
-                            }
-                            else
-                            {
-                                $messages->push("Invite you join '".$goal->name."'");
-                            }
-                            $noti->type_id = $goal->id;
+                            $goal = Goal::where("id",$japaneseGoal->goal_id)->first(); 
+                            if(isset($goal)){  
+                                 if(isset($content['message']))
+                                {
+                                     $messages->push($content['message']." ".$goal->name);
+                                }
+                                 else
+                                {
+                                 $messages->push("Invite you join '".$goal->name."'");
+                                }
+                                $noti->type_id = @$goal->id;
+                            } else return;
                         } else return;
                     break;
                 case 'diary':
@@ -337,10 +341,12 @@ class NotificationRepository
                         $japaneseGoal = JapaneseGoal::find($noti->type_id);
                         if(isset($japaneseGoal))
                         {
-                        $user = User::where("id",$noti["user_id"])->first();
-                        $goal = Goal::where("id",$japaneseGoal->goal_id)->first();   
-                        $messages->push("Invite see diary'".@$goal->name."'" );
-                        $noti->type_id = $goal->id;
+                            $user = User::where("id",$noti["user_id"])->first();
+                            $goal = Goal::where("id",$japaneseGoal->goal_id)->first(); 
+                            if(isset($goal)){  
+                                $messages->push("Invite see diary'".$goal->name."'" );
+                                $noti->type_id = $goal->id;
+                            } else return;
                         }
                         else return;
                     break;
@@ -352,8 +358,10 @@ class NotificationRepository
                         {
                             $user = User::where("id",$noti["user_id"])->first();
                             $goal = Goal::where("id",$japaneseGoal->goal_id)->first();   
-                            $messages->push("edit diary '".$goal->name."'" );
-                            $noti->type_id = $goal->id;
+                            if(isset($goal)){
+                                 $messages->push("edit diary '".$goal->name."'" );
+                                $noti->type_id = $goal->id;
+                            } else return;
                         }
                         else return;
                         
