@@ -339,7 +339,7 @@ class NotificationRepository
                         {
                         $user = User::where("id",$noti["user_id"])->first();
                         $goal = Goal::where("id",$japaneseGoal->goal_id)->first();   
-                        $messages->push("Invite see diary'".$goal->name."'" );
+                        $messages->push("Invite see diary'".@$goal->name."'" );
                         $noti->type_id = $goal->id;
                         }
                         else return;
