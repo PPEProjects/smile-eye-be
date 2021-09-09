@@ -182,7 +182,7 @@ class JapaneseGoalRepository
             $category[$key] = [];
         }
        foreach($getCate as $value){
-            if(isset($value->more)){
+            if(isset($value->more["flashcard_category"])){
                 $category[$value->more["flashcard_category"]][] = $value->more;
             }
         }
