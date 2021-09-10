@@ -138,7 +138,7 @@ class GoalRepository
     public function getTreeSortByGoalId($goalId, $userId = null)
     {
         $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id')
-        ->orderBy('updated_at', 'DESC');
+        ->orderBy('updated_at', 'ASC');
     if ($userId) {
         $goals = $goals->where("user_id", $userId);
     }
@@ -779,10 +779,12 @@ class GoalRepository
     {
         $idGoalRoot = $args['goal_move'][0]['id'];
         $i = 0;
+        $date = date('Y-m-d H:m:s');
+        $convertDate = strtotime($date);
         foreach($args['goal_move'] as $value){
-            $minute = date('m') - $i;
-            $minute = $minute < 0 ? 0 : $minute;
-            $value['updated_at'] = date('Y-m-d H:'.$minute.':s');
+            
+            // $second = $minute < 0 ? 0 : $minute;
+            $value['updated_at'] = date('Y-m-d H:m:s', ($convertDate+$i));
             if(empty($value['parent_id'])){
                 $value['parent_id'] = null;
             }
