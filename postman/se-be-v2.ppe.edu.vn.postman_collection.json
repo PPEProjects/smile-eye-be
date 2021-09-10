@@ -1227,6 +1227,221 @@
 			]
 		},
 		{
+			"name": "goal_scores",
+			"item": [
+				{
+					"name": "upsert_goal_score",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n    $goal_id : ID\r\n    $scores: JSON\r\n) {\r\n  upsert_goal_score(\r\n    input: {\r\n        goal_id:$goal_id\r\n        scores:$scores\r\n    }\r\n  ) {\r\n   id\r\n    user_id\r\n    goal_id\r\n    scores\r\n    created_at\r\n    updated_at\r\n}\r\n}\r\n",
+								"variables": "{\r\n  \"goal_id\": 1,\r\n  \"scores\": {\r\n    \"1\":9,\r\n    \"2\":5,\r\n    \"5\":3\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_goal_score",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n    $id: ID!\r\n    $goal_id : ID\r\n    $scores: JSON\r\n) {\r\n  update_goal_score(\r\n    input: {\r\n        id: $id\r\n        goal_id:$goal_id\r\n        scores:$scores\r\n    }\r\n  ) {\r\n   id\r\n    user_id\r\n    goal_id\r\n    scores\r\n    created_at\r\n    updated_at\r\n}\r\n}\r\n",
+								"variables": "{\r\n  \"id\": 2,\r\n  \"goal_id\": 1,\r\n  \"scores\": {\r\n    \"1\":9,\r\n    \"2\":5,\r\n    \"5\":3\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_goal_score",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($id:ID!) {\r\n  delete_goal_score(\r\n    input: {\r\n      id: $id\r\n    }\r\n  )\r\n}",
+								"variables": "{\r\n    \"id\": 2\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query detail_goal_score",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID, $goal_id:ID){\r\n  detail_goal_score(\r\n      id: $id  \r\n      goal_id: $goal_id\r\n    )\r\n    {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    scores\r\n    created_at\r\n    updated_at\r\n}\r\n}\r\n",
+								"variables": "{\r\n    \"goal_id\": 7\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_goal_score",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  goal_score(first:200, page:1) {\r\n    data {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    scores\r\n    created_at\r\n    updated_at\r\n}\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query sort_goal_score",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_goal_score(   \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n     id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    scores\r\n    created_at\r\n    updated_at\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n\r\n",
+								"variables": "{\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_goal_score",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "  query{\r\n  my_goal_score{\r\n     id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    scores\r\n  }\r\n}",
+								"variables": "{\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "notification",
 			"item": [
 				{
@@ -1304,7 +1519,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $type : String\r\n    $type_id : ID\r\n    $content: JSON\r\n) {\r\n  create_invite_friend(\r\n    input: {\r\n    type : $type\r\n    type_id : $type_id\r\n    content: $content\r\n    }\r\n  ) {\r\n   id\r\n        user{\r\n            id\r\n        }\r\n        content\r\n        \r\n        created_at\r\n        updated_at\r\n}\r\n}\r\n",
-								"variables": "{\r\n    \"type\" : \"sing_with_friend\",\r\n    \"type_id\" : 28,\r\n    \"content\": {\r\n        \"title\":\"invite\",\r\n        \"message\" : \"sing with me\"\r\n    }\r\n}"
+								"variables": "{\r\n    \"type\" : \"sing_with_friend\",\r\n    \"type_id\" : 1589,\r\n    \"content\": {\r\n        \"title\":\"invite\",\r\n        \"message\" : \"sing with me\"\r\n    }\r\n}"
 							}
 						},
 						"url": {
@@ -1334,7 +1549,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $type : String\r\n    $type_id : ID\r\n    $content: JSON\r\n) {\r\n  create_invite_any_pass(\r\n    input: {\r\n    type : $type\r\n    type_id : $type_id\r\n    content: $content\r\n    }\r\n  ) {\r\n   id\r\n        user{\r\n            id\r\n        }\r\n        content\r\n        \r\n        created_at\r\n        updated_at\r\n}\r\n}\r\n",
-								"variables": "{\r\n    \"type\" : \"sing_with_friend\",\r\n    \"type_id\" : 28,\r\n    \"content\": {\r\n        \"title\":\"invite\",\r\n        \"message\" : \"sing with me\"\r\n    }\r\n}"
+								"variables": "{\r\n    \"type\" : \"sing_with_friend\",\r\n    \"type_id\" : 1589,\r\n    \"content\": {\r\n        \"title\":\"invite\",\r\n        \"message\" : \"sing with me\"\r\n    }\r\n}"
 							}
 						},
 						"url": {
@@ -1942,7 +2157,7 @@
 									"mode": "graphql",
 									"graphql": {
 										"query": "mutation(\n    $parent_id: ID\n    $name_goal: String\n    $type : String\n    $more : JSON\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    parent_id:$parent_id\n    name_goal:$name_goal\n    type : $type\n    more : $more\n    }) {\n        id\n        goal_id\n        goal{\n            id\n            name\n        }\n        type,\n        more\n    }\n  \n}",
-										"variables": "  {\n    \"name_goal\":\"hat\",\n    \"type\": \"sing_with_friend\",\n    \"more\": {\n      \"user_invite_ids\": [\n        4,\n        3\n      ],\n      \"name\": \"Học hát: Sakura\",\n      \"video\": {\n        \"attachment_id\": 1,\n        \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp4\"\n      },\n      \"lyrics\": [\n        {\n          \"words\": \"夜中過ぎの夢に うなされて\",\n          \"audio\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n          }\n        },\n        {\n          \"words\": \"夜中過ぎの夢に うなされて\",\n          \"audio\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n          }\n        },\n        {\n          \"words\": \"夜中過ぎの夢に うなされて\",\n          \"audio\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n          }\n        }\n      ]\n    }\n  }"
+										"variables": "  {\n    \"name_goal\":\"hat\",\n    \"type\": \"sing_with_friend\",\n    \"more\": {\n      \"user_invite_ids\": [\n        \n      ],\n      \"name\": \"Học hát: Sakura\",\n      \"video\": {\n        \"attachment_id\": 1,\n        \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp4\"\n      },\n      \"lyrics\": [\n        {\n          \"words\": \"夜中過ぎの夢に うなされて\",\n          \"audio\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n          }\n        },\n        {\n          \"words\": \"夜中過ぎの夢に うなされて\",\n          \"audio\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n          }\n        },\n        {\n          \"words\": \"夜中過ぎの夢に うなされて\",\n          \"audio\": {\n            \"attachment_id\": 1,\n            \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"\n          }\n        }\n      ]\n    }\n  }"
 									}
 								},
 								"url": {
@@ -2434,7 +2649,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\n    $user_id_friend:ID!, \n    $status:String\n    )\n{\n  create_friend(\n    input: \n    {\n      user_id_friend: $user_id_friend\n      status: $status\n    }) \n  \n}",
-								"variables": "{\n    \"user_id_friend\": 1,\n    \"status\": \"accept\"\n}"
+								"variables": "{\n    \"user_id_friend\": 41,\n    \"status\": \"accept\"\n}"
 							}
 						},
 						"url": {
