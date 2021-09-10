@@ -93,10 +93,12 @@ class GeneralInfoRepository
         }
         $generalInfo = $generalInfo->first();
         $generalInfo = $this->attachment_service->mappingAttachment($generalInfo);
-        $achieves = Achieve::where('general_id', $generalInfo->id)
+        \Illuminate\Support\Facades\Log::channel('single')->info('$generalInfo', [$generalInfo]);
+        
+        $achieves = Achieve::where('general_id', @$generalInfo->id)
             ->get();
         $generalInfo->achieves = $achieves;
-        $publishs = PublishInfo::where('general_id', $generalInfo->id)
+        $publishs = PublishInfo::where('general_id', @$generalInfo->id)
             ->get();
         $generalInfo->publishs = $publishs;
         return $generalInfo;
