@@ -139,6 +139,7 @@ class GoalRepository
     {
         $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id')
         ->orderBy('updated_at', 'ASC');
+
     if ($userId) {
         $goals = $goals->where("user_id", $userId);
     }
@@ -782,9 +783,9 @@ class GoalRepository
         $date = date('Y-m-d H:m:s');
         $convertDate = strtotime($date);
         foreach($args['goal_move'] as $value){
-            
-            // $second = $minute < 0 ? 0 : $minute;
-            $value['updated_at'] = date('Y-m-d H:m:s', ($convertDate+$i));
+//            $value['updated_at'] = date('Y-m-d H:m:s', ($convertDate+$i));
+            $newDateTime = Carbon::now()->addSeconds($i);
+            $value['updated_at'] = $newDateTime;
             if(empty($value['parent_id'])){
                 $value['parent_id'] = null;
             }
