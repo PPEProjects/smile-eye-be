@@ -68,7 +68,9 @@ input CreateNotificationInput{
 
 }
 input DeleteNotificationInput{
-    id:ID!
+    id:ID
+    type: String
+    type_id: ID
 }
 
 input UpdateNotificationInput{

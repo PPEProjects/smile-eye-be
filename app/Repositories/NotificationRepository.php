@@ -389,7 +389,10 @@ class NotificationRepository
                 $getUserIdFriends = $myFriends->pluck('user_id_friend')->toArray();
                 $getIds = array_merge($getUserIds, $getUserIdFriends);
                 $getIds = array_diff($getIds, [$userId]);
-                $args['user_receive_ids'] = $getIds;
+                $japaneseLearn = JapaneseLearn::where('goal_id', $args['type_id'])
+                                                ->whereIn('user_id', $getIds)->get();
+                $userInviteIds = $japaneseLearn->pluck('user_id')->toArray();
+                $args['user_receive_ids'] = $userInviteIds;
                 break;
             case "invite_any_pass":
                 $japaneseLearn = JapaneseLearn::where('goal_id', $args['type_id'])->whereNotIn('user_id', [$userId])->get();
