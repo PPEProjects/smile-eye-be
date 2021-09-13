@@ -208,7 +208,7 @@ class GoalRepository
         $temp = in_array($goalId, $goal_ids);
         if ($temp) {
             $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, status')
-                ->orderBy('id', 'desc')
+                ->orderBy('index', 'ASC')
                 ->get();
             $goals = $this->goalAll($goals);
 
@@ -790,5 +790,60 @@ class GoalRepository
         }   
         $goals = $this->getTreeSortByGoalId($idGoalRoot);
        return $goals;
+    }
+
+    public function copyGoal($args)
+    {
+        $goalRoot = Goal::find($args['id']);
+        $goals = self::childrenGoal($args['id']);
+        $goals = array_merge([$goalRoot->toArray()], $goals);
+        $newGoals = [];
+
+        foreach($goals as $value){
+            $general = GeneralInfo::where('goal_id', $value['id'])->first();
+            $japaneseGoal = JapaneseGoal::where('goal_id', $value)->first();
+            $args = array_diff_key($value, array_flip(['user_id','id', 'parent_id']));
+            $args['user_id'] = Auth::id();
+            $createGoal = Goal::create($args);
+            if($general){
+                $general = array_diff_key($general->toArray(), 
+                                        array_flip(['user_id','id', 'goal_id']));
+                $general['goal_id'] = $createGoal->id;
+                $general['user_id'] = $args['user_id'];
+                $createGeneral = GeneralInfo::create($general);
+            }
+            if($japaneseGoal){
+                $japaneseGoal = array_diff_key($japaneseGoal->toArray(), 
+                                            array_flip(['user_id','id', 'goal_id']));
+                $japaneseGoal['goal_id'] = $createGoal->id;
+                $japaneseGoal['user_id'] = $args['user_id'];
+                $createJapaneseGoal = JapaneseGoal::create($japaneseGoal);
+            }
+            $newGoals[$value['id']] = $createGoal->id;
+        }
+
+        //update parent_id
+        foreach($newGoals as $key => $value)
+        {
+            $id = $key;
+           foreach($goals as $v){
+               if($id == $v['parent_id']){
+                   $update =  Goal::where("id", $newGoals[$v['id']])
+                                    ->update(['parent_id' => $newGoals[$id]]);
+               }
+           }              
+        }
+        $goals = $this->getTreeSortByGoalId(current($newGoals));
+        return $goals;
+    }
+    public function childrenGoal($parentIds, $idGoals = [])
+    {
+       $goals = Goal::where('parent_id', $parentIds)->get();
+       $getIdGoals = $goals->toArray();
+       $idGoals = array_merge($idGoals,$getIdGoals);
+       foreach ($goals as $value) {
+           $idGoals = self::childrenGoal($value->id, $idGoals);
+       }
+       return $idGoals;
     }
 }

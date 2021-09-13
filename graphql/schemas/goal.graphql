@@ -7,6 +7,7 @@ extend type Mutation {
     task_to_goal(input: TaskToGoalInput! @spread): Goal @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@taskToGoal")
     upsert_goal(input: UpsertGoalInput! @spread): JSON @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@upsertGoal")
     duplicate_goals(id : ID! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@duplicateGoals")
+    copy_goal(id : ID! @spread): JSON @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@copyGoal")
 }
 extend type Query {
     #    userss: [User] @guard @field(resolver:"GoalQueries@userss")

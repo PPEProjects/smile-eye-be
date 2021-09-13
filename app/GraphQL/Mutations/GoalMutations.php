@@ -277,4 +277,8 @@ class GoalMutations
     {
        return $this->goal_repository->updateGoalMove($args);
     }
+    public function copyGoal($_array, $args)
+    {
+       return $this->goal_repository->copyGoal($args);
+    }
 }
