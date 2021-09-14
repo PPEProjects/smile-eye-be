@@ -25,7 +25,8 @@ type JapaneseGoal{
     prev_goal: NextAndPrevGoal
     type: String
     more : JSON
-    score: Float
+    total_score: Float
+    each_score: Float
     list_users: [User]
     attachments_1 : JSON
     attachments_2 : JSON
@@ -43,7 +44,8 @@ input CreateJapaneseGoalInput{
 #    type : String @rules(apply:["nullable","in:watch_video,communication,vocabulary_grammar,alphabet"])
     type : String
     more : JSON
-    score : Float
+    total_score : Float
+    each_score : Float
 
 }
 input UpdateJapaneseGoalInput{
@@ -52,7 +54,8 @@ input UpdateJapaneseGoalInput{
     # type : String @rules(apply:["nullable","in:watch_video,communication,vocabulary_grammar,alphabet"])
     type : String
     more : JSON
-    score : Float
+    total_score : Float
+    each_score : Float
 }
 input UpdateMeetUrlInput{
     goal_id : ID!

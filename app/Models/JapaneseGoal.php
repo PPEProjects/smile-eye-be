@@ -20,7 +20,8 @@ class JapaneseGoal extends Model
         'user_id',
         'type',
         'more',
-        'score',
+        'total_score',
+        'each_score',
         'created_at',
         'updated_at'
     ];
