@@ -13,7 +13,7 @@ extend type Query {
     my_diary(type:String!): JSON @guard @field(resolver:"JapaneseGoalQueries@myDiary")
     my_diary_invited: JSON @guard @field(resolver:"JapaneseGoalQueries@myDiaryInvited")
     flashcard_category(type:String!): JSON @guard @field(resolver:"JapaneseGoalQueries@flashcardCategory")
-    my_flashcard_study: JSON @guard @field(resolver:"JapaneseGoalQueries@myFlashcardStudy")
+    my_flashcard_study(goal_id:ID): JSON @guard @field(resolver:"JapaneseGoalQueries@myFlashcardStudy")
 }
 
 type JapaneseGoal{

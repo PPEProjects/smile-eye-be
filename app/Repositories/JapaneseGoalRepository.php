@@ -206,9 +206,12 @@ class JapaneseGoalRepository
    {
         $japaneseGoal = $this->getJapaneseGoal('type', 'flashcard_study')
                                 ->where('user_id', Auth::id());
+        if(isset($args['goal_id'])){
+            $japaneseGoal = $japaneseGoal->where('goal_id', $args['goal_id']);
+        }
         $getIds = [];
         foreach($japaneseGoal as $value){
-            $getIds = current($value->more);
+            $getIds = array_merge(current($value->more), $getIds);
         }
         $myFlashCard = JapaneseGoal::whereIn('id', $getIds)->get();
         return $myFlashCard;
