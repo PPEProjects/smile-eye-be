@@ -92,5 +92,7 @@ class JapaneseGoalQueries
  public function flashcardCategory($_,array $args){
         return $this->japanese_goal_repository->flashcardCategory($args);
  }
-
+ public function myFlashcardStudy($_,array $args){
+    return $this->japanese_goal_repository->myFlashcardStudy($args);
+}
 }

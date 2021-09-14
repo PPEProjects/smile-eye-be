@@ -2007,7 +2007,7 @@
 									"mode": "graphql",
 									"graphql": {
 										"query": "mutation(\n    $parent_id: ID\n    $name_goal: String\n    $type : String\n    $more : JSON\n    $score : Float\n    )\n{\n  create_japanese_goals(\n    input: \n    {\n    parent_id: $parent_id \n    name_goal: $name_goal\n    type : $type\n    more : $more\n    score : $score\n    }) {\n        id\n        goal_id,\n        goal{\n            id,\n            name,\n            parent{\n                id\n                name\n            }\n        }\n        type,\n        more\n    }\n  \n}",
-										"variables": "{\n  \"type\": \"flashcard_study\",\n  \"name_goal\": \"Bài học về chó mèo\",\n  \"parent_id\": 1,\n  \"more\": {\n    \"flashcard_category\": [\n      \"Động vật\",\n      \"Thực vật\",\n      \"Thiên nhiên\"\n    ]\n  }\n}"
+										"variables": "{\n  \"type\": \"flashcard_study\",\n  \"name_goal\": \"Bài học về chó mèo\",\n  \"parent_id\": 1,\n  \"more\": {\n    \"flashcard_ids\": [\n      1,\n      2,\n      5\n    ]\n  }\n}"
 									}
 								},
 								"url": {
@@ -2584,7 +2584,37 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($type:String!) {\n  flashcard_category(\n      type : $type\n  )\n}",
-								"variables": "{\r\n\"type\": \"flashcard_category\"\r\n}\r\n"
+								"variables": "{\r\n\"type\": \"Động vật\"\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_my_flashcard_study",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  my_flashcard_study\n}",
+								"variables": "{\r\n\r\n}\r\n"
 							}
 						},
 						"url": {

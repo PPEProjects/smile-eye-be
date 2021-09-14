@@ -183,10 +183,10 @@ class JapaneseGoalRepository
         }
        foreach($getCate as $value){
             if(isset($value->more["flashcard_category"])){
+                $value->more = array_merge(['id' => $value->id], $value->more);
                 $category[$value->more["flashcard_category"]][] = $value->more;
             }
         }
-
        switch ($args['type']) {
            case "flashcard_category":
                //query sum card by category
@@ -202,4 +202,15 @@ class JapaneseGoalRepository
        return $flashCardCate;
    }
 
+   public function myFlashcardStudy($args)
+   {
+        $japaneseGoal = $this->getJapaneseGoal('type', 'flashcard_study')
+                                ->where('user_id', Auth::id());
+        $getIds = [];
+        foreach($japaneseGoal as $value){
+            $getIds = current($value->more);
+        }
+        $myFlashCard = JapaneseGoal::whereIn('id', $getIds)->get();
+        return $myFlashCard;
+   }
 }
