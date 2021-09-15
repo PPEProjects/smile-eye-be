@@ -27,6 +27,7 @@ type JapaneseGoal{
     more : JSON
     total_score: Float
     each_score: Float
+     score : Float
     list_users: [User]
     attachments_1 : JSON
     attachments_2 : JSON
@@ -57,6 +58,7 @@ input UpdateJapaneseGoalInput{
     more : JSON
     total_score : Float
     each_score : Float
+    score : Float
 }
 input UpdateMeetUrlInput{
     goal_id : ID!
