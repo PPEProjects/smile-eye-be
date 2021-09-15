@@ -110,7 +110,7 @@ class JapaneseGoalMutations
 
     public function upsertJapaneseGoal($_, array $args)
     {
-        if (isset($args['id'])) {
+        if (!empty($args['id'])) {
             $args = array_diff_key($args, array_flip(['type']));
             \Illuminate\Support\Facades\Log::channel('single')->info('$args', [$args]);
             

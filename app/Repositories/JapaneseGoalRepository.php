@@ -135,6 +135,10 @@ class JapaneseGoalRepository
         } else {
             $japaneseGoal = JapaneseGoal::find($args['id']);
         }
+        if (isset($args['name_goal'])) {
+            Goal::where('id', $japaneseGoal->goal_id)
+                ->update(['name' => $args['name_goal']]);
+        }
         $userId = Auth::id();
         if ($japaneseGoal->type == "diary") {
             $checkIdUser = array_intersect($japaneseGoal->more[0]['user_invite_ids'], [$userId]);
