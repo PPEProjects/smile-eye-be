@@ -19,6 +19,10 @@ class JapaneseKanjiMutations{
     {
        return $this->japanese_kanji_repository->createJapaneseKanji($args);
     }
+    public function upsertJapaneseKanji($_,array $args)
+    {
+       return $this->japanese_kanji_repository->upsertJapaneseKanji($args);
+    }
     public function updateJapaneseKanji($_,array $args)
     {
         return $this->japanese_kanji_repository->updateJapaneseKanji($args);

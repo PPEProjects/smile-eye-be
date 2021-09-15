@@ -12,7 +12,15 @@ class JapaneseKanjiRepository{
         $args['user_id'] = Auth::id();
         return JapaneseKanji::create($args);
     }
-
+    public function upsertJapaneseKanji($args)
+    {
+        $args['user_id'] = Auth::id();
+        $kanji = JapaneseKanji::updateOrCreate(
+            ['user_id' => $args['user_id'], 'name' => $args['name']],
+            $args
+        );
+        return $kanji;
+    }
     public function updateJapaneseKanji($args)
     {    
         $args['user_id'] = Auth::id();     

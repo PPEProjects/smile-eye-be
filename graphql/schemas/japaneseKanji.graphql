@@ -2,6 +2,7 @@
 extend type Mutation {
     delete_japanese_kanji (input: DeleteJapaneseKanjiInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseKanjiMutations@deleteJapaneseKanji")
     create_japanese_kanji(input: CreateJapaneseKanjiInput! @spread): JapaneseKanji @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseKanjiMutations@createJapaneseKanji")
+    upsert_japanese_kanji(input: UpsertJapaneseKanjiInput! @spread): JapaneseKanji @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseKanjiMutations@upsertJapaneseKanji")
     update_japanese_kanji(input: UpdateJapaneseKanjiInput! @spread): JapaneseKanji @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseKanjiMutations@updateJapaneseKanji")
 }
 extend type Query {
@@ -23,7 +24,10 @@ type JapaneseKanji{
 }
 
 input CreateJapaneseKanjiInput{
-    id : ID
+    name: String
+    more: JSON
+}
+input UpsertJapaneseKanjiInput{
     name: String
     more: JSON
 }
