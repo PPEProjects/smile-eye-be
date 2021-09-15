@@ -32,5 +32,7 @@ class JapaneseKanjiRepository{
     public function myJapaneseKanji(){     
         return JapaneseKanji::where('user_id',Auth::id())->get();
     }
-
+    public function vocabularyJapaneseKanji(){     
+        return JapaneseKanji::where('name','like','vocabulary')->first();
+    }
 }
