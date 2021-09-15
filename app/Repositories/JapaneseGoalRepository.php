@@ -295,10 +295,15 @@ class JapaneseGoalRepository
                 //query sum card by category
                 $flashCardCate = [];
                 foreach ($category as $key => $value) {
+                    if(@$category[$key][0]['media']['file_type'] == 'image')
+                    {
+                        $media = $category[$key][0]['media'];
+                    }
+                    else $media = null;
                     $flashCardCate[] = [
                         'name'  => $key,
                         'count' => count($category[$key]),
-                        'media' => @$category[$key][0]["front"]['media']
+                        'media' => $media
                     ];
                 }
                 break;
