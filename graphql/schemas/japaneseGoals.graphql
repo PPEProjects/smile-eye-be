@@ -45,6 +45,7 @@ input CreateJapaneseGoalInput{
     type : String
     more : JSON
     total_score : Float
+    score : Float
     each_score : Float
 
 }
