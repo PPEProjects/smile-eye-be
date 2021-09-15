@@ -783,8 +783,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\r\n    $name: String\r\n    $more: JSON\r\n) {\r\n upsert_japanese_kanji(\r\n    input: {\r\n    name: $name\r\n    more: $more\r\n    }\r\n  ) {\r\n   id\r\n    user_id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n   more\r\n   created_at\r\n   updated_at\r\n }\r\n}\r\n",
-								"variables": "{\r\n    \"name\":\"二\",\r\n    \"more\": {\r\n        \"strokes\":\"2\",\r\n        \"set\": \"some thing\",\r\n        \"han_viet\":\"hai\",\r\n        \"example\": {\r\n            \"text\":\"ban la nhat\",\r\n            \"audio\":{\r\n                \"attachment_id\": 1,\r\n                \"file\": \"https://stag-se-be.ppe.edu.vn/storage/media/files/2021-07-12-1626058726-2066540857-7.mp3\"}\r\n        }\r\n    }\r\n}"
+								"query": "mutation(\r\n    $id:ID\r\n    $name: String\r\n    $more: JSON\r\n) {\r\n upsert_japanese_kanji(\r\n    input: {\r\n    id:$id\r\n    name: $name\r\n    more: $more\r\n    }\r\n  ) {\r\n   id\r\n    user_id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n   more\r\n   created_at\r\n   updated_at\r\n }\r\n}\r\n",
+								"variables": "{\r\n\"id\":1878,\r\n\"name\": \"ケ\",\r\n\"more\": {\r\n        \"meaning\": \"hihi\",\r\n        \"onyomi\": \"NULL\",\r\n        \"kunyomi\": \"NULL\",\r\n        \"img\": \"https://nihongoichibandotcom.files.wordpress.com/2011/03/kak.gif?w=610\"\r\n                }\r\n}"
 							}
 						},
 						"url": {

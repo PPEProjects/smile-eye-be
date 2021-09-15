@@ -10,13 +10,22 @@ class JapaneseKanjiRepository{
     public function createJapaneseKanji($args)
     {
         $args['user_id'] = Auth::id();
-        return JapaneseKanji::create($args);
+        $vocabulary = [];
+        foreach ($args['more'] as $value)
+        {
+            $value['name'] = explode(" ",$value['name']);
+            $vocabulary['name'] = current($value['name']);
+            $vocabulary['more'] = array_diff_key($value, array_flip(['id','name']));
+            JapaneseKanji::create($vocabulary);
+        }
+        // dd($vocabulary['name']);
+        return true;
     }
     public function upsertJapaneseKanji($args)
     {
         $args['user_id'] = Auth::id();
         $kanji = JapaneseKanji::updateOrCreate(
-            ['user_id' => $args['user_id'], 'name' => $args['name']],
+            ['id' => @$args['id']],
             $args
         );
         return $kanji;
@@ -41,6 +50,6 @@ class JapaneseKanjiRepository{
         return JapaneseKanji::where('user_id',Auth::id())->get();
     }
     public function vocabularyJapaneseKanji(){     
-        return JapaneseKanji::where('name','like','vocabulary')->first();
+        return JapaneseKanji::all();
     }
 }
