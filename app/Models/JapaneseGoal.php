@@ -32,4 +32,8 @@ class JapaneseGoal extends Model
         return $this->belongsTo(goal::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, "user_id");
+    }
 }

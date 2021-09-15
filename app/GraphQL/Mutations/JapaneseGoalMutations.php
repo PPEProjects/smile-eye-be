@@ -112,6 +112,8 @@ class JapaneseGoalMutations
     {
         if (isset($args['id'])) {
             $args = array_diff_key($args, array_flip(['type']));
+            \Illuminate\Support\Facades\Log::channel('single')->info('$args', [$args]);
+            
             return $this->japanese_goal_repository->updateJapaneseGoal($args);
         }
         $args["user_id"] = Auth::id();

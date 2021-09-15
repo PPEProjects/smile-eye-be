@@ -19,6 +19,7 @@ extend type Query {
 
 type JapaneseGoal{
     id: ID
+    user : User
     goal : Goal
     goal_root: Goal
     goal_id : ID
