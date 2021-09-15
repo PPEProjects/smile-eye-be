@@ -2,7 +2,6 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\Models\Goal;
 use App\Models\JapaneseGoal;
 use App\Repositories\GeneralInfoRepository;
 use App\Repositories\JapaneseGoalRepository;
@@ -32,7 +31,8 @@ class JapaneseGoalMutations
         if (!isset($args['type'])) {
             throw new Error('You must input type');
         }
-        if ($args['type'] == "diary" && isset($args['more'][0]['user_invite_ids'])) {
+        return $this->japanese_goal_repository->createJapaneseGoal($args);
+        /*if ($args['type'] == "diary" && isset($args['more'][0]['user_invite_ids'])) {
             $idUserInvited = $args['more'][0]['user_invite_ids'];
             foreach ($idUserInvited as $value) {
                 $args['more'][0]['other_' . $value] = $args['more'][0]['content'];
@@ -99,13 +99,33 @@ class JapaneseGoalMutations
                     $user_invited_ids);
             }
         }
-        return $jpGoal;
+        return $jpGoal;*/
     }
 
     public function updateJapaneseGoal($_, array $args)
     {
         $args = array_diff_key($args, array_flip(['type']));
         return $this->japanese_goal_repository->updateJapaneseGoal($args);
+    }
+
+    public function upsertJapaneseGoal($_, array $args)
+    {
+        if (isset($args['id'])) {
+            $args = array_diff_key($args, array_flip(['type']));
+            return $this->japanese_goal_repository->updateJapaneseGoal($args);
+        }
+        $args["user_id"] = Auth::id();
+        if (!isset($args['type'])) {
+            throw new Error('You must input type');
+        }
+        return $this->japanese_goal_repository->createJapaneseGoal($args);
+//        $args = array_diff_key($args, array_flip(['type']));
+//        return $this->japanese_goal_repository->updateJapaneseGoal($args);
+//        $passwordReset = PasswordReset::updateOrCreate([
+//            'email' => $user->email,
+//        ], [
+//            'token' => rand(000000,999999),
+//        ]);
     }
 
     public function deletejapaneseGoal($_, array $args)
@@ -118,12 +138,13 @@ class JapaneseGoalMutations
         $jpGoal = JapaneseGoal::where('goal_id', $args['goal_id'])
             ->where('type', 'sing_with_friend')
             ->first();
-        if(!$jpGoal)
+        if (!$jpGoal) {
             throw new Error('Japanese Goal not found');
+        }
         $jpGoal = $jpGoal->toArray();
         $jpGoal['more']['meet'] = $args['meet'];
-        return (bool) JapaneseGoal::where('id', $jpGoal['id'])
-            ->update(['more'=>$jpGoal['more']]);
+        return (bool)JapaneseGoal::where('id', $jpGoal['id'])
+            ->update(['more' => $jpGoal['more']]);
     }
 
 }
