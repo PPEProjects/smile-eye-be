@@ -258,6 +258,11 @@ class JapaneseGoalRepository
             $detailJPGoal->next_goal = $nextGoal;
             $detailJPGoal->prev_goal = $prevGoal;
         }
+        if($detailJPGoal->type == 'flashcard_study'){
+            $flashCardIds = $detailJPGoal->more['flashcard_ids'];
+            $flashCard = JapaneseGoal::whereIn('id', $flashCardIds)->get();
+            $detailJPGoal->more = $flashCard;
+        }
         return $detailJPGoal;
     }
 
