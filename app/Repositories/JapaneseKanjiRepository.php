@@ -60,6 +60,6 @@ class JapaneseKanjiRepository{
         return JapaneseKanji::all();
     }
     public function listJapaneseKanji($args){     
-        return JapaneseKanji::whereIn('id', $args['id'])->get();
+        return JapaneseKanji::whereIn('id', $args['ids'])->get();
     }
 }
