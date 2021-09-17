@@ -21,9 +21,9 @@ Route::get('/', function () {
     ]);
 });
 Route::get('/file', function () {
-    echo ini_get('post_max_size');
-    ini_set('memory_limit','10240M');
-    echo ini_get('post_max_size');
+//    echo ini_get('post_max_size');
+//    ini_set('memory_limit','10240M');
+//    echo ini_get('post_max_size');
     echo phpinfo();
 });
 
