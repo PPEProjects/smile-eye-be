@@ -169,10 +169,10 @@ class JapaneseGoalRepository
                     @$japaneseGoal->more['user_invite_ids'] ?? []);
                 $userInvite = $args['more']['user_invite_ids'];           
                 $args['more']['user_invite_ids'] = $userInvite;
-            }
-            $args['more'] = $japaneseGoal->more;
-            $this->notification_repository->staticNotification("sing_with_friend", $japaneseGoal->goal_id,
+                $this->notification_repository->staticNotification("sing_with_friend", $japaneseGoal->goal_id,
                 $japaneseGoal, $user_invited_ids);
+            }
+            $args['more'] = $japaneseGoal->more;         
         }
         return tap(JapaneseGoal::findOrFail($japaneseGoal->id))
             ->update($args);
