@@ -890,6 +890,36 @@
 					"response": []
 				},
 				{
+					"name": "query list_ japanese_kanji",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($ids: JSON){\r\n  list_japanese_kanji(\r\n      ids: $ids  \r\n    ) {\r\n       id\r\n    user_id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    name\r\n    more\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"ids\": [1879,1880,1882]\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "query vocabulary_ japanese_kanji",
 					"request": {
 						"method": "POST",
@@ -2464,7 +2494,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id:ID, $goal_id: ID) {\n  detail_japanese_goal(\n      id : $id\n      goal_id: $goal_id\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n     goal_root{\n         id\n         name\n     }\n     next_goal{\n         id\n         name\n         type\n     }\n     prev_goal{\n         id\n         name\n         type\n     }\n    type\n    score\n    more\n      list_users{\n         id\n         name\n         attachment{\n             id\n             file\n             thumb\n         }\n     }\n  }\n}",
-								"variables": "{\r\n\"goal_id\": 1123\r\n}\r\n"
+								"variables": "{\r\n\"goal_id\": 2410\r\n}\r\n"
 							}
 						},
 						"url": {
