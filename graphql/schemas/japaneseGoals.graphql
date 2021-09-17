@@ -28,6 +28,7 @@ type JapaneseGoal{
     type: String
     more : JSON
     total_score: Float
+    card_box_topics:String
     each_score: Float
      score : Float
     list_users: [User]

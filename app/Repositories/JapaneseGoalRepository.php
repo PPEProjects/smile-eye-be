@@ -263,6 +263,7 @@ class JapaneseGoalRepository
         if($detailJPGoal->type == 'flashcard_study'){
             $flashCardIds = $detailJPGoal->more['flashcard_ids'];
             $flashCard = JapaneseGoal::whereIn('id', $flashCardIds)->get();
+            $detailJPGoal->card_box_topics = @$detailJPGoal->more['card_box_topics'];
             $detailJPGoal->more = $flashCard;
         }
         return $detailJPGoal;
