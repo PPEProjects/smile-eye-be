@@ -59,4 +59,7 @@ class JapaneseKanjiRepository{
     public function vocabularyJapaneseKanji(){     
         return JapaneseKanji::all();
     }
+    public function listJapaneseKanji($args){     
+        return JapaneseKanji::whereIn('id', $args['id'])->get();
+    }
 }

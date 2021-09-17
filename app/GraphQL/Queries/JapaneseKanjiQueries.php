@@ -21,5 +21,8 @@ class JapaneseKanjiQueries
  public function vocabularyJapaneseKanji($_,array $args){
   return $this->japanese_kanji_repository->vocabularyJapaneseKanji($args);
  }
+ public function listJapaneseKanji($_,array $args){
+  return $this->japanese_kanji_repository->listJapaneseKanji($args);
+ }
  
 }
