@@ -10,7 +10,7 @@ extend type Query {
     sort_japanese_kanji(orderBy: [OrderByClause!] @orderBy): [JapaneseKanji!]! @paginate(type: "paginator" model: "App\\Models\\JapaneseKanji")
     my_japanese_kanji: [JapaneseKanji] @field(resolver:"JapaneseKanjiQueries@myJapaneseKanji")
     detail_japanese_kanji(id:ID): JapaneseKanji @field(resolver:"JapaneseKanjiQueries@detailJapaneseKanji")
-    list_japanese_kanji(ids:JSON): [JapaneseKanji] @field(resolver:"JapaneseKanjiQueries@listJapaneseKanji")
+    list_japanese_kanji(ids:[ID]): [JapaneseKanji] @field(resolver:"JapaneseKanjiQueries@listJapaneseKanji")
     vocabulary_japanese_kanji: [JapaneseKanji] @field(resolver:"JapaneseKanjiQueries@vocabularyJapaneseKanji")
 }
 

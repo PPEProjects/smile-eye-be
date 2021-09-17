@@ -42,7 +42,8 @@ input CreateAttachmentInput{
 
 }
 input DeleteAttachmentInput{
-    id:ID!@rules(apply: ["required","App\\Rules\\OwnerCheckAttachment"])
+    id:ID!@rules(apply: ["required"])
+    #    id:ID!@rules(apply: ["required","App\\Rules\\OwnerCheckAttachment"])
 }
 input UpdateAttachmentInput{
     id: ID! @rules(apply: ["required","App\\Rules\\OwnerCheckAttachment"])

@@ -4,30 +4,31 @@ namespace App\Repositories;
 
 use App\Models\JapaneseKanji;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-class JapaneseKanjiRepository{
+
+class JapaneseKanjiRepository
+{
 
     public function createJapaneseKanji($args)
     {
         $args['user_id'] = Auth::id();
         // return JapaneseKanji::create($args);
         $vocabulary = [];
-        foreach ($args['more'] as $value)
-        {
-            $value['name'] = explode(" ",$value['name']);
+        foreach ($args['more'] as $value) {
+            $value['name'] = explode(" ", $value['name']);
             $vocabulary['name'] = current($value['name']);
-            $vocabulary['more'] = array_diff_key($value, array_flip(['id','name']));
+            $vocabulary['more'] = array_diff_key($value, array_flip(['id', 'name']));
             JapaneseKanji::create($vocabulary);
-        } $vocabulary = [];
-        foreach ($args['more'] as $value)
-        {
-            $value['name'] = explode(" ",$value['name']);
+        }
+        $vocabulary = [];
+        foreach ($args['more'] as $value) {
+            $value['name'] = explode(" ", $value['name']);
             $vocabulary['name'] = current($value['name']);
-            $vocabulary['more'] = array_diff_key($value, array_flip(['id','name']));
+            $vocabulary['more'] = array_diff_key($value, array_flip(['id', 'name']));
             JapaneseKanji::create($vocabulary);
         }
         return true;
     }
+
     public function upsertJapaneseKanji($args)
     {
         $args['user_id'] = Auth::id();
@@ -37,9 +38,10 @@ class JapaneseKanjiRepository{
         );
         return $kanji;
     }
+
     public function updateJapaneseKanji($args)
-    {    
-        $args['user_id'] = Auth::id();     
+    {
+        $args['user_id'] = Auth::id();
         return tap(JapaneseKanji::findOrFail($args["id"]))->update($args);
     }
 
@@ -49,17 +51,26 @@ class JapaneseKanjiRepository{
         return $japaneseKanji->delete();
     }
 
-    public function detailJapaneseKanji($args){
+    public function detailJapaneseKanji($args)
+    {
         return JapaneseKanji::find($args['id']);
     }
 
-    public function myJapaneseKanji(){     
-        return JapaneseKanji::where('user_id',Auth::id())->get();
+    public function myJapaneseKanji()
+    {
+        return JapaneseKanji::where('user_id', Auth::id())->get();
     }
-    public function vocabularyJapaneseKanji(){     
+
+    public function vocabularyJapaneseKanji()
+    {
         return JapaneseKanji::all();
     }
-    public function listJapaneseKanji($args){     
-        return JapaneseKanji::whereIn('id', $args['ids'])->get();
+
+    public function listJapaneseKanji($args)
+    {
+        if (isset($args['ids'])) {
+            return JapaneseKanji::whereIn('id', $args['ids'])->get();
+        }
+        return JapaneseKanji::all();
     }
 }
