@@ -2660,6 +2660,36 @@
 					"response": []
 				},
 				{
+					"name": "query_rename_flashcard_category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n    $old_name:String!,\n    $new_name:String!\n    ) {\n  rename_flashcard_category(\n      old_name: $old_name\n      new_name: $new_name\n  )\n}",
+								"variables": "{\r\n    \"old_name\": \"Xuyên không\",\r\n    \"new_name\": \"Bí cảnh\"\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "query_my_flashcard_study",
 					"request": {
 						"method": "POST",

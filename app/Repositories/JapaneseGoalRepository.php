@@ -288,7 +288,12 @@ class JapaneseGoalRepository
         if (!isset($getCate) || !isset($cate)) {
             return [];
         }
-        $category = array_flip($cate->more);
+        $category = $cate->more;
+        $newCate = [end($category)];
+        $category = array_diff($category, $newCate);
+        sort($category); 
+        $sortCate = array_merge($newCate,$category);
+        $category = array_flip($sortCate);
         foreach ($category as $key => $value) {
             $category[$key] = [];
         }
@@ -334,5 +339,18 @@ class JapaneseGoalRepository
         }
         $myFlashCard = JapaneseGoal::whereIn('id', $getIds)->get();
         return $myFlashCard;
+    }
+    public function renameFlashcardCategory($args)
+    {
+        $jpGoal = $this->getJapaneseGoal('type', 'flashcard_category')->first();
+        foreach($jpGoal->more as $key => $value){
+            if($value == $args['old_name']){
+                $jpGoal->more = array_replace($jpGoal->more, [$key => $args['new_name']]);
+                break;
+            }
+        }
+        $rename = tap(JapaneseGoal::findOrFail($jpGoal->id))
+                    ->update(['more' => $jpGoal->more]);
+        return $jpGoal;
     }
 }

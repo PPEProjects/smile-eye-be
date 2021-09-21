@@ -148,5 +148,8 @@ class JapaneseGoalMutations
         return (bool)JapaneseGoal::where('id', $jpGoal['id'])
             ->update(['more' => $jpGoal['more']]);
     }
-
+    public function renameFlashcardCategory($_, array $args)
+    {
+        return $this->japanese_goal_repository->renameFlashcardCategory($args);
+    }
 }

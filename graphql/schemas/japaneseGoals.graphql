@@ -4,6 +4,7 @@ extend type Mutation {
     update_japanese_goals(input: UpdateJapaneseGoalInput! @spread): JapaneseGoal @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@updateJapaneseGoal")
     upsert_japanese_goals(input: UpsertJapaneseGoalInput! @spread): JapaneseGoal @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@upsertJapaneseGoal")
     updateMeetUrl_sing_with_friend(input: UpdateMeetUrlInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@updateMeetUrl_sing_with_friend")
+    rename_flashcard_category(old_name: String!, new_name: String! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\JapaneseGoalMutations@renameFlashcardCategory")
 }
 extend type Query {
     japanese_goals: [JapaneseGoal] @paginate(type: "paginator" model: "App\\Models\\JapaneseGoal")
