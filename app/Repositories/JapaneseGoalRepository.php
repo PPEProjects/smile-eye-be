@@ -294,7 +294,7 @@ class JapaneseGoalRepository
         sort($category); 
         $sortCate = array_merge($newCate,$category);
         $category = array_flip($sortCate);
-        foreach ($category as $key => $value) {
+        foreach ($category as $key => $valuere) {
             $category[$key] = [];
         }
         foreach ($getCate as $value) {
@@ -343,6 +343,14 @@ class JapaneseGoalRepository
     public function renameFlashcardCategory($args)
     {
         $jpGoal = $this->getJapaneseGoal('type', 'flashcard_category')->first();
+        $flashcard = $this->flashcardCategory(['type' => $args['old_name']]);
+        foreach($flashcard['list'] as $key => $value){
+            $id = $value['id'];
+            $value['flashcard_category'] = $args['new_name'];
+            $more = array_diff_key($value, array_flip(['id']));
+            tap(JapaneseGoal::findOrFail($id))
+            ->update(['more' => $more]);
+        }
         foreach($jpGoal->more as $key => $value){
             if($value == $args['old_name']){
                 $jpGoal->more = array_replace($jpGoal->more, [$key => $args['new_name']]);
