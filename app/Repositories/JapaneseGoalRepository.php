@@ -264,7 +264,12 @@ class JapaneseGoalRepository
             $flashCardIds = $detailJPGoal->more['flashcard_ids'];
             $flashCard = JapaneseGoal::whereIn('id', $flashCardIds)->get();
             $detailJPGoal->card_box_topics = @$detailJPGoal->more['card_box_topics'];
-            $detailJPGoal->more = $flashCard;
+            $more = [];
+            foreach($flashCard as $value)
+            {
+                $more[] = array_merge(['id' => $value->id], $value->more);
+            }
+            $detailJPGoal->more = $more;
         }
         return $detailJPGoal;
     }
