@@ -87,7 +87,7 @@ class AttachmentController extends Controller
                         'file'      => $fileName,
                         'file_type' => 'image',
                         'file_name' => $fileRootName,
-                        'file_size' => $file->getSize()
+                        'file_size' => filesize($filePath)
                     ]);
                     $create = Attachment::create($attachment);
                     if ($create) {
