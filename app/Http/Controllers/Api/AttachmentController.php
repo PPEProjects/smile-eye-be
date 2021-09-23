@@ -86,8 +86,8 @@ class AttachmentController extends Controller
                         'user_id'   => Auth::id(),
                         'file'      => $fileName,
                         'file_type' => 'image',
-                        'file_name' => $fileRootName
-                        // 'file_size' => $file->getSize()
+                        'file_name' => $fileRootName,
+                        'file_size' => $file->getSize()
                     ]);
                     $create = Attachment::create($attachment);
                     if ($create) {
