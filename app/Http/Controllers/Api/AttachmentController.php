@@ -81,7 +81,7 @@ class AttachmentController extends Controller
                     $filePath = storage_path() . "/app/public";
                     $file->move($filePath . '/media/images_NOT_SUPPORT', $fileName);
                 }
-                // if ($isConverted) {
+                if ($isConverted) {
                     $attachment = array_merge($request->all(), [
                         'user_id'   => Auth::id(),
                         'file'      => $fileName,
@@ -97,7 +97,7 @@ class AttachmentController extends Controller
                         $create->file = $file;
                         $create->thumb = $thumb;
                     }
-                // }
+                }
                 return response()->json(@$create);
                 break;
             case 'video':
