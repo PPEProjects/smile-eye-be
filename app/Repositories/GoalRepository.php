@@ -138,7 +138,7 @@ class GoalRepository
     public function getTreeSortByGoalId($goalId, $userId = null)
     {
         $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id')
-        ->orderBy('index', 'ASC');
+        ->orderByRaw('-`index` DESC');
 
     if ($userId) {
         $goals = $goals->where("user_id", $userId);
@@ -208,7 +208,7 @@ class GoalRepository
         $temp = in_array($goalId, $goal_ids);
         if ($temp) {
             $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, status')
-                ->orderBy('index', 'ASC')
+                ->orderByRaw('-`index` DESC')
                 ->get();
             $goals = $this->goalAll($goals);
 
