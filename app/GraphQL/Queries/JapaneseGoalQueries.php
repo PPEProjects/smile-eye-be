@@ -45,7 +45,7 @@ class JapaneseGoalQueries
     public function myDiary($_,array $args){
        
         $diary = User::find(Auth::id())->japanese_goals;
-        $diary = $diary->where("type",$args["type"]);
+        $diary = $diary->where("type",$args["type"])->sortByDESC('id');
         if ($args["type"] == "diary") {
           $result = $this->getDiary($diary);
           return $result;
@@ -61,7 +61,7 @@ class JapaneseGoalQueries
             $ids[] = $value->id;
         }
     }
-    $diary = JapaneseGoal::whereIn('id', $ids)->get();   
+    $diary = JapaneseGoal::whereIn('id', $ids)->orderBy('id', 'DESC')->get();   
     $result = $this->getDiary($diary);
     return $result;
   }
