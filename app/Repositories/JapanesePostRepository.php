@@ -15,6 +15,7 @@ class JapanesePostRepository{
         return JapanesePost::create($args);
     }
 
+
     public function updateJapanesePost($args)
     {    
 //        if(isset($args['goal_id'])){

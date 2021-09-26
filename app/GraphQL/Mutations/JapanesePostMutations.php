@@ -3,13 +3,12 @@
 namespace App\GraphQL\Mutations;
 
 
-use App\Models\JapaneseLearn;
 use App\Models\JapanesePost;
 use App\Repositories\JapanesePostRepository;
-use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 
-class JapanesePostMutations{
+class JapanesePostMutations
+{
 
     private $japanese_post_repository;
 
@@ -17,18 +16,32 @@ class JapanesePostMutations{
     {
         $this->japanese_post_repository = $japanese_post_repository;
     }
-    public function createJapanesePost($_,array $args)
+
+    public function createJapanesePost($_, array $args)
     {
         $args['user_id'] = Auth::id();
         return $this->japanese_post_repository->createJapanesePost($args);
     }
-    public function updateJapanesePost($_,array $args)
+
+    public function updateJapanesePost($_, array $args)
     {
 //        $args['user_id'] = Auth::id();
         return $this->japanese_post_repository->updateJapanesePost($args);
     }
-    public function deleteJapanesePost($_,array $args)
+
+    public function deleteJapanesePost($_, array $args)
     {
         return $this->japanese_post_repository->deleteJapanesePost($args);
+    }
+
+
+    public function upsertJapanesePost($_, array $args)
+    {
+        $args['user_id'] = Auth::id();
+        $post = JapanesePost::updateOrCreate(
+            ['id' => @$args['id']],
+            $args
+        );
+        return $post;
     }
 }

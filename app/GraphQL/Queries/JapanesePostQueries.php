@@ -2,11 +2,8 @@
 
 namespace App\GraphQL\Queries;
 
-use App\Models\Goal;
 use App\Models\JapanesePost;
-use App\Models\User;
 use App\Repositories\JapanesePostRepository;
-use Illuminate\Support\Facades\Auth;
 
 class JapanesePostQueries
 {
@@ -16,14 +13,26 @@ class JapanesePostQueries
     {
         $this->japanese_post_repository = $japanese_post_repository;
     }
-  public function detailJapanesePost($_,array $args){
-        return $this->japanese_post_repository->detailJapanesePost($args);
-  }
-  public function myJapanesePost($_,array $args){ 
-        return  $this->japanese_post_repository->myJapanesePost();
-    }
-    public function otherJapanesePost($_,array $args)
+
+    public function detailJapanesePost($_, array $args)
     {
-        return  $this->japanese_post_repository->otherJapanesePost($args);
+        return $this->japanese_post_repository->detailJapanesePost($args);
+    }
+
+    public function myJapanesePost($_, array $args)
+    {
+        return $this->japanese_post_repository->myJapanesePost();
+    }
+
+    public function otherJapanesePost($_, array $args)
+    {
+        return $this->japanese_post_repository->otherJapanesePost($args);
+    }
+
+    public function listJapanesePost($_, array $args)
+    {
+//        return $this->japanese_post_repository->otherJapanesePost($args);
+        return JapanesePost::where('goal_id', $args['goal_id'])
+            ->get();
     }
 }

@@ -1,4 +1,5 @@
 extend type Mutation {
+    upsert_japanese_post(input: UpsertJapanesePostInput! @spread): JapanesePost @guard @field(resolver: "App\\GraphQL\\Mutations\\JapanesePostMutations@upsertJapanesePost")
     create_japanese_posts(input: CreateJapanesePostInput! @spread): JapanesePost @guard @field(resolver: "App\\GraphQL\\Mutations\\JapanesePostMutations@createJapanesePost")
     update_japanese_posts(input: UpdateJapanesePostInput! @spread): JapanesePost @guard @field(resolver: "App\\GraphQL\\Mutations\\JapanesePostMutations@updateJapanesePost")
     delete_japanese_posts(input: DeleteJapanesePostInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\JapanesePostMutations@deleteJapanesePost")
@@ -9,6 +10,7 @@ extend type Query {
     detail_japanese_posts(id: ID, goal_id: ID): JapanesePost @field(resolver:"JapanesePostQueries@detailJapanesePost")
     my_japanese_posts: [JapanesePost] @field(resolver:"JapanesePostQueries@myJapanesePost")
     other_japanese_posts(goal_id: ID): [JapanesePost] @field(resolver:"JapanesePostQueries@otherJapanesePost")
+    list_japanese_post(goal_id: ID): [JapanesePost] @field(resolver:"JapanesePostQueries@listJapanesePost")
 }
 
 type JapanesePost{
@@ -41,4 +43,10 @@ input UpdateJapanesePostInput{
 }
 input DeleteJapanesePostInput{
     id: ID!
+}
+input UpsertJapanesePostInput{
+    id : ID
+    goal_id:ID
+    title:String
+    description: String
 }
