@@ -185,33 +185,38 @@ class NotificationRepository
                     $noti->user_share_by = @$user_share_by->id;
                     break;
                 case 'achieve':
+                    $user = User::where("id",$noti->user_id)->first();
                     $content = $noti->content;
                     if (@$content['status'] == 'pending') {
-                        $messages->push('invite');
+                        $messages->push('invites you to achieve the');
                     }
                     $generalInfo = $this->generalinfo_repository->find($content['general_id']);
-                    if (@$generalInfo->task_id) {
-                        $messages->push('task');
-                        $task = $this->task_repository->find($generalInfo->task_id);
-                        if(!$task) return;
-                        $messages->push($task->name);
-                        $noti->task_id = $generalInfo->task_id;
-                    }
-                    else if (@$generalInfo->goal_id) {
-                        $messages->push('goal');
-                        $goal = $this->goal_repository->find($generalInfo->goal_id);
-                        if(!$goal) return;
-                        $messages->push($goal->name);
-                        $noti->goal_id = $generalInfo->goal_id;
+                    if(isset($generalInfo))
+                    {
+                        if (@$generalInfo->task_id) {
+                            $messages->push('task');
+                            $task = $this->task_repository->find($generalInfo->task_id);
+                            if(!$task) return;
+                            $messages->push($task->name);
+                            $noti->task_id = $generalInfo->task_id;
+                        }
+                        else if (@$generalInfo->goal_id) {
+                            $messages->push('goal');
+                            $goal = $this->goal_repository->find($generalInfo->goal_id);
+                            if(!$goal) return;
+                            $messages->push($goal->name);
+                            $noti->goal_id = $generalInfo->goal_id;
                         //find goal
-                    }else if (@$generalInfo->todolist_id) {
-                        $messages->push('todolist');
-                        $todo = $this->todolist_repository->find($generalInfo->todolist_id);
-                        if(!$todo) return;
-                        $messages->push($todo->name);
-                        $noti->todolist_id = $generalInfo->todolist_id;
+                        }else if (@$generalInfo->todolist_id) {
+                            $messages->push('todolist');
+                            $todo = $this->todolist_repository->find($generalInfo->todolist_id);
+                            if(!$todo) return;
+                            $messages->push($todo->name);
+                            $noti->todolist_id = $generalInfo->todolist_id;
                         //find todolist
-                    }else{
+                        }
+                    }
+                    else{
                         return;
                     }
                     break;

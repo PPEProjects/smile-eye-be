@@ -152,22 +152,18 @@ class JapaneseGoalRepository
                 $useInvite[] = $japaneseGoal->user_id;
                 $this->notification_repository->staticNotification("edit_diary", $japaneseGoal->id, $japaneseGoal,
                     $useInvite);
-            } 
-            else if(isset(current($args['more'])['is_read']) || isset($args['more'][0]['content']))
-            {
-                if(isset(current($args['more'])['is_read'])){
-                    $isRead = current($args['more'])['is_read'];
+            } else{
+                if ($japaneseGoal->user_id == $userId && isset($args['more'][0]['content'])) 
+                {
+                    $content = $args['more'][0]['content'];      
+                    $args['more'] = $japaneseGoal->more;
+                    $args['more'][0]['content'] = $content;            
+                } else {
+                    $args = array_diff_key($args, array_flip(['more']));
                 }
-                if ($japaneseGoal->user_id == $userId && isset($args['more'][0]['content'])) {
-                    $content = $args['more'][0]['content'];                  
-                } 
-                $args['more'] = $japaneseGoal->more;
-                $args['more'][0]['is_read'] = @$isRead ?? @$japaneseGoal->more[0]['is_read'] ?? false;
-                $args['more'][0]['content'] = @$content ?? $japaneseGoal->more[0]['content'];
+               
             }
-            else {
-                $args = array_diff_key($args, array_flip(['more']));
-            }
+            
         }
         if ($japaneseGoal->type == 'sing_with_friend') {
             if(isset($args['more']['user_invite_ids'])){
