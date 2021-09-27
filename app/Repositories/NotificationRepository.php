@@ -197,21 +197,21 @@ class NotificationRepository
                             $messages->push('task');
                             $task = $this->task_repository->find($generalInfo->task_id);
                             if(!$task) return;
-                            $messages->push($task->name);
+                            $messages->push('"'.$task->name.'"');
                             $noti->task_id = $generalInfo->task_id;
                         }
                         else if (@$generalInfo->goal_id) {
                             $messages->push('goal');
                             $goal = $this->goal_repository->find($generalInfo->goal_id);
                             if(!$goal) return;
-                            $messages->push($goal->name);
+                            $messages->push('"'.$goal->name.'"');
                             $noti->goal_id = $generalInfo->goal_id;
                         //find goal
                         }else if (@$generalInfo->todolist_id) {
                             $messages->push('todolist');
                             $todo = $this->todolist_repository->find($generalInfo->todolist_id);
                             if(!$todo) return;
-                            $messages->push($todo->name);
+                            $messages->push('"'.$todo->name.'"');
                             $noti->todolist_id = $generalInfo->todolist_id;
                         //find todolist
                         }
