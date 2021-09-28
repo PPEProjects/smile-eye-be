@@ -178,7 +178,6 @@ class GoalRepository
     $checktreeEmpty = $getIds['tree_empty'];
     $pTree = $goals->where('id', $goalId)->first();
     $treeEmpty = $goals->where('title', "")->pluck('id');
-    $deleteEmpty = Goal::whereIn('id', $treeEmpty)->delete();
     $treeEmpty = array_intersect($treeEmpty->toArray(), $checktreeEmpty);
     if ($pTree) {
         $pTree->children = $tree;
