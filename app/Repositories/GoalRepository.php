@@ -137,6 +137,11 @@ class GoalRepository
 
     public function getTreeSortByGoalId($goalId, $userId = null)
     {
+        //Delete when name goal is null
+        $deleteEmty = Goal::where('user_id', Auth::id())->get();
+        $nameEmty = $deleteEmty->where('name', "")->pluck('id');
+        $delete = Goal::whereIn('id', $nameEmty)->delete();
+
         $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id')
         ->orderByRaw('-`index` DESC');
 
