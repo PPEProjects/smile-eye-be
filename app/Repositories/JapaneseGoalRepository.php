@@ -212,7 +212,7 @@ class JapaneseGoalRepository
         if (isset($detailJPGoal->goal_id)) {
             $goalRoot = $this->findGoal($detailJPGoal->goal_id);
             while (true) {
-                if (isset($goalRoot->parent_id)) {
+                if (isset($goalRoot->parent_id) &&  @$goalRoot->parent_id != 0) {
                     $goalRoot = $this->findGoal($goalRoot->parent_id);
                 } else {
                     break;
