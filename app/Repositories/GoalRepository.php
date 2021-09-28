@@ -137,6 +137,13 @@ class GoalRepository
 
     public function getTreeSortByGoalId($goalId, $userId = null)
     {
+        //Delete when name is empty
+        $getMyGoal = Goal::whereRaw("user_id = ".Auth::id()." and created_at < updated_at")->get();
+        $getNameEmpty = $getMyGoal->where('name', "")->pluck('id');
+        if($getNameEmpty->toArray() != []){
+           $deleteNameEmpty = Goal::whereIn('id', $getNameEmpty)->delete();
+        }
+
         $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id')
         ->orderByRaw('-`index` DESC');
 
@@ -178,9 +185,6 @@ class GoalRepository
     $checktreeEmpty = $getIds['tree_empty'];
     $pTree = $goals->where('id', $goalId)->first();
     $treeEmpty = $goals->where('title', "")->pluck('id');
-    if($treeEmpty->toArray() != []){
-        $deleteEmpty = Goal::whereIn('id', $treeEmpty)->delete();
-    }
     $treeEmpty = array_intersect($treeEmpty->toArray(), $checktreeEmpty);
     if ($pTree) {
         $pTree->children = $tree;
