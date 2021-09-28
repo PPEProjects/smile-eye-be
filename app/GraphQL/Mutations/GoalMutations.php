@@ -140,6 +140,11 @@ class GoalMutations
                 }
                 $args = array_diff_key($args, array_flip(['locks', 'is_lock']));
             }
+            //Delete when name is empty
+        if( $args['name'] == "" || !isset($args['name'])){
+           $deleteNameEmpty = Goal::find($args['id'])->delete();
+           return $deleteNameEmpty;
+        }
         }
         $goal = Goal::updateOrCreate(
             ['id' => @$args['id']],
