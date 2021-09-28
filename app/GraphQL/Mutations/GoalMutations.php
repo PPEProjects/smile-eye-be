@@ -143,7 +143,9 @@ class GoalMutations
             //Delete when name is empty
         if( $args['name'] == "" || !isset($args['name'])){
            $deleteNameEmpty = Goal::find($args['id'])->delete();
-           return $deleteNameEmpty;
+           if (isset($args['root_id'])) {
+                return $this->goal_repository->getTreeSortByGoalId($args['root_id'], Auth::id());
+            }
         }
         }
         $goal = Goal::updateOrCreate(
