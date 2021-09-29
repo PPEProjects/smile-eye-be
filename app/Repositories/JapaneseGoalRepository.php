@@ -253,12 +253,15 @@ class JapaneseGoalRepository
             }
             $nextGoal = @$this->findGoal($keyNext);
             $prevGoal = @$this->findGoal($keyPrev);
-            if (isset($nextGoal)) {
+            if (isset($nextGoal) && isset($getTypeNextGoal->type)) {
                 $nextGoal->type = @$getTypeNextGoal->type;
             }
-            if (isset($prevGoal)) {
+            else $nextGoal = null;
+
+            if (isset($prevGoal) && isset($getTypePrevGoal->type)) {
                 $prevGoal->type = @$getTypePrevGoal->type;
             }
+            else $prevGoal = null;
             $detailJPGoal->next_goal = $nextGoal;
             $detailJPGoal->prev_goal = $prevGoal;
         }
