@@ -141,7 +141,7 @@ class JapaneseGoalRepository
         }
         $userId = Auth::id();
         if ($japaneseGoal->type == "diary") {
-            $checkIdUser = array_intersect($japaneseGoal->more[0]['user_invite_ids'], [$userId]);
+            $checkIdUser = array_intersect(@$japaneseGoal->more[0]['user_invite_ids'] ?? [], [$userId]);
 
             if ($checkIdUser != [] && isset($args['more'][0]['other'])) {
                 $other = $args['more'][0]['other'];
