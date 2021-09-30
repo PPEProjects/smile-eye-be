@@ -107,8 +107,8 @@ class GoalQueries
         }
         $goals = $goals->get();
         $getgoalIds = $goals->pluck('id')->toArray();
-        $japaneseGoals = JapaneseGoal::whereIn('goal_id', $getgoalIds)->where('type', 'diary')->get();
-        if(isset($japaneseGoals)){
+        $japaneseGoals = JapaneseGoal::whereIn('goal_id', $getgoalIds)->get();
+        if(isset($japaneseGoals) && $args['parent_id'] == 'root'){
             $getIdJapaneseGoals = $japaneseGoals->pluck('goal_id')->toArray();
             $goals = $goals->whereNotIn('id', $getIdJapaneseGoals);
         }
