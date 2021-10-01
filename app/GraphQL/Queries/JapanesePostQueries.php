@@ -4,6 +4,7 @@ namespace App\GraphQL\Queries;
 
 use App\Models\JapanesePost;
 use App\Repositories\JapanesePostRepository;
+use Illuminate\Support\Facades\Auth;
 
 class JapanesePostQueries
 {
@@ -31,8 +32,13 @@ class JapanesePostQueries
 
     public function listJapanesePost($_, array $args)
     {
-//        return $this->japanese_post_repository->otherJapanesePost($args);
-        return JapanesePost::where('goal_id', $args['goal_id'])
+//        $posts = JapanesePost::selectRaw("id, user_id, CASE
+        $posts = JapanesePost::selectRaw("*, CASE
+                WHEN user_id = ".Auth::id()." THEN 1
+                ELSE 0 END AS pin_index")
+            ->where('goal_id', $args['goal_id'])
+            ->orderBy('pin_index', 'desc')
             ->get();
+        return $posts;
     }
 }
