@@ -33,6 +33,16 @@ class JapaneseGoalRepository
 //        if (!isset($args['type'])) {
 //            throw new Error('You must input type');
 //        }
+        if($args['type'] == 'flashcard'){
+            $flashCard = $this->getJapaneseGoal('type','flashcard');
+            $getMore = $flashCard->pluck('more')->toArray();
+            foreach($getMore as $value){
+                if($value['name'] == $args['more']['name']){
+                    throw new Error("This card is already existed. Please choose another name");
+                    break;
+                }
+            }
+        }
         if ($args['type'] == "diary" && isset($args['more'][0]['user_invite_ids'])) {
             $idUserInvited = $args['more'][0]['user_invite_ids'];
             foreach ($idUserInvited as $value) {
@@ -55,6 +65,9 @@ class JapaneseGoalRepository
         if ($args['type'] == 'flashcard_category') {
             $cate = $this->getJapaneseGoal('type', $args['type'])->first();
             if (isset($cate)) {
+                if(array_intersect($cate->more, $args['more'])){
+                    throw new Error("This category already existed. Please choose another name");
+                }
                 $args['more'] = array_diff($args['more'], array_merge($cate->more, [null]));
                 $args['more'] = array_merge($cate->more, $args['more']);
             }
@@ -78,7 +91,7 @@ class JapaneseGoalRepository
                 }
             }
         }
-        if ($args["type"] == "flash_card") {
+        if ($args["type"] == "flashcard") {
             $more = $jpGoal->more;
             if (isset($more["user_invite_ids"])) {
                 $user_invited_ids = $more["user_invite_ids"];
@@ -362,6 +375,10 @@ class JapaneseGoalRepository
             ->update(['more' => $more]);
         }
         foreach($jpGoal->more as $key => $value){
+            if($value == $args['new_name']){
+                throw new Error("This category is already existed. Please choose another name");
+                break;
+            }
             if($value == $args['old_name']){
                 $jpGoal->more = array_replace($jpGoal->more, [$key => $args['new_name']]);
                 break;
