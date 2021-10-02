@@ -33,6 +33,16 @@ class JapaneseGoalRepository
 //        if (!isset($args['type'])) {
 //            throw new Error('You must input type');
 //        }
+        if($args['type'] == 'flashcard'){
+            $flashCard = $this->getJapaneseGoal('type','flashcard');
+            $getMore = $flashCard->pluck('more')->toArray();
+            foreach($getMore as $value){
+                if($value['card_caption'] == $args['more']['card_caption']){
+                    throw new Error("This card is already existed. Please choose another name");
+                    break;
+                }
+            }
+        }
         if ($args['type'] == "diary" && isset($args['more'][0]['user_invite_ids'])) {
             $idUserInvited = $args['more'][0]['user_invite_ids'];
             foreach ($idUserInvited as $value) {
