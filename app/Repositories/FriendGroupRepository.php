@@ -20,8 +20,13 @@ class FriendGroupRepository
         return $friendGroup->delete();
     }
     public function myfriendGroups(){
-        $args['user_id'] = Auth::id();
-        return FriendGroup::where('user_id',$args['user_id'])->orderBy('id', 'DESC')->get();
+        $userId = Auth::id();
+        $myGroups = FriendGroup::where('user_id',$userId)->orderBy('id', 'DESC')->get();
+        $inviteGroups = FriendGroup::where('people', 'like', '%"user_id":'.$userId.'%')
+                                        ->whereNotIn('user_id', [$userId])
+                                        ->orderBy('id', 'DESC')->get();
+        $groups = $myGroups->merge($inviteGroups);
+        return $groups;
     }
     public function detailfriendGroups($args){
         $args['user_id'] = Auth::id();
