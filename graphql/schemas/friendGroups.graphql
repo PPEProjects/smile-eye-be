@@ -1,0 +1,35 @@
+extend type Mutation {
+    create_friend_groups(input: CreateFriendGroupInput! @spread): FriendGroup @guard @field(resolver: "App\\GraphQL\\Mutations\\FriendGroupMutations@createfriendGroups")
+    update_friend_groups(input: UpdateFriendGroupInput! @spread): FriendGroup @guard @field(resolver: "App\\GraphQL\\Mutations\\FriendGroupMutations@updatefriendGroups")
+    delete_friend_groups(input: DeleteFriendGroupInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\FriendGroupMutations@deletefriendGroups")
+}
+
+extend type Query {
+    friend_groups: [FriendGroup!]! @paginate(type: "paginator" model: "App\\Models\\FriendGroup")
+    my_friend_groups: [FriendGroup] @field(resolver:"FriendGroupQueries@myFriendGroups")
+    detail_friend_groups(id:ID): FriendGroup @field(resolver:"FriendGroupQueries@detailFriendGroups")
+}
+
+type FriendGroup{
+    id: ID
+    user: User
+    name: String
+    people: JSON
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateFriendGroupInput{
+    name: String
+    people: JSON
+}
+
+input UpdateFriendGroupInput{
+    id: ID
+    name: String
+    people: JSON
+}
+
+input DeleteFriendGroupInput{
+    id: ID!
+}
