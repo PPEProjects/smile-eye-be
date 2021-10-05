@@ -7,6 +7,7 @@ use App\Models\Achieve;
 use App\Models\Attachment;
 use App\Models\Comment;
 use App\Models\Friend;
+use App\Models\FriendGroup;
 use App\Models\GeneralInfo;
 use App\Models\Goal;
 use App\Models\JapaneseGoal;
@@ -340,6 +341,14 @@ class NotificationRepository
                             } else return;
                         } else return;
                     break;
+                case 'friend_group':
+                        $content = $noti->content;
+                        $key = array_key_first($content);
+                        $friendGroup = FriendGroup::find($noti->type_id);
+                        if(isset($friendGroup)){
+                            $messages->push("Invite you to join group '".$friendGroup->name."'" );
+                        }else return;
+                    break;    
                 case 'diary':
                         $content = $noti->content;
                         $key = array_key_first($content);

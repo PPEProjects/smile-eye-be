@@ -7,9 +7,24 @@ use Illuminate\Support\Facades\Auth;
 
 class FriendGroupRepository
 {
+    public function __construct(
+        NotificationRepository $notificationRepository
+    ) 
+    {    
+        $this->notification_repository = $notificationRepository;
+    }
     public function createfriendGroups($args){
-        $args['user_id'] = Auth::id();
-        return FriendGroup::create($args);
+        $userId = Auth::id();
+        $userInvitedIds = [];
+        foreach($args['people'] as $value){
+            if($value['user_id'] != $userId){
+                $userInvitedIds[] = $value['user_id'];
+            }
+        }   
+        $args['user_id'] = $userId;
+        $friendGroup = FriendGroup::create($args);
+        $this->notification_repository->staticNotification("friend_group", $friendGroup->id, $friendGroup, $userInvitedIds);
+        return $friendGroup;
     }
     public function updatefriendGroups($args){
         $args['user_id'] = Auth::id();
