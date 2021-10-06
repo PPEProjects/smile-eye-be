@@ -15,15 +15,20 @@ class FriendGroupMutations{
       $this->friend_group_repository = $friend_group_repository;
      }
 
-    public function createfriendGroups($_,array $args){
-            return $this->friend_group_repository->createfriendGroups($args);
+    public function createFriendGroups($_,array $args){
+            return $this->friend_group_repository->createFriendGroups($args);
     }
-    public function updatefriendGroups($_,array $args){
-        return $this->friend_group_repository->updatefriendGroups($args);
+    public function updateFriendGroups($_,array $args){
+        return $this->friend_group_repository->updateFriendGroups($args);
     
     }
-    public function deletefriendGroups($_,array $args){
-        return $this->friend_group_repository->deletefriendGroups($args);
+    public function deleteFriendGroups($_,array $args){
+        return $this->friend_group_repository->deleteFriendGroups($args);
     }
-    
+    public function deleteMemberFriendGroups($_,array $args){
+        return $this->friend_group_repository->deleteMemberFriendGroups($args);
+    }
+    public function addMemberFriendGroups($_,array $args){
+        return $this->friend_group_repository->addMemberFriendGroups($args);
+    }
 }

@@ -16,7 +16,9 @@ class FriendGroupQueries
         return $this->friend_group_repository->myFriendGroups();
  }
  public function detailFriendGroups($_,array $args){
-  return $this->friend_group_repository->detailFriendGroups($args);
+    return $this->friend_group_repository->detailFriendGroups($args);
  }
- 
+ public function searchFriendGroups($_,array $args){
+  return $this->friend_group_repository->searchFriendGroups($args);
+}
 }
