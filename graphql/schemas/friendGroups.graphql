@@ -4,6 +4,7 @@ extend type Mutation {
     delete_friend_groups(input: DeleteFriendGroupInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\FriendGroupMutations@deleteFriendGroups")
     delete_member_friend_groups(input: DeleteMemberFriendGroupInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\FriendGroupMutations@deleteMemberFriendGroups")
     add_member_friend_groups(input: AddMemberFriendGroupInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\FriendGroupMutations@addMemberFriendGroups")
+    change_role_friend_groups(input: ChangeRoleFriendGroupInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\FriendGroupMutations@changeRoleFriendGroups")
 
 }
 
@@ -47,4 +48,9 @@ input DeleteMemberFriendGroupInput{
 input AddMemberFriendGroupInput{
     id: ID!
     user_ids: [ID!]
+}
+input ChangeRoleFriendGroupInput{
+    id: ID!
+    user_id: ID!
+    role: String! @rules(apply: ["in:admin,mod,member"])
 }

@@ -35,43 +35,46 @@ class FriendGroupRepository
         return $friendGroup->delete();
     }
     public function checkRoleMemberFriendGroups($id, $userId, $member = null){
-        $roleAdmin = $this->getfriendGroupsByRole($userId, 'admin');
-        $roleAdmin = $roleAdmin->where('id', $id)->first();
+        $myRoleAdmin = $this->getfriendGroupsByRole($userId, 'admin');
+        $myRoleAdmin = $myRoleAdmin->where('id', $id)->first();
 
-        $roleMod = $this->getfriendGroupsByRole($userId, 'mod');
-        $roleMod = $roleMod->where('id', $id)->first();
+        $myRoleMod = $this->getfriendGroupsByRole($userId, 'mod');
+        $myRoleMod = $myRoleMod->where('id', $id)->first();
 
-        $userDeleteAdmin = $this->getfriendGroupsByRole($member, 'admin')->where('id', $id)->first();
-        $userDeleteMod = $this->getfriendGroupsByRole($member, 'mod')->where('id', $id)->first();
+        $userAdmin = $this->getfriendGroupsByRole($member, 'admin')->where('id', $id)->first();
+        $userMod = $this->getfriendGroupsByRole($member, 'mod')->where('id', $id)->first();
         $role = "member";
-        if(isset($roleAdmin)){
-            $friendGroup = $roleAdmin;
+        if(isset($myRoleAdmin)){
+            $friendGroup = $myRoleAdmin;
             $role = 'admin';
         }
-        else if(isset($roleMod)){
-            $friendGroup = $roleMod;
+        else if(isset($myRoleMod)){
+            $friendGroup = $myRoleMod;
             $role = 'mod';
         }
         if(isset($friendGroup)){
             switch ($role) {
                 case 'admin':
-                    if(isset($userDeleteAdmin)) return false;
+                    // if(isset($userDeleteAdmin)) return false;
                     break;
                 case 'mod':
-                    if(isset($userDeleteMod) || isset($userDeleteAdmin)) return false;
+                    if(isset($userMod) || isset($userAdmin)) {
+                        return ['role'=>$role, 'friend_groups'=> false];
+                    }
                     break;
                 default:
-                    return false;
+                    return ['role'=>'member', 'friend_groups'=> false];
                     break;
             }
-            return $friendGroup;
+            return ['role'=> $role, 'friend_groups'=>$friendGroup];
         }
-        return false;
+       return ['role'=> false, 'friend_groups'=> false];
     }
     public function deleteMemberFriendGroups($args)
     {
         $userId = Auth::id();
-        $friendGroup = $this->checkRoleMemberFriendGroups($args['id'], $userId, $args['user_id']);
+        $check = $this->checkRoleMemberFriendGroups($args['id'], $userId, $args['user_id']);
+        $friendGroup = $check['friend_groups'];
         if($friendGroup){
             $resetMember = [];
             foreach ($friendGroup->people as $value) {
@@ -88,7 +91,8 @@ class FriendGroupRepository
     public function addMemberFriendGroups($args)
     {
         $userId = Auth::id();
-        $friendGroup = $this->checkRoleMemberFriendGroups($args['id'], $userId);
+        $check = $this->checkRoleMemberFriendGroups($args['id'], $userId);
+        $friendGroup = $check['friend_groups'];
         if($friendGroup)
         {
             $resetMember = [];
@@ -103,6 +107,39 @@ class FriendGroupRepository
             $updateFriendGroup = ['id'=> $args['id'], 'people' => $people];
             $update = $this->updatefriendGroups($updateFriendGroup);
             $this->notification_repository->staticNotification("friend_group", $update->id, $update,  $userIdInvited);
+        }
+        return $friendGroup;
+    }
+    public function changeRoleFriendGroups($args){
+        $userId = Auth::id();
+        $check = $this->checkRoleMemberFriendGroups($args['id'], $userId);
+        $friendGroup = $check['friend_groups'];
+        $role = $check['role'];
+        if($friendGroup && $role == 'admin')
+        {
+            $resetMember = [];
+            if($role == 'admin' && $args['role'] == 'admin')
+            {
+                foreach ($friendGroup->people as $value) {
+                    if($value['user_id'] == $args['user_id']){
+                        $resetMember[] = ['user_id'=> intval($args['user_id']), 'role' => $args['role']];
+                        $resetMember[] = ['user_id'=> intval($userId), 'role' => $value['role']];
+                    }
+                    if($value['user_id'] == $userId ) continue;
+                    $resetMember[] = $value;
+                }            
+            }
+            else
+            {
+                foreach ($friendGroup->people as $value) {
+                    if($value['user_id'] == $args['user_id']){
+                        $resetMember[] = ['user_id'=> intval($args['user_id']), 'role' => $args['role']];
+                    }
+                    else $resetMember[] = $value;
+                }  
+            }   
+            $updateFriendGroup = ['id'=> $args['id'], 'people' => $resetMember];
+            $this->updatefriendGroups($updateFriendGroup);      
         }
         return $friendGroup;
     }
