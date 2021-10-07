@@ -309,7 +309,7 @@ class NotificationRepository
                             if(isset($goal)){
                                 if(isset($content['message']))
                                 {
-                                    $messages->push($content['message']." ".$goal->name);
+                                    $messages->push('invites you to sing '.$goal->name);
                                 }
                                 else
                                 {
@@ -331,7 +331,7 @@ class NotificationRepository
                             if(isset($goal)){  
                                  if(isset($content['message']))
                                 {
-                                     $messages->push($content['message']." ".$goal->name);
+                                     $messages->push("Invites to join communication with ".$goal->name);
                                 }
                                  else
                                 {
@@ -358,7 +358,7 @@ class NotificationRepository
                             $user = User::where("id",$noti["user_id"])->first();
                             $goal = Goal::where("id",$japaneseGoal->goal_id)->first(); 
                             if(isset($goal)){  
-                                $messages->push("Invite see diary'".$goal->name."'" );
+                                $messages->push("Invites you to review '".$goal->name."'" );
                                 $noti->type_id = $goal->id;
                             } else return;
                         }
