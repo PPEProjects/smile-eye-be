@@ -244,24 +244,27 @@ class JapaneseGoalRepository
                 }
                 $detailJPGoal->list_users = @$users;
             }
-            $childrenIds = $this->japaneseLearn_repository->goalNochild([$goalRoot->id]);
-            $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);
             $keyNext = 0;
             $keyPrev = 0;
-            foreach ($childrenIds as $key => $value) {
-                if ($key > $findIds) {
-                    if (isset($getTypeNextGoal)) {
-                        continue;
+            if(isset($goalRoot->id))
+            {
+                $childrenIds = $this->japaneseLearn_repository->goalNochild([$goalRoot->id]);
+                $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);          
+                foreach ($childrenIds as $key => $value) {
+                    if ($key > $findIds) {
+                        if (isset($getTypeNextGoal)) {
+                            continue;
+                        }
+                        $getTypeNextGoal = @$this->getJapaneseGoal('goal_id', $value)->first();
+                        $keyNext = $value;
                     }
-                    $getTypeNextGoal = @$this->getJapaneseGoal('goal_id', $value)->first();
-                    $keyNext = $value;
-                }
-                if ($key > 0 && $key <= $findIds) {
-                    if (isset($getTypePrevGoal)) {
-                        continue;
+                    if ($key > 0 && $key <= $findIds) {
+                        if (isset($getTypePrevGoal)) {
+                            continue;
+                        }
+                        $getTypePrevGoal = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds - $key])->first();
+                        $keyPrev = $childrenIds[$findIds - $key];
                     }
-                    $getTypePrevGoal = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds - $key])->first();
-                    $keyPrev = $childrenIds[$findIds - $key];
                 }
             }
             $nextGoal = @$this->findGoal($keyNext);
