@@ -43,8 +43,8 @@ class JapaneseGoalQueries
         return $result;
  }
     public function myDiary($_,array $args){
-       
-        $diary = User::find(Auth::id())->japanese_goals;
+        $userId = Auth::id();
+        $diary = User::find($userId)->japanese_goals;
         $diary = $diary->where("type",$args["type"])->sortByDESC('id');
         if ($args["type"] == "diary") {
           $result = $this->getDiary($diary);
@@ -61,7 +61,7 @@ class JapaneseGoalQueries
             $ids[] = $value->id;
         }
     }
-    $diary = JapaneseGoal::whereIn('id', $ids)->orderBy('id', 'DESC')->get();   
+    $diary = JapaneseGoal::whereIn('id', $ids)->orderBy('id', 'DESC')->get(); 
     $result = $this->getDiary($diary);
     return $result;
   }
@@ -71,10 +71,11 @@ class JapaneseGoalQueries
     $findIdGoals = $diary->pluck('goal_id');
     $getGoals = Goal::whereIn('id', $findIdGoals)->get()->keyBy('id');
     $nameGoals = $getGoals->toArray();
-    $user = User::select('id','name')->where('id', Auth::id())->first();
+    
     foreach ($diary as $value) {     
        if(isset($nameGoals[$value->goal_id]['name'])){
-            $result->push(["id" => $value->id, "user" => $user->toArray() ,"goal_name"=>$nameGoals[$value->goal_id]['name'], "more"=>$value->more]);
+            $user = User::select('id','name')->where('id', $value->user_id)->first();
+            $result->push(["id" => $value->id, "user" => @$user->toArray() ,"goal_name"=>$nameGoals[$value->goal_id]['name'], "more"=>$value->more]);
         }else
         $result = $result->push(["id" => $value->id,"goal_name"=> Null,"more"=>$value->more]);         
     }
