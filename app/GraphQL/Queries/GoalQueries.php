@@ -125,7 +125,7 @@ class GoalQueries
                     $goal->next_goal = @$nextGoal[$goal->id];
                     return $goal;
             });
-        return $goals;
+        return $goals->sortByDESC('is_pined');
     }
     public function nextGoal($goalIds = []){
         foreach($goalIds as $value)

@@ -9,6 +9,7 @@ use App\Models\JapaneseGoal;
 use App\Models\Task;
 use App\Models\Todolist;
 use Carbon\Carbon;
+use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use ppeCore\dvtinh\Services\AttachmentService;
 
@@ -794,7 +795,15 @@ class GoalRepository
 
     public function copyGoal($args)
     {
+        $userId = Auth::id();
         $goalRoot = Goal::find($args['id']);
+        $myGoals = Goal::where('user_id', $userId)->whereNull('parent_id')->get();
+        $getNameGoal = $goalRoot->name;
+        $getNameMyGoals = $myGoals->pluck('name')->toArray();
+        $check = array_intersect($getNameMyGoals, [$getNameGoal]);
+        if($check != []){
+            throw new Error("This goal is already exist");     
+        }
         $goals = self::childrenGoal($args['id']);
         $goals = array_merge([$goalRoot->toArray()], $goals);
         $newGoals = [];
@@ -803,7 +812,7 @@ class GoalRepository
             $general = GeneralInfo::where('goal_id', $value['id'])->first();
             $japaneseGoal = JapaneseGoal::where('goal_id', $value)->first();
             $args = array_diff_key($value, array_flip(['user_id','id', 'parent_id']));
-            $args['user_id'] = Auth::id();
+            $args['user_id'] = $userId;
             $createGoal = Goal::create($args);
             if($general){
                 $general = array_diff_key($general->toArray(), 
