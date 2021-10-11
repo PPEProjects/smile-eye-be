@@ -75,7 +75,8 @@ class JapaneseGoalQueries
     foreach ($diary as $value) {     
        if(isset($nameGoals[$value->goal_id]['name'])){
             $user = User::select('id','name')->where('id', $value->user_id)->first();
-            $result->push(["id" => $value->id, "user" => @$user->toArray() ,"goal_name"=>$nameGoals[$value->goal_id]['name'], "more"=>$value->more]);
+            $result->push(["id" => $value->id, "user" => @$user->toArray() ,
+                            "goal"=>['id' => $value->goal_id,'name' => $nameGoals[$value->goal_id]['name']], "more"=>$value->more]);
         }else
         $result = $result->push(["id" => $value->id,"goal_name"=> Null,"more"=>$value->more]);         
     }
@@ -96,7 +97,4 @@ class JapaneseGoalQueries
  public function myFlashcardStudy($_,array $args){
     return $this->japanese_goal_repository->myFlashcardStudy($args);
 }
-    public function myDiaryReview($_,array $args){
-        return $this->japanese_goal_repository->myDiaryReview();
-    }
 }

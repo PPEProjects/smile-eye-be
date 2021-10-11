@@ -391,34 +391,4 @@ class JapaneseGoalRepository
                     ->update(['more' => $jpGoal->more]);
         return $jpGoal;
     }
-    public function myDiaryReview()
-    {
-        $userId = Auth::id();
-        $diary = User::find($userId)->japanese_goals;
-        $diary = $diary->where("type", "diary")->sortByDESC('id');
-
-        $findIdGoals = $diary->pluck('goal_id');
-        $getGoals = Goal::whereIn('id', $findIdGoals)->get()->keyBy('id');
-        $nameGoals = $getGoals->toArray();   
-
-        $more = [];
-        $result = collect();
-        foreach($diary as $value)
-        {
-            foreach($value->more as $v)
-            {
-                $more = array_intersect_key($v , array_flip(['user_invite_ids', 'date', 'content']));
-                $other = array_diff_key($v , array_flip(['user_invite_ids', 'date']));
-                $other = array_diff($other, [@$v['content'] ?? '']);
-                $more = array_merge($more, $other);
-            }
-            if(isset($nameGoals[$value->goal_id]['name']))
-            {
-                $result->push(["id" => $value->id, "user" => ['id' => $value->user_id,'name' => $value->User->name],
-                                "goal_name"=>$nameGoals[$value->goal_id]['name'], "more"=>$more]);
-            }else
-                $result = $result->push(["id" => $value->id,"goal_name"=> Null,"more"=>$value->more]);
-        }
-        return $result;
-    }
 }
