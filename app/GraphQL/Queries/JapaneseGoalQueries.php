@@ -96,4 +96,7 @@ class JapaneseGoalQueries
  public function myFlashcardStudy($_,array $args){
     return $this->japanese_goal_repository->myFlashcardStudy($args);
 }
+    public function myDiaryReview($_,array $args){
+        return $this->japanese_goal_repository->myDiaryReview();
+    }
 }

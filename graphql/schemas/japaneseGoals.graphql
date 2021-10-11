@@ -14,6 +14,7 @@ extend type Query {
     my_basket_or_card(type:String!): JSON @guard @field(resolver:"JapaneseGoalQueries@myBasketOrCard")
     my_diary(type:String!): JSON @guard @field(resolver:"JapaneseGoalQueries@myDiary")
     my_diary_invited: JSON @guard @field(resolver:"JapaneseGoalQueries@myDiaryInvited")
+    my_diary_review: JSON @guard @field(resolver:"JapaneseGoalQueries@myDiaryReview")
     flashcard_category(type:String!): JSON @guard @field(resolver:"JapaneseGoalQueries@flashcardCategory")
     my_flashcard_study(goal_id:ID): JSON @guard @field(resolver:"JapaneseGoalQueries@myFlashcardStudy")
 }
