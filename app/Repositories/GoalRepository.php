@@ -784,6 +784,10 @@ class GoalRepository
         foreach($args['goal_move'] as $value){
             $value['index'] = $i;
             if(empty($value['parent_id'])){
+                 $checkGoalRoot = Goal::find($value['id']);
+               if(isset($checkGoalRoot->parent_id)){
+                   continue;
+               }
                 $value['parent_id'] = null;
             }
            $goalMove = tap(Goal::findOrFail($value["id"]))->update($value);
