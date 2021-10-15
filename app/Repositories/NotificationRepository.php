@@ -295,7 +295,7 @@ class NotificationRepository
                     $messages
                         ->push($user->name ." change ".
                             $key." ".$content[$key]["old"]." to ".$content[$key]["new"].
-                            " at your goal name <b>".$goal->name."/<b>" );
+                            " at your goal name ".$goal->name."" );
                     break;
                 case 'sing_with_friend':
                         $content = @$noti->content;
