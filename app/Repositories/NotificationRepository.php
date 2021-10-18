@@ -416,7 +416,7 @@ class NotificationRepository
             default:
         }
         if($args['user_receive_ids'] == []){
-            throw new Error("The invitation takes some more time to be accepted. Do you continue to invite?");
+            throw new Error("The invitation takes some more time to be accepted.");
         }
         foreach ($args['user_receive_ids'] as $single){
             $notiData = $args;
