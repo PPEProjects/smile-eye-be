@@ -27,9 +27,16 @@ class JapaneseKanjiRepository
     public function upsertJapaneseKanji($args)
     {
         $args['user_id'] = Auth::id();
-        if(isset($args['name']) && preg_match('/[\x{4E00}-\x{9FBF}]/u', $args['name']) <= 0){
-            throw new Error("Please input kanji");
-        }      
+        if(isset($args['name']))
+        {
+            if(preg_match('/[\x{4E00}-\x{9FBF}]/u', $args['name']) <= 0){
+                throw new Error("This is not a Kanji. Please input Kanji letter!");
+            }   
+        
+            if(strlen($args['name']) > 3){
+                throw new Error("Please input 1 Kanji letter!");
+            }
+        }
         if(@$args['more'] == []){
             $args = array_diff_key($args, array_flip(['more']));
         }
