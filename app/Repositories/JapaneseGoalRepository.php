@@ -38,7 +38,7 @@ class JapaneseGoalRepository
             $getMore = $flashCard->pluck('more')->toArray();
             foreach($getMore as $value){
                 if(isset($value['card_caption']) && $value['card_caption'] == $args['more']['card_caption']){
-                    throw new Error("This card already exist. Please choose another name");
+                    throw new Error("This card already exists. Please choose another name");
                     break;
                 }
             }
@@ -66,7 +66,7 @@ class JapaneseGoalRepository
             $cate = $this->getJapaneseGoal('type', $args['type'])->first();
             if (isset($cate)) {
                 if(array_intersect($cate->more, $args['more'])){
-                    throw new Error("This category already existed. Please choose another name");
+                    throw new Error("This category already exists. Please choose another name");
                 }
                 $args['more'] = array_diff($args['more'], array_merge($cate->more, [null]));
                 $args['more'] = array_merge($cate->more, $args['more']);
