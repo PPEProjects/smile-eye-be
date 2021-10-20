@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\JapaneseKanji;
+use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 
 class JapaneseKanjiRepository
@@ -26,11 +27,19 @@ class JapaneseKanjiRepository
     public function upsertJapaneseKanji($args)
     {
         $args['user_id'] = Auth::id();
-        $kanji = JapaneseKanji::updateOrCreate(
-            ['id' => @$args['id']],
-            $args
-        );
-        return $kanji;
+        if(isset($args['name']) && preg_match('/[\x{4E00}-\x{9FBF}]/u', $args['name']) <= 0){
+            throw new Error("Please input kanji");
+        }      
+        if(@$args['more'] == []){
+            $args = array_diff_key($args, array_flip(['more']));
+        }
+        $checkDataKanji = ['name' => @$args['name']];
+        if(isset($args['id']))
+        {
+            $checkDataKanji = ['id' => $args['id']];
+        }            
+        $kanji = JapaneseKanji::updateOrCreate($checkDataKanji, $args);
+        return $kanji;  
     }
 
     public function updateJapaneseKanji($args)
