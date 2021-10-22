@@ -182,7 +182,7 @@ class NotificationRepository
                 case 'share_user_info':
                     $user = User::where("id",$noti->user_id)->first();
                     $user_share_by = User::where("id",$noti->type_id)->first();
-                    $messages->push("share info ".@$user_share_by->name." with you");
+                    $messages->push("share info '".@$user_share_by->name."' with you");
                     $noti->user_share_by = @$user_share_by->id;
                     break;
                 case 'achieve':
@@ -295,7 +295,7 @@ class NotificationRepository
                     $messages
                         ->push($user->name ." change ".
                             $key." ".$content[$key]["old"]." to ".$content[$key]["new"].
-                            " at your goal name ".$goal->name."" );
+                            " at your goal name '".$goal->name."'" );
                     break;
                 case 'sing_with_friend':
                         $content = @$noti->content;
@@ -309,7 +309,7 @@ class NotificationRepository
                             if(isset($goal)){
                                 if(isset($content['message']))
                                 {
-                                    $messages->push('invites you to sing '.$goal->name);
+                                    $messages->push("invites you to sing '".$goal->name."'");
                                 }
                                 else
                                 {
@@ -331,7 +331,7 @@ class NotificationRepository
                             if(isset($goal)){  
                                  if(isset($content['message']))
                                 {
-                                     $messages->push("Invites to join communication with ".$goal->name);
+                                     $messages->push("Invites to join communication with '".$goal->name."'");
                                 }
                                  else
                                 {
