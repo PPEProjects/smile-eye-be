@@ -8,6 +8,7 @@ extend type Mutation {
     upsert_goal(input: UpsertGoalInput! @spread): JSON @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@upsertGoal")
     duplicate_goals(id : ID! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@duplicateGoals")
     copy_goal(id : ID! @spread): JSON @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@copyGoal")
+    sort_rank_goal_root(id : ID!, rank : Int! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@sortRankGoalRoot")
 }
 extend type Query {
     #    userss: [User] @guard @field(resolver:"GoalQueries@userss")
@@ -41,6 +42,7 @@ type Goal{
     end_day: DateTime
     status : String
     task_id: ID
+    rank: Int
     japanese_goal: JapaneseGoal
     next_goal: JSON
 #    process : Float

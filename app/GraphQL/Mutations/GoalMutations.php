@@ -288,4 +288,8 @@ class GoalMutations
     {
        return $this->goal_repository->copyGoal($args);
     }
+
+    public function sortRankGoalRoot($_array, $args){
+        return $this->goal_repository->sortRankGoalRoot($args);
+    }
 }

@@ -94,7 +94,7 @@ class GoalQueries
         $this->goal_repository->calculatorProcessUpdate();
 
         $goals = Goal::where('user_id', Auth::id())
-            ->orderBy('id', 'desc');
+            ->orderByRaw('-`rank` DESC, `id` DESC');
         switch ($args['parent_id']) {
             case 'all':
                 break;
@@ -125,7 +125,7 @@ class GoalQueries
                     $goal->next_goal = @$nextGoal[$goal->id];
                     return $goal;
             });
-        return $goals->sortByDESC('is_pined');
+        return $goals;
     }
     public function nextGoal($goalIds = []){
         foreach($goalIds as $value)

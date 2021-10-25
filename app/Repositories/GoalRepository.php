@@ -859,4 +859,12 @@ class GoalRepository
        }
        return $idGoals;
     }
+    public function sortRankGoalRoot($args){
+        $goal = Goal::find($args['id']);
+        if(isset($goal->parent_id)){
+            throw new Error("This goal is not root");          
+        }
+        $rankGoal = tap(Goal::findOrFail($args["id"]))->update($args);
+        return $rankGoal;
+    }
 }
