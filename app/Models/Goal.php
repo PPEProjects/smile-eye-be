@@ -22,6 +22,7 @@ class Goal extends Model
         'end_day',
         'progress',
         'index',
+        'rank',
         'status',
         'task_id',
         'locks',
