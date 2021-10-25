@@ -169,15 +169,23 @@ class AchieveRepository
         if(isset($args['status']) && $args['status'] == "accept" ){
             $general = GeneralInfo::find($args['general_id']);
             if(isset($general->task_id)){
-                 $task = Task::find($general->task_id);           
-                 $createTask = Task::create([
+                 $task = Task::find($general->task_id); 
+                if(isset($task))
+                {          
+                    $createTask = Task::create([
                                             "name" => $task->name,
                                             "user_id" => Auth::id()
                                             ]);
-                  $this->generalinfo_repository
+                    $this->generalinfo_repository
                                      ->setType('task')
                                     ->upsert(array_merge($createTask->toArray(), $args))
                                     ->findByTypeId($createTask->id);
+                }
+                else 
+                { 
+                    throw new Error("Can't accept because this task is deleted"); 
+                }
+                
             }
         }
         $args = array_diff_key($args,array_flip(["directive","general_id"]));
