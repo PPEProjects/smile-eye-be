@@ -370,6 +370,9 @@ class JapaneseGoalRepository
     {
         $jpGoal = $this->getJapaneseGoal('type', 'flashcard_category')->first();
         $flashcard = $this->flashcardCategory(['type' => $args['old_name']]);
+        if(is_null($flashcard['list'])){
+            return false;
+        }
         foreach($flashcard['list'] as $key => $value){
             $id = $value['id'];
             $value['flashcard_category'] = $args['new_name'];
