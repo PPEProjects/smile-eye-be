@@ -806,7 +806,7 @@ class GoalRepository
         $getNameMyGoals = $myGoals->pluck('name')->toArray();
         $check = array_intersect($getNameMyGoals, [$getNameGoal]);
         if($check != []){
-            throw new Error("This goal is already exist");     
+            throw new Error("You already have this goal!");     
         }
         $goals = self::childrenGoal($args['id']);
         $goals = array_merge([$goalRoot->toArray()], $goals);
