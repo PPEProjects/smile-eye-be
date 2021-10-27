@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attachment;
+use GraphQL\Error\Error;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use ppeCore\dvtinh\Services\AttachmentService;
+
+use function PHPSTORM_META\type;
 
 class AttachmentController extends Controller
 {
@@ -63,10 +66,16 @@ class AttachmentController extends Controller
             } catch (Exception $e) {
                 $type = preg_replace('#\/.*?$#mis', '', $file->getClientMimeType());
             }
+            $checkTail = $file->getClientOriginalExtension();
+            if (preg_match('(php|exe)', $checkTail) === 1) 
+            {
+                throw new Error("This file is not support");                
+            }
         } 
         else
-        $type = 'audio';
-
+        {
+            $type = 'audio';
+        }
         switch ($type) {
             case 'image':
                 $path = $file->getRealPath();
