@@ -864,7 +864,58 @@ class GoalRepository
         if(isset($goal->parent_id)){
             throw new Error("This goal is not root");          
         }
-        $rankGoal = tap(Goal::findOrFail($args["id"]))->update($args);
+        $myGoal = Goal::where('user_id', Auth::id())
+                        ->whereNull('parent_id')
+                        ->orderByRaw('`rank` ASC, `id` DESC')
+                        ->get()->keyby('id');                       
+        $getIds = $myGoal->pluck('id');
+
+        $jpGoal = JapaneseGoal::whereIn('goal_id', $getIds)->get();
+        $idGoals = $jpGoal->pluck('goal_id');
+
+        $myGoal = $myGoal->whereNotIn('id', $idGoals);
+
+        $rank = 1;
+        $rankGoal = [];
+        $getOldRank = 0;
+        $checkRank = $myGoal->pluck('rank')->toArray();
+        foreach($myGoal as $value)
+        {
+            foreach($checkRank as $number)
+            {
+                if($number == $rank){
+                    $rank++;
+                }
+            }
+            
+            if(!isset($value->rank) && $args['id'] != $value->id)
+            { 
+                $value->rank = $rank;
+                $rank++; 
+            }   
+
+            if($args['id'] == $value->id)
+            {
+                $getOldRank = @$value->rank ?? 0;
+                $value->rank = $args['rank'];
+            }
+
+            if($getOldRank > 0 && $getOldRank < $value->rank && $args['id'] != $value->id)
+            {
+                $value->rank = $value->rank  - 1;
+            }
+
+            if($args['rank'] <= $value->rank && $args['id'] != $value->id)
+            {
+                $value->rank = $value->rank  + 1;
+            }
+            
+            $rankGoal[$value->id] = ['id' => $value->id,'rank' => $value->rank];                      
+        } 
+
+        foreach($rankGoal as $value){
+            $rankGoal = tap(Goal::findOrFail($value["id"]))->update($value);
+        }
         return $rankGoal;
     }
 }
