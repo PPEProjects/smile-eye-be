@@ -878,21 +878,20 @@ class GoalRepository
         $rank = 1;
         $rankGoal = [];
         $getOldRank = 0;
-        $checkRank = $myGoal->pluck('rank')->toArray();
+        $newRank = [];
         foreach($myGoal as $value)
         {
-            foreach($checkRank as $number)
-            {
-                if($number == $rank){
-                    $rank++;
-                }
-            }
-            
+        
             if(!isset($value->rank) && $args['id'] != $value->id)
             { 
                 $value->rank = $rank;
+                $newRank[] = $rank;
                 $rank++; 
-            }   
+            }
+            else if(array_intersect($newRank, [$value->rank]))
+            {
+                $value->rank = ($value->rank + $rank) - 1;
+            }
 
             if($args['id'] == $value->id)
             {
