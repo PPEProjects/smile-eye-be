@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
     {
 
 //        Attachment::factory(20)->create();
-        for ($i=501; $i <=2000000; $i++) {
+        for ($i=16809; $i <=20000; $i++) {
             User::factory()->count(1)->create(
                 [
                    'name' => 'user'.$i,
