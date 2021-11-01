@@ -53,6 +53,8 @@ type Goal{
     updated_at: DateTime
     general_info: GeneralInfo
     progress: Float
+    price: Float
+    is_trial_block: Boolean
 }
 type CountGoal {
     status : String
@@ -96,6 +98,8 @@ input CreateGoalInput{
     status : String
     is_pined : Boolean
     general_info: JSON
+    price: Float
+    is_trial_block: Boolean
 }
 
 input UpdateGoalInput{
@@ -110,6 +114,8 @@ input UpdateGoalInput{
     report_type : String
     is_pined : Boolean
     general_info: JSON
+    price: Float
+    is_trial_block: Boolean
 }
 
 input DeleteGoalInput{
@@ -132,6 +138,8 @@ input UpsertGoalInput{
     locks: JSON
     is_lock: Boolean
     general_info: JSON
+    price: Float
+    is_trial_block: Boolean
 }
 
 input UpdateGoalMoveInput{
