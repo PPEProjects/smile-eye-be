@@ -28,15 +28,15 @@ class DatabaseSeeder extends Seeder
     {
 
 //        Attachment::factory(20)->create();
-        for ($i=16809; $i <=20000; $i++) {
-            User::factory()->count(1)->create(
-                [
-                   'name' => 'user'.$i,
-                   'email' => 'user'.$i.'@gmail.com',
-                   'password' => Hash::make("123456789")
-                ]
-            );
-        }
+        // for ($i=16809; $i <=20000; $i++) {
+        //     User::factory()->count(1)->create(
+        //         [
+        //            'name' => 'user'.$i,
+        //            'email' => 'user'.$i.'@gmail.com',
+        //            'password' => Hash::make("123456789")
+        //         ]
+        //     );
+        // }
         
 //        UserAvatar::factory(20)->create();
 //        Friend::factory(20)->create();
