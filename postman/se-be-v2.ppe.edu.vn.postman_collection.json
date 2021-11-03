@@ -92,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"nahnahss@gmail.com\",\n    \"password\": \"123456789\"\n}",
+							"raw": "{\n    \"email\": \"nahnahsnahnahs33nahnahs33s@gmail.com\",\n    \"password\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -873,8 +873,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "\nmutation(\n    $org: String\n    $business_field: String\n    $scale: String\n\n) {\n  create_coach_member(\n    input: {\n       org: $org\n       business_field: $business_field\n       scale: $scale\n    }\n  ){\n      id\n      user{\n          id\n          name\n      }\n      org\n      business_field\n      scale\n      created_at\n      updated_at\n  }\n}",
-								"variables": "{\n   \"org\":\"gamelot\",\n   \"business_field\": \"relact\",\n   \"scale\": \"hihi\"\n}"
+								"query": "\nmutation(\n    $org: String\n    $business_field: String\n    $members: JSON\n    $scale: String\n\n) {\n  create_coach_member(\n    input: {\n        org: $org\n        business_field: $business_field\n        members: $members\n        scale: $scale\n    }\n  ){\n      id\n      user{\n          id\n          name\n      }\n      org\n      business_field\n     members\n      scale\n      created_at\n      updated_at\n  }\n}",
+								"variables": "{\n    \"org\":\"ppe\",\n    \"business_field\":\"edu\",\n   \"members\":{\n       \"user_ids\":[1,3,4]\n       },\n   \"scale\": \"else\"\n}"
 							}
 						},
 						"url": {
@@ -903,8 +903,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "\nmutation(\n    $id: ID\n    $org: String\n    $business_field: String\n    $scale: String\n\n) {\n  update_coach_member(\n    input: {\n        id: $id\n       org: $org\n       business_field: $business_field\n       scale: $scale\n    }\n  ){\n      id\n      user{\n          id\n          name\n      }\n      org\n      business_field\n      scale\n      created_at\n      updated_at\n  }\n}",
-								"variables": "{\n    \"id\" : 1,\n    \"org\":\"ppe\",\n   \"business_field\": \"relact\",\n   \"scale\": \"hihi\"\n}"
+								"query": "\nmutation(\n    $id: ID\n    $org: String\n    $business_field: String\n    $members: JSON\n    $scale: String\n\n) {\n  update_coach_member(\n    input: {\n        id: $id\n        org: $org\n        business_field: $business_field\n        members: $members\n        scale: $scale\n    }\n  ){\n      id\n      user{\n          id\n          name\n      }\n     org\n      business_field\n     members\n      scale\n      created_at\n      updated_at\n  }\n}",
+								"variables": "{\n    \"id\" : 2,\n    \"org\":\"VKU\",\n    \"business_field\":\"edu\",\n   \"members\":{\n       \"user_ids\":[1,3,4]\n       },\n   \"scale\": \"else\"\n}"
 							}
 						},
 						"url": {
@@ -963,7 +963,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query {\r\n  coach_member(first:20, page:1) {\r\n    data{\r\n      id\r\n      user{\r\n          id\r\n          name\r\n      }\r\n      org\r\n      business_field\r\n      scale\r\n      created_at\r\n      updated_at\r\n    }\r\n  }\r\n}",
+								"query": "query {\r\n  coach_member(first:20, page:1) {\r\n    data{\r\n      id\r\n      user{\r\n          id\r\n          name\r\n      }\r\n     org\r\n      business_field\r\n     members\r\n      scale\r\n      created_at\r\n      updated_at\r\n    }\r\n  }\r\n}",
 								"variables": ""
 							}
 						},
@@ -993,7 +993,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($id: ID!){\r\n  detail_coach_member(\r\n      id: $id\r\n     \r\n    ) {\r\n      id\r\n      user{\r\n          id\r\n          name\r\n      }\r\n      org\r\n      business_field\r\n      scale\r\n      created_at\r\n      updated_at\r\n  }\r\n}",
+								"query": "query($id: ID!){\r\n  detail_coach_member(\r\n      id: $id   \r\n    ) {\r\n      id\r\n      user{\r\n          id\r\n          name\r\n      }\r\n     org\r\n      business_field\r\n     members\r\n      scale\r\n      created_at\r\n      updated_at\r\n  }\r\n}",
 								"variables": "{\r\n    \"id\": 1\r\n}"
 							}
 						},
@@ -1010,7 +1010,7 @@
 					"response": []
 				},
 				{
-					"name": "query list_users_coach_member",
+					"name": "query list_coach_members",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -1023,7 +1023,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query{\r\n  list_users\r\n}",
+								"query": "query{\r\n  list_coach_members{\r\n      id\r\n      user{\r\n          id\r\n          name\r\n      }\r\n      org\r\n      business_field\r\n      members\r\n      goals{\r\n          id\r\n          name\r\n      }\r\n  }\r\n}",
 								"variables": "{\r\n\r\n}"
 							}
 						},
@@ -3813,8 +3813,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "\nmutation(\n    $name:String, \n    $email:String, \n    $username:String, \n    $quotes: String,\n    $phone_number: String ,\n    $avatar_attachment_id: ID,\n    $background_attachment_id: ID\n    ) \n{\n  update_user(\n    input: \n    {\n        name: $name\n        email: $email\n        username: $username\n        quotes: $quotes\n        phone_number: $phone_number\n        avatar_attachment_id: $avatar_attachment_id\n        background_attachment_id : $background_attachment_id\n    }) \n    {\n            id\n            name\n            email\n            username\n            quotes\n            phone_number\n            created_at\n            updated_at\n            attachment{\n                id\n                file\n                thumb\n            }\n            background_attachment{\n                id\n                file\n                thumb\n            }\n        }\n}",
-								"variables": "{\n\n    \"avatar_attachment_id\":1,\n    \"background_attachment_id\":1,\n    \"phone_number\":\"32423\"\n}"
+								"query": "\nmutation(\n    $id: ID\n    $name:String, \n    $email:String, \n    $username:String, \n    $quotes: String,\n    $phone_number: String ,\n    $avatar_attachment_id: ID,\n    $background_attachment_id: ID\n    ) \n{\n  update_user(\n    input: \n    {\n        id: $id\n        name: $name\n        email: $email\n        username: $username\n        quotes: $quotes\n        phone_number: $phone_number\n        avatar_attachment_id: $avatar_attachment_id\n        background_attachment_id : $background_attachment_id\n    }) \n    {\n            id\n            name\n            email\n            username\n            quotes\n            phone_number\n            created_at\n            updated_at\n            attachment{\n                id\n                file\n                thumb\n            }\n            background_attachment{\n                id\n                file\n                thumb\n            }\n        }\n}",
+								"variables": "{\n    \"id\":1,\n    \"username\":\"dương quái\",\n    \"avatar_attachment_id\":1,\n    \"background_attachment_id\":1,\n    \"phone_number\":\"32423324233\"\n}"
 							}
 						},
 						"url": {
@@ -3963,7 +3963,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query{\n  list_user{\n      id\n      username\n      name\n      created_at\n      goals{\n          id\n          name\n      }\n      goal_achieve{\n          id\n          name\n      }\n      group{\n          name\n          people\n      }\n      RelationLevel\n      BusinessField\n      ProfitForSmileEye\n      ProfitForSelf\n      BuyGoals\n  }\n}\n\n",
+								"query": "query{\n  list_user{\n      id\n      username\n      name\n      created_at\n      goals{\n          id\n          name\n      }\n      goal_achieve{\n          id\n          name\n      }\n      group{\n          name\n          people\n      }\n      relationLevel\n      businessField\n      profitForSmileEye\n      profitForSelf\n      buyGoals\n  }\n}\n\n",
 								"variables": "{\r\n\r\n   \r\n}\r\n"
 							}
 						},

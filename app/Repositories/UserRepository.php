@@ -109,7 +109,7 @@ class UserRepository
             }
         }
         $args = array_diff_key($args, array_flip(['directive', 'email']));
-        $update = tap(User::findOrFail(Auth::id()))
+        $update = tap(User::findOrFail(@$args['id'] ?? Auth::id()))
             ->update($args);
         return $update;
     }
