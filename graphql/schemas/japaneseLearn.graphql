@@ -9,8 +9,12 @@ extend type Query {
     sort_japanese_learn(orderBy: [OrderByClause!] @orderBy): [JapaneseLearn!]! @paginate(type: "paginator" model: "App\\Models\\JapaneseLearn")
     my_japanese_learn: [JapaneseLearn] @field(resolver:"JapaneseLearnQueries@myJapaneseLearn")
     detail_japanese_learn(id:ID): JapaneseLearn @field(resolver:"JapaneseLearnQueries@detailJapaneseLearn")
+    list_userid_japanese_learn(goal_id:ID!): UserID @field(resolver:"JapaneseLearnQueries@listUserIDJapaneseLearn")
 }
 
+type UserID{
+    user_ids: [ID]
+}
 type JapaneseLearn{
     id: ID
     user_id: ID
