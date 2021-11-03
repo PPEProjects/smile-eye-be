@@ -177,7 +177,7 @@ class GoalQueries
 
     public function myGoalsAchieve($_, array $args)
     {
-        $goals = $this->goal_repository->myGoalsAchieve($args);
+        $goals = $this->goal_repository->myGoalsAchieve();
           //NEXT GOAL
         $goalIds = $goals->pluck('id')->toArray();
         $nextGoal = $this->nextGoal($goalIds);
@@ -203,5 +203,8 @@ class GoalQueries
     }
     public function reportGoal($_, array $args){
         return $this->goal_repository->reportGoal($args);
+    }
+    public function myGoalShare($_, array $args){
+        return $this->goal_repository->myGoalShare($args);
     }
 }

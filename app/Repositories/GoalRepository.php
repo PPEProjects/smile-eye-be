@@ -6,6 +6,7 @@ use App\Models\Achieve;
 use App\Models\GeneralInfo;
 use App\Models\Goal;
 use App\Models\JapaneseGoal;
+use App\Models\PublishInfo;
 use App\Models\Task;
 use App\Models\Todolist;
 use Carbon\Carbon;
@@ -320,9 +321,10 @@ class GoalRepository
         return $goal;
     }
 
-    public function myGoalsAchieve()
+    public function myGoalsAchieve($userId = null)
     {
-        $general_ids = Achieve::where("user_invite_id", Auth::id())
+        if(!isset($userId)){ $userId = Auth::id(); }
+        $general_ids = Achieve::where("user_invite_id", $userId)
             ->where("status", "accept")
             ->get()
             ->pluck("general_id")
@@ -916,5 +918,18 @@ class GoalRepository
             $rankGoal = tap(Goal::findOrFail($value["id"]))->update($value);
         }
         return $rankGoal;
+    }
+
+    public function myGoalShare(){
+        $publish = PublishInfo::where('user_invite_id', Auth::id())->where("status", "accept")->get();
+        $idGenerals = $publish->pluck('general_id');
+        $general = GeneralInfo::whereIn("id", $idGenerals)->get();
+        $idGoals = $general->pluck("goal_id")->toArray();
+        $idGoals = array_diff($idGoals, [null]);
+        $goals = Goal::whereIn('id', $idGoals)->get();
+        $goals = $this->generalinfo_repository
+                ->setType('goal')
+                ->get($goals);
+        return $goals;
     }
 }
