@@ -5,6 +5,8 @@ namespace App\GraphQL\Queries;
 use App\Models\Attachment;
 use App\Models\Notification;
 use App\Models\User;
+use App\Models\Goal;
+use App\Repositories\GoalRepository;
 use App\Repositories\NotificationRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
@@ -15,11 +17,13 @@ class UserQueries
     public function __construct(
         AttachmentService $attachmentService,
         NotificationRepository $notificationRepository,
-        UserRepository $user_repository
+        UserRepository $user_repository,
+        GoalRepository $goal_repository
     ) {
         $this->attachment_service = $attachmentService;
         $this->notificationRepository = $notificationRepository;
         $this->user_repository = $user_repository;
+        $this->goal_repository = $goal_repository;
     }
 
     public function me()
@@ -39,5 +43,26 @@ class UserQueries
     public function user($_, array $args)
     {
         return $this->user_repository->user($args);
+    }
+    public function listUsers($_, array $args)
+    {
+        $users = User::selectRaw("id, first_name as full ,name, DATE(created_at) as start_smile_eye_time")->get();
+        $userIds = $users->pluck('id');
+        $goals = Goal::whereIn("user_id", $userIds)
+                        ->whereNull('parent_id')
+                        ->get()->groupBy('user_id');
+        $listUsers = $users->map(function($user) use ($goals){
+            $user->self_goals = @$goals[$user->id];
+            $user->inviation_goals = @$this->goal_repository->myGoalsAchieve($user->id);
+            $user->shared_goals = @$this->goal_repository->myGoalShare($user->id);
+            $user->org = "ppe";
+            $user->member_number = random_int(0,100);
+            $user->business_field = "edu";
+            $user->relation_level = random_int(1,5);
+            $user->profit_forSelf = random_int(0, 99999);
+            $user->profit_for_smile_eye = random_int(0, 99999);
+            return $user;
+        });
+        return $listUsers;
     }
 }

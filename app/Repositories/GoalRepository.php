@@ -920,8 +920,9 @@ class GoalRepository
         return $rankGoal;
     }
 
-    public function myGoalShare(){
-        $publish = PublishInfo::where('user_invite_id', Auth::id())->where("status", "accept")->get();
+    public function myGoalShare($userId = null){
+        if(!isset($userId)){$userId = Auth::id();}
+        $publish = PublishInfo::where('user_invite_id', $userId)->where("status", "accept")->get();
         $idGenerals = $publish->pluck('general_id');
         $general = GeneralInfo::whereIn("id", $idGenerals)->get();
         $idGoals = $general->pluck("goal_id")->toArray();

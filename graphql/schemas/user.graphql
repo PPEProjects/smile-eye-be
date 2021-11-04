@@ -13,6 +13,7 @@ input UpdateUserInput{
     id: ID
     name: String
     email: String
+    rules: JSON
     username: String
     quotes: String
     phone_number: String

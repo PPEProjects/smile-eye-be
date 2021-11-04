@@ -205,6 +205,6 @@ class GoalQueries
         return $this->goal_repository->reportGoal($args);
     }
     public function myGoalShare($_, array $args){
-        return $this->goal_repository->myGoalShare($args);
+        return $this->goal_repository->myGoalShare();
     }
 }
