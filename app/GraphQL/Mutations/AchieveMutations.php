@@ -45,5 +45,8 @@ class AchieveMutations
     public function updateAchieveWithGeneralId($_, array $args){
         return $this->achieve_repository->updateAchieveWithGeneralId($args);
     }
+    public function addTemplate($_, array $args){
+        return $this->achieve_repository->addTemplate($args);
+    }
 
 }

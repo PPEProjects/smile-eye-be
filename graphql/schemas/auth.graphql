@@ -17,6 +17,7 @@ type Query {
     me :User @guard @field(resolver:"UserQueries@me")
     search_users(name: String, username: String, email: String, phone_number: String   @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [User!]! @paginate(type: "paginator" model: "App\\Models\\User")
     sort_users(orderBy: [OrderByClause!] @orderBy): [User!]! @paginate(type: "paginator" model: "App\\Models\\User")
+    list_users: [ListUsers] @guard @field(resolver:"UserQueries@listUsers")
 }
 input LoginInput {
     username: String!
@@ -54,8 +55,24 @@ type User {
     count_notification : Int
     messages : String
     friend_status : String
+    rules: JSON
 }
-
+type ListUsers {
+    id: ID
+    full: String
+    name: String
+    start_smile_eye_time: Date
+    self_goals: [Goal]
+    shared_goals: [Goal]
+    inviation_goals: [Goal]
+    buy_goals: [Goal]
+    profit_forSelf: Int
+    profit_for_smile_eye: Int
+    relation_level: Int
+    member_number:Int
+    business_field: String
+    org: String
+}
 type AuthPayload {
     access_token: String
     refresh_token: String

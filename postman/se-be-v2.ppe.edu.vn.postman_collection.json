@@ -3615,6 +3615,36 @@
 					"response": []
 				},
 				{
+					"name": "add_template_achieve",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation($goal_id: ID!) {\n  add_template(\n    input: {\n      goal_id: $goal_id\n    }\n  )\n  }",
+								"variables": "{\n   \"goal_id\": 99\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "update_achieve",
 					"request": {
 						"method": "POST",
@@ -3933,7 +3963,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query{\n  me{\n     id\n     attachment{\n         id\n         file\n         thumb\n     }\n     background_attachment{\n         id\n         file\n         thumb\n     }\n        name\n        email\n        username\n        phone_number\n        quotes\n        notification\n        created_at\n        updated_at\n  }\n}\n\n",
+								"query": "query{\n  me{\n     id\n     attachment{\n         id\n         file\n         thumb\n     }\n     background_attachment{\n         id\n         file\n         thumb\n     }\n        name\n        email\n        username\n        rules\n        phone_number\n        quotes\n        notification\n        created_at\n        updated_at\n  }\n}\n\n",
 								"variables": "{\r\n\r\n   \r\n}\r\n"
 							}
 						},
@@ -3963,7 +3993,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query{\n  list_user{\n      id\n      username\n      name\n      created_at\n      goals{\n          id\n          name\n      }\n      goal_achieve{\n          id\n          name\n      }\n      group{\n          name\n          people\n      }\n      relationLevel\n      businessField\n      profitForSmileEye\n      profitForSelf\n      buyGoals\n  }\n}\n\n",
+								"query": "query{\n  list_users{\n      id\n      full\n      name\n      org\n     member_number\n     business_field\n     relation_level\n      self_goals{\n          id\n          name\n      }\n      inviation_goals{\n          id\n          name\n      }\n      shared_goals{\n          id\n          name\n      }\n    buy_goals{\n        id\n        name\n    }\n    start_smile_eye_time\n    profit_forSelf\n    profit_for_smile_eye\n  }\n}\n",
 								"variables": "{\r\n\r\n   \r\n}\r\n"
 							}
 						},

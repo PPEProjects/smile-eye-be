@@ -3,6 +3,8 @@ extend type Mutation {
     delete_achieve(input: DeleteAchieveInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\AchieveMutations@deleteAchieve")
     update_achieve(input: UpdateAchieveInput! @spread): Achieve @guard @field(resolver: "App\\GraphQL\\Mutations\\AchieveMutations@updateAchieve")
     update_achieve_with_general_id(input: UpdateAchieveInput! @spread): Achieve @guard @field(resolver: "App\\GraphQL\\Mutations\\AchieveMutations@updateAchieveWithGeneralId")
+
+   add_template(input: AddTemplateInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\AchieveMutations@addTemplate")
 }
 
 extend type Query {
@@ -44,3 +46,6 @@ input UpdateAchieveInput{
     status : String @rules(apply: ["in:accept,denine"])
 }
 
+input AddTemplateInput{
+    goal_id: ID!
+}

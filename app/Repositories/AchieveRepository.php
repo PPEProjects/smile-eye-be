@@ -192,4 +192,18 @@ class AchieveRepository
         $achieve->update($args);
         return $achieve;
     }
+
+    public function addTemplate($args){
+        $general = GeneralInfo::where("goal_id",$args["goal_id"])->first();
+        if(!isset($general)){
+            throw new Error("This goal does not exist");        
+        }
+        $createAchieve = Achieve::create([
+                            "general_id" => $general->id,
+                            "user_id" => $general->user_id,
+                            "user_invite_id" => Auth::id(),
+                            "status" => "accept"
+                        ]);
+        return $createAchieve;
+    }
 }
