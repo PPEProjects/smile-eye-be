@@ -198,21 +198,21 @@ class NotificationRepository
                             $messages->push('task');
                             $task = $this->task_repository->find($generalInfo->task_id);
                             if(!$task) return;
-                            $messages->push('"'.$task->name.'"');
+                            $messages->push('"<b>'.$task->name.'</b>"');
                             $noti->task_id = $generalInfo->task_id;
                         }
                         else if (@$generalInfo->goal_id) {
                             $messages->push('goal');
                             $goal = $this->goal_repository->find($generalInfo->goal_id);
                             if(!$goal) return;
-                            $messages->push('"'.$goal->name.'"');
+                            $messages->push('"<b>'.$goal->name.'</b>"');
                             $noti->goal_id = $generalInfo->goal_id;
                         //find goal
                         }else if (@$generalInfo->todolist_id) {
                             $messages->push('todolist');
                             $todo = $this->todolist_repository->find($generalInfo->todolist_id);
                             if(!$todo) return;
-                            $messages->push('"'.$todo->name.'"');
+                            $messages->push('"<b>'.$todo->name.'</b>"');
                             $noti->todolist_id = $generalInfo->todolist_id;
                         //find todolist
                         }
@@ -250,8 +250,8 @@ class NotificationRepository
                         return;
                     }
                     if(!@$PublishInfo->rule){
-                        $messages->push("with rule: view");
-                    }else  $messages->push("with rule: ".$PublishInfo->rule);
+                        $messages->push('with rule: "view"');
+                    }else  $messages->push('with rule: "'.$PublishInfo->rule.'"');
                 break;
                 case 'comment':
                     $content = $noti->content;
@@ -309,11 +309,11 @@ class NotificationRepository
                             if(isset($goal)){
                                 if(isset($content['message']))
                                 {
-                                    $messages->push("invites you to sing '".$goal->name."'");
+                                    $messages->push('invites you to sing "<b>'.$goal->name.'</b>"');
                                 }
                                 else
                                 {
-                                  $messages->push("Invite you join '".$goal->name."'");
+                                  $messages->push('Invite you join "<b>'.$goal->name.'</b>"');
                                 }
                                 $noti->type_id = $goal->id;
                             } else return;
@@ -331,11 +331,11 @@ class NotificationRepository
                             if(isset($goal)){  
                                  if(isset($content['message']))
                                 {
-                                     $messages->push("Invites to join communication with '".$goal->name."'");
+                                     $messages->push('Invites to join communication with "<b>'.$goal->name.'</b>"');
                                 }
                                  else
                                 {
-                                 $messages->push("Invite you join '".$goal->name."'");
+                                 $messages->push('Invite you join "<b>'.$goal->name.'</b>"');
                                 }
                                 $noti->type_id = @$goal->id;
                             } else return;
@@ -346,7 +346,7 @@ class NotificationRepository
                         $key = array_key_first($content);
                         $friendGroup = FriendGroup::find($noti->type_id);
                         if(isset($friendGroup)){
-                            $messages->push("Invite you to join group '".$friendGroup->name."'" );
+                            $messages->push('Invite you to join group "<b>'.$friendGroup->name.'</b>"' );
                         }else return;
                     break;    
                 case 'diary':
@@ -358,7 +358,7 @@ class NotificationRepository
                             $user = User::where("id",$noti["user_id"])->first();
                             $goal = Goal::where("id",$japaneseGoal->goal_id)->first(); 
                             if(isset($goal)){  
-                                $messages->push("Invites you to review '".$goal->name."'" );
+                                $messages->push('Invites you to review "<b>'.$goal->name.'</b>"' );
                                 $noti->type_id = $goal->id;
                             } else return;
                         }
@@ -373,7 +373,7 @@ class NotificationRepository
                             $user = User::where("id",$noti["user_id"])->first();
                             $goal = Goal::where("id",$japaneseGoal->goal_id)->first();   
                             if(isset($goal)){
-                                 $messages->push("edited diary '".$goal->name."'" );
+                                 $messages->push('edited diary "<b>'.$goal->name.'</b>"' );
                                 $noti->type_id = $goal->id;
                             } else return;
                         }

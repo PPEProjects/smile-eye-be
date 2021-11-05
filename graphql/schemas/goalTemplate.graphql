@@ -1,0 +1,40 @@
+
+extend type Mutation {
+    delete_goal_template (input: DeleteGoalTemplateInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalTemplateMutations@deleteGoalTemplate")
+    create_goal_template(input: CreateGoalTemplateInput! @spread): GoalTemplate @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalTemplateMutations@createGoalTemplate")
+    update_goal_template(input: UpdateGoalTemplateInput! @spread): GoalTemplate @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalTemplateMutations@updateGoalTemplate")
+}
+extend type Query {
+    goal_template: [GoalTemplate] @paginate(type: "paginator" model: "App\\Models\\GoalTemplate")
+    sort_goal_template(orderBy: [OrderByClause!] @orderBy): [GoalTemplate!]! @paginate(type: "paginator" model: "App\\Models\\GoalTemplate")
+    my_goal_template: [GoalTemplate] @field(resolver:"GoalTemplateQueries@myGoalTemplate")
+    detail_goal_template(id:ID, goal_id: ID): GoalTemplate @field(resolver:"GoalTemplateQueries@detailGoalTemplate")
+    list_goal_templates: [GoalTemplate] @field(resolver:"GoalTemplateQueries@listGoalTemplates")
+}
+
+type GoalTemplate{
+    id: ID
+    user_id: ID
+    user: User
+    goal_id : ID
+    goal: Goal
+    status: String
+    request: String
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateGoalTemplateInput{
+    goal_id: ID
+    status: String
+    request: String
+}
+input UpdateGoalTemplateInput{
+    id : ID!
+    goal_id: ID
+    status: String
+    request: String
+}
+input DeleteGoalTemplateInput{
+    id : ID!
+}
