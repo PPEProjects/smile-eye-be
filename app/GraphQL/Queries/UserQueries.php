@@ -46,12 +46,13 @@ class UserQueries
     }
     public function listUsers($_, array $args)
     {
-        $users = User::selectRaw("id, first_name as full ,name, DATE(created_at) as start_smile_eye_time")->get();
+        $users = User::selectRaw("id, first_name as full ,name, DATE(created_at) as start_smile_eye_time")->paginate($args["first"], ['*'], 'page', $args["page"]);
+       $page = $users->toArray()["total"];
         $userIds = $users->pluck('id');
         $goals = Goal::whereIn("user_id", $userIds)
                         ->whereNull('parent_id')
                         ->get()->groupBy('user_id');
-        $listUsers = $users->map(function($user) use ($goals){
+        $listUsers["data"] = $users->map(function($user) use ($goals){
             $user->self_goals = @$goals[$user->id];
             $user->inviation_goals = @$this->goal_repository->myGoalsAchieve($user->id);
             $user->shared_goals = @$this->goal_repository->myGoalShare($user->id);
@@ -63,6 +64,7 @@ class UserQueries
             $user->profit_for_smile_eye = random_int(0, 99999);
             return $user;
         });
-        return $listUsers;
+        $listUsers["total_page"] = $page;
+        return  $listUsers;
     }
 }

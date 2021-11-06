@@ -4238,8 +4238,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query{\n  list_users{\n      id\n      full\n      name\n      org\n     member_number\n     business_field\n     relation_level\n      self_goals{\n          id\n          name\n      }\n      inviation_goals{\n          id\n          name\n      }\n      shared_goals{\n          id\n          name\n      }\n    buy_goals{\n        id\n        name\n    }\n    start_smile_eye_time\n    profit_forSelf\n    profit_for_smile_eye\n  }\n}\n",
-								"variables": "{\r\n\r\n   \r\n}\r\n"
+								"query": "query(\n    $first: Int!\n     $page: Int!\n){\n  list_users(\n      first:$first\n      page: $page\n  ){data{\n      id\n      full\n      name\n      org\n     member_number\n     business_field\n     relation_level\n      self_goals{\n          id\n          name\n      }\n      inviation_goals{\n          id\n          name\n      }\n      shared_goals{\n          id\n          name\n      }\n    buy_goals{\n        id\n        name\n    }\n    start_smile_eye_time\n    profit_forSelf\n    profit_for_smile_eye\n  }\n    total_page\n  }\n}\n",
+								"variables": "{\r\n    \"first\":2,\r\n    \"page\":1\r\n   \r\n}\r\n"
 							}
 						},
 						"url": {
