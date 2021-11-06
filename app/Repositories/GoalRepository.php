@@ -213,7 +213,6 @@ class GoalRepository
                 ->orderByRaw('-`index` DESC, `id` ASC')
                 ->get();
             $goals = $this->goalAll($goals);
-
             $getIdGoals = $goals->pluck('id');
             $japaneseGoals = JapaneseGoal::select('id', 'type', 'goal_id')
                 ->whereIn('goal_id', $getIdGoals)
@@ -223,11 +222,9 @@ class GoalRepository
                 $goal->japanese_goal = @$japaneseGoals[$goal->id];
                 return $goal;
             });
-
             $tree = self::buildTree($goals->toArray(), $goalId);
             $pTree = $goals->where('id', $goalId)->first();
             if ($pTree) {
-
                 $pTree->children = $tree;
                 return ['tree' => [$pTree], 'goals' => $goals];
             }
