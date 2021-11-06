@@ -40,7 +40,14 @@ class GoalTemplateRepository{
     public function myGoalTemplate(){     
         return GoalTemplate::where('user_id',Auth::id())->get();
     }
-    public function listGoalTemplates(){
-        return GoalTemplate::all();
+    public function listGoalTemplates($args){
+        $status = @$args["status"] ?? "all";
+        if($status != "all"){
+            $goalTemplate = GoalTemplate::where('status', 'like', $status)->get();
+        }
+        else{
+            $goalTemplate = GoalTemplate::all();
+        }
+        return @$goalTemplate;
     }
 }

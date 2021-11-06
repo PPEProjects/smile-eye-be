@@ -9,7 +9,7 @@ extend type Query {
     sort_goal_template(orderBy: [OrderByClause!] @orderBy): [GoalTemplate!]! @paginate(type: "paginator" model: "App\\Models\\GoalTemplate")
     my_goal_template: [GoalTemplate] @field(resolver:"GoalTemplateQueries@myGoalTemplate")
     detail_goal_template(id:ID, goal_id: ID): GoalTemplate @field(resolver:"GoalTemplateQueries@detailGoalTemplate")
-    list_goal_templates: [GoalTemplate] @field(resolver:"GoalTemplateQueries@listGoalTemplates")
+    list_goal_templates(status: String): [GoalTemplate] @field(resolver:"GoalTemplateQueries@listGoalTemplates")
 }
 
 type GoalTemplate{
