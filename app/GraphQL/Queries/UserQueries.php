@@ -47,7 +47,7 @@ class UserQueries
     public function listUsers($_, array $args)
     {
         $orderBy = $args["orderBy"];
-        $users = User::selectRaw("id, first_name as full ,name, DATE(created_at) as start_smile_eye_time")                      
+        $users = User::selectRaw("*, DATE(created_at) as start_smile_eye_time")                      
                         ->orderBy($orderBy['column'], $orderBy['order'])
                         ->paginate($args["first"], ['*'], 'page', $args["page"]);
         $page = $users->toArray()["last_page"];
