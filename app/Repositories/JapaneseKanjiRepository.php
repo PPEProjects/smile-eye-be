@@ -79,7 +79,11 @@ class JapaneseKanjiRepository
     public function listJapaneseKanji($args)
     {
         if (!empty($args['ids'])) {
-            return JapaneseKanji::whereIn('id', $args['ids'])->get();
+            $japaneseKanji = [];
+            foreach($args['ids'] as $id){
+                $japaneseKanji[] = JapaneseKanji::find($id);
+            }
+           return $japaneseKanji;
         }
         return JapaneseKanji::all();
     }
