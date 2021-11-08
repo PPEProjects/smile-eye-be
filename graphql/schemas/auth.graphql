@@ -17,7 +17,7 @@ type Query {
     me :User @guard @field(resolver:"UserQueries@me")
     search_users(name: String, username: String, email: String, phone_number: String   @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [User!]! @paginate(type: "paginator" model: "App\\Models\\User")
     sort_users(orderBy: [OrderByClause!] @orderBy): [User!]! @paginate(type: "paginator" model: "App\\Models\\User")
-    list_users(first: Int!, page: Int!): UsersAdmin @guard @field(resolver:"UserQueries@listUsers")
+    list_users(first: Int!, page: Int!, orderBy: JSON): UsersAdmin @guard @field(resolver:"UserQueries@listUsers")
 }
 input LoginInput {
     username: String!
@@ -55,7 +55,8 @@ type User {
     count_notification : Int
     messages : String
     friend_status : String
-    rules: JSON
+    roles: JSON
+    role_label: String
 }
 type UsersAdmin{
     total_page: Int

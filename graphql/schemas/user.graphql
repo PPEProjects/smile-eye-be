@@ -1,5 +1,6 @@
 
 extend type Mutation {
+    create_user(input: CreateUserInput! @spread): User @guard @field(resolver: "App\\GraphQL\\Mutations\\UserMutations@createUser")
     update_user(input: UpdateUserInput! @spread): User @guard @field(resolver: "App\\GraphQL\\Mutations\\UserMutations@updateUser")
     delete_user: Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\UserMutations@deleteUser")
 
@@ -9,17 +10,29 @@ extend type Query {
     me_attachment: JSON @guard @field(resolver:"UserQueries@me_attachment")
 }
 
-input UpdateUserInput{
-    id: ID
+input CreateUserInput{
     name: String
     email: String
-    rules: JSON
+    password: String
+    roles: JSON
+    role_label: String
     username: String
     quotes: String
     phone_number: String
     avatar_attachment_id: ID
     background_attachment_id : ID
+}
 
+input UpdateUserInput{
+    id: ID
+    name: String
+    email: String
+    roles: JSON
+    username: String
+    quotes: String
+    phone_number: String
+    avatar_attachment_id: ID
+    background_attachment_id : ID
 }
 
 

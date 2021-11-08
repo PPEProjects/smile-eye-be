@@ -66,4 +66,7 @@ class User extends \ppeCore\dvtinh\Models\User implements MustVerifyEmail
     public function japanese_goals(){
         return $this->hasMany(JapaneseGoal::class);
     }
+    public function coachMember(){
+        return $this->hasMany(CoachMember::class);
+    }
 }

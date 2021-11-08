@@ -6,6 +6,7 @@ use App\Models\Friend;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use GraphQL\Error\Error;
+use Illuminate\Support\Facades\Hash;
 use ppeCore\dvtinh\Services\AttachmentService;
 
 class UserRepository
@@ -16,6 +17,16 @@ class UserRepository
         $this->generalinfo_repository = $generalinfo_repository;
     }
 
+    public function createUser($args)
+    {
+        $user = User::where('email',$args['email'])->first();
+        if(isset($user)){
+            throw new Error("This email is already in use.");
+            
+        }
+        $args["password"] = Hash::make($args['password']);
+        return User::create($args);
+    }
     public function getByIds($userIds)
     {
         $users = User::whereIn('id', $userIds)

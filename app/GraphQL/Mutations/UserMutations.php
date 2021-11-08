@@ -18,6 +18,10 @@ class UserMutations
         $this->attachment_repository = $attachment_repository;
     }
 
+    public function createUser($_, array $args)
+    {
+        return $this->userRepository->createUser($args);
+    }
     public function updateUser($_, array $args): User
     {
         return $this->userRepository->updateUser($args);
