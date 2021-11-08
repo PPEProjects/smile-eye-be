@@ -92,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"nahnahsnahnahs33nahnahs33s@gmail.com\",\n    \"password\": \"123456789\"\n}",
+							"raw": "{\n    \"email\": \"kelvin123@gmail.com\",\n    \"password\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1423,8 +1423,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($ids: JSON){\r\n  list_japanese_kanji(\r\n      ids: $ids  \r\n    ) {\r\n       id\r\n    user_id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    name\r\n    more\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"ids\": [1879,1880,1882]\r\n}\r\n"
+								"query": "query($ids: [ID]){\r\n  list_japanese_kanji(\r\n      ids: $ids  \r\n    ) {\r\n       id\r\n    user_id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    name\r\n    more\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"ids\": [\"1\",\"21\",\"12\",\"40\",\"3\"]\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -4075,6 +4075,36 @@
 			"name": "user",
 			"item": [
 				{
+					"name": "create_user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation(\n    $name:String, \n    $email:String, \n    $password: String,\n    $username:String, \n    $quotes: String,\n    $roles: JSON\n    $role_label: String\n    $phone_number: String ,\n    $avatar_attachment_id: ID,\n    $background_attachment_id: ID\n    ) \n{\n  create_user(\n    input: \n    {\n        name: $name\n        email: $email\n        password: $password\n        username: $username\n        roles: $roles\n        role_label: $role_label\n        quotes: $quotes\n        phone_number: $phone_number\n        avatar_attachment_id: $avatar_attachment_id\n        background_attachment_id : $background_attachment_id\n    }) \n    {\n            id\n            name\n            email\n            roles\n            username\n            quotes\n            phone_number\n            created_at\n            updated_at\n            attachment{\n                id\n                file\n                thumb\n            }\n            background_attachment{\n                id\n                file\n                thumb\n            }\n        }\n}",
+								"variables": "{\n    \"username\":\"dương\",\n    \"name\": \"ehe\",\n    \"email\":\"kids123@gmail.com\",\n    \"password\": \"123456789\",\n    \"roles\":[\n        \"member_add\",\n        \"member_banned\",\n        \"member_bannedGoal\",\n        \"member_changeInfor\",\n        \"member_resetPwd\"\n    ],\n    \"role_label\": \"admin\",\n    \"avatar_attachment_id\":1,\n    \"background_attachment_id\":1,\n    \"phone_number\":\"32423324233\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "update_user",
 					"request": {
 						"method": "POST",
@@ -4088,8 +4118,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "\nmutation(\n    $id: ID\n    $name:String, \n    $email:String, \n    $username:String, \n    $quotes: String,\n    $rules: JSON\n    $phone_number: String ,\n    $avatar_attachment_id: ID,\n    $background_attachment_id: ID\n    ) \n{\n  update_user(\n    input: \n    {\n        id: $id\n        name: $name\n        email: $email\n        username: $username\n        rules: $rules\n        quotes: $quotes\n        phone_number: $phone_number\n        avatar_attachment_id: $avatar_attachment_id\n        background_attachment_id : $background_attachment_id\n    }) \n    {\n            id\n            name\n            email\n            rules\n            username\n            quotes\n            phone_number\n            created_at\n            updated_at\n            attachment{\n                id\n                file\n                thumb\n            }\n            background_attachment{\n                id\n                file\n                thumb\n            }\n        }\n}",
-								"variables": "{\n    \"id\":1,\n    \"username\":\"dương quái\",\n    \"rules\":[\"user\"],\n    \"avatar_attachment_id\":1,\n    \"background_attachment_id\":1,\n    \"phone_number\":\"32423324233\"\n}"
+								"query": "\nmutation(\n    $id: ID\n    $name:String, \n    $email:String, \n    $username:String, \n    $quotes: String,\n    $roles: JSON\n    $phone_number: String ,\n    $avatar_attachment_id: ID,\n    $background_attachment_id: ID\n    ) \n{\n  update_user(\n    input: \n    {\n        id: $id\n        name: $name\n        email: $email\n        username: $username\n        roles: $roles\n        quotes: $quotes\n        phone_number: $phone_number\n        avatar_attachment_id: $avatar_attachment_id\n        background_attachment_id : $background_attachment_id\n    }) \n    {\n            id\n            name\n            email\n            roles\n            username\n            quotes\n            phone_number\n            created_at\n            updated_at\n            attachment{\n                id\n                file\n                thumb\n            }\n            background_attachment{\n                id\n                file\n                thumb\n            }\n        }\n}",
+								"variables": "{\n    \"id\":560,\n    \"username\":\"dương quái\",\n    \"roles\":[\n        \"member_add\",\n        \"member_banned\",\n        \"member_bannedGoal\",\n        \"member_changeInfor\",\n        \"member_resetPwd\"\n    ],\n    \"avatar_attachment_id\":1,\n    \"background_attachment_id\":1,\n    \"phone_number\":\"32423324233\"\n}"
 							}
 						},
 						"url": {
@@ -4178,8 +4208,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query(\n    $first: Int!, \n    $page: Int!, \n    $orderBy: [OrderByClause!]){\n  sort_users(\n      first: $first, \n      page: $page, \n      orderBy: $orderBy\n    ) {\n    data {\n        id\n        name\n        email\n        rules \n        username\n        quotes\n        phone_number\n        created_at\n        updated_at\n  }\n    paginatorInfo {\n      total\n      currentPage\n      hasMorePages\n      lastPage\n    }\n  }\n}\n\n",
-								"variables": "{\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}\r\n"
+								"query": "query(\n    $first: Int!, \n    $page: Int!, \n    $orderBy: [OrderByClause!]){\n  sort_users(\n      first: $first, \n      page: $page, \n      orderBy: $orderBy\n    ) {\n    data {\n        id\n        name\n        email\n        roles \n        username\n        quotes\n        phone_number\n        created_at\n        updated_at\n  }\n    paginatorInfo {\n      total\n      currentPage\n      hasMorePages\n      lastPage\n    }\n  }\n}\n\n",
+								"variables": "{\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"ASC\"\r\n    }]\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -4238,8 +4268,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query(\n    $first: Int!\n     $page: Int!\n){\n  list_users(\n      first:$first\n      page: $page\n  ){data{\n      id\n      full\n      name\n      org\n     member_number\n     business_field\n     relation_level\n      self_goals{\n          id\n          name\n      }\n      inviation_goals{\n          id\n          name\n      }\n      shared_goals{\n          id\n          name\n      }\n    buy_goals{\n        id\n        name\n    }\n    start_smile_eye_time\n    profit_forSelf\n    profit_for_smile_eye\n  }\n    total_page\n  }\n}\n",
-								"variables": "{\r\n    \"first\":2,\r\n    \"page\":1\r\n   \r\n}\r\n"
+								"query": "query(\n    $first: Int!\n    $page: Int!\n    $orderBy: JSON\n){\n  list_users(\n      first:$first\n      page: $page\n      orderBy: $orderBy\n  ){data{\n      id\n      full\n      name\n      org\n     member_number\n     business_field\n     relation_level\n      self_goals{\n          id\n          name\n      }\n      inviation_goals{\n          id\n          name\n      }\n      shared_goals{\n          id\n          name\n      }\n    buy_goals{\n        id\n        name\n    }\n    start_smile_eye_time\n    profit_forSelf\n    profit_for_smile_eye\n  }\n    total_page\n  }\n}\n",
+								"variables": "{\r\n    \"first\":10,\r\n    \"page\":1,\r\n    \"orderBy\": {\r\n        \"column\": \"id\",\r\n        \"order\": \"ASC\"\r\n    }\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -4268,8 +4298,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($id: ID!){\n  user(\n      id: $id\n    ) {\n    id\n    friend_status\n        name\n        email\n        rules\n        username\n        quotes\n        total_goal\n        total_friend\n        attachments{\n            id \n            thumb\n        }\n        attachment{\n            id\n            thumb\n        }\n        background_attachment{\n            id\n            thumb\n        }\n        goals{\n            id\n            general_info{\n            attachments{\n                thumb\n            }\n            }\n        }\n        my_friends{\n            id\n            name\n            attachment{\n                thumb\n            }\n        }\n  }\n}\n\n",
-								"variables": "{\r\n    \"id\": 1\r\n}\r\n"
+								"query": "query($id: ID!){\n  user(\n      id: $id\n    ) {\n    id\n    friend_status\n        name\n        email\n        phone_number\n        rules\n        username\n        quotes\n        total_goal\n        total_friend\n        attachments{\n            id \n            thumb\n        }\n        attachment{\n            id\n            thumb\n        }\n        background_attachment{\n            id\n            thumb\n        }\n        goals{\n            id\n            general_info{\n            attachments{\n                thumb\n            }\n            }\n        }\n        my_friends{\n            id\n            name\n            attachment{\n                thumb\n            }\n        }\n  }\n}\n\n",
+								"variables": "{\r\n    \"id\": 200\r\n}\r\n"
 							}
 						},
 						"url": {
