@@ -66,6 +66,8 @@ type ListUsers {
     id: ID
     full: String
     name: String
+    roles: String
+    role_label: String
     start_smile_eye_time: Date
     self_goals: [Goal]
     shared_goals: [Goal]
