@@ -21,7 +21,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"test\",\n    \"email\": \"nah34@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
+							"raw": "{\n    \"name\": \"test\",\n    \"email\": \"kelvin123@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1424,7 +1424,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($ids: [ID]){\r\n  list_japanese_kanji(\r\n      ids: $ids  \r\n    ) {\r\n       id\r\n    user_id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    name\r\n    more\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"ids\": [\"1\",\"21\",\"12\",\"40\",\"3\"]\r\n}\r\n"
+								"variables": "{\r\n    \"ids\": [\"4658\",\r\n    \"4656\",\r\n    \"4655\"]\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -4238,7 +4238,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query{\n  me{\n     id\n     attachment{\n         id\n         file\n         thumb\n     }\n     background_attachment{\n         id\n         file\n         thumb\n     }\n        name\n        email\n        rules\n        username\n        rules\n        phone_number\n        quotes\n        notification\n        created_at\n        updated_at\n  }\n}\n\n",
+								"query": "query{\n  me{\n     id\n     attachment{\n         id\n         file\n         thumb\n     }\n     background_attachment{\n         id\n         file\n         thumb\n     }\n        name\n        email\n        username\n        roles\n        role_label\n        phone_number\n        quotes\n        notification\n        created_at\n        updated_at\n  }\n}\n\n",
 								"variables": "{\r\n\r\n   \r\n}\r\n"
 							}
 						},
@@ -4298,7 +4298,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($id: ID!){\n  user(\n      id: $id\n    ) {\n    id\n    friend_status\n        name\n        email\n        phone_number\n        rules\n        username\n        quotes\n        total_goal\n        total_friend\n        attachments{\n            id \n            thumb\n        }\n        attachment{\n            id\n            thumb\n        }\n        background_attachment{\n            id\n            thumb\n        }\n        goals{\n            id\n            general_info{\n            attachments{\n                thumb\n            }\n            }\n        }\n        my_friends{\n            id\n            name\n            attachment{\n                thumb\n            }\n        }\n  }\n}\n\n",
+								"query": "query($id: ID!){\n  user(\n      id: $id\n    ) {\n    id\n    friend_status\n        name\n        email\n        phone_number\n        roles\n        role_label\n        username\n        quotes\n        total_goal\n        total_friend\n        attachments{\n            id \n            thumb\n        }\n        attachment{\n            id\n            thumb\n        }\n        background_attachment{\n            id\n            thumb\n        }\n        goals{\n            id\n            general_info{\n            attachments{\n                thumb\n            }\n            }\n        }\n        my_friends{\n            id\n            name\n            attachment{\n                thumb\n            }\n        }\n  }\n}\n\n",
 								"variables": "{\r\n    \"id\": 200\r\n}\r\n"
 							}
 						},
