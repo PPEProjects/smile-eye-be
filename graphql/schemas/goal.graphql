@@ -9,6 +9,7 @@ extend type Mutation {
     duplicate_goals(id : ID! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@duplicateGoals")
     copy_goal(id : ID! @spread): JSON @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@copyGoal")
     sort_rank_goal_root(id : ID!, rank : Int! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@sortRankGoalRoot")
+    ban_user_goals(user_id : ID!, goal_ids : [ID!] @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@banUserGoals")
 }
 extend type Query {
     #    userss: [User] @guard @field(resolver:"GoalQueries@userss")
@@ -57,6 +58,7 @@ type Goal{
     progress: Float
     price: Float
     is_trial_block: Boolean
+    banned_users: JSON
 }
 type CountGoal {
     status : String
@@ -118,6 +120,7 @@ input UpdateGoalInput{
     general_info: JSON
     price: Float
     is_trial_block: Boolean
+    banned_users: JSON
 }
 
 input DeleteGoalInput{
@@ -142,6 +145,7 @@ input UpsertGoalInput{
     general_info: JSON
     price: Float
     is_trial_block: Boolean
+    banned_users: JSON
 }
 
 input UpdateGoalMoveInput{

@@ -292,4 +292,7 @@ class GoalMutations
     public function sortRankGoalRoot($_array, $args){
         return $this->goal_repository->sortRankGoalRoot($args);
     }
+    public function banUserGoals($_array, $args){
+        return $this->goal_repository->banUserGoals($args);
+    }
 }

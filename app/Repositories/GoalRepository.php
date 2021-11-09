@@ -930,4 +930,13 @@ class GoalRepository
                 ->get($goals);
         return $goals;
     }
+
+    public function banUserGoals($args){
+        $goal = [];
+        foreach($args['goal_ids'] as $id){
+            $goal[] = tap(Goal::findOrFail($id))
+                    ->update(["banned_users" => $args['user_id']]);
+        }
+        return $goal;
+    }
 }
