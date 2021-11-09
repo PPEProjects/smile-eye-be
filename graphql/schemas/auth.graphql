@@ -57,6 +57,7 @@ type User {
     friend_status : String
     roles: JSON
     role_label: String
+    is_flag: Boolean
 }
 type UsersAdmin{
     total_page: Int
@@ -79,6 +80,7 @@ type ListUsers {
     member_number:Int
     business_field: String
     org: String
+    is_flag: Boolean
 }
 type AuthPayload {
     access_token: String

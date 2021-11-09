@@ -92,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"kelvin123@gmail.com\",\n    \"password\": \"123456789\"\n}",
+							"raw": "{\n    \"email\": \"nahnahss@gmail.com\",\n    \"password\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -4118,8 +4118,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "\nmutation(\n    $id: ID\n    $name:String, \n    $email:String, \n    $username:String, \n    $quotes: String,\n    $roles: JSON\n    $role_label: String \n    $phone_number: String ,\n    $avatar_attachment_id: ID,\n    $background_attachment_id: ID\n    ) \n{\n  update_user(\n    input: \n    {\n        id: $id\n        name: $name\n        email: $email\n        username: $username\n        roles: $roles\n        role_label: $role_label\n        quotes: $quotes\n        phone_number: $phone_number\n        avatar_attachment_id: $avatar_attachment_id\n        background_attachment_id : $background_attachment_id\n    }) \n    {\n            id\n            name\n            email\n            roles\n            role_label\n            username\n            quotes\n            phone_number\n            created_at\n            updated_at\n            attachment{\n                id\n                file\n                thumb\n            }\n            background_attachment{\n                id\n                file\n                thumb\n            }\n        }\n}",
-								"variables": "{\n    \"id\":560,\n    \"username\":\"dương quái\",\n    \"roles\":[\n        \"member_add\",\n        \"member_banned\",\n        \"member_bannedGoal\",\n        \"member_changeInfor\",\n        \"member_resetPwd\"\n    ],\n    \"role_label\": \"student\",\n    \"avatar_attachment_id\":1,\n    \"background_attachment_id\":1,\n    \"phone_number\":\"32423324233\"\n}"
+								"query": "\nmutation(\n    $id: ID\n    $name:String, \n    $email:String, \n    $username:String, \n    $quotes: String,\n    $roles: JSON\n    $role_label: String \n    $phone_number: String ,\n    $avatar_attachment_id: ID,\n    $background_attachment_id: ID\n    $is_flag: Boolean\n    ) \n{\n  update_user(\n    input: \n    {\n        id: $id\n        name: $name\n        email: $email\n        username: $username\n        roles: $roles\n        role_label: $role_label\n        quotes: $quotes\n        phone_number: $phone_number\n        avatar_attachment_id: $avatar_attachment_id\n        background_attachment_id : $background_attachment_id\n        is_flag: $is_flag\n    }) \n    {\n            id\n            name\n            email\n            roles\n            role_label\n            username\n            quotes\n            phone_number\n            created_at\n            updated_at\n            is_flag\n            attachment{\n                id\n                file\n                thumb\n            }\n            background_attachment{\n                id\n                file\n                thumb\n            }\n        }\n}",
+								"variables": "{\n    \"id\":4,\n    \"roles\":[\n        \"member_add\",\n        \"member_banned\",\n        \"member_bannedGoal\",\n        \"member_changeInfor\",\n        \"member_resetPwd\"\n    ],\n    \"role_label\": \"student\",\n    \"avatar_attachment_id\":1,\n    \"background_attachment_id\":1,\n    \"phone_number\":\"32423324233\",\n    \"is_flag\": false\n}"
 							}
 						},
 						"url": {
@@ -4268,8 +4268,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query(\n    $first: Int!\n    $page: Int!\n    $orderBy: JSON\n){\n  list_users(\n      first:$first\n      page: $page\n      orderBy: $orderBy\n  ){data{\n      id\n      full\n      name\n      org\n     member_number\n     business_field\n     relation_level\n      self_goals{\n          id\n          name\n      }\n      inviation_goals{\n          id\n          name\n      }\n      shared_goals{\n          id\n          name\n      }\n    buy_goals{\n        id\n        name\n    }\n    start_smile_eye_time\n    profit_forSelf\n    profit_for_smile_eye\n  }\n    total_page\n  }\n}\n",
-								"variables": "{\r\n    \"first\":10,\r\n    \"page\":1,\r\n    \"orderBy\": {\r\n        \"column\": \"id\",\r\n        \"order\": \"ASC\"\r\n    }\r\n}\r\n"
+								"query": "query(\n    $first: Int!\n    $page: Int!\n    $orderBy: JSON\n){\n  list_users(\n      first:$first\n      page: $page\n      orderBy: $orderBy\n  ){data{\n      id\n      full\n      name\n      roles\n      role_label\n      org\n     member_number\n     business_field\n     relation_level\n      self_goals{\n          id\n          name\n      }\n      inviation_goals{\n          id\n          name\n      }\n      shared_goals{\n          id\n          name\n      }\n    buy_goals{\n        id\n        name\n    }\n    start_smile_eye_time\n    profit_forSelf\n    profit_for_smile_eye\n  }\n    total_page\n  }\n}\n",
+								"variables": "{\r\n    \"first\":4,\r\n    \"page\":1,\r\n    \"orderBy\": {\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -4299,7 +4299,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID!){\n  user(\n      id: $id\n    ) {\n    id\n    friend_status\n        name\n        email\n        phone_number\n        roles\n        role_label\n        username\n        quotes\n        total_goal\n        total_friend\n        attachments{\n            id \n            thumb\n        }\n        attachment{\n            id\n            thumb\n        }\n        background_attachment{\n            id\n            thumb\n        }\n        goals{\n            id\n            general_info{\n            attachments{\n                thumb\n            }\n            }\n        }\n        my_friends{\n            id\n            name\n            attachment{\n                thumb\n            }\n        }\n  }\n}\n\n",
-								"variables": "{\r\n    \"id\": 200\r\n}\r\n"
+								"variables": "{\r\n    \"id\":2\r\n}\r\n"
 							}
 						},
 						"url": {

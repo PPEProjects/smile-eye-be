@@ -34,6 +34,7 @@ input UpdateUserInput{
     phone_number: String
     avatar_attachment_id: ID
     background_attachment_id : ID
+    is_flag: Boolean
 }
 
 
