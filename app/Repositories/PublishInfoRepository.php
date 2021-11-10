@@ -24,8 +24,19 @@ class PublishInfoRepository
     {
         $args = array_diff_key($args, array_flip(['directive']));
         $args['user_id'] = Auth::id();
-        $update = tap(PublishInfo::findOrFail($args["id"]))
-            ->update($args);
+        if(!isset($args['id']))
+        {
+            $publish = PublishInfo::where('general_id',$args['general_id'])
+                                    ->Where("user_invite_id", Auth::id())
+                                    ->first();
+            $id = $publish->id;
+        }
+        else
+        {
+           $id = $args['id'];
+        }
+        $update = tap(PublishInfo::findOrFail($id))
+                    ->update($args);
         return $update;
 
     }
