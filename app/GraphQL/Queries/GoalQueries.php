@@ -221,4 +221,8 @@ class GoalQueries
     {
         return $this->goal_repository->myGoalShare();
     }
+    public function goalShareTreeSort($_, array $args)
+    {
+        return $this->goal_repository->goalShareTreeSort($args);
+    }
 }

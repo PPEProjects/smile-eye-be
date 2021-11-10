@@ -931,6 +931,14 @@ class GoalRepository
         return $goals;
     }
 
+    public function goalShareTreeSort($args)
+    {
+        $getMyGoalShare = $this->myGoalShare()->pluck('id');
+        if(array_intersect($getMyGoalShare->toArray(), [$args['id']])){
+            return $this->getTreeSortByGoalId($args['id']);
+        }
+        return;
+    }
     public function banUserGoals($args){
         $goal = [];
         foreach($args['goal_ids'] as $id){

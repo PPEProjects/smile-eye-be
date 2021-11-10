@@ -30,6 +30,7 @@ extend type Query {
     gantt_chart_sort(id:ID, not_auth:Boolean): JSON @guard @field(resolver:"GoalQueries@ganttChartSort")
 
     my_goals_share: [Goal] @guard @field(resolver:"GoalQueries@myGoalShare")
+    goals_share_tree_sort(id:ID, not_auth: Boolean): JSON @guard @field(resolver:"GoalQueries@goalShareTreeSort")
 }
 type ReportGoal{
     A : Float
