@@ -1,0 +1,51 @@
+extend type Mutation {
+    create_coach_member(input: CreateCoachMemberInput! @spread): CoachMember @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@createCoachMember")
+    delete_coach_member(input: DeleteCoachMemberInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@deleteCoachMember")
+    update_coach_member(input: UpdateCoachMemberInput! @spread): CoachMember @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@updateCoachMember")
+
+}
+
+extend type Query {
+    coach_member: [CoachMember!]! @paginate(type: "paginator" model: "App\\Models\\CoachMember")
+# search_coach_member(status: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [CoachMember] @paginate(type: "paginator" model: "App\\Models\\CoachMember")
+    detail_coach_member(id: ID! @eq): CoachMember @find
+#    my_coach_members: [CoachMember] @guard@field(resolver:"CoachMemberQueries@my_coach_members")
+    sort_coach_member(orderBy: [OrderByClause!] @orderBy): [CoachMember] @paginate(type: "paginator" model: "App\\Models\\CoachMember")
+    my_list_coach_members: [CoachMember] @guard @field(resolver:"CoachMemberQueries@myListCoachMembers")
+}
+
+type CoachMember{
+    id: ID
+    user: User
+    org: String
+    business_field: String
+    goal_ids: JSON
+    teacher_id: ID
+    scale: String
+    goals: [Goal]
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateCoachMemberInput{
+    org: String
+    business_field: String
+   goal_ids: JSON
+    teacher_id: ID
+    scale: String
+}
+input DeleteCoachMemberInput{
+    id: ID
+}
+input DetailCoachMemberInput{
+    id:ID
+}
+input UpdateCoachMemberInput{
+    id : ID
+    org: String
+    business_field: String
+    goal_ids: JSON
+    teacher_id: ID
+    scale: String
+}
+
