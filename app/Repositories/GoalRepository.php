@@ -943,8 +943,14 @@ class GoalRepository
         $goal = [];
         foreach($args['goal_ids'] as $id){
             $goal = Goal::find($id);
+            if(gettype($goal->banned_users) == "string"){
+                $bannedUsers = [$goal->banned_users, $args['user_id']];
+            }
+            else{
+                $bannedUsers = array_merge($goal->banned_users, [$args['user_id']]);
+            }
             if(isset($goal)){
-                    $goal->update(["banned_users" => $args['user_id']]);
+                    $goal->update(["banned_users" =>  $bannedUsers]);
             }
         }
         return $goal;

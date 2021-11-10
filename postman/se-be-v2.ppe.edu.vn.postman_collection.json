@@ -1010,7 +1010,7 @@
 					"response": []
 				},
 				{
-					"name": "query list_coach_members",
+					"name": "query my_list_coach_members",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -1023,7 +1023,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query{\r\n  list_coach_members{\r\n      id\r\n      user{\r\n          id\r\n          name\r\n      }\r\n      org\r\n      business_field\r\n      goal_ids\r\n      teacher_id\r\n      goals{\r\n          id\r\n          name\r\n      }\r\n  }\r\n}",
+								"query": "query{\r\n  my_list_coach_members{\r\n      id\r\n      user{\r\n          id\r\n          name\r\n      }\r\n      org\r\n      business_field\r\n      goal_ids\r\n      teacher_id\r\n  }\r\n}",
 								"variables": "{\r\n\r\n}"
 							}
 						},
@@ -6783,7 +6783,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $user_id: ID!\r\n    $goal_ids: [ID!]\r\n) {\r\n   ban_user_goals(\r\n       user_id: $user_id\r\n       goal_ids: $goal_ids\r\n   )\r\n}",
-								"variables": "{\r\n    \"user_id\": 4,\r\n    \"goal_ids\": [1, 6, 4]\r\n}"
+								"variables": "{\r\n    \"user_id\": 5,\r\n    \"goal_ids\": [1]\r\n}"
 							}
 						},
 						"url": {
@@ -6903,7 +6903,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID, $not_auth: Boolean) {\r\n   goals_achieve_tree_sort(id: $id,not_auth: $not_auth)\r\n}",
-								"variables": "{\r\n \"id\":1\r\n}"
+								"variables": "{\r\n \"id\":2963\r\n}"
 							}
 						},
 						"url": {
@@ -6932,8 +6932,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($id: ID, $not_auth: Boolean) {\r\n   goals_share_tree_sort(id: $id,not_auth: $not_auth)\r\n}",
-								"variables": "{\r\n \"id\":1\r\n}"
+								"query": "query($id: ID) {\r\n   goals_share_tree_sort(id: $id)\r\n}",
+								"variables": "{\r\n \"id\":10046\r\n}"
 							}
 						},
 						"url": {
