@@ -67,6 +67,7 @@ type ListUsers {
     id: ID
     full: String
     name: String
+    email: String
     roles: JSON
     role_label: String
     start_smile_eye_time: Date
