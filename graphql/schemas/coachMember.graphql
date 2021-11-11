@@ -2,7 +2,7 @@ extend type Mutation {
     create_coach_member(input: CreateCoachMemberInput! @spread): CoachMember @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@createCoachMember")
     delete_coach_member(input: DeleteCoachMemberInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@deleteCoachMember")
     update_coach_member(input: UpdateCoachMemberInput! @spread): CoachMember @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@updateCoachMember")
-    add_coach_member(input: AddCoachMemberInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@addCoachMember")
+    add_coach_member(input: AddCoachMemberInput! @spread):JSON @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@addCoachMember")
 }
 
 extend type Query {

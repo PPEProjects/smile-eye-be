@@ -21,12 +21,12 @@ class CoachMemberRepository
     {
         foreach($args["user_ids"] as $user_id)
         {
-            $addMember =  CoachMember::create([
+            $addMember[] =  CoachMember::create([
                         'user_id' => $user_id,
                         'teacher_id' => $args['teacher_id']
                         ]);
         }
-        return true;
+        return  $addMember;
     }
     public function updateCoachMember($args)
     {
