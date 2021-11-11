@@ -17,6 +17,17 @@ class CoachMemberRepository
         $args["user_id"] = Auth::id();
         return CoachMember::create($args);
     }
+    public function addCoachMember($args)
+    {
+        foreach($args["user_ids"] as $user_id)
+        {
+            $addMember =  CoachMember::create([
+                        'user_id' => $user_id,
+                        'teacher_id' => $args['teacher_id']
+                        ]);
+        }
+        return true;
+    }
     public function updateCoachMember($args)
     {
         $args["user_id"] = Auth::id();

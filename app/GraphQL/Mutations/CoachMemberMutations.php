@@ -17,6 +17,10 @@ class CoachMemberMutations
     {
         return $this->coach_member_repository->createCoachMember($args);
     }
+    public function addCoachMember($_, array $args)
+    {
+        return $this->coach_member_repository->addCoachMember($args);
+    }
     public function updateCoachMember($_, array $args)
     {
         return $this->coach_member_repository->updateCoachMember($args);
