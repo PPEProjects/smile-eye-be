@@ -919,7 +919,7 @@ class GoalRepository
 
     public function myGoalShare($userId = null){
         if(!isset($userId)){$userId = Auth::id();}
-        $publish = PublishInfo::where('user_invite_id', $userId)->where("status", "accept")->get();
+        $publish = PublishInfo::where('user_invite_id', $userId)->where("status", "accept")->get()->keyby('general_id');
         $idGenerals = $publish->pluck('general_id');
         $general = GeneralInfo::whereIn("id", $idGenerals)->get();
         $idGoals = $general->pluck("goal_id")->toArray();
@@ -928,6 +928,10 @@ class GoalRepository
         $goals = $this->generalinfo_repository
                 ->setType('goal')
                 ->get($goals);
+        $goals = $goals->map(function($goal) use($publish){
+            $goal->rule = @$publish[$goal->general_info->id]->rule ?? 'view';
+            return $goal;
+        });
         return $goals;
     }
 
