@@ -21,10 +21,10 @@ class CoachMemberRepository
     {
         foreach($args["user_ids"] as $user_id)
         {
-            $addMember[] =  CoachMember::create([
-                        'user_id' => $user_id,
-                        'teacher_id' => $args['teacher_id']
-                        ]);
+            $addMember[] =  CoachMember::updateOrCreate(
+                            ['user_id' => $user_id],
+                                $args
+                            );
         }
         return  $addMember;
     }
@@ -42,7 +42,17 @@ class CoachMemberRepository
     }
     public function myListCoachMembers($args)
     {
-        $coachMember = CoachMember::Where('teacher_id', Auth::id())->get();
+        $coachMembers = CoachMember::all();
+        $goalIds = [];
+        $coachIds = [];
+        foreach($coachMembers as $value){
+            $goals = Goal::whereIn('id', @$value->goal_ids ?? [])->where('user_id', Auth::id())->get();
+            $goalIds = array_merge($goalIds, $goals->pluck('id')->toArray()); 
+            if(array_intersect($goalIds, @$value->goal_ids ?? [])){
+                $coachIds[] = $value->id;
+            }
+        }
+        $coachMember =  CoachMember::WhereIn('id', $coachIds)->get();
         return @$coachMember;
     }
 }
