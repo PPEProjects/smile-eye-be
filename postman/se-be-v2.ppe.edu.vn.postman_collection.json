@@ -920,6 +920,36 @@
 					"response": []
 				},
 				{
+					"name": "add_member_to_my_goals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\nmutation(\n    $user_ids: [ID]\n    $goal_ids: [ID]\n) {\n  add_member_to_my_goals(\n    input: {\n        user_ids: $user_ids\n        goal_ids: $goal_ids\n    }\n  )\n\n }",
+								"variables": "{\n   \"user_ids\": [4,3],\n   \"goal_ids\":[2,6,8]\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "update_coach_members",
 					"request": {
 						"method": "POST",
