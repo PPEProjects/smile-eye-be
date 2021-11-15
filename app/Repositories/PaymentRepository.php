@@ -22,7 +22,7 @@ class PaymentRepository
     }
     public function deletePayment($args)
     {
-        return Payment::where("id",$args["id"])->delete();
+        return Payment::where("id",$args["id"])->forceDelete();
     }
     public function myPayments($args)
     {

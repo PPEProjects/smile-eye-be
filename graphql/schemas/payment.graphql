@@ -1,12 +1,14 @@
 
 extend type Mutation {
-    create_payment(input: CreatePaymentInput! @spread): Payment @guard @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutations@createPayment")
-    update_payment(input: UpdatePaymentInput! @spread): Payment @guard @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutations@updatePayment")
+#    create_payment(input: CreatePaymentInput! @spread): Payment @guard @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutations@createPayment")
+#    update_payment(input: UpdatePaymentInput! @spread): Payment @guard @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutations@updatePayment")
+#    delete_payment(input: DeletePaymentInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutations@deletePayment")
+    upsert_payment(input: UpsertPaymentInput! @spread): Payment @guard @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutations@upsertPayment")
     delete_payment(input: DeletePaymentInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutations@deletePayment")
 }
 
 extend type Query {
-    payments: [Payment] @paginate(type: "paginator" model: "App\\Models\\Payment")
+    payments: [Payment] @guard @field(resolver:"PaymentQueries@payments")
     sort_payments(orderBy: [OrderByClause!] @orderBy): [Payment] @paginate(type: "paginator" model: "App\\Models\\Payment")
     my_payments: [Payment] @guard @field(resolver:"PaymentQueries@myPayments")
     detail_payment(id : ID!): Payment @guard @field(resolver:"PaymentQueries@detailPayments")
@@ -17,12 +19,20 @@ type Payment {
     user: User
     user_id : ID
     add_user_id: ID
+    add_user: User
     goal_id: ID
     goal: Goal
     type: String
     money: String
     created_at: DateTime
     updated_at: DateTime
+}
+input UpsertPaymentInput{
+    id: ID
+    add_user_id: ID
+    goal_id: ID
+    type: String
+    money: String
 }
 input CreatePaymentInput{
     add_user_id: ID

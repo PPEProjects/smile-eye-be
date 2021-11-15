@@ -1,6 +1,8 @@
 <?php
 namespace App\GraphQL\Mutations;
+use App\Models\Payment;
 use App\Repositories\PaymentRepository;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentMutations
 {
@@ -9,6 +11,19 @@ class PaymentMutations
     public function __construct(PaymentRepository $payment_repository)
     {
         $this->payment_repository = $payment_repository;
+    }
+
+    public function upsertPayment($_, array $args)
+    {
+        $args['user_id'] = Auth::id();
+        $payment = Payment::updateOrCreate(
+            [
+                'add_user_id' => @$args['add_user_id'],
+                'goal_id' => @$args['goal_id'],
+            ],
+            $args
+        );
+        return $payment;
     }
 
     public function createPayment($_, array $args)

@@ -25,6 +25,12 @@ class Payment extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function add_user()
+    {
+        return $this->belongsTo(User::class, 'add_user_id', 'id');
+    }
+
     public function goal(){
         return $this->belongsTo(goal::class);
     }

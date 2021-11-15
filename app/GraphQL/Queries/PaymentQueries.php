@@ -1,6 +1,7 @@
 <?php
 namespace App\GraphQL\Queries ;
 
+use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\PaymentRepository;
@@ -11,6 +12,11 @@ class PaymentQueries
     public function __construct(PaymentRepository $payment_repository)
     {
         $this->payment_repository = $payment_repository;
+    }
+
+    public function payments($_,array $args)
+    {
+        return Payment::all();
     }
 
     public function myPayments($_,array $args)
