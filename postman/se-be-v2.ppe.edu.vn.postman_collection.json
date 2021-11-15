@@ -337,6 +337,436 @@
 			]
 		},
 		{
+			"name": "payments",
+			"item": [
+				{
+					"name": "create_payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n   $add_user_id: ID\r\n    $goal_id: ID\r\n    $type: String\r\n    $money: String\r\n\r\n) {\r\n  create_payment(\r\n    input: {\r\n     add_user_id: $add_user_id\r\n     goal_id: $goal_id\r\n     money: $money\r\n     type: $type\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"add_user_id\": 2,\r\n    \"goal_id\":1,\r\n    \"type\": \"trial\",\r\n    \"money\": \"30.000vnd\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n    $id: ID!\r\n    $add_user_id: ID\r\n    $goal_id: ID\r\n    $type: String\r\n    $money: String\r\n\r\n) {\r\n  update_payment(\r\n    input: {\r\n    id: $id\r\n     add_user_id: $add_user_id\r\n     goal_id: $goal_id\r\n     money: $money\r\n     type: $type\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"variables": "{\r\n   \"id\": 1,\r\n    \"add_user_id\": 3,\r\n    \"goal_id\": 1,\r\n    \"type\": \"trial\",\r\n    \"money\": \"600.000vnd\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($id:ID!) {\r\n  delete_payment(\r\n    input: {\r\n      id: $id\r\n    }\r\n  )\r\n}",
+								"variables": "{\r\n    \"id\": 2\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_paments",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  payments(first:22, page:1) {\r\n    data {\r\n     id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query detail_ payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID!){\r\n  detail_payment(\r\n      id: $id\r\n    ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"id\": 2\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_payments",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  my_payments{\r\n    id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n    \r\n}",
+								"variables": "{\r\n    \r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query sort_payments",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_payments(\r\n      \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n    id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n\r\n",
+								"variables": "{\r\n    \r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"created_at\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "goal_members",
+			"item": [
+				{
+					"name": "create_goal_member",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n   $add_user_id: ID\r\n    $goal_id: ID\r\n\r\n) {\r\n  create_goal_member(\r\n    input: {\r\n     add_user_id: $add_user_id\r\n     goal_id: $goal_id\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"add_user_id\": 2,\r\n    \"goal_id\":1\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_goal_member",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n    $id: ID!\r\n    $add_user_id: ID\r\n    $goal_id: ID\r\n\r\n) {\r\n  update_goal_member(\r\n    input: {\r\n    id: $id\r\n     add_user_id: $add_user_id\r\n     goal_id: $goal_id\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"variables": "{\r\n   \"id\": 2,\r\n    \"add_user_id\": 3,\r\n    \"goal_id\": 1\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_goal_member",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($id:ID!) {\r\n  delete_goal_member(\r\n    input: {\r\n      id: $id\r\n    }\r\n  )\r\n}",
+								"variables": "{\r\n    \"id\": 2\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_goal_members",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  goal_members(first:22, page:1) {\r\n    data {\r\n     id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    created_at\r\n    updated_at\r\n  }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query detail_goal_member",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($id: ID!){\r\n  detail_goal_member(\r\n      id: $id\r\n    ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"id\": 2\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_goal_members",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  my_goal_members{\r\n    id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    created_at\r\n    updated_at\r\n  }\r\n    \r\n}",
+								"variables": "{\r\n    \r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query sort_goal_members",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_goal_members(\r\n      \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n    id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    created_at\r\n    updated_at\r\n  }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n\r\n",
+								"variables": "{\r\n    \r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"created_at\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "friend_groups",
 			"item": [
 				{
@@ -934,7 +1364,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "\nmutation(\n    $user_ids: [ID]\n    $goal_ids: [ID]\n) {\n  add_member_to_my_goals(\n    input: {\n        user_ids: $user_ids\n        goal_ids: $goal_ids\n    }\n  )\n\n }",
-								"variables": "{\n   \"user_ids\": [4,3],\n   \"goal_ids\":[2,6,8]\n}"
+								"variables": "{\n   \"user_ids\": [150],\n   \"goal_ids\":[10040]\n}"
 							}
 						},
 						"url": {
