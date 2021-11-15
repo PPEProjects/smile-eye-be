@@ -11,7 +11,7 @@ class GoalMember extends Model
     use HasFactory;
     use SoftDeletes;
     protected $connection = "mysql";
-    protected $table = "goal_members";
+    protected $table      = "goal_members";
 
     protected $fillable = [
         'id',
@@ -20,10 +20,18 @@ class GoalMember extends Model
         'goal_id',
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-    public function goal(){
+
+    public function add_user()
+    {
+        return $this->belongsTo(User::class, 'add_user_id', 'id');
+    }
+
+    public function goal()
+    {
         return $this->belongsTo(goal::class);
     }
 }

@@ -24,7 +24,8 @@ class GoalMemberRepository
     }
     public function myGoalMembers($args)
     {
-        return GoalMember::where('user_id', Auth::id())->get();
+        $goalMembers = GoalMember::where('add_user_id', Auth::id())->get();
+        return $goalMembers;
     }
     public function detailGoalMembers($args)
     {

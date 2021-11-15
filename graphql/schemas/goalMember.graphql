@@ -1,12 +1,13 @@
 
 extend type Mutation {
-    create_goal_member(input: CreateGoalMemberInput! @spread): GoalMember @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@createGoalMember")
-    update_goal_member(input: UpdateGoalMemberInput! @spread): GoalMember @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@updateGoalMember")
+#    create_goal_member(input: CreateGoalMemberInput! @spread): GoalMember @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@createGoalMember")
+#    update_goal_member(input: UpdateGoalMemberInput! @spread): GoalMember @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@updateGoalMember")
+    upsert_goal_member(input: UpsertGoalMemberInput! @spread): GoalMember @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@upsertGoalMember")
     delete_goal_member(input: DeleteGoalMemberInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@deleteGoalMember")
 }
 
 extend type Query {
-    goal_members: [GoalMember] @paginate(type: "paginator" model: "App\\Models\\GoalMember")
+    goal_members: [GoalMember] @guard @field(resolver:"GoalMemberQueries@goalMembers")
     sort_goal_members(orderBy: [OrderByClause!] @orderBy): [GoalMember] @paginate(type: "paginator" model: "App\\Models\\GoalMember")
     my_goal_members: [GoalMember] @guard @field(resolver:"GoalMemberQueries@myGoalMembers")
     detail_goal_member(id : ID!): GoalMember @guard @field(resolver:"GoalMemberQueries@detailGoalMembers")
@@ -14,6 +15,7 @@ extend type Query {
 
 type GoalMember{
     id: ID
+    add_user: User
     user: User
     user_id : ID
     add_user_id: ID
@@ -22,6 +24,13 @@ type GoalMember{
     created_at: DateTime
     updated_at: DateTime
 }
+
+input UpsertGoalMemberInput{
+    id: ID
+    add_user_id: ID
+    goal_id: ID
+}
+
 input CreateGoalMemberInput{
     add_user_id: ID
     goal_id: ID

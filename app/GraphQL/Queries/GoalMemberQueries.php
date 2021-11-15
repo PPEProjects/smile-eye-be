@@ -1,6 +1,7 @@
 <?php
 namespace App\GraphQL\Queries ;
 
+use App\Models\GoalMember;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\GoalMemberRepository;
@@ -13,6 +14,10 @@ class GoalMemberQueries
         $this->goal_member_repository = $goal_member_repository;
     }
 
+    public function goalMembers($_,array $args)
+    {
+        return GoalMember::all();
+    }
     public function myGoalMembers($_,array $args)
     {
         return $this->goal_member_repository->myGoalMembers($args);
