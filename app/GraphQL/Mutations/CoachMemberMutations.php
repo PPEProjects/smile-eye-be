@@ -29,5 +29,9 @@ class CoachMemberMutations
     {
         return $this->coach_member_repository->deleteCoachMember($args);
     }
+    public function deleteMyMember($_, array $args)
+    {
+        return $this->coach_member_repository->deleteMyMember($args);
+    }
 
 }

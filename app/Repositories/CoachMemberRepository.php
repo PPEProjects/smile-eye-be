@@ -39,6 +39,20 @@ class CoachMemberRepository
         $delete = CoachMember::find($args['id']);
         return $delete->delete();
     }
+    public function deleteMyMember($args)
+    {
+        $goals = Goal::where('user_id', Auth::id())->get();
+        $goalIds = $goals->pluck('id')->toArray();
+        $coachMember = CoachMember::where('user_id',$args['user_id'])->first();
+        $deleteIdGoals = array_diff(@$coachMember->goal_ids ?? [], @$goalIds ?? []);
+        $newGoalIds = [];
+        foreach($deleteIdGoals as $ids){
+                $newGoalIds[] = $ids;
+        }
+        $update = tap(CoachMember::findOrFail($coachMember->id))
+                    ->update(['goal_ids' => $newGoalIds]);
+        return  $update ;
+    }
     public function myListCoachMembers($args)
     {
         $coachMembers = CoachMember::all();

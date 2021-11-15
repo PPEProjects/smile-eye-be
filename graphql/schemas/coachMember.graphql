@@ -1,6 +1,7 @@
 extend type Mutation {
     create_coach_member(input: CreateCoachMemberInput! @spread): CoachMember @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@createCoachMember")
     delete_coach_member(input: DeleteCoachMemberInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@deleteCoachMember")
+    delete_my_member(input: DeleteMyMemberInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@deleteMyMember")
     update_coach_member(input: UpdateCoachMemberInput! @spread): CoachMember @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@updateCoachMember")
     add_coach_member(input: AddCoachMemberInput! @spread):JSON @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@addCoachMember")
     add_member_to_my_goals(input: AddMemberToMyGoals! @spread):JSON @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@addCoachMember")
@@ -56,4 +57,7 @@ input AddCoachMemberInput{
 input AddMemberToMyGoals{
     user_ids: [ID]
     goal_ids: [ID]
+}
+input DeleteMyMemberInput{
+    user_id: ID!
 }
