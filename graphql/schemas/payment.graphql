@@ -1,0 +1,46 @@
+
+extend type Mutation {
+    create_payment(input: CreatePaymentInput! @spread): Payment @guard @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutations@createPayment")
+    update_payment(input: UpdatePaymentInput! @spread): Payment @guard @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutations@updatePayment")
+    delete_payment(input: DeletePaymentInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutations@deletePayment")
+}
+
+extend type Query {
+    payments: [Payment] @paginate(type: "paginator" model: "App\\Models\\Payment")
+    sort_payments(orderBy: [OrderByClause!] @orderBy): [Payment] @paginate(type: "paginator" model: "App\\Models\\Payment")
+    my_payments: [Payment] @guard @field(resolver:"PaymentQueries@myPayments")
+    detail_payment(id : ID!): Payment @guard @field(resolver:"PaymentQueries@detailPayments")
+}
+
+type Payment {
+    id: ID
+    user: User
+    user_id : ID
+    add_user_id: ID
+    goal_id: ID
+    goal: Goal
+    type: String
+    money: String
+    created_at: DateTime
+    updated_at: DateTime
+}
+input CreatePaymentInput{
+    add_user_id: ID
+    goal_id: ID
+    type: String
+    money: String
+}
+
+input UpdatePaymentInput{
+    id: ID!
+    add_user_id: ID
+    goal_id: ID
+    type: String
+    money: String
+}
+
+input DeletePaymentInput{
+    id: ID!
+}
+
+

@@ -1,0 +1,40 @@
+
+extend type Mutation {
+    create_goal_member(input: CreateGoalMemberInput! @spread): GoalMember @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@createGoalMember")
+    update_goal_member(input: UpdateGoalMemberInput! @spread): GoalMember @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@updateGoalMember")
+    delete_goal_member(input: DeleteGoalMemberInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@deleteGoalMember")
+}
+
+extend type Query {
+    goal_members: [GoalMember] @paginate(type: "paginator" model: "App\\Models\\GoalMember")
+    sort_goal_members(orderBy: [OrderByClause!] @orderBy): [GoalMember] @paginate(type: "paginator" model: "App\\Models\\GoalMember")
+    my_goal_members: [GoalMember] @guard @field(resolver:"GoalMemberQueries@myGoalMembers")
+    detail_goal_member(id : ID!): GoalMember @guard @field(resolver:"GoalMemberQueries@detailGoalMembers")
+}
+
+type GoalMember{
+    id: ID
+    user: User
+    user_id : ID
+    add_user_id: ID
+    goal_id: ID
+    goal: Goal
+    created_at: DateTime
+    updated_at: DateTime
+}
+input CreateGoalMemberInput{
+    add_user_id: ID
+    goal_id: ID
+}
+
+input UpdateGoalMemberInput{
+    id: ID!
+    add_user_id: ID
+    goal_id: ID
+}
+
+input DeleteGoalMemberInput{
+    id: ID!
+}
+
+
