@@ -30,9 +30,8 @@ class CoachMemberRepository
     }
     public function updateCoachMember($args)
     {
-        $args["user_id"] = Auth::id();
         $update = tap(CoachMember::findOrFail($args["id"]))
-        ->update($args);
+                ->update($args);
         return $update;
     }
     public function deleteCoachMember($args)
