@@ -16,7 +16,8 @@ class GoalMemberQueries
 
     public function goalMembers($_,array $args)
     {
-        return GoalMember::all();
+        return GoalMember::orderBy('id', 'desc')
+            ->get();
     }
     public function myGoalMembers($_,array $args)
     {

@@ -16,6 +16,7 @@ class Goal extends Model
 
     protected $fillable = [
         'id',
+        'root_id',
         'parent_id',
         'name',
         'start_day',

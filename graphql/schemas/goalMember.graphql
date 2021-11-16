@@ -2,7 +2,7 @@
 extend type Mutation {
 #    create_goal_member(input: CreateGoalMemberInput! @spread): GoalMember @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@createGoalMember")
 #    update_goal_member(input: UpdateGoalMemberInput! @spread): GoalMember @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@updateGoalMember")
-    upsert_goal_member(input: UpsertGoalMemberInput! @spread): GoalMember @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@upsertGoalMember")
+    upsert_goal_member(input: UpsertGoalMemberInput! @spread): [GoalMember] @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@upsertGoalMember")
     delete_goal_member(input: DeleteGoalMemberInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@deleteGoalMember")
 }
 
@@ -29,6 +29,7 @@ input UpsertGoalMemberInput{
     id: ID
     add_user_id: ID
     goal_id: ID
+    goal_ids: [ID]
 }
 
 input CreateGoalMemberInput{
