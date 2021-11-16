@@ -295,4 +295,9 @@ class GoalMutations
     public function banUserGoals($_array, $args){
         return $this->goal_repository->banUserGoals($args);
     }
+    public function changeGoalOwner($_array, $args){
+//        $goal = Goal::where('id', $args['goal_id'])->first();
+        return (boolean) Goal::where('root_id', $args['goal_id'])
+            ->update(['user_id'=>$args['user_id']]);
+    }
 }

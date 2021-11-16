@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8e162c3a-de2c-488e-b9b5-ac3575a053bf",
+		"_postman_id": "2e013059-56a5-4c4a-8fd0-a53d494d4c73",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -6593,6 +6593,36 @@
 		{
 			"name": "goal",
 			"item": [
+				{
+					"name": "change_goal_owner",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\r\n    $goal_id : ID!\r\n    $user_id: ID!\r\n) {\r\n  change_goal_owner(\r\n    input: {\r\n        goal_id : $goal_id\r\n        user_id: $user_id\r\n    }\r\n  )\r\n}\r\n",
+								"variables": "{\r\n    \"goal_id\": 1,\r\n    \"user_id\": 2\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "upsert_goal",
 					"request": {

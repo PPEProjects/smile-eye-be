@@ -10,6 +10,7 @@ extend type Mutation {
     copy_goal(id : ID! @spread): JSON @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@copyGoal")
     sort_rank_goal_root(id : ID!, rank : Int! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@sortRankGoalRoot")
     ban_user_goals(user_id : ID!, goal_ids : [ID!] @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@banUserGoals")
+    change_goal_owner(input: ChangeGoalOwner! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMutations@changeGoalOwner")
 }
 extend type Query {
     #    userss: [User] @guard @field(resolver:"GoalQueries@userss")
@@ -31,6 +32,10 @@ extend type Query {
 
     my_goals_share: [Goal] @guard @field(resolver:"GoalQueries@myGoalShare")
     goals_share_tree_sort(id:ID, not_auth: Boolean): JSON @guard @field(resolver:"GoalQueries@goalShareTreeSort")
+}
+input ChangeGoalOwner{
+    user_id: ID!
+    goal_id: ID!
 }
 type ReportGoal{
     A : Float

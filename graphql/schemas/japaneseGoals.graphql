@@ -23,6 +23,7 @@ type JapaneseGoal{
     user : User
     goal : Goal
     goal_root: Goal
+    root_id: ID
     goal_id : ID
     next_goal: NextAndPrevGoal
     prev_goal: NextAndPrevGoal
@@ -67,6 +68,7 @@ input UpdateJapaneseGoalInput{
 input UpsertJapaneseGoalInput{
     id : ID
     parent_id : ID
+    root_id : ID
     name_goal: String
     type : String
     more : JSON

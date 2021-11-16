@@ -33,11 +33,11 @@ class JapaneseGoalRepository
 //        if (!isset($args['type'])) {
 //            throw new Error('You must input type');
 //        }
-        if($args['type'] == 'flashcard'){
-            $flashCard = $this->getJapaneseGoal('type','flashcard');
+        if ($args['type'] == 'flashcard') {
+            $flashCard = $this->getJapaneseGoal('type', 'flashcard');
             $getMore = $flashCard->pluck('more')->toArray();
-            foreach($getMore as $value){
-                if(isset($value['card_caption']) && $value['card_caption'] == $args['more']['card_caption']){
+            foreach ($getMore as $value) {
+                if (isset($value['card_caption']) && $value['card_caption'] == $args['more']['card_caption']) {
                     throw new Error("This card already exists. Please choose another name.");
                     break;
                 }
@@ -50,7 +50,11 @@ class JapaneseGoalRepository
             }
         }
         if (isset($args['name_goal'])) {
-            $dataGoal = ['name' => $args['name_goal'], 'user_id' => $args["user_id"]];
+            $dataGoal = [
+                'name'    => $args['name_goal'],
+                'user_id' => $args["user_id"],
+                'root_id' => $args["root_id"],
+            ];
             if (isset($args['parent_id'])) {
                 $dataGoal['parent_id'] = $args['parent_id'];
             }
@@ -65,7 +69,7 @@ class JapaneseGoalRepository
         if ($args['type'] == 'flashcard_category') {
             $cate = $this->getJapaneseGoal('type', $args['type'])->first();
             if (isset($cate)) {
-                if(array_intersect($cate->more, $args['more'])){
+                if (array_intersect($cate->more, $args['more'])) {
                     throw new Error("This category already exists. Please choose another name.");
                 }
                 $args['more'] = array_diff($args['more'], array_merge($cate->more, [null]));
@@ -165,29 +169,28 @@ class JapaneseGoalRepository
                 $useInvite[] = $japaneseGoal->user_id;
                 $this->notification_repository->staticNotification("edit_diary", $japaneseGoal->id, $japaneseGoal,
                     $useInvite);
-            } else{
-                if ($japaneseGoal->user_id == $userId && isset($args['more'][0]['content'])) 
-                {
-                    $content = $args['more'][0]['content'];      
+            } else {
+                if ($japaneseGoal->user_id == $userId && isset($args['more'][0]['content'])) {
+                    $content = $args['more'][0]['content'];
                     $args['more'] = $japaneseGoal->more;
-                    $args['more'][0]['content'] = $content;            
+                    $args['more'][0]['content'] = $content;
                 } else {
                     $args = array_diff_key($args, array_flip(['more']));
                 }
-               
+
             }
-            
+
         }
         if ($japaneseGoal->type == 'sing_with_friend') {
-            if(isset($args['more']['user_invite_ids'])){
+            if (isset($args['more']['user_invite_ids'])) {
                 $user_invited_ids = array_diff($args['more']['user_invite_ids'],
                     @$japaneseGoal->more['user_invite_ids'] ?? []);
-                $userInvite = $args['more']['user_invite_ids'];           
+                $userInvite = $args['more']['user_invite_ids'];
                 $args['more']['user_invite_ids'] = $userInvite;
                 $this->notification_repository->staticNotification("sing_with_friend", $japaneseGoal->goal_id,
-                $japaneseGoal, $user_invited_ids);
+                    $japaneseGoal, $user_invited_ids);
             }
-            $args['more'] = $japaneseGoal->more;         
+            $args['more'] = $japaneseGoal->more;
         }
         return tap(JapaneseGoal::findOrFail($japaneseGoal->id))
             ->update($args);
@@ -225,7 +228,7 @@ class JapaneseGoalRepository
         if (isset($detailJPGoal->goal_id)) {
             $goalRoot = $this->findGoal($detailJPGoal->goal_id);
             while (true) {
-                if (isset($goalRoot->parent_id) &&  @$goalRoot->parent_id != 0) {
+                if (isset($goalRoot->parent_id) && @$goalRoot->parent_id != 0) {
                     $goalRoot = $this->findGoal($goalRoot->parent_id);
                 } else {
                     break;
@@ -246,10 +249,9 @@ class JapaneseGoalRepository
             }
             $keyNext = 0;
             $keyPrev = 0;
-            if(isset($goalRoot->id))
-            {
+            if (isset($goalRoot->id)) {
                 $childrenIds = $this->japaneseLearn_repository->goalNochild([$goalRoot->id]);
-                $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);          
+                $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);
                 foreach ($childrenIds as $key => $value) {
                     if ($key > $findIds) {
                         if (isset($getTypeNextGoal)) {
@@ -271,23 +273,24 @@ class JapaneseGoalRepository
             $prevGoal = @$this->findGoal($keyPrev);
             if (isset($nextGoal) && isset($getTypeNextGoal->type)) {
                 $nextGoal->type = @$getTypeNextGoal->type;
+            } else {
+                $nextGoal = null;
             }
-            else $nextGoal = null;
 
             if (isset($prevGoal) && isset($getTypePrevGoal->type)) {
                 $prevGoal->type = @$getTypePrevGoal->type;
+            } else {
+                $prevGoal = null;
             }
-            else $prevGoal = null;
             $detailJPGoal->next_goal = $nextGoal;
             $detailJPGoal->prev_goal = $prevGoal;
         }
-        if($detailJPGoal->type == 'flashcard_study'){
+        if ($detailJPGoal->type == 'flashcard_study') {
             $flashCardIds = $detailJPGoal->more['flashcard_ids'];
             $flashCard = JapaneseGoal::whereIn('id', $flashCardIds)->get();
             $detailJPGoal->card_box_topics = @$detailJPGoal->more['card_box_topics'];
             $more = [];
-            foreach($flashCard as $value)
-            {
+            foreach ($flashCard as $value) {
                 $more[] = array_merge(['id' => $value->id], $value->more);
             }
             $detailJPGoal->more = $more;
@@ -317,8 +320,8 @@ class JapaneseGoalRepository
         $category = $cate->more;
         $newCate = [end($category)];
         $category = array_diff($category, $newCate);
-        sort($category); 
-        $sortCate = array_merge($newCate,$category);
+        sort($category);
+        $sortCate = array_merge($newCate, $category);
         $category = array_flip($sortCate);
         foreach ($category as $key => $valuere) {
             $category[$key] = [];
@@ -334,11 +337,11 @@ class JapaneseGoalRepository
                 //query sum card by category
                 $flashCardCate = [];
                 foreach ($category as $key => $value) {
-                    if(@$category[$key][0]['media']['file_type'] == 'image')
-                    {
+                    if (@$category[$key][0]['media']['file_type'] == 'image') {
                         $media = $category[$key][0]['media'];
+                    } else {
+                        $media = null;
                     }
-                    else $media = null;
                     $flashCardCate[] = [
                         'name'  => $key,
                         'count' => count($category[$key]),
@@ -366,32 +369,33 @@ class JapaneseGoalRepository
         $myFlashCard = JapaneseGoal::whereIn('id', $getIds)->get();
         return $myFlashCard;
     }
+
     public function renameFlashcardCategory($args)
     {
         $jpGoal = $this->getJapaneseGoal('type', 'flashcard_category')->first();
         $flashcard = $this->flashcardCategory(['type' => $args['old_name']]);
-        if(is_null($flashcard['list'])){
+        if (is_null($flashcard['list'])) {
             return false;
         }
-        foreach($flashcard['list'] as $key => $value){
+        foreach ($flashcard['list'] as $key => $value) {
             $id = $value['id'];
             $value['flashcard_category'] = $args['new_name'];
             $more = array_diff_key($value, array_flip(['id']));
             tap(JapaneseGoal::findOrFail($id))
-            ->update(['more' => $more]);
+                ->update(['more' => $more]);
         }
-        foreach($jpGoal->more as $key => $value){
-            if($value == $args['new_name']){
+        foreach ($jpGoal->more as $key => $value) {
+            if ($value == $args['new_name']) {
                 throw new Error("This category is already existed. Please choose another name.");
                 break;
             }
-            if($value == $args['old_name']){
+            if ($value == $args['old_name']) {
                 $jpGoal->more = array_replace($jpGoal->more, [$key => $args['new_name']]);
                 break;
             }
         }
         $rename = tap(JapaneseGoal::findOrFail($jpGoal->id))
-                    ->update(['more' => $jpGoal->more]);
+            ->update(['more' => $jpGoal->more]);
         return $jpGoal;
     }
 }
