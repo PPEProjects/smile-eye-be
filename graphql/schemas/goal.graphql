@@ -61,6 +61,7 @@ type Goal{
     is_trial_block: Boolean
     banned_users: JSON
     rule: String
+    goal_root: Goal
 }
 type CountGoal {
     status : String

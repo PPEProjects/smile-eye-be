@@ -68,8 +68,26 @@ class GoalQueries
 # Ver 2
     public function detailGoal($_, array $args)
     {
-        $goal = Goal::where('id', $args['id'])->first();
+        $goal = Goal::where('id', $args['id'])->first(); 
         if ($goal) {
+            $goalRoot = $this->japaneseGoal_repository->findGoal($goal->parent_id);
+        if($goalRoot)
+        {
+            while (true) 
+            {
+                if (isset($goalRoot->parent_id) &&  @$goalRoot->parent_id != 0) 
+                {
+                    $goalRoot =  $this->japaneseGoal_repository->findGoal($goalRoot->parent_id);
+                } else {
+                    break;
+                }
+            }
+        }
+        else
+        {
+            $goalRoot = $goal;
+        }
+        $goal->goal_root = $goalRoot;
             $generalInfo = $this->generalinfo_repository
                 ->setType('goal')
                 ->findByTypeId($goal->id);
