@@ -73,7 +73,9 @@ class GoalMutations
         $deleteGoal = Goal::find($args['id']);
         return $deleteGoal->delete();
     }
-    public function duplicateGoals($_,array $args){
+
+    public function duplicateGoals($_, array $args)
+    {
         return $this->goal_repository->duplicateGoals($args);
     }
 
@@ -128,25 +130,25 @@ class GoalMutations
                 throw new Error('Start day must less than end day');
             }
         }
-        if(!isset($args['id'])){
+        if (!isset($args['id'])) {
             $args['user_id'] = Auth::id();
         }
-        if(isset($args['id'])){
+        if (isset($args['id'])) {
             $findGoal = Goal::find($args['id']);
             $checkUser = array_intersect(@$findGoal->locks['user_ids'] ?? [], [Auth::id()]);
-            if($checkUser){
-                if($findGoal->is_lock){
+            if ($checkUser) {
+                if ($findGoal->is_lock) {
                     return false;
                 }
                 $args = array_diff_key($args, array_flip(['locks', 'is_lock']));
             }
             //Delete when name is empty
-        if(isset($args['name']) && $args['name'] == ""){
-           $deleteNameEmpty = Goal::find($args['id'])->delete();
-           if (isset($args['root_id'])) {
-                return $this->goal_repository->getTreeSortByGoalId($args['root_id'], Auth::id());
+            if (isset($args['name']) && $args['name'] == "") {
+                $deleteNameEmpty = Goal::find($args['id'])->delete();
+                if (isset($args['root_id'])) {
+                    return $this->goal_repository->getTreeSortByGoalId($args['root_id'], Auth::id());
+                }
             }
-        }
         }
         $goal = Goal::updateOrCreate(
             ['id' => @$args['id']],
@@ -280,24 +282,32 @@ class GoalMutations
         }
         return false;
     }
+
     public function updateGoalMove($_array, $args)
     {
-       return $this->goal_repository->updateGoalMove($args);
-    }
-    public function copyGoal($_array, $args)
-    {
-       return $this->goal_repository->copyGoal($args);
+        return $this->goal_repository->updateGoalMove($args);
     }
 
-    public function sortRankGoalRoot($_array, $args){
+    public function copyGoal($_array, $args)
+    {
+        return $this->goal_repository->copyGoal($args);
+    }
+
+    public function sortRankGoalRoot($_array, $args)
+    {
         return $this->goal_repository->sortRankGoalRoot($args);
     }
-    public function banUserGoals($_array, $args){
+
+    public function banUserGoals($_array, $args)
+    {
         return $this->goal_repository->banUserGoals($args);
     }
-    public function changeGoalOwner($_array, $args){
+
+    public function changeGoalOwner($_array, $args)
+    {
 //        $goal = Goal::where('id', $args['goal_id'])->first();
-        return (boolean) Goal::where('root_id', $args['goal_id'])
-            ->update(['user_id'=>$args['user_id']]);
+        return (boolean)Goal::where('root_id', $args['goal_id'])
+            ->orWhere('id', $args['goal_id'])
+            ->update(['user_id' => $args['user_id']]);
     }
 }
