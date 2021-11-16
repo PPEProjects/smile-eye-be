@@ -48,7 +48,7 @@ class AchieveMutations
                                 ->first();
             if(isset($achive)){
                 $notification = Notification::where('type_id', $achive->id)->first();
-                $notification->delete;
+                $notification->delete();
                 return $achive->delete();
             }
             return false;
