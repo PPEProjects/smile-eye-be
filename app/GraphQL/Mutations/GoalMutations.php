@@ -306,8 +306,8 @@ class GoalMutations
     public function changeGoalOwner($_array, $args)
     {
 //        $goal = Goal::where('id', $args['goal_id'])->first();
-        return (boolean)Goal::where('root_id', $args['goal_id'])
-            ->orWhere('id', $args['goal_id'])
+        return (boolean)Goal::whereIn('root_id', $args['goal_id'])
+            ->orWhereIn('id', $args['goal_id'])
             ->update(['user_id' => $args['user_id']]);
     }
 }

@@ -4,6 +4,8 @@ extend type Mutation {
 #    update_goal_member(input: UpdateGoalMemberInput! @spread): GoalMember @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@updateGoalMember")
     upsert_goal_member(input: UpsertGoalMemberInput! @spread): [GoalMember] @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@upsertGoalMember")
     delete_goal_member(input: DeleteGoalMemberInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@deleteGoalMember")
+    delete_goal_member_by_goal_id(input: DeleteGoalMemberInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalMemberMutations@deleteGoalMemberByGoalId")
+
 }
 
 extend type Query {
@@ -44,7 +46,8 @@ input UpdateGoalMemberInput{
 }
 
 input DeleteGoalMemberInput{
-    id: ID!
+    id: ID
+    goal_id: ID
 }
 
 

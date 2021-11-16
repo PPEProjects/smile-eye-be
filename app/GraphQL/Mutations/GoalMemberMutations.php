@@ -61,5 +61,8 @@ class GoalMemberMutations
     {
         return $this->goal_member_repository->deleteGoalMember($args);
     }
-
+    public function deleteGoalMemberByGoalId($_, array $args)
+    {
+        return $this->goal_member_repository->deleteGoalMemberByGoalId($args);
+    }
 }

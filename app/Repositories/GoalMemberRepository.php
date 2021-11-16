@@ -31,5 +31,13 @@ class GoalMemberRepository
     {
         return GoalMember::find($args['id']);
     }
-   
+   public function deleteGoalMemberByGoalId($args){
+        $goalMembers = GoalMember::where('goal_id', $args['goal_id'])
+                                    ->where('add_user_id', Auth::id())
+                                    ->first();
+        if(isset($goalMembers)){
+            return $goalMembers->delete();
+        }
+        return false;
+   }
 }

@@ -35,7 +35,7 @@ extend type Query {
 }
 input ChangeGoalOwner{
     user_id: ID!
-    goal_id: ID!
+    goal_id: [ID!]
 }
 type ReportGoal{
     A : Float
