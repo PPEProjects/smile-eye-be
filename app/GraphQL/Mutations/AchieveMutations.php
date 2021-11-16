@@ -5,6 +5,7 @@ use App\Models\Achieve;
 use App\Models\Comment;
 use App\Models\ContestInfo;
 use App\Models\GeneralInfo;
+use App\Models\Notification;
 use App\Repositories\AchieveRepository;
 use App\Repositories\NotificationRepository;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +47,8 @@ class AchieveMutations
                                 ->where('user_invite_id', Auth::id())
                                 ->first();
             if(isset($achive)){
+                $notification = Notification::where('type_id', $achive->id)->first();
+                $notification->delete;
                 return $achive->delete();
             }
             return false;
