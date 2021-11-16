@@ -112,7 +112,7 @@ class GoalQueries
     {
         $this->goal_repository->calculatorProcessTodolist();
         $this->goal_repository->calculatorProcessUpdate();
-        $goals = Goal::SelectRaw("*, 'goals' AS type")
+        $goals = Goal::SelectRaw("*, 'goal_owner' AS type")
                     ->where('user_id', Auth::id())
                     ->orderByRaw('`rank` ASC, `id` DESC');
         switch ($args['parent_id']) {
@@ -130,7 +130,7 @@ class GoalQueries
         //Get id goal from GoalMember
         $goalMember = GoalMember::where("add_user_id", Auth::id())->get();
         $idGoalMembers = $goalMember->pluck('goal_id');
-        $myGoalMember = Goal::SelectRaw("*, 'goal_members' AS type")
+        $myGoalMember = Goal::SelectRaw("*, 'goal_member' AS type")
                         ->whereIn('id', @$idGoalMembers ?? [])
                         ->get();
         $goals = $myGoalMember->merge($goals);
