@@ -62,6 +62,7 @@ type Goal{
     banned_users: JSON
     rule: String
     goal_root: Goal
+    type: String
 }
 type CountGoal {
     status : String

@@ -4,6 +4,7 @@ namespace App\GraphQL\Queries;
 
 use App\Models\Achieve;
 use App\Models\Goal;
+use App\Models\GoalMember;
 use App\Models\JapaneseGoal;
 use App\Models\JapaneseLearn;
 use App\Repositories\GeneralInfoRepository;
@@ -111,9 +112,9 @@ class GoalQueries
     {
         $this->goal_repository->calculatorProcessTodolist();
         $this->goal_repository->calculatorProcessUpdate();
-
-        $goals = Goal::where('user_id', Auth::id())
-            ->orderByRaw('`rank` ASC, `id` DESC');
+        $goals = Goal::SelectRaw("*, 'goals' AS type")
+                    ->where('user_id', Auth::id())
+                    ->orderByRaw('`rank` ASC, `id` DESC');
         switch ($args['parent_id']) {
             case 'all':
                 break;
@@ -125,6 +126,16 @@ class GoalQueries
                 break;
         }
         $goals = $goals->get();
+
+        //Get id goal from GoalMember
+        $goalMember = GoalMember::where("add_user_id", Auth::id())->get();
+        $idGoalMembers = $goalMember->pluck('goal_id');
+        $myGoalMember = Goal::SelectRaw("*, 'goal_members' AS type")
+                        ->whereIn('id', @$idGoalMembers ?? [])
+                        ->get();
+        $goals = $myGoalMember->merge($goals);
+        //---------//
+
         $getgoalIds = $goals->pluck('id')->toArray();
         $japaneseGoals = JapaneseGoal::whereIn('goal_id', $getgoalIds)->get();
         if (isset($japaneseGoals) && $args['parent_id'] == 'root') {

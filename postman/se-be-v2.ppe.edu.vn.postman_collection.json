@@ -21,7 +21,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"test\",\n    \"email\": \"kelvin123@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
+							"raw": "{\n    \"name\": \"test\",\n    \"email\": \"ks@gmail.com\",\n    \"password\": \"123456789\",\n    \"password_confirmation\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -4453,8 +4453,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "\nmutation {\n  delete_user\n}",
-								"variables": "{\r\n    \"id\":\"2\"\r\n}"
+								"query": "\nmutation($id: ID) {\n  delete_user(\n     input: {\n          id:$id\n        }\n    )\n}",
+								"variables": "{\r\n    \"id\": 565\r\n}"
 							}
 						},
 						"url": {
@@ -6877,7 +6877,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($parent_id: String!) {\r\n  my_goals(parent_id: $parent_id) {\r\n      id\r\n      name\r\n      start_day\r\n      end_day\r\n      status\r\n      rank\r\n      task_id\r\n      locks\r\n      is_lock\r\n      is_pined\r\n      banned_users\r\n      progress\r\n      next_goal\r\n      price\r\n      is_trial_block\r\n      general_info {\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publish\r\n        color\r\n        attachments {\r\n          file\r\n          file_type\r\n          thumb\r\n        }\r\n        achieves {\r\n          id\r\n          user_invite {\r\n            id\r\n            name\r\n            attachment {\r\n              thumb\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n",
+								"query": "query($parent_id: String!) {\r\n  my_goals(parent_id: $parent_id) {\r\n      id\r\n      name\r\n      start_day\r\n      end_day\r\n      status\r\n      type\r\n      rank\r\n      task_id\r\n      locks\r\n      is_lock\r\n      is_pined\r\n      banned_users\r\n      progress\r\n      next_goal\r\n      price\r\n      is_trial_block\r\n      general_info {\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publish\r\n        color\r\n        attachments {\r\n          file\r\n          file_type\r\n          thumb\r\n        }\r\n        achieves {\r\n          id\r\n          user_invite {\r\n            id\r\n            name\r\n            attachment {\r\n              thumb\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n",
 								"variables": "{\r\n \"parent_id\": \"root\"\r\n}"
 							}
 						},
@@ -6998,7 +6998,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID!){\r\n  detail_goal(id: $id) {\r\n    id\r\n    name\r\n    banned_users\r\n    goal_root{\r\n        id\r\n        name\r\n    }\r\n    parent{\r\n        id\r\n    }\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publishs{\r\n            id\r\n        }\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n        achieves{\r\n            id\r\n            user{\r\n                id\r\n                name\r\n            \r\n        }\r\n        \r\n    }\r\n  }\r\n}\r\n}",
-								"variables": "{\r\n    \"id\": 6\r\n}\r\n"
+								"variables": "{\r\n    \"id\": 10588\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -7208,7 +7208,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID, $not_auth: Boolean) {\r\n   goals_achieve_tree_sort(id: $id,not_auth: $not_auth)\r\n}",
-								"variables": "{\r\n \"id\":2963\r\n}"
+								"variables": "{\r\n \"id\":1994\r\n}"
 							}
 						},
 						"url": {
@@ -7303,7 +7303,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $id : ID\r\n    $add_user_id:ID\r\n    $goal_id : ID\r\n) {\r\n  upsert_goal_member(\r\n    input: {\r\n        id : $id\r\n        add_user_id: $add_user_id\r\n        goal_id: $goal_id\r\n    }\r\n  ) {\r\n        id\r\n        add_user{\r\n            id\r\n            name\r\n        }\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        goal{\r\n            id\r\n            name\r\n        }\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"id\":1,\r\n    \"add_user_id\":1,\r\n    \"goal_id\":1\r\n}"
+								"variables": "{\r\n    \"add_user_id\":2,\r\n    \"goal_id\":1\r\n}"
 							}
 						},
 						"url": {
