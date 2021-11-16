@@ -226,7 +226,15 @@ class GoalQueries
         if (isset($args['not_auth'])) {
             return $this->goal_repository->getTreeSortByGoalId($args['id']);
         }
-        return $this->goal_repository->getTreeSortByGoalId($args['id'], Auth::id());
+        $userId =  Auth::id();
+         //Get id goal from GoalMember
+        $goalMember = GoalMember::where("add_user_id", $userId)
+                                    ->where('goal_id', $args['id'])
+                                    ->first();
+        if(isset($goalMember)){
+                $userId = $goalMember->user_id;
+        }
+        return $this->goal_repository->getTreeSortByGoalId($args['id'], $userId);
     }
 
     public function goalsAchieveTreeSort($_, array $args)
