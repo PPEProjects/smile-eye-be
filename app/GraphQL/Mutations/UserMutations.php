@@ -30,7 +30,6 @@ class UserMutations
 
     public function deleteUser($_, array $args): bool
     {
-        $args['id'] = Auth::id();
         $user = User::find($args['id']);
         return $user->delete();
     }
