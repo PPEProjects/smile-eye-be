@@ -4268,8 +4268,38 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation($id:ID!) {\r\n  delete_achieve(\r\n    input: {\r\n      id: $id\r\n    }\r\n  )\r\n}",
+								"query": "mutation($id:ID) {\r\n  delete_achieve(\r\n    input: {\r\n      id: $id\r\n    }\r\n  )\r\n}",
 								"variables": "{\r\n    \"id\": 18\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_achieve_by_goal_id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($goal_id:ID) {\r\n  delete_achieve(\r\n    input: {\r\n      goal_id: $goal_id\r\n    }\r\n  )\r\n}",
+								"variables": "{\r\n    \"goal_id\": 46\r\n}"
 							}
 						},
 						"url": {
@@ -7362,7 +7392,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\r\n    $id : ID!\r\n) {\r\n  delete_goal_member(\r\n    input: {\r\n        id : $id\r\n    }\r\n  ) \r\n}\r\n",
+								"query": "mutation(\r\n    $id : ID\r\n) {\r\n  delete_goal_member(\r\n    input: {\r\n        id : $id\r\n    }\r\n  ) \r\n}\r\n",
 								"variables": "{\r\n    \"id\":1\r\n}"
 							}
 						},

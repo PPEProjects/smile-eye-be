@@ -34,7 +34,8 @@ input CreateAchieveInput{
     status : String
 }
 input DeleteAchieveInput{
-    id: ID!
+    id: ID
+    goal_id: ID
 }
 input DetailAchieveInput{
     id:ID!

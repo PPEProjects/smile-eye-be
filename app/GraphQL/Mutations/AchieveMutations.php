@@ -4,6 +4,7 @@ namespace App\GraphQL\Mutations;
 use App\Models\Achieve;
 use App\Models\Comment;
 use App\Models\ContestInfo;
+use App\Models\GeneralInfo;
 use App\Repositories\AchieveRepository;
 use App\Repositories\NotificationRepository;
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +40,16 @@ class AchieveMutations
     }
     public function deleteAchieve($_, array $args):bool
     {
+        if(isset($args['goal_id'])){
+            $general = GeneralInfo::where('goal_id',  $args['goal_id'])->first();
+            $achive = Achieve::where("general_id",  @$general->id)
+                                ->where('user_invite_id', Auth::id())
+                                ->first();
+            if(isset($achive)){
+                return $achive->delete();
+            }
+            return false;
+        }
         $cm = Achieve::find($args['id']);
         return $cm->delete();
     }
