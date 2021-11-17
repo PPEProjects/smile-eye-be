@@ -16,13 +16,19 @@ class PaymentMutations
     public function upsertPayment($_, array $args)
     {
         $args['user_id'] = Auth::id();
-        $payment = Payment::updateOrCreate(
-            [
-                'add_user_id' => @$args['add_user_id'],
-                'goal_id' => @$args['goal_id'],
-            ],
-            $args
-        );
+        $payment = [];
+        $data = array_diff_key($args, array_flip(['goal_id']));
+        foreach($args['goal_id'] as $goal_id)
+        {
+            $data['goal_id'] = $goal_id; 
+                $payment[] = Payment::updateOrCreate(
+                [
+                    'add_user_id' => @$data['add_user_id'],
+                    'goal_id' => $goal_id,
+                ],
+                $data
+            );
+        }
         return $payment;
     }
 

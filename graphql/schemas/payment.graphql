@@ -3,7 +3,7 @@ extend type Mutation {
 #    create_payment(input: CreatePaymentInput! @spread): Payment @guard @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutations@createPayment")
 #    update_payment(input: UpdatePaymentInput! @spread): Payment @guard @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutations@updatePayment")
 #    delete_payment(input: DeletePaymentInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutations@deletePayment")
-    upsert_payment(input: UpsertPaymentInput! @spread): Payment @guard @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutations@upsertPayment")
+    upsert_payment(input: UpsertPaymentInput! @spread): [Payment] @guard @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutations@upsertPayment")
     delete_payment(input: DeletePaymentInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\PaymentMutations@deletePayment")
 }
 
@@ -30,7 +30,7 @@ type Payment {
 input UpsertPaymentInput{
     id: ID
     add_user_id: ID
-    goal_id: ID
+    goal_id: [ID]
     type: String
     money: String
 }
