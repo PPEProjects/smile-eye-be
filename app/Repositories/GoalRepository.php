@@ -101,7 +101,9 @@ class GoalRepository
             ->where('tasks.id', $taskId)
             ->first();
     }
-    public function ganttChartSort($goalId, $userId = null){
+
+    public function ganttChartSort($goalId, $userId = null)
+    {
 
         $this->calculatorProcessTodolist();
         $this->calculatorProcessUpdate();
@@ -140,70 +142,72 @@ class GoalRepository
     public function getTreeSortByGoalId($goalId, $userId = null)
     {
         $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id')
-        ->orderByRaw('-`index` DESC, `id` ASC');
+            ->orderByRaw('-`index` DESC, `id` ASC');
 
-    if ($userId) {
-        $goals = $goals->where("user_id", $userId);
-    }
-
-    $goals = $goals->get();
-    $getIdGoals = $goals->pluck('id');
-    $japaneseGoals = JapaneseGoal::select('id', 'type', 'goal_id')
-                                 ->whereIn('goal_id', $getIdGoals)
-                                 ->get()->keyBy('goal_id');
-
-    //Check goal have  task_id And Task have goal_id
-    $getIdTasks = $goals->pluck('task_id');
-
-    $findIdTasks = Task::WhereIn('id', $getIdTasks)->get()->keyBy('id');
-    $findIdGoals = Task::WhereIn('goal_id', $getIdGoals)->get()->keyBy('goal_id');
-
-    $goals = $goals->map(function ($goal) use ($japaneseGoals , $findIdGoals, $findIdTasks){
-        $goal->japanese_goal = @$japaneseGoals[$goal->id];
-
-        if ($goal->task_id == null || !isset($findIdTasks[$goal->task_id]))
-        {
-            $goal->is_add_branch = true;
-            $goal->is_add_todo = true;
+        if ($userId) {
+            $goals = $goals->where("user_id", $userId);
         }
-        else $goal->is_add_branch = false;
 
-        if(isset($findIdGoals[$goal->id]) || isset($findIdTasks[$goal->task_id]))
-        {
-            $goal->is_add_todo = false;
+        $goals = $goals->get();
+        $getIdGoals = $goals->pluck('id');
+        $japaneseGoals = JapaneseGoal::select('id', 'type', 'goal_id')
+            ->whereIn('goal_id', $getIdGoals)
+            ->get()->keyBy('goal_id');
+
+        //Check goal have  task_id And Task have goal_id
+        $getIdTasks = $goals->pluck('task_id');
+
+        $findIdTasks = Task::WhereIn('id', $getIdTasks)->get()->keyBy('id');
+        $findIdGoals = Task::WhereIn('goal_id', $getIdGoals)->get()->keyBy('goal_id');
+
+        $goals = $goals->map(function ($goal) use ($japaneseGoals, $findIdGoals, $findIdTasks) {
+            $goal->japanese_goal = @$japaneseGoals[$goal->id];
+
+            if ($goal->task_id == null || !isset($findIdTasks[$goal->task_id])) {
+                $goal->is_add_branch = true;
+                $goal->is_add_todo = true;
+            } else {
+                $goal->is_add_branch = false;
+            }
+
+            if (isset($findIdGoals[$goal->id]) || isset($findIdTasks[$goal->task_id])) {
+                $goal->is_add_todo = false;
+            }
+            return $goal;
+        });
+
+        $tree = self::buildTree($goals->toArray(), $goalId);
+        $getIds = self::buildTreeEmpty($tree);
+        $checktreeEmpty = $getIds['tree_empty'];
+        $pTree = $goals->where('id', $goalId)->first();
+        $treeEmpty = $goals->where('title', "")->pluck('id');
+        $treeEmpty = array_intersect($treeEmpty->toArray(), $checktreeEmpty);
+        if ($pTree) {
+            $pTree->children = $tree;
+            $pTree->expanded = true;
+            return ['tree' => [$pTree], 'tree_empty' => $treeEmpty, 'goals' => $goals];
         }
-        return $goal;
-    });
+        return ['tree' => [], 'goals' => $goals];
+    }
 
-    $tree = self::buildTree($goals->toArray(), $goalId);
-    $getIds = self::buildTreeEmpty($tree);
-    $checktreeEmpty = $getIds['tree_empty'];
-    $pTree = $goals->where('id', $goalId)->first();
-    $treeEmpty = $goals->where('title', "")->pluck('id');
-    $treeEmpty = array_intersect($treeEmpty->toArray(), $checktreeEmpty);
-    if ($pTree) {
-        $pTree->children = $tree;
-        return ['tree' => [$pTree],'tree_empty' => $treeEmpty ,'goals' => $goals];
-    }
-    return ['tree' => [], 'goals' => $goals];
-    }
     public function buildTreeEmpty($trees, $empty = [])
     {
         $branch = array();
         $empty = array();
-        foreach($trees as $tree) { 
+        foreach ($trees as $tree) {
             $empty[] = $tree['id'];
             if (isset($tree['children'])) {
                 $next = self::buildTreeEmpty($tree['children']);
-               $empty = array_merge($empty,$next['tree_empty']);
-                if($next['tree']){
+                $empty = array_merge($empty, $next['tree_empty']);
+                if ($next['tree']) {
                     $tree[] = $next['tree'];
                 }
             }
             $branch[] = $tree;
         }
-        return ['tree' => $branch, 'tree_empty'=>$empty];
+        return ['tree' => $branch, 'tree_empty' => $empty];
     }
+
     public function goalsAchieveTreeSort($goalId)
     {
         $goal_ids = $this->myGoalsAchieve()->pluck("id")->toArray();
@@ -218,7 +222,7 @@ class GoalRepository
                 ->whereIn('goal_id', $getIdGoals)
                 ->get()->keyBy('goal_id');
 
-            $goals = $goals->map(function ($goal) use ($japaneseGoals){
+            $goals = $goals->map(function ($goal) use ($japaneseGoals) {
                 $goal->japanese_goal = @$japaneseGoals[$goal->id];
                 return $goal;
             });
@@ -320,7 +324,9 @@ class GoalRepository
 
     public function myGoalsAchieve($userId = null)
     {
-        if(!isset($userId)){ $userId = Auth::id(); }
+        if (!isset($userId)) {
+            $userId = Auth::id();
+        }
         $general_ids = Achieve::where("user_invite_id", $userId)
             ->where("status", "accept")
             ->get()
@@ -719,60 +725,62 @@ class GoalRepository
         }
     }
 
-    public function duplicateGoals($args){
+    public function duplicateGoals($args)
+    {
         //directive
         $goal = Goal::find($args["id"]);
-        if ($this->isSmallest($goal)){
-            $goalNew = Goal::create(array_diff_key($goal->toArray(),array_flip(["id","directive"])));
-            $general = @GeneralInfo::where("goal_id",$goal->id)->first();
-            if ($general){
+        if ($this->isSmallest($goal)) {
+            $goalNew = Goal::create(array_diff_key($goal->toArray(), array_flip(["id", "directive"])));
+            $general = @GeneralInfo::where("goal_id", $goal->id)->first();
+            if ($general) {
                 $generalArr = @$general->toArray();
                 $generalArr["goal_id"] = $goalNew->id;
-                GeneralInfo::create(array_diff_key($generalArr,array_flip(["id","directive"])));
+                GeneralInfo::create(array_diff_key($generalArr, array_flip(["id", "directive"])));
             }
-            return true ;
-        }
-        else{
-            $goalRoot = Goal::create(array_diff_key($goal->toArray(),array_flip(["id","directive"])));
-            $general = @GeneralInfo::where("goal_id",$goal->id)->first();
-            if ($general){
+            return true;
+        } else {
+            $goalRoot = Goal::create(array_diff_key($goal->toArray(), array_flip(["id", "directive"])));
+            $general = @GeneralInfo::where("goal_id", $goal->id)->first();
+            if ($general) {
                 $generalArr = @$general->toArray();
                 $generalArr["goal_id"] = $goalRoot->id;
-                GeneralInfo::create(array_diff_key($generalArr,array_flip(["id","directive"])));
+                GeneralInfo::create(array_diff_key($generalArr, array_flip(["id", "directive"])));
             }
 
             $goalChilds = $this->findChilds($goal);
             //provide idRoot and it's childs
-            return $this->dulicate($goalRoot,$goalChilds);
+            return $this->dulicate($goalRoot, $goalChilds);
         }
 
     }
-    public function dulicate($goalRoot,$goalChilds){
 
-        if (count($goalChilds) != 0){
-            foreach ($goalChilds as $g){
+    public function dulicate($goalRoot, $goalChilds)
+    {
+
+        if (count($goalChilds) != 0) {
+            foreach ($goalChilds as $g) {
                 $arr = $g->toArray();
                 $arr["parent_id"] = $goalRoot->id;
-                $dupG = Goal::create(array_diff_key($arr,array_flip(["id","directive"])));
-                $general = @GeneralInfo::where("goal_id",$goalRoot->id)->first();
-                if ($general){
+                $dupG = Goal::create(array_diff_key($arr, array_flip(["id", "directive"])));
+                $general = @GeneralInfo::where("goal_id", $goalRoot->id)->first();
+                if ($general) {
                     $generalArr = @$general->toArray();
                     $generalArr["goal_id"] = $dupG->id;
-                    GeneralInfo::create(array_diff_key($generalArr,array_flip(["id","directive"])));
+                    GeneralInfo::create(array_diff_key($generalArr, array_flip(["id", "directive"])));
                 }
                 $gChilds = $this->findChilds($g);
-                $this->dulicate($dupG,$gChilds);
+                $this->dulicate($dupG, $gChilds);
             }
             return true;
-        }
-        else{
+        } else {
             return true;
         }
     }
 
 
-    public function findChilds($goal){
-        $goals = Goal::where("parent_id",$goal->id)->get();
+    public function findChilds($goal)
+    {
+        $goals = Goal::where("parent_id", $goal->id)->get();
         return $goals;
     }
 
@@ -780,20 +788,20 @@ class GoalRepository
     {
         $idGoalRoot = $args['goal_move'][0]['id'];
         $i = 0;
-        foreach($args['goal_move'] as $value){
+        foreach ($args['goal_move'] as $value) {
             $value['index'] = $i;
-            if(empty($value['parent_id'])){
-                 $checkGoalRoot = Goal::find($value['id']);
-               if(isset($checkGoalRoot->parent_id)){
-                   continue;
-               }
+            if (empty($value['parent_id'])) {
+                $checkGoalRoot = Goal::find($value['id']);
+                if (isset($checkGoalRoot->parent_id)) {
+                    continue;
+                }
                 $value['parent_id'] = null;
             }
-           $goalMove = tap(Goal::findOrFail($value["id"]))->update($value);
-           $i++;
-        }   
+            $goalMove = tap(Goal::findOrFail($value["id"]))->update($value);
+            $i++;
+        }
         $goals = $this->getTreeSortByGoalId($idGoalRoot);
-       return $goals;
+        return $goals;
     }
 
     public function copyGoal($args)
@@ -804,29 +812,29 @@ class GoalRepository
         $getNameGoal = $goalRoot->name;
         $getNameMyGoals = $myGoals->pluck('name')->toArray();
         $check = array_intersect($getNameMyGoals, [$getNameGoal]);
-        if($check != []){
-            throw new Error("You already have this goal!");     
+        if ($check != []) {
+            throw new Error("You already have this goal!");
         }
         $goals = self::childrenGoal($args['id']);
         $goals = array_merge([$goalRoot->toArray()], $goals);
         $newGoals = [];
 
-        foreach($goals as $value){
+        foreach ($goals as $value) {
             $general = GeneralInfo::where('goal_id', $value['id'])->first();
             $japaneseGoal = JapaneseGoal::where('goal_id', $value)->first();
-            $args = array_diff_key($value, array_flip(['user_id','id', 'parent_id']));
+            $args = array_diff_key($value, array_flip(['user_id', 'id', 'parent_id']));
             $args['user_id'] = $userId;
             $createGoal = Goal::create($args);
-            if($general){
-                $general = array_diff_key($general->toArray(), 
-                                        array_flip(['user_id','id', 'goal_id']));
+            if ($general) {
+                $general = array_diff_key($general->toArray(),
+                    array_flip(['user_id', 'id', 'goal_id']));
                 $general['goal_id'] = $createGoal->id;
                 $general['user_id'] = $args['user_id'];
                 $createGeneral = GeneralInfo::create($general);
             }
-            if($japaneseGoal){
-                $japaneseGoal = array_diff_key($japaneseGoal->toArray(), 
-                                            array_flip(['user_id','id', 'goal_id']));
+            if ($japaneseGoal) {
+                $japaneseGoal = array_diff_key($japaneseGoal->toArray(),
+                    array_flip(['user_id', 'id', 'goal_id']));
                 $japaneseGoal['goal_id'] = $createGoal->id;
                 $japaneseGoal['user_id'] = $args['user_id'];
                 $createJapaneseGoal = JapaneseGoal::create($japaneseGoal);
@@ -835,38 +843,40 @@ class GoalRepository
         }
 
         //update parent_id
-        foreach($newGoals as $key => $value)
-        {
+        foreach ($newGoals as $key => $value) {
             $id = $key;
-           foreach($goals as $v){
-               if($id == $v['parent_id']){
-                   $update =  Goal::where("id", $newGoals[$v['id']])
-                                    ->update(['parent_id' => $newGoals[$id]]);
-               }
-           }              
+            foreach ($goals as $v) {
+                if ($id == $v['parent_id']) {
+                    $update = Goal::where("id", $newGoals[$v['id']])
+                        ->update(['parent_id' => $newGoals[$id]]);
+                }
+            }
         }
         $goals = $this->getTreeSortByGoalId(current($newGoals));
         return $goals;
     }
+
     public function childrenGoal($parentIds, $idGoals = [])
     {
-       $goals = Goal::where('parent_id', $parentIds)->get();
-       $getIdGoals = $goals->toArray();
-       $idGoals = array_merge($idGoals,$getIdGoals);
-       foreach ($goals as $value) {
-           $idGoals = self::childrenGoal($value->id, $idGoals);
-       }
-       return $idGoals;
+        $goals = Goal::where('parent_id', $parentIds)->get();
+        $getIdGoals = $goals->toArray();
+        $idGoals = array_merge($idGoals, $getIdGoals);
+        foreach ($goals as $value) {
+            $idGoals = self::childrenGoal($value->id, $idGoals);
+        }
+        return $idGoals;
     }
-    public function sortRankGoalRoot($args){
+
+    public function sortRankGoalRoot($args)
+    {
         $goal = Goal::find($args['id']);
-        if(isset($goal->parent_id)){
-            throw new Error("This goal is not root");          
+        if (isset($goal->parent_id)) {
+            throw new Error("This goal is not root");
         }
         $myGoal = Goal::where('user_id', Auth::id())
-                        ->whereNull('parent_id')
-                        ->orderByRaw('`rank` ASC, `id` DESC')
-                        ->get()->keyby('id');                       
+            ->whereNull('parent_id')
+            ->orderByRaw('`rank` ASC, `id` DESC')
+            ->get()->keyby('id');
         $getIds = $myGoal->pluck('id');
 
         $jpGoal = JapaneseGoal::whereIn('goal_id', $getIds)->get();
@@ -878,47 +888,45 @@ class GoalRepository
         $rankGoal = [];
         $getOldRank = 0;
         $newRank = [];
-        foreach($myGoal as $value)
-        {
-        
-            if(!isset($value->rank) && $args['id'] != $value->id)
-            { 
+        foreach ($myGoal as $value) {
+
+            if (!isset($value->rank) && $args['id'] != $value->id) {
                 $value->rank = $rank;
                 $newRank[] = $rank;
-                $rank++; 
-            }
-            else if(array_intersect($newRank, [$value->rank]))
-            {
-                $value->rank = ($value->rank + $rank) - 1;
+                $rank++;
+            } else {
+                if (array_intersect($newRank, [$value->rank])) {
+                    $value->rank = ($value->rank + $rank) - 1;
+                }
             }
 
-            if($args['id'] == $value->id)
-            {
+            if ($args['id'] == $value->id) {
                 $getOldRank = @$value->rank ?? 0;
                 $value->rank = $args['rank'];
             }
 
-            if($getOldRank > 0 && $getOldRank < $value->rank && $args['id'] != $value->id)
-            {
-                $value->rank = $value->rank  - 1;
+            if ($getOldRank > 0 && $getOldRank < $value->rank && $args['id'] != $value->id) {
+                $value->rank = $value->rank - 1;
             }
 
-            if($args['rank'] <= $value->rank && $args['id'] != $value->id)
-            {
-                $value->rank = $value->rank  + 1;
+            if ($args['rank'] <= $value->rank && $args['id'] != $value->id) {
+                $value->rank = $value->rank + 1;
             }
-            
-            $rankGoal[$value->id] = ['id' => $value->id,'rank' => $value->rank];                      
-        } 
 
-        foreach($rankGoal as $value){
+            $rankGoal[$value->id] = ['id' => $value->id, 'rank' => $value->rank];
+        }
+
+        foreach ($rankGoal as $value) {
             $rankGoal = tap(Goal::findOrFail($value["id"]))->update($value);
         }
         return $rankGoal;
     }
 
-    public function myGoalShare($userId = null){
-        if(!isset($userId)){$userId = Auth::id();}
+    public function myGoalShare($userId = null)
+    {
+        if (!isset($userId)) {
+            $userId = Auth::id();
+        }
         $publish = PublishInfo::where('user_invite_id', $userId)->where("status", "accept")->get()->keyby('general_id');
         $idGenerals = $publish->pluck('general_id');
         $general = GeneralInfo::whereIn("id", $idGenerals)->get();
@@ -926,9 +934,9 @@ class GoalRepository
         $idGoals = array_diff($idGoals, [null]);
         $goals = Goal::whereIn('id', $idGoals)->get();
         $goals = $this->generalinfo_repository
-                ->setType('goal')
-                ->get($goals);
-        $goals = $goals->map(function($goal) use($publish){
+            ->setType('goal')
+            ->get($goals);
+        $goals = $goals->map(function ($goal) use ($publish) {
             $goal->rule = @$publish[$goal->general_info->id]->rule ?? 'view';
             return $goal;
         });
@@ -938,23 +946,24 @@ class GoalRepository
     public function goalShareTreeSort($args)
     {
         $getMyGoalShare = $this->myGoalShare()->pluck('id');
-        if(array_intersect($getMyGoalShare->toArray(), [$args['id']])){
+        if (array_intersect($getMyGoalShare->toArray(), [$args['id']])) {
             return $this->getTreeSortByGoalId($args['id']);
         }
         return;
     }
-    public function banUserGoals($args){
+
+    public function banUserGoals($args)
+    {
         $goal = [];
-        foreach($args['goal_ids'] as $id){
+        foreach ($args['goal_ids'] as $id) {
             $goal = Goal::find($id);
-            if(gettype($goal->banned_users) == "string"){
+            if (gettype($goal->banned_users) == "string") {
                 $bannedUsers = [@$goal->banned_users, $args['user_id']];
-            }
-            else{
+            } else {
                 $bannedUsers = array_merge(@$goal->banned_users ?? [], [$args['user_id']]);
             }
-            if(isset($goal)){
-                    $goal->update(["banned_users" =>  $bannedUsers]);
+            if (isset($goal)) {
+                $goal->update(["banned_users" => $bannedUsers]);
             }
         }
         return $goal;
