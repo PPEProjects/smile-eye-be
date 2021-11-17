@@ -22,10 +22,8 @@ class CoachMemberRepository
     {
         foreach($args["user_ids"] as $user_id)
         {
-            if(isset($args['teacher_id'])){
-                $coachMember = CoachMember::where('user_id', $user_id)->first();
-                $args['teacher_ids'] = array_merge([$args['teacher_id']], @$coachMember->teacher_ids ?? []);
-            }
+            $coachMember = CoachMember::where('user_id', $user_id)->first();
+             $args['teacher_ids'] = array_merge([$args['teacher_id'] ?? Auth::id()], @$coachMember->teacher_ids ?? []);
             $addMember[] =  CoachMember::updateOrCreate(
                             ['user_id' => $user_id],
                             $args
