@@ -340,7 +340,7 @@
 			"name": "payments",
 			"item": [
 				{
-					"name": "create_payment",
+					"name": "upsert_payment",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -353,38 +353,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\r\n   $add_user_id: ID\r\n    $goal_id: ID\r\n    $type: String\r\n    $money: String\r\n\r\n) {\r\n  create_payment(\r\n    input: {\r\n     add_user_id: $add_user_id\r\n     goal_id: $goal_id\r\n     money: $money\r\n     type: $type\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"add_user_id\": 2,\r\n    \"goal_id\":1,\r\n    \"type\": \"trial\",\r\n    \"money\": \"30.000vnd\"\r\n}"
-							}
-						},
-						"url": {
-							"raw": "{{url}}/graphql",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update_payment",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "mutation(\r\n    $id: ID!\r\n    $add_user_id: ID\r\n    $goal_id: ID\r\n    $type: String\r\n    $money: String\r\n\r\n) {\r\n  update_payment(\r\n    input: {\r\n    id: $id\r\n     add_user_id: $add_user_id\r\n     goal_id: $goal_id\r\n     money: $money\r\n     type: $type\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
-								"variables": "{\r\n   \"id\": 1,\r\n    \"add_user_id\": 3,\r\n    \"goal_id\": 1,\r\n    \"type\": \"trial\",\r\n    \"money\": \"600.000vnd\"\r\n}"
+								"query": "mutation(\r\n    $id:ID\r\n   $add_user_id: ID\r\n    $goal_id: ID\r\n    $type: String\r\n    $money: String\r\n\r\n) {\r\n  upsert_payment(\r\n    input: {\r\n        id: $id\r\n     add_user_id: $add_user_id\r\n     goal_id: $goal_id\r\n     money: $money\r\n     type: $type\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"add_user_id\": 2,\r\n    \"goal_id\":1,\r\n    \"type\": \"trial\",\r\n    \"money\": \"40.000vnd\"\r\n}"
 							}
 						},
 						"url": {
@@ -2919,7 +2889,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "  query($types: [String]!){\r\n  my_notifications(\r\n      types: $types\r\n  ){\r\n    id\r\n    user_share_by\r\n    user{\r\n        id\r\n        name\r\n        attachment{\r\n            file_type\r\n            thumb\r\n            file\r\n        }\r\n    }\r\n    type\r\n    type_id\r\n    messages\r\n    created_at\r\n    updated_at\r\n  }\r\n}",
-								"variables": "{\r\n    \"types\":[\"friend_group\"]\r\n}"
+								"variables": "{\r\n    \"types\":[\"achieve\"]\r\n}"
 							}
 						},
 						"url": {
@@ -4513,7 +4483,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query {\n  users (first:22, page:1) {\n    data {\n        id\n        name\n        email\n        rules\n        username\n        quotes\n        phone_number\n  }\n  }\n}",
+								"query": "query {\n  users (first:22, page:1) {\n    data {\n        id\n        name\n        email\n        roles\n        username\n        quotes\n        phone_number\n  }\n  }\n}",
 								"variables": ""
 							}
 						},
@@ -7268,7 +7238,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID, $not_auth: Boolean) {\r\n   goals_achieve_tree_sort(id: $id,not_auth: $not_auth)\r\n}",
-								"variables": "{\r\n \"id\":1994\r\n}"
+								"variables": "{\r\n \"id\": 32\r\n}"
 							}
 						},
 						"url": {
