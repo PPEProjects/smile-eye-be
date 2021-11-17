@@ -23,16 +23,22 @@ type CoachMember{
     business_field: String
     goal_ids: JSON
     teacher_id: ID
+    teacher_ids: [ID]
     scale: String
-    goals: [Goal]
+    goals: [GoalCoachMember]
     created_at: DateTime
     updated_at: DateTime
 }
-
+type GoalCoachMember{
+    id: ID
+    name: String
+    started_at_a_goal: DateTime
+    count_missing: JSON
+}
 input CreateCoachMemberInput{
     org: String
     business_field: String
-   goal_ids: JSON
+    goal_ids: JSON
     teacher_id: ID
     scale: String
 }

@@ -15,15 +15,20 @@ class CoachMemberRepository
     public function createCoachMember($args)
     {
         $args["user_id"] = Auth::id();
+        $args = array_diff_key($args, array_flip(['teacher_id']));
         return CoachMember::create($args);
     }
     public function addCoachMember($args)
     {
         foreach($args["user_ids"] as $user_id)
         {
+            if(isset($args['teacher_id'])){
+                $coachMember = CoachMember::where('user_id', $user_id)->first();
+                $args['teacher_ids'] = array_merge([$args['teacher_id']], @$coachMember->teacher_ids ?? []);
+            }
             $addMember[] =  CoachMember::updateOrCreate(
                             ['user_id' => $user_id],
-                                $args
+                            $args
                             );
         }
         return  $addMember;
@@ -41,31 +46,33 @@ class CoachMemberRepository
     }
     public function deleteMyMember($args)
     {
-        $goals = Goal::where('user_id', Auth::id())->get();
-        $goalIds = $goals->pluck('id')->toArray();
+        $user_id = Auth::id();
         $coachMember = CoachMember::where('user_id',$args['user_id'])->first();
-        $deleteIdGoals = array_diff(@$coachMember->goal_ids ?? [], @$goalIds ?? []);
-        $newGoalIds = [];
-        foreach($deleteIdGoals as $ids){
-                $newGoalIds[] = $ids;
-        }
+        $delete = array_diff(@$coachMember->teacher_ids ?? [], [$user_id]);
         $update = tap(CoachMember::findOrFail($coachMember->id))
-                    ->update(['goal_ids' => $newGoalIds]);
+                            ->update(['teacher_ids' => $delete]);
         return  $update ;
     }
     public function myListCoachMembers($args)
     {
-        $coachMembers = CoachMember::all();
-        $goalIds = [];
-        $coachIds = [];
-        foreach($coachMembers as $value){
-            $goals = Goal::whereIn('id', @$value->goal_ids ?? [])->where('user_id', Auth::id())->get();
-            $goalIds = array_merge($goalIds, $goals->pluck('id')->toArray()); 
-            if(array_intersect($goalIds, @$value->goal_ids ?? [])){
-                $coachIds[] = $value->id;
-            }
-        }
-        $coachMember =  CoachMember::WhereIn('id', $coachIds)->get();
-        return @$coachMember;
+        $coachMembers = CoachMember::Where('teacher_ids', 'like', '%'.Auth::id().'%')->get();
+        $coachMembers = $coachMembers->map(function($coach){
+            $coach->goals = $this->findGoalIds(@$coach->goal_ids ?? []);
+            return $coach;
+        });
+        return @$coachMembers;
+    }
+
+    public function findGoalIds($ids){
+        $goals = Goal::selectRaw("*,start_day AS started_at_a_goal")->whereIn('id', $ids)->get();
+        $goals = $goals->map(function($goal){
+            $goal->count_missing = [
+                "call" => random_int(0,10),
+                "message" => random_int(0,10),
+                "pratice" => random_int(0,10)
+            ];
+            return $goal;
+        });
+        return $goals;
     }
 }

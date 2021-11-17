@@ -20,10 +20,11 @@ class CoachMember extends Model
         'org',
         'business_field',
         'goal_ids',
-        'teacher_id'
+        'teacher_ids'
     ];
     protected $casts = [
         'goal_ids' => 'json',
+        'teacher_ids' => 'json',
     ];
     public function user(){
         return $this->belongsTo(User::class);
