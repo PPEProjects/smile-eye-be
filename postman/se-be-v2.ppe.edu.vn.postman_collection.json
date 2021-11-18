@@ -474,7 +474,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($user_id: ID!){\r\n  detail_payment_by_user_id(\r\n      user_id: $user_id\r\n    ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"user_id\": 2\r\n}\r\n"
+								"variables": "{\r\n    \"user_id\": 20304\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -1328,7 +1328,37 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query{\r\n  my_list_coach_members{\r\n      id\r\n      user{\r\n          id\r\n          name\r\n      }\r\n      goals{\r\n          id\r\n          name\r\n          started_at_a_goal\r\n          count_missing\r\n      }\r\n      org\r\n      business_field\r\n      goal_ids\r\n      teacher_ids\r\n  }\r\n}",
+								"query": "query{\r\n  my_list_coach_members{\r\n      id\r\n      user{\r\n          id\r\n          name\r\n      }\r\n      goals{\r\n          id\r\n          name\r\n          started_at_a_goal\r\n          count_missing\r\n      }\r\n      org\r\n      business_field\r\n      goal_ids\r\n  }\r\n}",
+								"variables": "{\r\n\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_list_support_members",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\r\n  my_list_support_members{\r\n      id\r\n      user{\r\n          id\r\n          name\r\n      }\r\n      goals{\r\n          id\r\n          name\r\n          started_at_a_goal\r\n          status\r\n      }\r\n      org\r\n      business_field\r\n      goal_ids\r\n  }\r\n}",
 								"variables": "{\r\n\r\n}"
 							}
 						},
@@ -7363,7 +7393,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $id : ID\r\n    $add_user_id:ID\r\n    $goal_id : ID\r\n) {\r\n  upsert_goal_member(\r\n    input: {\r\n        id : $id\r\n        add_user_id: $add_user_id\r\n        goal_id: $goal_id\r\n    }\r\n  ) {\r\n        id\r\n        add_user{\r\n            id\r\n            name\r\n        }\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        goal{\r\n            id\r\n            name\r\n        }\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"add_user_id\":20282,\r\n    \"goal_id\":7829\r\n}"
+								"variables": "{\r\n    \"add_user_id\":1,\r\n    \"goal_id\":18\r\n}"
 							}
 						},
 						"url": {
