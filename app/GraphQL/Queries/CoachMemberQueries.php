@@ -18,5 +18,8 @@ class CoachMemberQueries
     {
         return $this->coach_member_repository->myListCoachMembers($args);
     }
-
+    public function myListSupportMembers($_, array $args)
+    {
+        return $this->coach_member_repository->myListSupportMembers($args);
+    }
 }

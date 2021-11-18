@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\CoachMember;
 use App\Models\Goal;
+use App\Models\GoalMember;
 use App\Models\User;
 use Carbon\Carbon;
 use GraphQL\Error\Error;
@@ -63,15 +64,22 @@ class CoachMemberRepository
     }
 
     public function findGoalIds($ids){
+        $status = ["trial","paid", "paying", "trouble", "paid and complete"];
         $goals = Goal::selectRaw("*,start_day AS started_at_a_goal")->whereIn('id', $ids)->get();
-        $goals = $goals->map(function($goal){
+        $goals = $goals->map(function($goal) use($status){
             $goal->count_missing = [
                 "call" => random_int(0,10),
                 "message" => random_int(0,10),
                 "pratice" => random_int(0,10)
             ];
+            $goal->status = $status[random_int(0,(count($status) - 1))];
             return $goal;
         });
         return $goals;
+    }
+
+    public function myListSupportMembers($args)
+    {
+        return $this->myListCoachMembers($args);
     }
 }
