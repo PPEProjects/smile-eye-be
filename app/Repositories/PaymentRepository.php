@@ -30,7 +30,13 @@ class PaymentRepository
     }
     public function detailPayments($args)
     {
-        return Payment::find($args['id']);
+        if(isset($args['user_id'])){
+           $payment = Payment::Where('add_user_id', $args['user_id'])->get();
+        }
+        else {
+            $payment = Payment::find($args['id']);
+        }
+        return $payment;
     }
    
 }

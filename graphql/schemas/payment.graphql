@@ -12,6 +12,7 @@ extend type Query {
     sort_payments(orderBy: [OrderByClause!] @orderBy): [Payment] @paginate(type: "paginator" model: "App\\Models\\Payment")
     my_payments: [Payment] @guard @field(resolver:"PaymentQueries@myPayments")
     detail_payment(id : ID!): Payment @guard @field(resolver:"PaymentQueries@detailPayments")
+    detail_payment_by_user_id(user_id : ID!): [Payment] @guard @field(resolver:"PaymentQueries@detailPayments")
 }
 
 type Payment {
