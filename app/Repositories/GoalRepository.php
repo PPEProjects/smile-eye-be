@@ -797,7 +797,8 @@ class GoalRepository
                 }
                 $value['parent_id'] = null;
             }
-            $goalMove = tap(Goal::findOrFail($value["id"]))->update($value);
+            Goal::where('id', $value['id'])->update($value);
+//            $goalMove = tap(Goal::find($value["id"]))->update($value);
             $i++;
         }
         $goals = $this->getTreeSortByGoalId($idGoalRoot);

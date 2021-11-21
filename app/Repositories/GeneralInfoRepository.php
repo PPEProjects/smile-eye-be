@@ -30,8 +30,8 @@ class GeneralInfoRepository
 
     public function upsert($payload)
     {
-        \Illuminate\Support\Facades\Log::channel('single')->info('$payload', [$payload]);
-        \Illuminate\Support\Facades\Log::channel('single')->info('$this->type', [$this->type]);
+//        \Illuminate\Support\Facades\Log::channel('single')->info('$payload', [$payload]);
+//        \Illuminate\Support\Facades\Log::channel('single')->info('$this->type', [$this->type]);
         
         if(isset($payload['general_info']['action_at_time'])){
             $time = date_create($payload['general_info']['action_at_time']);

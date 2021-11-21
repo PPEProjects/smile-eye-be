@@ -150,10 +150,14 @@ class GoalMutations
                 }
             }
         }
+        \Illuminate\Support\Facades\Log::channel('single')->info('1', []);
+        
         $goal = Goal::updateOrCreate(
             ['id' => @$args['id']],
             $args
         );
+        \Illuminate\Support\Facades\Log::channel('single')->info('2', []);
+        
         $this->generalinfo_repository
             ->setType('goal')
             ->upsert(array_merge($goal->toArray(), $args));
