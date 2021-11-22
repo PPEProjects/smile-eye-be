@@ -24,6 +24,7 @@ type Payment {
     goal_id: ID
     goal: Goal
     type: String
+    status: String
     money: String
     created_at: DateTime
     updated_at: DateTime
@@ -38,6 +39,7 @@ input UpsertPaymentInput{
 input CreatePaymentInput{
     add_user_id: ID
     goal_id: ID
+    status: String
     type: String
     money: String
 }
@@ -46,6 +48,7 @@ input UpdatePaymentInput{
     id: ID!
     add_user_id: ID
     goal_id: ID
+    status: String
     type: String
     money: String
 }

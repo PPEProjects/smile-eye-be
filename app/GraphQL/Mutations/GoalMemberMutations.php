@@ -27,7 +27,7 @@ class GoalMemberMutations
         $args['user_id'] = Auth::id();
         if(!isset($args['teacher_id'])){
             $goal = Goal::find($args['goal_id']);
-            $args['teacher_id'] = $goal->user_id;
+            $args['teacher_id'] = @$goal->user_id ?? $args['user_id'];
         }
         if (isset($args['goal_ids'])) {
             foreach ($args['goal_ids'] as $goal_id) {

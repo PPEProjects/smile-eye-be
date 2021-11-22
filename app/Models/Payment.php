@@ -19,6 +19,7 @@ class Payment extends Model
         'add_user_id',
         'goal_id',
         'type',
+        'status',
         'money'
     ];
 
