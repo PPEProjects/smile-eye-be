@@ -53,7 +53,7 @@ class JapaneseGoalRepository
             $dataGoal = [
                 'name'    => $args['name_goal'],
                 'user_id' => $args["user_id"],
-                'root_id' => $args["root_id"],
+                'root_id' => @$args["root_id"],
             ];
             if (isset($args['parent_id'])) {
                 $dataGoal['parent_id'] = $args['parent_id'];
