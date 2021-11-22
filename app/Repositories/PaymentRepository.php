@@ -31,9 +31,17 @@ class PaymentRepository
     public function detailPayments($args)
     {
         if(isset($args['user_id'])){
-           $payment = Payment::Where('add_user_id', $args['user_id'])
+            $type = @$args['type'] ?? "all";
+            $payment = Payment::Where('add_user_id', $args['user_id'])
                                 ->OrderBy('id','DESC')
                                 ->get();
+            switch ($type)
+            {
+                case "all":
+                    return $payment;
+                default:
+                    return $payment->where('type', $type);
+            }
         }
         else {
             $payment = Payment::find($args['id']);
