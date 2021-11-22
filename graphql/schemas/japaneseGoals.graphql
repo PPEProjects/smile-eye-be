@@ -53,6 +53,7 @@ input CreateJapaneseGoalInput{
     total_score : Float
     score : Float
     each_score : Float
+    root_id: ID
 
 }
 input UpdateJapaneseGoalInput{
@@ -64,6 +65,7 @@ input UpdateJapaneseGoalInput{
     total_score : Float
     each_score : Float
     score : Float
+    root_id: ID
 }
 input UpsertJapaneseGoalInput{
     id : ID
@@ -74,6 +76,7 @@ input UpsertJapaneseGoalInput{
     more : JSON
     total_score : Float
     each_score : Float
+    root_id: ID
 }
 input UpdateMeetUrlInput{
     goal_id : ID!
