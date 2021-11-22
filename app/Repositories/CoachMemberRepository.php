@@ -57,7 +57,7 @@ class CoachMemberRepository
         $userId = Auth::id();
         $coachMember = CoachMember::where('user_id', $userId)->first();
         $listMembers = GoalMember::SelectRaw("id, goal_id, add_user_id as user_id, teacher_id")
-                                    ->whereIn('goal_id', $coachMember->goal_ids)
+                                    ->whereIn('goal_id', @$coachMember->goal_ids ?? [])
                                     ->get();
         $listMembers = $listMembers->map(function($list) {
             $list->goals = $this->findGoalIds([$list->goal_id]);
