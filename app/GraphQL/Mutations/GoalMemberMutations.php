@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Models\Goal;
 use App\Models\GoalMember;
 use App\Repositories\GoalMemberRepository;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,10 @@ class GoalMemberMutations
     public function upsertGoalMember($_, array $args)
     {
         $args['user_id'] = Auth::id();
+        if(!isset($args['teacher_id'])){
+            $goal = Goal::find($args['goal_id']);
+            $args['teacher_id'] = $goal->user_id;
+        }
         if (isset($args['goal_ids'])) {
             foreach ($args['goal_ids'] as $goal_id) {
                 $arr = array_diff_key($args, array_flip(['goal_id']));
