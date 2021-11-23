@@ -132,6 +132,7 @@ class GoalMutations
         }
         if (!isset($args['id'])) {
             $args['user_id'] = Auth::id();
+            $args['id'] = time().rand();
         }
         if (isset($args['id'])) {
             $findGoal = Goal::find($args['id']);
