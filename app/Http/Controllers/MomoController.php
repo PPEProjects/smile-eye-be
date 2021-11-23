@@ -20,9 +20,9 @@ class MomoController extends Controller
             'extraData' => 'required',
         ]);
         $endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor";
-        $partnerCode = 'MOMOBKUN20180529';
-        $accessKey = 'klm05TvNBzhg7h7j';
-        $serectkey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
+        $partnerCode = 'MOMOZGAI20211012';
+        $accessKey = '5vwvbxyCxDLl16Uq';
+        $serectkey = 'hpo6bOpOqeqCE12mN4U2l7xT5fhlfpUv';
         $orderId = $request->orderId; // Mã đơn hàng
         $orderInfo = $request->orderInfo;
         $amount = $request->amount;
