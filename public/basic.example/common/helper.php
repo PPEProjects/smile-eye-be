@@ -1,10 +1,6 @@
 <?php
 function execPostRequest($url, $data)
 {
-    echo '<pre>';
-    var_dump($url, $data);
-    echo '</pre>';
-    die();
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -17,6 +13,10 @@ function execPostRequest($url, $data)
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
     //execute post
     $result = curl_exec($ch);
+    echo '<pre>';
+    var_dump($result);
+    echo '</pre>';
+    die();
     //close connection
     curl_close($ch);
     return $result;
