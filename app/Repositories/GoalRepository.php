@@ -59,7 +59,7 @@ class GoalRepository
 
     public function getChildrenGoals($parentId)
     {
-        $goals = Goal::orderBy('id', 'desc');
+        $goals = Goal::orderBy('created_at', 'desc');
         $goals = $goals->where('parent_id', $parentId);
         $goals = $goals->get();
         return $goals;
@@ -67,7 +67,7 @@ class GoalRepository
 
     public function getGoalsByTaskId($taskId)
     {
-        $goals = Goal::orderBy('id', 'desc');
+        $goals = Goal::orderBy('created_at', 'desc');
         $goals = $goals->where('task_id', $taskId);
         $goals = $goals->get();
         return $goals;
@@ -108,7 +108,7 @@ class GoalRepository
         $this->calculatorProcessTodolist();
         $this->calculatorProcessUpdate();
         $goals = Goal::selectRaw('id, name, parent_id, progress, start_day, end_day')
-            ->orderBy('id', 'desc');
+            ->orderBy('created_at', 'desc');
         if ($userId) {
             $goals = $goals->where("user_id", $userId);
         }
@@ -141,8 +141,8 @@ class GoalRepository
 
     public function getTreeSortByGoalId($goalId, $userId = null)
     {
-        $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id')
-            ->orderByRaw('-`index` DESC, `id` ASC');
+        $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id, created_at')
+            ->orderByRaw('-`index` DESC, `created_at` ASC');
 
         if ($userId) {
             $goals = $goals->where("user_id", $userId);
@@ -213,8 +213,8 @@ class GoalRepository
         $goal_ids = $this->myGoalsAchieve()->pluck("id")->toArray();
         $temp = in_array($goalId, $goal_ids);
         if ($temp) {
-            $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, status')
-                ->orderByRaw('-`index` DESC, `id` ASC')
+            $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, status, created_at')
+                ->orderByRaw('-`index` DESC, `created_at` ASC')
                 ->get();
             $goals = $this->goalAll($goals);
             $getIdGoals = $goals->pluck('id');

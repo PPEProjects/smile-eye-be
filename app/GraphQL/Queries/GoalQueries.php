@@ -114,7 +114,7 @@ class GoalQueries
         $this->goal_repository->calculatorProcessUpdate();
         $goals = Goal::SelectRaw("*, 'goal_owner' AS type")
                     ->where('user_id', Auth::id())
-                    ->orderByRaw('`rank` ASC, `id` DESC');
+                    ->orderByRaw('`rank` ASC, `created_at` DESC');
         switch ($args['parent_id']) {
             case 'all':
                 break;
