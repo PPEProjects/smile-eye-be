@@ -18,7 +18,6 @@ class CreateCoachMembersTable extends Migration
             $table->unsignedBigInteger("user_id")->nullable();
             $table->string('org')->nullable();
             $table->string('business_field')->nullable();
-            $table->json("teacher_ids")->nullable();
             $table->string('scale')->nullable();
             $table->json('goal_ids')->nullable();
             $table->timestamps();

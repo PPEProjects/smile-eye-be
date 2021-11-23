@@ -16,7 +16,7 @@ class CreateJapaneseGoalsTable extends Migration
         Schema::dropIfExists('japanese_goals');
         Schema::create('japanese_goals', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("goal_id")->nullable();
+            $table->string("goal_id")->nullable();
             $table->unsignedBigInteger("user_id")->nullable();
             $table->string("type")->nullable();
             $table->json("more")->nullable();

@@ -16,7 +16,7 @@ class CreateJapaneseLearn extends Migration
         Schema::create('japanese_learn', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('goal_id')->nullable();
+            $table->string('goal_id')->nullable();
             $table->timestamps();
         });
     }

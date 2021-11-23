@@ -17,7 +17,7 @@ class CreateTasksTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->unsignedInteger('user_id')->nullable();
-            $table->unsignedInteger('goal_id')->nullable();
+            $table->string('goal_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

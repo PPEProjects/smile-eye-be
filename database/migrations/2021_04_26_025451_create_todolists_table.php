@@ -16,7 +16,7 @@ class CreateTodolistsTable extends Migration
         Schema::create('todolists', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('user_id')->nullable();
-            $table->unsignedInteger('goal_id')->nullable();
+            $table->string('goal_id')->nullable();
             $table->unsignedInteger('task_id')->nullable();
             $table->string('name')->nullable();
             $table->string('status')->nullable();

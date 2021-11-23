@@ -17,7 +17,7 @@ class CreatePaymentsTable extends Migration
             $table->id();
             $table->integer('add_user_id')->nullable();
             $table->integer('user_id')->nullable();
-            $table->integer('goal_id')->nullable();
+            $table->string('goal_id')->nullable();
             $table->string('type')->nullable();
             $table->string('money')->nullable();
             $table->timestamps();

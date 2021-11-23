@@ -16,7 +16,7 @@ class CreateGoalScoresTable extends Migration
         Schema::create('goal_scores', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("user_id")->nullable();
-            $table->unsignedBigInteger("goal_id")->nullable();
+            $table->string("goal_id")->nullable();
             $table->json("scores")->nullable();
             $table->timestamps();
             $table->softDeletes();

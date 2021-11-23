@@ -16,7 +16,7 @@ class CreateGeneralInfo extends Migration
         Schema::create('general_infos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('goal_id')->nullable();
+            $table->string('goal_id')->nullable();
             $table->unsignedBigInteger('task_id')->nullable();
             $table->unsignedBigInteger('todolist_id')->nullable();
             $table->string('address')->nullable();

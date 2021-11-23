@@ -16,7 +16,7 @@ class CreateJapanesePostsTable extends Migration
         Schema::create('japanese_posts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("user_id")->nullable();
-            $table->unsignedBigInteger("goal_id")->nullable();
+            $table->string("goal_id")->nullable();
             $table->string("title")->nullable();
             $table->text("description")->nullable();
             $table->json("media")->nullable();
