@@ -21,7 +21,7 @@ class CoachMemberRepository
         $args = array_diff_key($args, array_flip(['teacher_id']));
         return CoachMember::create($args);
     }
-    public function addCoachMember($args)
+    public function addGoalsToMyTeacher($args)
     {
         if(!isset($args['user_id'])){
             $args['user_id'] = Auth::id();

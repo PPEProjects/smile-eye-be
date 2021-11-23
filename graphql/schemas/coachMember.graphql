@@ -4,7 +4,7 @@ extend type Mutation {
     delete_my_member(input: DeleteMyMemberInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@deleteMyMember")
     update_coach_member(input: UpdateCoachMemberInput! @spread): CoachMember @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@updateCoachMember")
     add_coach_member(input: AddCoachMemberInput! @spread):JSON @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@addCoachMember")
-    add_goals_to_my_teacher(input: AddGoalsToMyTeacherInput! @spread):JSON @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@addCoachMember")
+    add_goals_to_my_teacher(input: AddGoalsToMyTeacherInput! @spread):JSON @guard @field(resolver: "App\\GraphQL\\Mutations\\CoachMemberMutations@addGoalsToMyTeacher")
 }
 
 extend type Query {
@@ -61,7 +61,7 @@ input UpdateCoachMemberInput{
 }
 input AddCoachMemberInput{
     user_ids: [ID]
-    teacher_id: ID 
+    goal_ids: [ID]
 }
 input AddGoalsToMyTeacherInput{
     user_id: ID
