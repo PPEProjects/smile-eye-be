@@ -4,10 +4,6 @@ error_reporting(E_ALL);
 header('Content-type: text/html; charset=utf-8');
 
 $config = file_get_contents('../config.json');
-echo '<pre>';
-var_dump($config);
-echo '</pre>';
-die();
 $array = json_decode($config, true);
 
 include "../common/helper.php";
@@ -56,6 +52,10 @@ if (!empty($_POST)) {
         'extraData' => $extraData,
         'requestType' => $requestType,
         'signature' => $signature);
+    echo '<pre>';
+    var_dump($data);
+    echo '</pre>';
+    die();
     $result = execPostRequest($endpoint, json_encode($data));
     $jsonResult = json_decode($result, true);  // decode json
 
