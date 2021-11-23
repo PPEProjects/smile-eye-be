@@ -54,7 +54,7 @@ class GoalMutations
         }
 
         $args['user_id'] = Auth::id();
-        $args['id'] = time().rand();
+        $args['id'] = time().rand(0,9);
         $goal = Goal::create($args);
         $generalInfo = $this->generalinfo_repository
             ->setType('goal')
@@ -133,7 +133,7 @@ class GoalMutations
         }
         if (!isset($args['id'])) {
             $args['user_id'] = Auth::id();
-            $args['id'] = time().rand();
+            $args['id'] = time().rand(0,9);
         }
         if (isset($args['id'])) {
             $findGoal = Goal::find($args['id']);
