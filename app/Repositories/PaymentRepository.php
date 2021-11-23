@@ -43,6 +43,11 @@ class PaymentRepository
                     return $payment->where('type', $type);
             }
         }
+        else if(isset($args['goal_id'])){
+            $payment = Payment::Where('add_user_id', Auth::id())
+                                ->where('goal_id', $args['goal_id'])
+                                ->first();
+        }
         else {
             $payment = Payment::find($args['id']);
         }

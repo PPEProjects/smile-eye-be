@@ -13,6 +13,7 @@ extend type Query {
     my_payments: [Payment] @guard @field(resolver:"PaymentQueries@myPayments")
     detail_payment(id : ID!): Payment @guard @field(resolver:"PaymentQueries@detailPayments")
     detail_payment_by_user_id(type: String,user_id : ID!): [Payment] @guard @field(resolver:"PaymentQueries@detailPayments")
+    detail_my_payment(goal_id : ID!): Payment @guard @field(resolver:"PaymentQueries@detailPayments")
 }
 
 type Payment {
