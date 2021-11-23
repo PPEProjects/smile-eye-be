@@ -51,7 +51,13 @@ class MomoController extends Controller
         $request = new \GuzzleHttp\Psr7\Request('POST', $endpoint);
         $response = $client->send($request, [
             'body'    => json_encode($data),
-            'headers' => ['User-Agent' => 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36']
+            'referer' => true,
+            'headers' => [
+                'User-Agent' => '${YOUR TOOL NAME}/v1.0',
+                'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                'Accept-Encoding' => 'gzip, deflate, br',
+            ],
+
         ]);
         $result = $response->getBody()->getContents();
         $result = json_decode($result, true);
