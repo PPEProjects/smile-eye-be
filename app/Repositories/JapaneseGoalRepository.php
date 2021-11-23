@@ -51,7 +51,7 @@ class JapaneseGoalRepository
         }
         if (isset($args['name_goal'])) {
             $dataGoal = [
-                'id'      => time().rand(0,1),
+                'id'      => time().rand(),
                 'name'    => $args['name_goal'],
                 'user_id' => $args["user_id"],
                 'root_id' => $args["root_id"],

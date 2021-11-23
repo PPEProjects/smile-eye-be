@@ -14,9 +14,9 @@ class CreateGoalsTable extends Migration
     public function up()
     {
         Schema::create('goals', function (Blueprint $table) {
-            $table->id();
+            $table->string('id');
             $table->unsignedInteger('root_id')->nullable();
-            $table->unsignedInteger('parent_id')->nullable();
+            $table->string('parent_id')->nullable();
             $table->unsignedInteger('user_id')->nullable();
             $table->string('name')->nullable();
             $table->dateTime('start_day')->nullable();
