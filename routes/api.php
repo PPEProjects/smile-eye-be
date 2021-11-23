@@ -42,4 +42,7 @@ Route::prefix('/auth-service')->group(function () {
 Route::resource('attachment', AttachmentController::class)
     ->middleware('auth');
 
+Route::resource('momo', \App\Http\Controllers\MomoController::class);
+//    ->middleware('auth');
+
 Route::get('goals/gantt-chart/{user_id}', [GoalController::class, 'ganttChart']);
