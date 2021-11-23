@@ -51,6 +51,7 @@ class JapaneseGoalRepository
         }
         if (isset($args['name_goal'])) {
             $dataGoal = [
+                'id'      => time().rand(0,1),
                 'name'    => $args['name_goal'],
                 'user_id' => $args["user_id"],
                 'root_id' => $args["root_id"],
@@ -62,8 +63,8 @@ class JapaneseGoalRepository
             $this->generalinfo_repository
                 ->setType('goal')
                 ->upsert(array_merge($goal->toArray(), $args))
-                ->findByTypeId($goal->id);
-            $args['goal_id'] = $goal->id;
+                ->findByTypeId($dataGoal['id']);
+            $args['goal_id'] = $dataGoal['id'];
         }
 //        $jpGoal = $this->japanese_goal_repository->createJapaneseGoal($args);
         if ($args['type'] == 'flashcard_category') {
