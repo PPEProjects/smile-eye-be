@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+
 header('Content-type: text/html; charset=utf-8');
 
 $config = file_get_contents('../config.json');
