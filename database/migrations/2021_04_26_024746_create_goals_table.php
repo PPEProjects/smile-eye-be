@@ -15,7 +15,7 @@ class CreateGoalsTable extends Migration
     {
         Schema::create('goals', function (Blueprint $table) {
             $table->string('id');
-            $table->unsignedInteger('root_id')->nullable();
+            $table->string('root_id')->nullable();
             $table->string('parent_id')->nullable();
             $table->unsignedInteger('user_id')->nullable();
             $table->string('name')->nullable();

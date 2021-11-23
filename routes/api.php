@@ -5,7 +5,7 @@ use App\Http\Controllers\Api\GoalController;
 use App\Services\GoogleService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\MomoController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -42,7 +42,11 @@ Route::prefix('/auth-service')->group(function () {
 Route::resource('attachment', AttachmentController::class)
     ->middleware('auth');
 
-Route::resource('momo', \App\Http\Controllers\MomoController::class);
-//    ->middleware('auth');
 
 Route::get('goals/gantt-chart/{user_id}', [GoalController::class, 'ganttChart']);
+
+
+Route::prefix('/momo')->group(function () {
+    Route::post('/generate-url/{type}', [MomoController::class, 'generateUrl']);
+    Route::get('/callback/{type}', [MomoController::class, 'callback']);
+});
