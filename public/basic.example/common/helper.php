@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+
 function execPostRequest($url, $data)
 {
     $ch = curl_init($url);
