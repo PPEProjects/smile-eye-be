@@ -54,10 +54,10 @@ if (!empty($_POST)) {
     $jsonResult = json_decode($result, true);  // decode json
 
     //Just a example, please check more in there
-echo '<pre>';
-var_dump($jsonResult);
-echo '</pre>';
-die();
+//echo '<pre>';
+//var_dump($jsonResult);
+//echo '</pre>';
+//die();
     header('Location: ' . $jsonResult['payUrl']);
 }
 ?>
