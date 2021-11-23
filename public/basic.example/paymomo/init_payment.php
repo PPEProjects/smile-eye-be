@@ -52,10 +52,6 @@ if (!empty($_POST)) {
         'extraData' => $extraData,
         'requestType' => $requestType,
         'signature' => $signature);
-    echo '<pre>';
-    var_dump($data);
-    echo '</pre>';
-    die();
     $result = execPostRequest($endpoint, json_encode($data));
     $jsonResult = json_decode($result, true);  // decode json
 

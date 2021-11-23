@@ -1,6 +1,10 @@
 <?php
 function execPostRequest($url, $data)
 {
+    echo '<pre>';
+    var_dump($url, $data);
+    echo '</pre>';
+    die();
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
