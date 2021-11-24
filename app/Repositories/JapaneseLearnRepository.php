@@ -57,7 +57,7 @@ class JapaneseLearnRepository
                 $idParent = $find->pluck('id')->toArray();
                 $getchildren =  self::goalNochild($idParent, $getchildren);
             }
-            else  $getchildren[] = $value;  
+            else  $getchildren[] = (string)$value;  
        }
        return $getchildren;
     }
