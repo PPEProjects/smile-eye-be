@@ -47,14 +47,21 @@ class UserQueries
     public function listUsers($_, array $args)
     {
         $orderBy = $args["orderBy"];
-        $users = User::selectRaw("*, DATE(created_at) as start_smile_eye_time")                      
-                        ->orderBy($orderBy['column'], $orderBy['order'])
+        $users = User::selectRaw("*, DATE(created_at) as start_smile_eye_time");
+        if(isset($args['search'])){
+           $search =  $args['search'];
+            foreach($args['search'] as $key => $value){
+                $users = $users->where($key, 'like', "%".$search[$key]."%");
+            }
+        }                    
+         $users =  $users->orderBy($orderBy['column'], $orderBy['order'])
                         ->paginate($args["first"], ['*'], 'page', $args["page"]);
         $page = $users->toArray()["last_page"];
         $userIds = $users->pluck('id');
         $goals = Goal::whereIn("user_id", $userIds)
                         ->whereNull('parent_id')
                         ->get()->groupBy('user_id');
+
         $listUsers["data"] = $users->map(function($user) use ($goals){
             $user->self_goals = @$goals[$user->id];
             $user->inviation_goals = @$this->goal_repository->myGoalsAchieve($user->id);
