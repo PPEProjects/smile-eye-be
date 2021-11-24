@@ -252,7 +252,7 @@ class JapaneseGoalRepository
             $keyPrev = 0;
             if (isset($goalRoot->id)) {
                 $childrenIds = $this->japaneseLearn_repository->goalNochild([$goalRoot->id]);
-                $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);
+                $findIds = array_search((int)$detailJPGoal->goal_id, $childrenIds, true);
                 foreach ($childrenIds as $key => $value) {
                     if ($key > $findIds) {
                         if (isset($getTypeNextGoal)) {
