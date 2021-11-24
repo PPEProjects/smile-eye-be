@@ -797,7 +797,7 @@ class GoalRepository
                 }
                 $value['parent_id'] = null;
             }
-            Goal::where('id', $value['id'])->update([['parent_id'] => $value['parent_id']]);
+            Goal::where('id', $value['id'])->update(['parent_id' => $value['parent_id']]);
 //            $goalMove = tap(Goal::find($value["id"]))->update($value);
             $i++;
         }
