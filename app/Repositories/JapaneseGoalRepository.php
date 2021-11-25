@@ -6,6 +6,7 @@ namespace App\Repositories;
 use App\Models\Goal;
 use App\Models\JapaneseGoal;
 use App\Models\JapaneseLearn;
+use App\Models\Payment;
 use App\Models\User;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
@@ -236,6 +237,10 @@ class JapaneseGoalRepository
                 }
             }
             $detailJPGoal->goal_root = $goalRoot;
+            $payment = Payment::where('goal_id', $goalRoot->id)
+                                ->where('add_user_id', Auth::id())
+                                ->first();   
+            $detailJPGoal->payment_status = @$payment->status ?? 'unpaid';  
             if ($detailJPGoal->type == 'communication' || $detailJPGoal->type == 'sing_with_friend') {
                 $getListUsers = JapaneseLearn::where('goal_id', $detailJPGoal->goal_id)
                     ->whereNotIn('user_id', [Auth::id()])
