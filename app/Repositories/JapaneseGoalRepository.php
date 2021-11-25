@@ -281,7 +281,7 @@ class JapaneseGoalRepository
                 }
                 if (@$payment->status == "accept" || $keyNext == 0) 
                 {   
-                    $detailJPGoal->payment_status = @$payment->status ?? 'unpaid';
+                    
                     foreach ($childrenIds as $key => $value) 
                     {
                         if ($key > $findIds) {
@@ -298,6 +298,9 @@ class JapaneseGoalRepository
                             $getTypePrevGoal = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds - $key])->first();
                             $keyPrev = $childrenIds[$findIds - $key];
                         }
+                    }
+                    if($detailJPGoal->payment_status != 'trial'){
+                        $detailJPGoal->payment_status = @$payment->status ?? 'unpaid';
                     }
                  }
             }
