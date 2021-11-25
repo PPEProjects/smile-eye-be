@@ -20,9 +20,9 @@ class MomoController extends Controller
             'extraData' => 'required',
         ]);
         $endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor";
-        $partnerCode = 'MOMOZGAI20211012';
-        $accessKey = '5vwvbxyCxDLl16Uq';
-        $serectkey = 'hpo6bOpOqeqCE12mN4U2l7xT5fhlfpUv';
+        $partnerCode = 'MOMOBKUN20180529';
+        $accessKey = 'klm05TvNBzhg7h7j';
+        $serectkey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
         $orderId = $request->orderId; // Mã đơn hàng
         $orderInfo = $request->orderInfo;
         $amount = $request->amount;
@@ -49,16 +49,7 @@ class MomoController extends Controller
         ];
         $client = new \GuzzleHttp\Client();
         $request = new \GuzzleHttp\Psr7\Request('POST', $endpoint);
-        $response = $client->send($request, [
-            'body'    => json_encode($data),
-            'referer' => true,
-            'headers' => [
-                'User-Agent' => '${YOUR TOOL NAME}/v1.0',
-                'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-                'Accept-Encoding' => 'gzip, deflate, br',
-            ],
-
-        ]);
+        $response = $client->send($request, ['body' => json_encode($data)]);
         $result = $response->getBody()->getContents();
         $result = json_decode($result, true);
         if (!empty($result['errorCode'])) {

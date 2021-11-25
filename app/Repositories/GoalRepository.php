@@ -142,6 +142,7 @@ class GoalRepository
     public function getTreeSortByGoalId($goalId, $userId = null)
     {
         $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id, created_at')
+            ->whereRaw("id='$goalId' OR root_id='$goalId'")
             ->orderByRaw('-`index` DESC, `created_at` ASC');
 
         if ($userId) {
@@ -149,6 +150,7 @@ class GoalRepository
         }
 
         $goals = $goals->get();
+
         $getIdGoals = $goals->pluck('id');
         $japaneseGoals = JapaneseGoal::select('id', 'type', 'goal_id')
             ->whereIn('goal_id', $getIdGoals)
@@ -159,7 +161,6 @@ class GoalRepository
 
         $findIdTasks = Task::WhereIn('id', $getIdTasks)->get()->keyBy('id');
         $findIdGoals = Task::WhereIn('goal_id', $getIdGoals)->get()->keyBy('goal_id');
-
         $goals = $goals->map(function ($goal) use ($japaneseGoals, $findIdGoals, $findIdTasks) {
             $goal->japanese_goal = @$japaneseGoals[$goal->id];
 
@@ -175,7 +176,6 @@ class GoalRepository
             }
             return $goal;
         });
-
         $tree = self::buildTree($goals->toArray(), $goalId);
         $getIds = self::buildTreeEmpty($tree);
         $checktreeEmpty = $getIds['tree_empty'];
@@ -798,9 +798,9 @@ class GoalRepository
                 $value['parent_id'] = null;
             }
             Goal::where('id', $value['id'])->update([
-                                                    'parent_id' => $value['parent_id'],
-                                                    'index' => $value['index']
-                                                    ]);
+                'parent_id' => $value['parent_id'],
+                'index'     => $value['index']
+            ]);
 //            $goalMove = tap(Goal::find($value["id"]))->update($value);
             $i++;
         }

@@ -37,6 +37,7 @@ class Goal extends Model
         'banned_users'
     ];
     protected $casts = [
+        'id' => 'string',
         'locks' => 'json',
         'banned_users' => 'json',
     ];
