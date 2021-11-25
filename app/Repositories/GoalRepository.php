@@ -148,13 +148,14 @@ class GoalRepository
         if ($userId) {
             $goals = $goals->where("user_id", $userId);
         }
-
         $goals = $goals->get();
 
         $getIdGoals = $goals->pluck('id');
         $japaneseGoals = JapaneseGoal::select('id', 'type', 'goal_id')
             ->whereIn('goal_id', $getIdGoals)
-            ->get()->keyBy('goal_id');
+            ->get()
+            ->keyBy('goal_id')
+        ->toArray();
 
         //Check goal have  task_id And Task have goal_id
         $getIdTasks = $goals->pluck('task_id');
@@ -176,8 +177,12 @@ class GoalRepository
             }
             return $goal;
         });
+//        dd($goals->toArray());
+
         $tree = self::buildTree($goals->toArray(), $goalId);
+//dd(1);
         $getIds = self::buildTreeEmpty($tree);
+
         $checktreeEmpty = $getIds['tree_empty'];
         $pTree = $goals->where('id', $goalId)->first();
         $treeEmpty = $goals->where('title', "")->pluck('id');
@@ -187,6 +192,7 @@ class GoalRepository
             $pTree->expanded = true;
             return ['tree' => [$pTree], 'tree_empty' => $treeEmpty, 'goals' => $goals];
         }
+
         return ['tree' => [], 'goals' => $goals];
     }
 
@@ -240,6 +246,7 @@ class GoalRepository
     {
         $branch = array();
         foreach ($elements as $element) {
+            if(empty($parentId)) continue;
             if ($element['parent_id'] == $parentId) {
                 $children = self::buildTree($elements, $element['value']);
                 if ($children) {
