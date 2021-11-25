@@ -236,11 +236,7 @@ class JapaneseGoalRepository
                     break;
                 }
             }
-            $detailJPGoal->goal_root = $goalRoot;
-            $payment = Payment::where('goal_id', $goalRoot->id)
-                                ->where('add_user_id', Auth::id())
-                                ->first();   
-            $detailJPGoal->payment_status = @$payment->status ?? 'unpaid';  
+            $detailJPGoal->goal_root = $goalRoot;  
             if ($detailJPGoal->type == 'communication' || $detailJPGoal->type == 'sing_with_friend') {
                 $getListUsers = JapaneseLearn::where('goal_id', $detailJPGoal->goal_id)
                     ->whereNotIn('user_id', [Auth::id()])
@@ -258,23 +254,54 @@ class JapaneseGoalRepository
             if (isset($goalRoot->id)) {
                 $childrenIds = $this->japaneseLearn_repository->goalNochild([$goalRoot->id]);
                 $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);
-                foreach ($childrenIds as $key => $value) {
-                    if ($key > $findIds) {
-                        if (isset($getTypeNextGoal)) {
-                            continue;
+                $trialIds = array_intersect($childrenIds, @$goalRoot->trial_block ?? []);
+                $checkTrial = array_search($detailJPGoal->goal_id, $trialIds, true);
+                $payment = Payment::where('goal_id', $goalRoot->id)
+                                ->where('add_user_id', Auth::id())
+                                ->first();   
+                if(@$payment->status != "accept" && $checkTrial)
+                {
+                    $detailJPGoal->payment_status = "trial";
+                    foreach ($trialIds as $key => $value) {
+                        if ($key > $findIds) {
+                            if (isset($getTypeNextGoal)) {
+                                continue;
+                            }
+                            $getTypeNextGoal = @$this->getJapaneseGoal('goal_id', $value)->first();
+                            $keyNext = $value;
                         }
-                        $getTypeNextGoal = @$this->getJapaneseGoal('goal_id', $value)->first();
-                        $keyNext = $value;
-                    }
-                    if ($key > 0 && $key <= $findIds) {
-                        if (isset($getTypePrevGoal)) {
-                            continue;
+                        if ($key > 0 && $key < $findIds) {
+                            if (isset($getTypePrevGoal)) {
+                                continue;
+                            }
+                            $getTypePrevGoal = @$this->getJapaneseGoal('goal_id', @$trialIds[$findIds - $key])->first();
+                            $keyPrev = @$trialIds[$findIds - $key];
                         }
-                        $getTypePrevGoal = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds - $key])->first();
-                        $keyPrev = $childrenIds[$findIds - $key];
                     }
                 }
+                if (@$payment->status == "accept" || $keyNext == 0) 
+                {   
+                    $detailJPGoal->payment_status = @$payment->status ?? 'unpaid';
+                    foreach ($childrenIds as $key => $value) 
+                    {
+                        if ($key > $findIds) {
+                            if (isset($getTypeNextGoal)) {
+                                continue;
+                            }
+                            $getTypeNextGoal = @$this->getJapaneseGoal('goal_id', $value)->first();
+                            $keyNext = $value;
+                        }
+                        if ($key > 0 && $key <= $findIds) {
+                            if (isset($getTypePrevGoal)) {
+                                continue;
+                            }
+                            $getTypePrevGoal = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds - $key])->first();
+                            $keyPrev = $childrenIds[$findIds - $key];
+                        }
+                    }
+                 }
             }
+            
             $nextGoal = @$this->findGoal($keyNext);
             $prevGoal = @$this->findGoal($keyPrev);
             if (isset($nextGoal) && isset($getTypeNextGoal->type)) {

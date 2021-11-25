@@ -33,13 +33,14 @@ class Goal extends Model
         'user_id',
         'updated_at',
         'price',
-        'is_trial_block',
+        'trial_block',
         'banned_users'
     ];
     protected $casts = [
         'id' => 'string',
         'locks' => 'json',
         'banned_users' => 'json',
+        'trial_block' => 'json',
     ];
     public function todolists()
     {

@@ -64,6 +64,7 @@ type Goal{
     progress: Float
     price: Float
     is_trial_block: Boolean
+    trial_block: JSON
     banned_users: JSON
     rule: String
     goal_root: Goal
@@ -111,8 +112,9 @@ input CreateGoalInput{
     status : String
     is_pined : Boolean
     general_info: JSON
-    price: Float
+    price: String
     is_trial_block: Boolean
+    trial_block: JSON
 }
 
 input UpdateGoalInput{
@@ -127,9 +129,10 @@ input UpdateGoalInput{
     report_type : String
     is_pined : Boolean
     general_info: JSON
-    price: Float
+    price: String
     is_trial_block: Boolean
     banned_users: JSON
+    trial_block: JSON
 }
 
 input DeleteGoalInput{
@@ -152,9 +155,10 @@ input UpsertGoalInput{
     locks: JSON
     is_lock: Boolean
     general_info: JSON
-    price: Float
+    price: String
     is_trial_block: Boolean
     banned_users: JSON
+    trial_block: JSON
 }
 
 input UpdateGoalMoveInput{
