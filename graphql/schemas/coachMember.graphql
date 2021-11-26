@@ -30,6 +30,13 @@ type CoachMember{
     goals: [GoalCoachMember]
     created_at: DateTime
     updated_at: DateTime
+    members: [Member]
+    name: String
+}
+type Member{
+    id: ID
+    name: String
+    count_missing: JSON 
 }
 type GoalCoachMember{
     id: ID

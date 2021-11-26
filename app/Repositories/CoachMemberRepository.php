@@ -7,6 +7,7 @@ use App\Models\Goal;
 use App\Models\GoalMember;
 use App\Models\JapaneseGoal;
 use App\Models\Notification;
+use App\Models\Payment;
 use App\Models\User;
 use Carbon\Carbon;
 use GraphQL\Error\Error;
@@ -58,11 +59,44 @@ class CoachMemberRepository
         $listMembers = GoalMember::SelectRaw("id, goal_id, add_user_id as user_id, teacher_id")
                                     ->where('teacher_id',  $userId)
                                     ->get();
-        $listMembers = $listMembers->map(function($list) {
-            $list->goals = $this->findGoalIds([$list->goal_id]);
-            return $list;
-        });
-        return $listMembers;
+        $memberGroupByGoals = [];
+        $typeNotis = ["diary", "achieve", "edit_diary", "communication"];
+
+        foreach($listMembers as $value)
+        {
+            $numberMember = GoalMember::SelectRaw('Count(teacher_id) as number_member')
+                                        ->where('teacher_id', $value->user_id)
+                                        ->first();
+
+            $notification = Notification::selectRaw("count(*) as count")
+                                        ->where("user_id", $value->user_id)
+                                        ->where("user_receive_id", Auth::id())
+                                        ->whereIn("type", $typeNotis)
+                                        ->whereRaw("(is_read is null or is_read = 0)")
+                                        ->first()
+                                        ->toArray();
+            $countMissing = [
+                            'message' => 0,
+                            'call' => 0,
+                            'notification' => @$notification['count'] ?? 0
+                            ];
+
+            $member = User::where('id', $value->user_id)->first();
+               
+            $member->number_member = $numberMember->number_member;
+            $member->count_missing = $countMissing;
+            $memberGroupByGoals[$value->goal_id][] =  @$member;         
+        }
+        $getIds = $listMembers->pluck('goal_id');
+        $goals = Goal::SelectRaw("id, user_id, name")
+                        ->whereIn('id',@$getIds ?? [])
+                        ->get();
+
+        $coachMembers = $goals->map(function($goal) use ($memberGroupByGoals){
+            $goal->members = @$memberGroupByGoals[$goal->id];
+            return $goal; 
+        }); 
+        return $coachMembers;
     }
     public function findGoalIds($ids, $number = 1){
         $status = ["trial","paid", "paying", "trouble", "paid and complete"];
@@ -81,6 +115,9 @@ class CoachMemberRepository
 
     public function myListSupportMembers($args)
     {
-        return $this->myListCoachMembers($args);
+        $userId = Auth::id();
+        $coach = CoachMember::where('user_id', $userId)->first();
+        $payment = Payment::whereIn('goal_id',$coach->goal_ids)->get();
+        return $payment;
     }
 }
