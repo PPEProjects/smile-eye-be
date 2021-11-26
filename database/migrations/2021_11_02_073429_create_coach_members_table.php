@@ -16,9 +16,10 @@ class CreateCoachMembersTable extends Migration
         Schema::create('coach_members', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("user_id")->nullable();
+            $table->unsignedBigInteger("user_id")->nullable();
             $table->string('org')->nullable();
-            $table->string('business_field')->nullable();
-            $table->string('scale')->nullable();
+//            $table->string('business_field')->nullable();
+//            $table->string('scale')->nullable();
             $table->json('goal_ids')->nullable();
             $table->timestamps();
             $table->softDeletes();

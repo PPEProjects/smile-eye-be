@@ -246,7 +246,7 @@ class GoalRepository
     {
         $branch = array();
         foreach ($elements as $element) {
-            if(empty($parentId)) continue;
+//            if(empty($parentId)) continue;
             if ($element['parent_id'] == $parentId) {
                 $children = self::buildTree($elements, $element['value']);
                 if ($children) {

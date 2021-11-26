@@ -18,7 +18,7 @@ extend type Query {
     search_goals(name: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [Goal!]! @paginate(type: "paginator" model: "App\\Models\\Goal")
 #    goal_and_friend(name:String):GoalUser @field(resolver:"GoalQueries@goal_and_friend")
     my_ParentGoal( id: ID): [GoalParent] @guard @field(resolver:"GoalQueries@my_parentGoal")
-    my_goals_tree_select: JSON @guard @field(resolver:"GoalQueries@myGoalsTreeSelect")
+    my_goals_tree_select( root_id: ID!): JSON @guard @field(resolver:"GoalQueries@myGoalsTreeSelect")
     my_goals_tree_sort(id:ID, not_auth:Boolean): JSON @guard @field(resolver:"GoalQueries@myGoalsTreeSort")
     goals_achieve_tree_sort(id:ID, not_auth: Boolean): JSON @guard @field(resolver:"GoalQueries@goalsAchieveTreeSort")
     sort_goals(orderBy: [OrderByClause!] @orderBy): [Goal!]! @paginate(type: "paginator" model: "App\\Models\\Goal")

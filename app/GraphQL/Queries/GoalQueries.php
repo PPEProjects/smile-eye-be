@@ -56,39 +56,36 @@ class GoalQueries
     }
 
 
-    public function myGoalsTreeSelect($_, array $args)
-    {
+    public function myGoalsTreeSelect($_, array $args){
         $goals = Goal::selectRaw('id as value, name as title, parent_id')
-            ->where("user_id", "=", Auth::id())
+            ->where("root_id", $args['root_id'])
             ->orderBy('id', 'desc')
             ->get()
             ->toArray();
-        return $this->goal_repository->buildTree($goals, null);
+//        return $goals;
+//        dd($goals);
+        $tGoals = $this->goal_repository->buildTree($goals, $args['root_id']);
+        return $tGoals;
     }
 
 # Ver 2
     public function detailGoal($_, array $args)
     {
-        $goal = Goal::where('id', $args['id'])->first(); 
+        $goal = Goal::where('id', $args['id'])->first();
         if ($goal) {
             $goalRoot = $this->japaneseGoal_repository->findGoal($goal->parent_id);
-        if($goalRoot)
-        {
-            while (true) 
-            {
-                if (isset($goalRoot->parent_id) &&  @$goalRoot->parent_id != 0) 
-                {
-                    $goalRoot =  $this->japaneseGoal_repository->findGoal($goalRoot->parent_id);
-                } else {
-                    break;
+            if ($goalRoot) {
+                while (true) {
+                    if (isset($goalRoot->parent_id) && @$goalRoot->parent_id != 0) {
+                        $goalRoot = $this->japaneseGoal_repository->findGoal($goalRoot->parent_id);
+                    } else {
+                        break;
+                    }
                 }
+            } else {
+                $goalRoot = $goal;
             }
-        }
-        else
-        {
-            $goalRoot = $goal;
-        }
-        $goal->goal_root = $goalRoot;
+            $goal->goal_root = $goalRoot;
             $generalInfo = $this->generalinfo_repository
                 ->setType('goal')
                 ->findByTypeId($goal->id);
@@ -113,8 +110,8 @@ class GoalQueries
         $this->goal_repository->calculatorProcessTodolist();
         $this->goal_repository->calculatorProcessUpdate();
         $goals = Goal::SelectRaw("*, 'goal_owner' AS type")
-                    ->where('user_id', Auth::id())
-                    ->orderByRaw('`rank` ASC, `created_at` DESC');
+            ->where('user_id', Auth::id())
+            ->orderByRaw('`rank` ASC, `created_at` DESC');
         switch ($args['parent_id']) {
             case 'all':
                 break;
@@ -131,8 +128,8 @@ class GoalQueries
         $goalMember = GoalMember::where("add_user_id", Auth::id())->get();
         $idGoalMembers = $goalMember->pluck('goal_id');
         $myGoalMember = Goal::SelectRaw("*, 'goal_member' AS type")
-                        ->whereIn('id', @$idGoalMembers ?? [])
-                        ->get();
+            ->whereIn('id', @$idGoalMembers ?? [])
+            ->get();
         $goals = $myGoalMember->merge($goals);
         //---------//
 
@@ -226,13 +223,13 @@ class GoalQueries
         if (isset($args['not_auth'])) {
             return $this->goal_repository->getTreeSortByGoalId($args['id']);
         }
-        $userId =  Auth::id();
-         //Get id goal from GoalMember
+        $userId = Auth::id();
+        //Get id goal from GoalMember
         $goalMember = GoalMember::where("add_user_id", $userId)
-                                    ->where('goal_id', $args['id'])
-                                    ->first();
-        if(isset($goalMember)){
-                $userId = $goalMember->user_id;
+            ->where('goal_id', $args['id'])
+            ->first();
+        if (isset($goalMember)) {
+            $userId = $goalMember->user_id;
         }
         return $this->goal_repository->getTreeSortByGoalId($args['id'], $userId);
     }
@@ -258,6 +255,7 @@ class GoalQueries
     {
         return $this->goal_repository->myGoalShare();
     }
+
     public function goalShareTreeSort($_, array $args)
     {
         return $this->goal_repository->goalShareTreeSort($args);

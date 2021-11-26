@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8e162c3a-de2c-488e-b9b5-ac3575a053bf",
+		"_postman_id": "08beef6c-9d91-445b-bd8c-755856b8ddca",
 		"name": "se-be-v2.ppe.edu.vn",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -7387,8 +7387,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query {\r\n  my_goals_tree_select\r\n}",
-								"variables": "{\r\n   \r\n}"
+								"query": "query ($root_id: ID!) {\r\n  my_goals_tree_select(root_id: $root_id)\r\n}",
+								"variables": "{\r\n    \"root_id\":\"16377469579\"\r\n}"
 							}
 						},
 						"url": {
