@@ -122,7 +122,7 @@ class CoachMemberRepository
             $user = User::find($value->add_user_id);
 
             $numberMember = GoalMember::SelectRaw('Count(teacher_id) as number_member')
-                                        ->where('teacher_id', $value->user_id)
+                                        ->where('teacher_id', $value->add_user_id)
                                         ->first();
             $user->number_member = @$numberMember->number_member ?? 0;
             $user->status = $value->status;
