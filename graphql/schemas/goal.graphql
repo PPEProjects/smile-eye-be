@@ -62,7 +62,7 @@ type Goal{
     updated_at: DateTime
     general_info: GeneralInfo
     progress: Float
-    price: Float
+    price: String
     is_trial_block: Boolean
     trial_block: JSON
     banned_users: JSON
