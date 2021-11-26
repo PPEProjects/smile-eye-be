@@ -50,11 +50,9 @@ class GoalTemplateRepository{
             $goalTemplate = GoalTemplate::all();
         }
         $goalIds = $goalTemplate->pluck('goal_id');
-        $goals = Goal::whereIn('id', @$goalIds ?? [])->get()->keyBy('id');
-        $goalTemplate = $goalTemplate->map(function($template) use($goals){
-            $template->goal = @$goals[$template->goal_id];
-            return $template;
-        });
+        $goals = Goal::whereIn('id', @$goalIds ?? [])->get();
+        $getId = $goals->pluck('id');
+        $goalTemplate = $goalTemplate->whereIn('goal_id', @$getId ?? []); 
         return @$goalTemplate;
     }
 }
