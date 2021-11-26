@@ -98,26 +98,12 @@ class CoachMemberRepository
         }); 
         return $coachMembers;
     }
-    public function findGoalIds($ids, $number = 1){
-        $status = ["trial","paid", "paying", "trouble", "paid and complete"];
-        $goals = Goal::selectRaw("*,start_day AS started_at_a_goal")->whereIn('id', $ids)->get();
-        $goals = $goals->map(function($goal) use($status, $number){
-            $goal->count_missing = [
-                "call" => random_int(0,10),
-                "message" => random_int(0,10),
-                "pratice" => $number
-            ];
-            $goal->status = $status[random_int(0,(count($status) - 1))];
-            return $goal;
-        });
-        return $goals;
-    }
-
+    
     public function myListSupportMembers($args)
     {
         $userId = Auth::id();
         $coach = CoachMember::where('user_id', $userId)->first();
-        $payment = Payment::whereIn('goal_id',$coach->goal_ids)->get();
+        $payment = Payment::whereIn('goal_id', @$coach->goal_ids ?? [])->get();
         return $payment;
     }
 }
