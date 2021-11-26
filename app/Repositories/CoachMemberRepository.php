@@ -6,23 +6,36 @@ use App\Models\CoachMember;
 use App\Models\Goal;
 use App\Models\GoalMember;
 use App\Models\JapaneseGoal;
+use App\Models\JapanesePost;
+use App\Models\Note;
 use App\Models\Notification;
 use App\Models\Payment;
 use App\Models\User;
 use Carbon\Carbon;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
+use ppeCore\dvtinh\Services\AttachmentService;
 use ppeCore\dvtinh\Services\MediaService;
 
 class CoachMemberRepository
 {
+    private $goal_repository;
+
+    public function __construct(
+            GoalRepository $goal_repository,
+            AttachmentService $attachmentService
+        )
+    {
+        $this->goal_repository = $goal_repository;
+        $this->attachment_service = $attachmentService;
+    }
     public function createCoachMember($args)
     {
         $args["user_id"] = Auth::id();
         $args = array_diff_key($args, array_flip(['teacher_id']));
         return CoachMember::create($args);
     }
-    public function addGoalsToMyTeacher($args)
+    public function upsertCoachMember($args)
     {
         if(!isset($args['user_id'])){
             $args['user_id'] = Auth::id();
@@ -60,7 +73,7 @@ class CoachMemberRepository
                                     ->where('teacher_id',  $userId)
                                     ->get();
         $memberGroupByGoals = [];
-        $typeNotis = ["diary", "achieve", "edit_diary", "communication"];
+        $typeNotis = ["diary", "achieve", "edit_diary", "communication", "sing_with_friend"];
 
         foreach($listMembers as $value)
         {
@@ -101,8 +114,53 @@ class CoachMemberRepository
     public function myListSupportMembers($args)
     {
         $userId = Auth::id();
-        $coach = CoachMember::where('user_id', $userId)->first();
-        $payment = Payment::whereIn('goal_id', @$coach->goal_ids ?? [])->get();
-        return $payment;
+        $goals = Goal::where('user_id', $userId)->whereNull("parent_id")->get();
+        $getIds = $goals->pluck('id');
+        $payment = Payment::whereIn('goal_id', @$getIds ?? [])->get();
+        $support = [];
+        foreach($payment as $value){
+            $user = User::find($value->add_user_id);
+
+            $numberMember = GoalMember::SelectRaw('Count(teacher_id) as number_member')
+                                        ->where('teacher_id', $value->user_id)
+                                        ->first();
+            $user->number_member = @$numberMember->number_member ?? 0;
+            $user->status = $value->status;
+            $support[$value->goal_id][] = $user;
+        }
+        $supportMembers = $goals->map(function($goal) use ($support){
+            $goal->members = @$support[$goal->id];
+            return $goal; 
+        }); 
+        return $supportMembers;
+    }
+
+    public function detailCoachMembers($args)
+    {
+        $userId = $args['user_id'];
+
+        $posts = JapanesePost::where('user_id', $userId)
+                                ->orderBy('created_at', 'DESC')
+                                ->take(3)
+                                ->get();
+
+        $diary = JapaneseGoal::where('user_id', $userId)
+                                ->where('type', 'like', 'diary')
+                                ->take(3)
+                                ->get();
+        
+        $achieves = $this->goal_repository->myGoalsAchieve(Auth::id());
+        $achieves = $achieves->where('user_id', $userId);
+        
+        $notes = Note::where('user_id', $userId)->take(3)->get();
+
+        $user = User::find($userId);
+
+        $user = $this->attachment_service->mappingAvatarBackgroud($user);
+        $user->posts = @$posts;
+        $user->achieves = @$achieves;
+        $user->diary = @$diary;
+        $user->notes = @$notes;
+        return $user;   
     }
 }

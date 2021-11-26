@@ -92,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"kelvin123@gmail.com\",\n    \"password\": \"Kelvin123\"\n}",
+							"raw": "{\n    \"email\": \"nnahssam2@gmail.com\",\n    \"password\": \"123456789\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1149,7 +1149,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "\nmutation(\n    $user_ids: [ID]\n    $goal_ids: [ID]\n) {\n  add_coach_member(\n    input: {\n        user_ids: $user_ids\n         goal_ids:  $goal_ids\n    }\n  )\n\n }",
-								"variables": "{\n   \"user_ids\": [3,4,5],\n   \"goal_ids\":[40,9,8,7]\n}"
+								"variables": "{\n   \"user_ids\": [150],\n   \"goal_ids\":[16378298037]\n}"
 							}
 						},
 						"url": {
@@ -1328,8 +1328,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($id: ID!){\r\n  detail_coach_member(\r\n      id: $id   \r\n    ) {\r\n      id\r\n      user{\r\n          id\r\n          name\r\n      }\r\n     org\r\n      business_field\r\n     goal_ids\r\n    teacher_ids\r\n      scale\r\n      created_at\r\n      updated_at\r\n  }\r\n}",
-								"variables": "{\r\n    \"id\": 1\r\n}"
+								"query": "query($user_id: ID!){\r\n  detail_coach_member(\r\n      user_id: $user_id   \r\n    ){\r\n        id\r\n        name\r\n        email\r\n        phone_number\r\n        attachment{\r\n         id\r\n         file\r\n         thumb\r\n        }\r\n        achieves{\r\n            id\r\n            name\r\n        }\r\n        posts{\r\n            id\r\n            goal_id\r\n            title\r\n            description\r\n            media\r\n            likes\r\n        }\r\n        diary{\r\n            id\r\n            more\r\n        }\r\n        notes{\r\n            id\r\n            content\r\n        }\r\n    }\r\n}",
+								"variables": "{\r\n    \"user_id\": 1\r\n}"
 							}
 						},
 						"url": {
@@ -1358,7 +1358,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query{\r\n  my_list_coach_members{\r\n      id\r\n     name\r\n     members{\r\n         id\r\n         name\r\n         count_missing \r\n     }\r\n      \r\n  }\r\n}",
+								"query": "query{\r\n  my_list_coach_members{\r\n      id\r\n     name\r\n     members{\r\n         id\r\n         name\r\n         number_member\r\n         count_missing \r\n     }\r\n      \r\n  }\r\n}",
 								"variables": "{\r\n\r\n}"
 							}
 						},
@@ -1388,7 +1388,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query{\r\n  my_list_support_members{\r\n      id\r\n      user{\r\n          id\r\n          name\r\n      }\r\n      goals{\r\n          id\r\n          name\r\n          started_at_a_goal\r\n          status\r\n      }\r\n      org\r\n      business_field\r\n      goal_ids\r\n  }\r\n}",
+								"query": "query{\r\n  my_list_support_members{\r\n    id\r\n     name\r\n     members{\r\n         id\r\n         name\r\n         number_member\r\n        status\r\n     }\r\n  }\r\n}",
 								"variables": "{\r\n\r\n}"
 							}
 						},
@@ -1944,7 +1944,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $goal_id : ID\r\n    $title: String\r\n    $description: String\r\n    $media: JSON\r\n    $likes: JSON\r\n) {\r\n  create_japanese_posts(\r\n    input: {\r\n        goal_id:$goal_id\r\n        title:$title\r\n        description:$description\r\n        media:$media\r\n        likes:$likes\r\n    }\r\n  ) {\r\n   id\r\n    user_id\r\n    goal_id\r\n    title\r\n    description\r\n    media\r\n    likes\r\n    created_at\r\n    updated_at\r\n}\r\n}\r\n",
-								"variables": "{\r\n  \"goal_id\": 7,\r\n  \"title\": \"Trứng chiên nước mắm\",\r\n  \"description\": \"Với nguyên liệu và cách làm đơn giản, bạn có thể tạo nên một món ăn thưởng thức cùng cơm trắng cho ngày cuối tuần.\",\r\n  \"media\": {\r\n    \"radioKey\": \"Audio\",\r\n    \"file\": \"http://japanese-dev-be.test/storage/media/audios/2021-08-27-1630055113-356968074-10.mp3\",\r\n    \"file_type\": \"audio\",\r\n    \"thumb\": \"http://japanese-dev-be.test/storage/media/audios/2021-08-27-1630055113-356968074-10.mp3\"\r\n  },\r\n  \"likes\": [\r\n    1,\r\n    2,\r\n    3\r\n  ]\r\n}"
+								"variables": "{\r\n  \"goal_id\": 18,\r\n  \"title\": \"Trứng chiên nước mắm\",\r\n  \"description\": \"Với nguyên liệu và cách làm đơn giản, bạn có thể tạo nên một món ăn thưởng thức cùng cơm trắng cho ngày cuối tuần.\",\r\n  \"media\": {\r\n    \"radioKey\": \"Audio\",\r\n    \"file\": \"http://japanese-dev-be.test/storage/media/audios/2021-08-27-1630055113-356968074-10.mp3\",\r\n    \"file_type\": \"audio\",\r\n    \"thumb\": \"http://japanese-dev-be.test/storage/media/audios/2021-08-27-1630055113-356968074-10.mp3\"\r\n  },\r\n  \"likes\": [\r\n    1,\r\n    2,\r\n    3\r\n  ]\r\n}"
 							}
 						},
 						"url": {
@@ -2434,7 +2434,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $id:ID!\r\n    $goal_id : ID\r\n    $status: String   \r\n    $request: String\r\n) {\r\n  update_goal_template(\r\n    input: {\r\n        id: $id\r\n        goal_id:$goal_id\r\n        status:$status\r\n        request:$request\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    status\r\n    request\r\n    created_at\r\n    updated_at\r\n}\r\n}\r\n",
-								"variables": "{\r\n  \"id\": 1\r\n\r\n}"
+								"variables": "{\r\n  \"id\": 4,\r\n    \"goal_id\": 99\r\n}"
 							}
 						},
 						"url": {
@@ -4209,7 +4209,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "\nmutation($general_id:ID!,$user_invite_ids:[ID]!,$status:String) {\n  create_achieve(\n    input: {\n      general_id: $general_id\n      user_invite_ids: $user_invite_ids\n      status: $status\n    }\n  )\n  }",
-								"variables": "{\n     \"general_id\" : 18,\n    \"user_invite_ids\" : [1],\n    \"status\" : \"pending\"\n}"
+								"variables": "{\n     \"general_id\" : 16,\n    \"user_invite_ids\" : [1],\n    \"status\" : \"pending\"\n}"
 							}
 						},
 						"url": {
@@ -6698,7 +6698,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $id : ID\r\n    $root_id:ID\r\n    $task_id : ID\r\n    $report_type : String\r\n  $parent_id: ID\r\n  $name: String!\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $locks: JSON\r\n  $is_lock: Boolean\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n  $price: String\r\n  $trial_block: JSON\r\n  $banned_users: JSON\r\n) {\r\n  upsert_goal(\r\n    input: {\r\n        id : $id\r\n        root_id : $root_id\r\n        task_id : $task_id\r\n        report_type : $report_type\r\n      parent_id: $parent_id\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      locks: $locks\r\n      is_lock: $is_lock\r\n      is_pined: $is_pined\r\n      price: $price\r\n      trial_block: $trial_block\r\n      banned_users: $banned_users\r\n      general_info: $general_info\r\n    }\r\n  ) \r\n}\r\n",
-								"variables": "{\r\n    \"id\": 16378294705,\r\n    \"root_id\":16378294705,\r\n    \"banned_users\":[2,4],\r\n    \"report_type\":null,\r\n    \"task_id\" : null,\r\n    \"parent_id\": null,\r\n    \"name\": \"new goals\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"locks\":{\r\n        \"user_ids\":[2,3]\r\n    },\r\n    \"is_lock\": false,\r\n    \"is_pined\": true,\r\n    \"price\": \"900000 vnd\",\r\n    \"trial_block\": [16378314516],\r\n    \"general_info\": {\r\n        \"address\": \"ultimate\",\r\n        \"zalo\": \"034470383822\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-06\",\r\n        \"action_at_time\": \"00:20:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
+								"variables": "{\r\n    \r\n    \"banned_users\":[2,4],\r\n    \"report_type\":null,\r\n    \"task_id\" : null,\r\n    \"parent_id\": null,\r\n    \"name\": \"new goals\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"locks\":{\r\n        \"user_ids\":[2,3]\r\n    },\r\n    \"is_lock\": false,\r\n    \"is_pined\": true,\r\n    \"price\": \"900000 vnd\",\r\n    \"trial_block\": [16378314516],\r\n    \"general_info\": {\r\n        \"address\": \"ultimate\",\r\n        \"zalo\": \"034470383822\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-06\",\r\n        \"action_at_time\": \"00:20:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
 							}
 						},
 						"url": {

@@ -10,7 +10,7 @@ extend type Mutation {
 extend type Query {
     coach_member: [CoachMember!]! @paginate(type: "paginator" model: "App\\Models\\CoachMember")
 # search_coach_member(status: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [CoachMember] @paginate(type: "paginator" model: "App\\Models\\CoachMember")
-    detail_coach_member(id: ID! @eq): CoachMember @find
+    detail_coach_member(user_id: ID! @eq): User @guard @field(resolver:"CoachMemberQueries@detailCoachMembers")
 #    my_coach_members: [CoachMember] @guard@field(resolver:"CoachMemberQueries@my_coach_members")
     sort_coach_member(orderBy: [OrderByClause!] @orderBy): [CoachMember] @paginate(type: "paginator" model: "App\\Models\\CoachMember")
     my_list_coach_members: [CoachMember] @guard @field(resolver:"CoachMemberQueries@myListCoachMembers")
@@ -33,11 +33,13 @@ type CoachMember{
     members: [Member]
     name: String
 }
+
 type Member{
     id: ID
     name: String
     number_member: Int
     count_missing: JSON 
+    status: String
 }
 type GoalCoachMember{
     id: ID

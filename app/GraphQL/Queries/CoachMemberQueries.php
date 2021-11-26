@@ -22,4 +22,8 @@ class CoachMemberQueries
     {
         return $this->coach_member_repository->myListSupportMembers($args);
     }
+    public function detailCoachMembers($_, array $args)
+    {
+        return $this->coach_member_repository->detailCoachMembers($args);
+    }
 }

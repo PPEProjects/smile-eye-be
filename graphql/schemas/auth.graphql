@@ -58,6 +58,10 @@ type User {
     roles: JSON
     role_label: String
     is_flag: Boolean
+    posts: [JapanesePost]
+    achieves: [Goal]
+    diary: [JapaneseGoal]
+    notes: [Note]
 }
 type UsersAdmin{
     total_page: Int
