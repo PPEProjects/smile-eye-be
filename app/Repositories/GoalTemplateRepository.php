@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Goal;
 use App\Models\GoalTemplate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -48,6 +49,12 @@ class GoalTemplateRepository{
         else{
             $goalTemplate = GoalTemplate::all();
         }
+        $goalIds = $goalTemplate->pluck('goal_id');
+        $goals = Goal::whereIn('id', @$goalIds ?? [])->get()->keyBy('id');
+        $goalTemplate = $goalTemplate->map(function($template) use($goals){
+            $template->goal = @$goals[$template->goal_id];
+            return $template;
+        });
         return @$goalTemplate;
     }
 }
