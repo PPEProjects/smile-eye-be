@@ -16,7 +16,8 @@ class GoalTemplateRepository{
 
     public function updateGoalTemplate($args)
     {    
-        $args['user_id'] = Auth::id();     
+        $args['user_id'] = Auth::id();   
+        $args = array_diff_key($args, array_flip(['goal_id']));  
         return tap(GoalTemplate::findOrFail($args["id"]))->update($args);
     }
 
