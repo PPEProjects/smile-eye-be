@@ -52,7 +52,8 @@ class GoalTemplateRepository{
         $goalIds = $goalTemplate->pluck('goal_id');
         $goals = Goal::whereIn('id', @$goalIds ?? [])->get();
         $getId = $goals->pluck('id');
-        $goalTemplate = $goalTemplate->whereIn('goal_id', @$getId ?? []); 
+        $goalTemplate = $goalTemplate->whereIn('goal_id', @$getId ?? [])
+                                    ->sortByDESC('id'); 
         return @$goalTemplate;
     }
 }
