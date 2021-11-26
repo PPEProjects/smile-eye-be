@@ -36,6 +36,7 @@ type CoachMember{
 type Member{
     id: ID
     name: String
+    number_member: Int
     count_missing: JSON 
 }
 type GoalCoachMember{

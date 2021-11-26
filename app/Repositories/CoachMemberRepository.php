@@ -82,8 +82,7 @@ class CoachMemberRepository
                             ];
 
             $member = User::where('id', $value->user_id)->first();
-               
-            $member->number_member = $numberMember->number_member;
+            $member->number_member = @$numberMember->number_member ?? 0;
             $member->count_missing = $countMissing;
             $memberGroupByGoals[$value->goal_id][] =  @$member;         
         }
