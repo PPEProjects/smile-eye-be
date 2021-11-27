@@ -97,6 +97,7 @@ class CoachMemberRepository
             $member = User::where('id', $value->user_id)->first();
             $member->number_member = @$numberMember->number_member ?? 0;
             $member->count_missing = $countMissing;
+            $member->goal_member_id = $value->id;
             $memberGroupByGoals[$value->goal_id][] =  @$member;         
         }
         $getIds = $listMembers->pluck('goal_id');
@@ -126,12 +127,17 @@ class CoachMemberRepository
                                         ->first();
             $user->number_member = @$numberMember->number_member ?? 0;
             $user->status = $value->status;
-            $support[$value->goal_id][] = $user;
+            if(isset($user->status)){
+                $support[$value->goal_id][] = $user;
+            }
         }
-        $supportMembers = $goals->map(function($goal) use ($support){
+        $supportMembers = [];
+        foreach ($goals as $goal){
             $goal->members = @$support[$goal->id];
-            return $goal; 
-        }); 
+            if(isset($goal->members)){
+                $supportMembers[] = $goal;
+            } 
+        }
         return $supportMembers;
     }
 
