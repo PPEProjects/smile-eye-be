@@ -126,7 +126,7 @@ class CoachMemberRepository
                                         ->where('teacher_id', $value->add_user_id)
                                         ->first();
             $user->number_member = @$numberMember->number_member ?? 0;
-            $user->status = $value->status;
+            $user->status = @$value->status;
             if(isset($user->status)){
                 $support[$value->goal_id][] = $user;
             }
