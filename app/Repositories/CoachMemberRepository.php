@@ -121,14 +121,15 @@ class CoachMemberRepository
         $support = [];
         foreach($payment as $value){
             $user = User::find($value->add_user_id);
-
-            $numberMember = GoalMember::SelectRaw('Count(teacher_id) as number_member')
+            if(isset($user)){
+                $numberMember = GoalMember::SelectRaw('Count(teacher_id) as number_member')
                                         ->where('teacher_id', $value->add_user_id)
                                         ->first();
-            $user->number_member = @$numberMember->number_member ?? 0;
-            $user->status = @$value->status;
-            if(isset($user->status)){
-                $support[$value->goal_id][] = $user;
+                $user->number_member = @$numberMember->number_member ?? 0;
+                $user->status = @$value->status;
+                if(isset($user->status)){
+                    $support[$value->goal_id][] = $user;
+                }
             }
         }
         $supportMembers = [];
