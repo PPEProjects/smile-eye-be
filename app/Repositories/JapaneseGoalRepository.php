@@ -259,7 +259,7 @@ class JapaneseGoalRepository
                 $payment = Payment::where('goal_id', $goalRoot->id)
                                 ->where('add_user_id', Auth::id())
                                 ->first();   
-                if(@$payment->status != "accept" && $checkTrial)
+                if(@$payment->status != "accept" && $checkTrial == false)
                 {
                     $detailJPGoal->payment_status = "trial";
                     foreach ($trialIds as $key => $value) {
