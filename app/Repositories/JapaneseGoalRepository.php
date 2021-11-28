@@ -255,11 +255,11 @@ class JapaneseGoalRepository
                 $childrenIds = $this->japaneseLearn_repository->goalNochild([$goalRoot->id]);
                 $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);
                 $trialIds = array_intersect($childrenIds, @$goalRoot->trial_block ?? []);
-                $checkTrial = array_search($detailJPGoal->goal_id, $trialIds, true);
+                $checkTrial = in_array($detailJPGoal->goal_id, $trialIds);
                 $payment = Payment::where('goal_id', $goalRoot->id)
                                 ->where('add_user_id', Auth::id())
                                 ->first();   
-                if(@$payment->status != "accept" && $checkTrial == false)
+                if(@$payment->status != "accept" && $checkTrial)
                 {
                     $detailJPGoal->payment_status = "trial";
                     foreach ($trialIds as $key => $value) {
