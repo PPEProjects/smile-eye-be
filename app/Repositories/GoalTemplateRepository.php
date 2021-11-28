@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Goal;
+use App\Models\GoalMember;
 use App\Models\GoalTemplate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -44,17 +45,34 @@ class GoalTemplateRepository{
     }
     public function listGoalTemplates($args){
         $status = @$args["status"] ?? "all";
-        if($status != "all"){
-            $goalTemplate = GoalTemplate::where('status', 'like', $status)->get();
-        }
-        else{
-            $goalTemplate = GoalTemplate::all();
-        }
+        switch ($status) 
+        {
+            case 'all':
+                $goalTemplate = GoalTemplate::all();
+                break;  
+            default:
+                $goalTemplate = GoalTemplate::where('status', 'like', $status)->get();
+                break;
+        }     
+            
         $goalIds = $goalTemplate->pluck('goal_id');
         $goals = Goal::whereIn('id', @$goalIds ?? [])->get();
         $getId = $goals->pluck('id');
         $goalTemplate = $goalTemplate->whereIn('goal_id', @$getId ?? [])
                                     ->sortByDESC('id'); 
+        $goalTemplate = $goalTemplate->map(function($template) {
+           $goalMember = $this->CountNumberMemberGoal($template->goal_id);
+           $template->number_member = $goalMember->number_member; 
+            return $template;
+        });
         return @$goalTemplate;
+    }
+
+    public function CountNumberMemberGoal($idGoal)
+    {
+       return GoalMember::selectRaw("COUNT(goal_id) as `number_member`")
+                        ->where('goal_id', $idGoal)
+                        ->first();
+
     }
 }
