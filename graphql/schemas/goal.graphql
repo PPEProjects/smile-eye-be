@@ -32,6 +32,8 @@ extend type Query {
 
     my_goals_share: [Goal] @guard @field(resolver:"GoalQueries@myGoalShare")
     goals_share_tree_sort(id:ID, not_auth: Boolean): JSON @guard @field(resolver:"GoalQueries@goalShareTreeSort")
+
+    list_goals_root(first: Int!, page: Int!, orderBy: JSON, search: JSON): ListGoalRoot @guard @field(resolver:"GoalQueries@listGoalsRoot")
 }
 input ChangeGoalOwner{
     user_id: ID!
@@ -41,6 +43,10 @@ type ReportGoal{
     A : Float
     S : Float
     K : Float
+}
+type ListGoalRoot {
+    goals: [Goal]
+    total_page: Int
 }
 type Goal{
     id: ID

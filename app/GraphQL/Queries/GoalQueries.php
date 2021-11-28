@@ -5,6 +5,7 @@ namespace App\GraphQL\Queries;
 use App\Models\Achieve;
 use App\Models\Goal;
 use App\Models\GoalMember;
+use App\Models\GoalTemplate;
 use App\Models\JapaneseGoal;
 use App\Models\JapaneseLearn;
 use App\Repositories\GeneralInfoRepository;
@@ -259,5 +260,29 @@ class GoalQueries
     public function goalShareTreeSort($_, array $args)
     {
         return $this->goal_repository->goalShareTreeSort($args);
+    }
+
+    public function listGoalsRoot($_, array $args)
+    {
+        $goals = Goal::select('*');
+        $orderBy = $args["orderBy"];
+        if(isset($args["search"])){
+            foreach($args['search'] as $key => $value){
+                $goals = $goals->where( $key, 'like', '%'.$value.'%');
+            }
+        }
+        $goals = $goals->orderBy($orderBy['column'], $orderBy['order'])
+                        ->paginate($args["first"], ['*'], 'page', $args["page"]);
+        $page = $goals->toArray()["last_page"];
+        $getIds = $goals->pluck('id');
+        $templates = GoalTemplate::whereIn('goal_id', @$getIds ?? [])
+                                    ->get()
+                                    ->keyBy('goal_id');
+        $goals = $goals->map(function($goal) use ($templates){
+            $goal->status = @$templates[$goal->id]->status;
+            return $goal;
+        });
+        $goalsRoot = ["goals" => $goals, "total_page" => $page];      
+        return $goalsRoot;
     }
 }

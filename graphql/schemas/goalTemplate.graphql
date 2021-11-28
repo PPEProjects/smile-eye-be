@@ -22,6 +22,7 @@ type GoalTemplate{
     request: String
     created_at: DateTime
     updated_at: DateTime
+    number_member: Int
 }
 
 input CreateGoalTemplateInput{
