@@ -40,4 +40,12 @@ class GoalMemberRepository
         }
         return false;
    }
+
+   public function CountNumberMemberGoal($idGoal)
+    {
+       return GoalMember::selectRaw("COUNT(goal_id) as `number_member`")
+                        ->where('goal_id', $idGoal)
+                        ->first();
+
+    }
 }

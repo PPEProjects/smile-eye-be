@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 class GoalTemplateRepository{
 
+    private $goalMember_repository;
+    public function __construct(
+        GoalMemberRepository $goalMember_repository
+    ) {
+        $this->goalMember_repository = $goalMember_repository;
+    }
     public function createGoalTemplate($args)
     {
         $args['user_id'] = Auth::id();
@@ -61,18 +67,11 @@ class GoalTemplateRepository{
         $goalTemplate = $goalTemplate->whereIn('goal_id', @$getId ?? [])
                                     ->sortByDESC('id'); 
         $goalTemplate = $goalTemplate->map(function($template) {
-           $goalMember = $this->CountNumberMemberGoal($template->goal_id);
+           $goalMember = $this->goalMember_repository->CountNumberMemberGoal($template->goal_id);
            $template->number_member = $goalMember->number_member; 
             return $template;
         });
         return @$goalTemplate;
     }
-
-    public function CountNumberMemberGoal($idGoal)
-    {
-       return GoalMember::selectRaw("COUNT(goal_id) as `number_member`")
-                        ->where('goal_id', $idGoal)
-                        ->first();
-
-    }
+    
 }

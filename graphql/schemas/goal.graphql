@@ -75,6 +75,7 @@ type Goal{
     rule: String
     goal_root: Goal
     type: String
+    number_member: Int
 }
 type CountGoal {
     status : String

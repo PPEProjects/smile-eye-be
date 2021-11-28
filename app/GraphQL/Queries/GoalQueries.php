@@ -9,6 +9,7 @@ use App\Models\GoalTemplate;
 use App\Models\JapaneseGoal;
 use App\Models\JapaneseLearn;
 use App\Repositories\GeneralInfoRepository;
+use App\Repositories\GoalMemberRepository;
 use App\Repositories\GoalRepository;
 use App\Repositories\JapaneseGoalRepository;
 use App\Repositories\JapaneseLearnRepository;
@@ -22,19 +23,21 @@ class GoalQueries
     private $todolist_repository;
     private $japaneseLearn_repository;
     private $japaneseGoal_repository;
-
+    private $goalMember_repository;
     public function __construct(
         GeneralInfoRepository $generalinfo_repository,
         GoalRepository $GoalRepository,
         TodoListRepository $TodoListRepository,
         JapaneseLearnRepository $japaneseLearn_repository,
-        JapaneseGoalRepository $japaneseGoal_repository
+        JapaneseGoalRepository $japaneseGoal_repository,
+        GoalMemberRepository $goalMember_repository
     ) {
         $this->generalinfo_repository = $generalinfo_repository;
         $this->goal_repository = $GoalRepository;
         $this->todolist_repository = $TodoListRepository;
         $this->japaneseLearn_repository = $japaneseLearn_repository;
         $this->japaneseGoal_repository = $japaneseGoal_repository;
+        $this->goalMember_repository = $goalMember_repository;
     }
 
     public function goalsChildren($_, array $args)
@@ -280,9 +283,12 @@ class GoalQueries
                                     ->keyBy('goal_id');
         $goals = $goals->map(function($goal) use ($templates){
             $goal->status = @$templates[$goal->id]->status;
+            $goalMember = $this->goalMember_repository->CountNumberMemberGoal($goal->id);
+            $goal->number_member = $goalMember->number_member;
             return $goal;
         });
         $goalsRoot = ["goals" => $goals, "total_page" => $page];      
         return $goalsRoot;
     }
+    
 }
