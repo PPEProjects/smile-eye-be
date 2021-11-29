@@ -258,8 +258,12 @@ class JapaneseGoalRepository
                 $checkTrial = in_array($detailJPGoal->goal_id, $trialIds);
                 $payment = Payment::where('goal_id', $goalRoot->id)
                                 ->where('add_user_id', Auth::id())
-                                ->first();   
-                if(@$payment->status != "accept" && $checkTrial)
+                                ->first(); 
+                $detailJPGoal->payment_status = @$payment->status;
+                if($goalRoot->user_id == Auth::id() || @$payment->status == "confirm"){
+                    $detailJPGoal->payment_status = 'accept';
+                }
+                if(@$detailJPGoal->payment_status != "accept" && $checkTrial)
                 {
                     $detailJPGoal->payment_status = "trial";
                     foreach ($trialIds as $key => $value) {
@@ -279,7 +283,7 @@ class JapaneseGoalRepository
                         }
                     }
                 }
-                if (@$payment->status == "accept" || $keyNext == 0) 
+                if (@$detailJPGoal->payment_status == "accept" || $keyNext == 0) 
                 {   
                     
                     foreach ($childrenIds as $key => $value) 
@@ -299,7 +303,7 @@ class JapaneseGoalRepository
                             $keyPrev = $childrenIds[$findIds - $key];
                         }
                     }
-                    if($detailJPGoal->payment_status != 'trial'){
+                    if($detailJPGoal->payment_status != 'trial' && $detailJPGoal->payment_status != 'accept'){
                         $detailJPGoal->payment_status = @$payment->status ?? 'unpaid';
                     }
                  }
