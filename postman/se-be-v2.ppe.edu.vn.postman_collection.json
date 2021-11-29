@@ -2553,7 +2553,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query(\r\n    $status: String\r\n) {\r\n  list_goal_templates(\r\n      status: $status\r\n  ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n        price\r\n    }\r\n    status\r\n    number_member\r\n    request\r\n    created_at\r\n    updated_at\r\n    }\r\n}",
+								"query": "query(\r\n    $status: String\r\n) {\r\n  list_goal_templates(\r\n      status: $status\r\n  ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n        price\r\n        general_info {\r\n            id\r\n            attachments {\r\n                file\r\n                file_type\r\n                thumb\r\n            }\r\n    }\r\n    }\r\n    status\r\n    number_member\r\n    request\r\n    created_at\r\n    updated_at\r\n    }\r\n}",
 								"variables": "{\r\n    \"status\":\"all\"\r\n}"
 							}
 						},
@@ -3779,7 +3779,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id:ID, $goal_id: ID) {\n  detail_japanese_goal(\n      id : $id\n      goal_id: $goal_id\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n    payment_status\n     goal_root{\n         id\n         name\n     }\n     next_goal{\n         id\n         name\n         type\n     }\n     prev_goal{\n         id\n         name\n         type\n     }\n    type\n    score\n    more\n      list_users{\n         id\n         name\n         attachment{\n             id\n             file\n             thumb\n         }\n     }\n  }\n}",
-								"variables": "{\r\n \"goal_id\": 16380655991\r\n}\r\n"
+								"variables": "{\r\n \"goal_id\": 20\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -7027,8 +7027,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query(\r\n    $first: Int!\r\n    $page: Int!\r\n    $orderBy: JSON\r\n    $search: JSON\r\n) {\r\n  list_goals_root(\r\n      first:$first\r\n      page: $page\r\n      orderBy: $orderBy\r\n      search: $search\r\n  ) {\r\n    goals{\r\n      id\r\n      name\r\n      status\r\n      price\r\n      created_at\r\n      updated_at\r\n    }\r\n    total_page\r\n    }\r\n  }\r\n",
-								"variables": "{\r\n    \"first\":10,\r\n    \"page\":4,\r\n    \"orderBy\": {\r\n        \"column\": \"created_at\",\r\n        \"order\": \"DESC\"\r\n    }\r\n}"
+								"query": "query(\r\n    $first: Int!\r\n    $page: Int!\r\n    $orderBy: JSON\r\n    $search: JSON\r\n) {\r\n  list_goals_root(\r\n      first:$first\r\n      page: $page\r\n      orderBy: $orderBy\r\n      search: $search\r\n  ) {\r\n    goals{\r\n      id\r\n      name\r\n      user{\r\n          id\r\n          name\r\n      }\r\n      status\r\n      price\r\n      number_member\r\n      created_at\r\n      updated_at\r\n    }\r\n    total_page\r\n    }\r\n  }\r\n",
+								"variables": "{\r\n    \"first\":10,\r\n    \"page\":1,\r\n    \"orderBy\": {\r\n        \"column\": \"updated_at\",\r\n        \"order\": \"DESC\"\r\n    }\r\n}"
 							}
 						},
 						"url": {
@@ -7452,8 +7452,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\r\n    $id : ID\r\n    $add_user_id:ID\r\n    $goal_id : ID\r\n) {\r\n  upsert_goal_member(\r\n    input: {\r\n        id : $id\r\n        add_user_id: $add_user_id\r\n        goal_id: $goal_id\r\n    }\r\n  ) {\r\n        id\r\n        add_user{\r\n            id\r\n            name\r\n        }\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        goal{\r\n            id\r\n            name\r\n        }\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"add_user_id\":1,\r\n    \"goal_id\":18\r\n}"
+								"query": "mutation(\r\n    $id : ID\r\n    $add_user_id:ID\r\n    $goal_ids : [ID]\r\n) {\r\n  upsert_goal_member(\r\n    input: {\r\n        id : $id\r\n        add_user_id: $add_user_id\r\n        goal_ids: $goal_ids\r\n    }\r\n  ) {\r\n        id\r\n        add_user{\r\n            id\r\n            name\r\n        }\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        goal{\r\n            id\r\n            name\r\n        }\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"add_user_id\":1,\r\n    \"goal_ids\":[18,10]\r\n}"
 							}
 						},
 						"url": {
