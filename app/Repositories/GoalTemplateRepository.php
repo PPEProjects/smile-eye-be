@@ -6,6 +6,7 @@ use App\Models\Goal;
 use App\Models\GoalMember;
 use App\Models\GoalTemplate;
 use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 class GoalTemplateRepository{
@@ -43,13 +44,17 @@ class GoalTemplateRepository{
     public function detailGoalTemplate($args){
         if(isset($args['goal_id']))
         {
-            $GoalTemplate = GoalTemplate::where('goal_id', $args['goal_id'])->first();
+            $goalTemplate = GoalTemplate::where('goal_id', $args['goal_id'])->first();
         }
         else
         {
-            $GoalTemplate = GoalTemplate::find($args['id']);
+            $goalTemplate = GoalTemplate::find($args['id']);
         }
-        return $GoalTemplate;
+        $goalMember = GoalMember::where('goal_id', @$goalTemplate->goal_id)->get();
+        $getIdUser = $goalMember->pluck('add_user_id');
+        $members = User::whereIn('id', @$getIdUser ?? [])->get();
+        $goalTemplate->members = $members;
+        return $goalTemplate;
     }
 
     public function myGoalTemplate($args){ 
