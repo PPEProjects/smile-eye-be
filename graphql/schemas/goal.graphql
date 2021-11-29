@@ -76,6 +76,7 @@ type Goal{
     goal_root: Goal
     type: String
     number_member: Int
+    template: GoalTemplate
 }
 type CountGoal {
     status : String

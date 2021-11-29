@@ -144,6 +144,9 @@ class GoalQueries
             $goals = $goals->whereNotIn('id', $getIdJapaneseGoals);
         }
         $goalIds = $goals->pluck('id')->toArray();
+        $goalTemplate = GoalTemplate::whereIn('goal_id',@$goalIds ?? [])
+                                        ->get()
+                                        ->keyBy('goal_id');
         $nextGoal = $this->nextGoal($goalIds);
         $goals = $this->generalinfo_repository
             ->setType('goal')
@@ -152,7 +155,11 @@ class GoalQueries
 //                return $this->goal_repository->calculatorProcessTodolist($goal);
 //            });
 //        dd($goals->first()->toArray());
-        $goals = $goals->map(function ($goal) use ($nextGoal) {
+        $goals = $goals->map(function ($goal) use ($nextGoal, $goalTemplate) {
+            $goalMember =  $this->goalMember_repository
+                                        ->CountNumberMemberGoal($goal->id);
+            $goal->number_member = $goalMember->number_member; 
+            $goal->template = @$goalTemplate[$goal->id];
             $goal->next_goal = @$nextGoal[$goal->id];
             return $goal;
         });

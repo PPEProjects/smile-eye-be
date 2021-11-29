@@ -53,37 +53,23 @@ class GoalTemplateRepository{
     }
 
     public function myGoalTemplate($args){ 
-        $type = @$args['type'] ?? "all";
          $myGoals = Goal::whereNull('parent_id')
                          ->where('user_id', Auth::id())
                          ->get();
         $getIds = $myGoals->pluck('id');
         $goalTemplate = GoalTemplate::whereIn('goal_id',@$getIds ?? [])->get();
-
-        switch ($type) {
-            case 'all':
-                $goalTemplate = $goalTemplate->map(function($template) {
-                    $goalMember = $this->goalMember_repository
-                                       ->CountNumberMemberGoal($template->goal_id);
-                    $template->number_member = $goalMember->number_member;
-                    return $template;
-                });
-                break;      
-            default:
-            $goalTemplate = $goalTemplate->map(function($template) {
-                $goalMember = $this->goalMember_repository
+        $goalTemplate = $goalTemplate->map(function($template) {
+            $goalMember = $this->goalMember_repository
                                    ->CountNumberMemberGoal($template->goal_id);
-                $numberBuyOn = $this->CountMemberBuyOn($template->goal_id, 'pending');
-                $numberPaid = $this->CountMemberBuyOn($template->goal_id, 'accept');
-                $template->number_member = $goalMember->number_member;
-                $template->number_buy_on = $numberBuyOn->sum;
-                $template->number_paid   = $numberPaid->sum;         
-                $template->number_done = 0;
-                $template->number_trials = 0;
-                return $template;
-            });
-                break;
-        }        
+            $numberBuyOn = $this->CountMemberBuyOn($template->goal_id, 'pending');
+            $numberPaid = $this->CountMemberBuyOn($template->goal_id, 'accept');
+            $template->number_member = $goalMember->number_member;
+            $template->number_buy_on = $numberBuyOn->sum;
+            $template->number_paid   = $numberPaid->sum;         
+            $template->number_done = 0;
+            $template->number_trials = 0;
+            return $template;
+        });   
         return $goalTemplate;
     }
     public function listGoalTemplates($args){
