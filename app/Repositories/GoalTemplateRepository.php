@@ -51,8 +51,19 @@ class GoalTemplateRepository{
         return $GoalTemplate;
     }
 
-    public function myGoalTemplate(){     
-        return GoalTemplate::where('user_id',Auth::id())->get();
+    public function myGoalTemplate(){ 
+         $myGoals = Goal::whereNull('parent_id')
+                         ->where('user_id', Auth::id())
+                         ->get();
+        $getIds = $myGoals->pluck('id');
+        $goalTemplate = GoalTemplate::whereIn('goal_id',@$getIds ?? [])->get();
+        $goalTemplate = $goalTemplate->map(function($template) {
+            $goalMember = $this->goalMember_repository
+                                ->CountNumberMemberGoal($template->goal_id);
+            $template->number_member = $goalMember->number_member;
+            return $template;
+        });
+        return $goalTemplate;
     }
     public function listGoalTemplates($args){
         $status = @$args["status"] ?? "all";
