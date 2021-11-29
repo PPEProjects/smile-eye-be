@@ -7,7 +7,7 @@ extend type Mutation {
 extend type Query {
     goal_template: [GoalTemplate] @paginate(type: "paginator" model: "App\\Models\\GoalTemplate")
     sort_goal_template(orderBy: [OrderByClause!] @orderBy): [GoalTemplate!]! @paginate(type: "paginator" model: "App\\Models\\GoalTemplate")
-    my_goal_template: [GoalTemplate] @field(resolver:"GoalTemplateQueries@myGoalTemplate")
+    my_goal_template(type: String): [GoalTemplate] @field(resolver:"GoalTemplateQueries@myGoalTemplate")
     detail_goal_template(id:ID, goal_id: ID): GoalTemplate @field(resolver:"GoalTemplateQueries@detailGoalTemplate")
     list_goal_templates(status: String): [GoalTemplate] @field(resolver:"GoalTemplateQueries@listGoalTemplates")
 }
@@ -23,6 +23,10 @@ type GoalTemplate{
     created_at: DateTime
     updated_at: DateTime
     number_member: Int
+    number_buy_on: Int
+    number_paid: Int 
+    number_trials: Int 
+    number_done: Int 
 }
 
 input CreateGoalTemplateInput{

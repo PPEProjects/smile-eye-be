@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Goal;
 use App\Models\GoalMember;
 use App\Models\GoalTemplate;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 class GoalTemplateRepository{
@@ -51,18 +52,38 @@ class GoalTemplateRepository{
         return $GoalTemplate;
     }
 
-    public function myGoalTemplate(){ 
+    public function myGoalTemplate($args){ 
+        $type = @$args['type'] ?? "all";
          $myGoals = Goal::whereNull('parent_id')
                          ->where('user_id', Auth::id())
                          ->get();
         $getIds = $myGoals->pluck('id');
         $goalTemplate = GoalTemplate::whereIn('goal_id',@$getIds ?? [])->get();
-        $goalTemplate = $goalTemplate->map(function($template) {
-            $goalMember = $this->goalMember_repository
-                                ->CountNumberMemberGoal($template->goal_id);
-            $template->number_member = $goalMember->number_member;
-            return $template;
-        });
+
+        switch ($type) {
+            case 'all':
+                $goalTemplate = $goalTemplate->map(function($template) {
+                    $goalMember = $this->goalMember_repository
+                                       ->CountNumberMemberGoal($template->goal_id);
+                    $template->number_member = $goalMember->number_member;
+                    return $template;
+                });
+                break;      
+            default:
+            $goalTemplate = $goalTemplate->map(function($template) {
+                $goalMember = $this->goalMember_repository
+                                   ->CountNumberMemberGoal($template->goal_id);
+                $numberBuyOn = $this->CountMemberBuyOn($template->goal_id, 'pending');
+                $numberPaid = $this->CountMemberBuyOn($template->goal_id, 'accept');
+                $template->number_member = $goalMember->number_member;
+                $template->number_buy_on = $numberBuyOn->sum;
+                $template->number_paid   = $numberPaid->sum;         
+                $template->number_done = 0;
+                $template->number_trials = 0;
+                return $template;
+            });
+                break;
+        }        
         return $goalTemplate;
     }
     public function listGoalTemplates($args){
@@ -94,4 +115,12 @@ class GoalTemplateRepository{
         return @$goalTemplate;
     }
     
+    public function CountMemberBuyOn($goalid, $status = null)
+    {
+        $payMent = Payment::selectRaw("COUNT(goal_id) as `sum`")
+                            ->where('goal_id', $goalid)
+                            ->where('status', 'like', $status)
+                            ->first();
+        return $payMent;
+    }
 }

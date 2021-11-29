@@ -14,8 +14,8 @@ class GoalTemplateQueries
   {
       $this->goal_template_repository = $goal_template_repository;
   }
- public function myGoalTemplate(){
-        return $this->goal_template_repository->myGoalTemplate();
+ public function myGoalTemplate($_,array $args){
+        return $this->goal_template_repository->myGoalTemplate($args);
  }
  public function detailGoalTemplate($_,array $args){
   return $this->goal_template_repository->detailGoalTemplate($args);
