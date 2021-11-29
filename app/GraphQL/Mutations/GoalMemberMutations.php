@@ -25,7 +25,7 @@ class GoalMemberMutations
     public function upsertGoalMember($_, array $args)
     {
         $args['user_id'] = Auth::id();
-        if(!isset($args['teacher_id'])){
+        if(!isset($args['teacher_id']) && isset($args['goal_id'])){
             $goal = Goal::find($args['goal_id']);
             $args['teacher_id'] = @$goal->user_id ?? $args['user_id'];
         }
