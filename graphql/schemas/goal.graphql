@@ -34,6 +34,8 @@ extend type Query {
     goals_share_tree_sort(id:ID, not_auth: Boolean): JSON @guard @field(resolver:"GoalQueries@goalShareTreeSort")
 
     list_goals_root(first: Int!, page: Int!, orderBy: JSON, search: JSON): ListGoalRoot @guard @field(resolver:"GoalQueries@listGoalsRoot")
+    my_goals_publish: [Goal] @guard @field(resolver:"GoalQueries@myGoalsPublish")
+
 }
 input ChangeGoalOwner{
     user_id: ID!
@@ -77,6 +79,8 @@ type Goal{
     type: String
     number_member: Int
     template: GoalTemplate
+    shares:   JSON
+    achieves: JSON
 }
 type CountGoal {
     status : String

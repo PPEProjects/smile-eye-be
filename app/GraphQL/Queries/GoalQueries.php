@@ -3,11 +3,13 @@
 namespace App\GraphQL\Queries;
 
 use App\Models\Achieve;
+use App\Models\GeneralInfo;
 use App\Models\Goal;
 use App\Models\GoalMember;
 use App\Models\GoalTemplate;
 use App\Models\JapaneseGoal;
 use App\Models\JapaneseLearn;
+use App\Models\PublishInfo;
 use App\Repositories\GeneralInfoRepository;
 use App\Repositories\GoalMemberRepository;
 use App\Repositories\GoalRepository;
@@ -274,7 +276,7 @@ class GoalQueries
 
     public function listGoalsRoot($_, array $args)
     {
-        $goals = Goal::select('*');
+        $goals = Goal::select('*')->whereNull('parent_id');
         $orderBy = $args["orderBy"];
         if(isset($args["search"])){
             foreach($args['search'] as $key => $value){
@@ -296,6 +298,58 @@ class GoalQueries
         });
         $goalsRoot = ["goals" => $goals, "total_page" => $page];      
         return $goalsRoot;
+    }
+    public function myGoalsPublish($_, array $args)
+    {
+        $goals = Goal::whereNull('parent_id')->get();
+        $goalIds = $goals->pluck('id');
+        $generalInfo = GeneralInfo::whereIn('goal_id', @$goalIds ?? [])->get();
+        $generalIds = $generalInfo->pluck('id');
+        $achieves = Achieve::whereIn('general_id', @$generalIds ?? [])
+                            ->where('status', 'like', 'accept')
+                            ->get();
+     
+        $listAchieves = [];
+        $listIdAchieves = [];
+        foreach($achieves as $achieve){
+            $idAchieve = @$achieve->general->goal->id;
+            $user = $achieve->user_invite;
+            if (isset($idAchieve) && isset($user)) {
+                $listAchieves[$idAchieve][] = [
+                    'id' =>$user->id,
+                    'name'=> $user->name,
+                    'email'=> $user->email,
+                    'status' => "achieve"
+                ];
+                $listIdAchieves[] = $idAchieve;
+            }
+        }
+        $listShares = [];
+        $listIdShares = [];
+        $shares = PublishInfo::whereIn('general_id', @$generalIds ?? [])
+                                ->get();
+        foreach($shares as $share){
+            $idShare = @$share->general->goal->id;
+            $user = $share->user_invite;
+            if (isset($idShare) && isset($user)) {
+                $listShares[$idShare][] = [
+                    'id' =>$user->id,
+                    'name'=> $user->name,
+                    'email'=> $user->email,
+                    'status' =>"share ".@$share->rule ?? 'view'
+                ];
+                $listIdShares[] = $idShare;
+            }
+        }
+        $idGoals = array_merge($listIdAchieves , $listIdShares);
+        $goals = $goals->whereIn('id', @$idGoals ?? []);
+        $goals = $goals->map(function($goal) use($listShares, $listAchieves)
+        {
+            $goal->achieves = @$listAchieves[$goal->id] ?? [];
+            $goal->shares =  @$listShares[$goal->id] ?? [];
+            return $goal;
+        });
+        return $goals;
     }
     
 }
