@@ -145,6 +145,11 @@ class CoachMemberRepository
     public function detailCoachMembers($args)
     {
         $userId = $args['user_id'];
+        $goalMember = GoalMember::where('add_user_id', $userId)
+                                    ->where('teacher_id', Auth::id())
+                                    ->get();
+        $getIds = $goalMember->pluck('goal_id');
+        $goals = Goal::whereIn('id', @$getIds ?? [])->get();
 
         $posts = JapanesePost::where('user_id', $userId)
                                 ->orderBy('created_at', 'DESC')
@@ -160,14 +165,17 @@ class CoachMemberRepository
         $achieves = $achieves->where('user_id', $userId);
         
         $notes = Note::where('user_id', $userId)->take(3)->get();
-
+        $goals = $goals->map(function($goal) use ($posts, $diary, $notes){
+                $goal->posts = @$posts;
+                $goal->diary = @$diary;
+                $goal->notes = @$notes;
+                return $goal;
+        });
         $user = User::find($userId);
 
         $user = $this->attachment_service->mappingAvatarBackgroud($user);
-        $user->posts = @$posts;
         $user->achieves = @$achieves;
-        $user->diary = @$diary;
-        $user->notes = @$notes;
+        $user->goals = @$goals;
         return $user;   
     }
 }
