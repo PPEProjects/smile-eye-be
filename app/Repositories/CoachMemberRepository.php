@@ -113,31 +113,19 @@ class CoachMemberRepository
     public function myListSupportMembers($args)
     {
         $userId = Auth::id();
-        $payment = Payment::all();
-        $getIds = $payment->pluck('goal_id');
+        $payments = Payment::all();
+        $getIds = $payments->pluck('goal_id');
         $goals = Goal::whereIn('id', @$getIds ?? [])->get();
-        $support = [];
-        foreach($payment as $value){
-            $user = User::find($value->add_user_id);
-            if(isset($user)){
-                $numberMember = GoalMember::SelectRaw('Count(teacher_id) as number_member')
-                                        ->where('teacher_id', $value->add_user_id)
-                                        ->first();
-                $user->number_member = @$numberMember->number_member ?? 0;
-                $user->status = @$value->status;
-                if(isset($user->status)){
-                    $support[$value->goal_id][] = $user;
-                }
-            }
-        }
-        $supportMembers = [];
-        foreach ($goals as $goal){
-            $goal->members = @$support[$goal->id];
-            if(isset($goal->members)){
-                $supportMembers[] = $goal;
-            } 
-        }
-        return $supportMembers;
+        $checkIdGoals = $goals->pluck('id');
+        $payments = $payments->whereIn('goal_id', @$checkIdGoals ?? []);
+        
+        $payments = $payments->map(function($payment) {
+            $numberMember = $this->numberMember($payment->add_user_id);
+            $payment->user->number_member = $numberMember->number_member;
+            $payment->user->status = @$payment->status ?? "trial";
+            return $payment;
+        });
+        return $payments;
     }
 
     public function detailCoachMembers($args)
