@@ -69,49 +69,47 @@ class CoachMemberRepository
     public function myListCoachMembers($args)
     {
         $userId = Auth::id();
-        $listMembers = GoalMember::SelectRaw("id, goal_id, add_user_id as user_id, teacher_id")
+        $goalMembers = GoalMember::SelectRaw("id, goal_id, add_user_id as user_id, teacher_id, created_at")
                                     ->where('teacher_id',  $userId)
                                     ->get();
-        $memberGroupByGoals = [];
+        $goalIds = $goalMembers->pluck('goal_id');
+        $goals = Goal::whereIn('id', @$goalIds ?? [])->get();
+        $getIds = $goals->pluck('id');
+        $listMembers = $goalMembers->whereIn('goal_id', @$getIds ?? []);
         $typeNotis = ["diary", "achieve", "edit_diary", "communication", "sing_with_friend"];
 
-        foreach($listMembers as $value)
-        {
-            $numberMember = GoalMember::SelectRaw('Count(teacher_id) as number_member')
-                                        ->where('teacher_id', $value->user_id)
-                                        ->first();
-
-            $notification = Notification::selectRaw("count(*) as count")
-                                        ->where("user_id", $value->user_id)
-                                        ->where("user_receive_id", Auth::id())
-                                        ->whereIn("type", $typeNotis)
-                                        ->whereRaw("(is_read is null or is_read = 0)")
-                                        ->first()
-                                        ->toArray();
+        $listMembers = $listMembers->map(function($list) use($typeNotis){
+            $numberMember = $this->numberMember($list->user_id);
+            $notification = $this->notification($list->user_id, Auth::id(), $typeNotis);
             $countMissing = [
                             'message' => 0,
                             'call' => 0,
                             'notification' => @$notification['count'] ?? 0
                             ];
-
-            $member = User::where('id', $value->user_id)->first();
-            $member->number_member = @$numberMember->number_member ?? 0;
-            $member->count_missing = $countMissing;
-            $member->goal_member_id = $value->id;
-            $memberGroupByGoals[$value->goal_id][] =  @$member;         
-        }
-        $getIds = $listMembers->pluck('goal_id');
-        $goals = Goal::SelectRaw("id, user_id, name")
-                        ->whereIn('id',@$getIds ?? [])
-                        ->get();
-
-        $coachMembers = $goals->map(function($goal) use ($memberGroupByGoals){
-            $goal->members = @$memberGroupByGoals[$goal->id];
-            return $goal; 
-        }); 
-        return $coachMembers;
+            $list->user->number_member = $numberMember->number_member;
+            $list->user->count_missing = $countMissing;
+            return $list;
+        });
+        return $listMembers;
     }
-    
+    public function numberMember($userId)
+    {
+        $numberMember = GoalMember::SelectRaw('Count(teacher_id) as number_member')
+                                        ->where('teacher_id', $userId)
+                                        ->first();
+        return $numberMember;
+    }
+    public function notification($userId, $userReceiveId, $type)
+    {
+        $notification = Notification::selectRaw("count(*) as count")
+                                        ->where("user_id", $userId)
+                                        ->where("user_receive_id", $userReceiveId)
+                                        ->whereIn("type", $type)
+                                        ->whereRaw("(is_read is null or is_read = 0)")
+                                        ->first()
+                                        ->toArray();
+        return $notification;
+    }
     public function myListSupportMembers($args)
     {
         $userId = Auth::id();

@@ -20,13 +20,14 @@ extend type Query {
 
 type CoachMember{
     id: ID
-    user: User
+    user: Member
     org: String
     business_field: String
     goal_ids: JSON
     teacher_id: JSON
     teacher_ids: [ID]
     scale: String
+    goal: Goal
     goals: [GoalCoachMember]
     created_at: DateTime
     updated_at: DateTime
