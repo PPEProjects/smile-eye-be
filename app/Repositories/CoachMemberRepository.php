@@ -72,6 +72,11 @@ class CoachMemberRepository
         $goalMembers = GoalMember::SelectRaw("id, goal_id, add_user_id as user_id, teacher_id, created_at")
                                     ->where('teacher_id',  $userId)
                                     ->get();
+        $getIdUserAdd = $goalMembers->pluck('user_id');
+        $checkUserIsset = User::whereIn('id', @$getIdUserAdd ??[])
+                        ->get()
+                        ->pluck('id'); 
+        $goalMembers = $goalMembers->whereIn('user_id', @$checkUserIsset ?? []);
         $goalIds = $goalMembers->pluck('goal_id');
         $goals = Goal::whereIn('id', @$goalIds ?? [])->get();
         $getIds = $goals->pluck('id');
@@ -79,16 +84,16 @@ class CoachMemberRepository
         $typeNotis = ["diary", "achieve", "edit_diary", "communication", "sing_with_friend"];
 
         $listMembers = $listMembers->map(function($list) use($typeNotis){
-            $numberMember = $this->numberMember($list->user_id);
-            $notification = $this->notification($list->user_id, Auth::id(), $typeNotis);
-            $countMissing = [
-                            'message' => 0,
-                            'call' => 0,
-                            'notification' => @$notification['count'] ?? 0
-                            ];
-            $list->user->number_member = $numberMember->number_member;
-            $list->user->count_missing = $countMissing;
-            return $list;
+                $numberMember = $this->numberMember($list->user_id);
+                $notification = $this->notification($list->user_id, Auth::id(), $typeNotis);
+                $countMissing = [
+                                'message' => 0,
+                                'call' => 0,
+                                'notification' => @$notification['count'] ?? 0
+                                ];
+                $list->user->number_member = $numberMember->number_member;
+                $list->user->count_missing = $countMissing;
+                return $list;
         });
         return $listMembers;
     }
