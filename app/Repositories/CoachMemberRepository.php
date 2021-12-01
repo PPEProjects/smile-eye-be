@@ -118,7 +118,12 @@ class CoachMemberRepository
     public function myListSupportMembers($args)
     {
         $userId = Auth::id();
-        $payments = Payment::whereNotNull('add_user_id')->get();
+        $payments = Payment::all();
+        $getIdUserAdd = $payments->pluck('add_user_id');
+        $checkUserIsset = User::whereIn('id', @$getIdUserAdd ??[])
+                        ->get()
+                        ->pluck('id'); 
+        $payments = $payments->whereIn('add_user_id', @$checkUserIsset ?? []);
         $getIds = $payments->pluck('goal_id');
         $goals = Goal::whereIn('id', @$getIds ?? [])->get();
         $checkIdGoals = $goals->pluck('id');
