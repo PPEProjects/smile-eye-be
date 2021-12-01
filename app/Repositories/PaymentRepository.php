@@ -35,12 +35,8 @@ class PaymentRepository
             $payment = Payment::Where('add_user_id', $args['user_id'])
                                 ->OrderBy('id','DESC')
                                 ->get();
-            switch ($type)
-            {
-                case "all":
-                    return $payment;
-                default:
-                    return $payment->where('type', $type);
+            if($type != 'all'){
+                $payment = $payment->where('type', $type);
             }
         }
         else if(isset($args['goal_id'])){
@@ -50,6 +46,10 @@ class PaymentRepository
         }
         else {
             $payment = Payment::find($args['id']);
+        }
+
+        if(isset($args['status'])){
+            $payment = $payment->where('status', 'LIKE', $args['status']);
         }
         return $payment;
     }

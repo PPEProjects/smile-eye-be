@@ -503,8 +503,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query(\r\n        $type: String,\r\n        $user_id: ID!){\r\n  detail_payment_by_user_id(\r\n      type:$type\r\n      user_id: $user_id\r\n    ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    add_user_id\r\n    status\r\n    goal_id\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"user_id\": 20275,\r\n    \"type\":\"all\"\r\n}\r\n"
+								"query": "query(\r\n        $type: String,\r\n        $user_id: ID!,\r\n        $status: String\r\n        ){\r\n  detail_payment_by_user_id(\r\n      type:$type\r\n      user_id: $user_id\r\n      status: $status\r\n    ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    add_user_id\r\n    status\r\n    goal_id\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"user_id\": 2,\r\n    \"type\":\"all\",\r\n    \"status\": \"ony\"\r\n}\r\n"
 							}
 						},
 						"url": {
