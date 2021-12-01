@@ -40,11 +40,11 @@ class CoachMemberRepository
         if(!isset($args['user_id'])){
             $args['user_id'] = Auth::id();
         }
-        $addMember[] =  CoachMember::updateOrCreate(
+        $coachMember =  CoachMember::updateOrCreate(
                             ['user_id' => $args['user_id']],
                             $args
                             );
-        return  $addMember;
+        return  $coachMember;
     }
     public function updateCoachMember($args)
     {
@@ -121,6 +121,7 @@ class CoachMemberRepository
         
         $payments = $payments->map(function($payment) {
             $numberMember = $this->numberMember($payment->add_user_id);
+            $payment->user = @$payment->add_user;
             $payment->user->number_member = $numberMember->number_member;
             $payment->user->status = @$payment->status ?? "trial";
             return $payment;

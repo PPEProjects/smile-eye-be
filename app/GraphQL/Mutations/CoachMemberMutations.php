@@ -19,6 +19,9 @@ class CoachMemberMutations
     {
         return $this->coach_member_repository->createCoachMember($args);
     }
+    public function upsertCoachMember($_,array $args){
+        return $this->coach_member_repository->upsertCoachMember($args);
+    }
     public function addGoalsToMyTeacher($_, array $args){
         return $this->coach_member_repository->upsertCoachMember($args);
     }
