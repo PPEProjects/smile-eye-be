@@ -121,7 +121,7 @@ class CoachMemberRepository
         
         $payments = $payments->map(function($payment) {
             $numberMember = $this->numberMember($payment->add_user_id);
-            $payment->user = @$payment->add_user;
+            // $payment->user = @$payment->add_user;
             $payment->user->number_member = $numberMember->number_member;
             $payment->user->status = @$payment->status ?? "trial";
             return $payment;
