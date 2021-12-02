@@ -69,13 +69,17 @@ class CoachMemberRepository
     public function myListCoachMembers($args)
     {
         $userId = Auth::id();
+        $coachMember = CoachMember::where('user_id', $userId)
+                                    ->first();
+                                    
         $goalMembers = GoalMember::SelectRaw("id, goal_id, add_user_id as user_id, teacher_id, created_at")
                                     ->where('teacher_id',  $userId)
+                                    ->orWhereIn('goal_id', @$coachMember->goal_ids ?? [])
                                     ->get();
         $getIdUserAdd = $goalMembers->pluck('user_id');
         $checkUserIsset = User::whereIn('id', @$getIdUserAdd ??[])
-                        ->get()
-                        ->pluck('id'); 
+                                ->get()
+                                ->pluck('id'); 
         $goalMembers = $goalMembers->whereIn('user_id', @$checkUserIsset ?? []);
         $goalIds = $goalMembers->pluck('goal_id');
         $goals = Goal::whereIn('id', @$goalIds ?? [])->get();
