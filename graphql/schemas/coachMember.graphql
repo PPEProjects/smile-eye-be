@@ -16,6 +16,7 @@ extend type Query {
     sort_coach_member(orderBy: [OrderByClause!] @orderBy): [CoachMember] @paginate(type: "paginator" model: "App\\Models\\CoachMember")
     my_list_coach_members: [CoachMember] @guard @field(resolver:"CoachMemberQueries@myListCoachMembers")
     my_list_support_members: [CoachMember] @guard @field(resolver:"CoachMemberQueries@myListSupportMembers")
+    list_my_coachs: [CoachMember] @guard @field(resolver:"CoachMemberQueries@listMyCoachs")
 
 }
 

@@ -176,4 +176,24 @@ class CoachMemberRepository
         $user->goals = @$goals;
         return $user;   
     }
+
+    public function listMyCoachs(){
+
+        $userId = Auth::id();
+
+        $goalRoot = Goal::whereNull('parent_id')
+                            ->where('user_id', $userId)
+                            ->get();
+        $coachMember = CoachMember::all();
+        $listCoachs = [];
+        foreach($coachMember as $coach){
+            $checkGoal = $goalRoot->whereIn('id',@$coach->goal_ids ?? []);
+            if($checkGoal->toArray() == [] || $coach->user_id == $userId){
+                continue;
+            }
+            $coach->goals = $checkGoal;
+            $listCoachs[] = $coach;
+        }
+       return $listCoachs;
+    }
 }
