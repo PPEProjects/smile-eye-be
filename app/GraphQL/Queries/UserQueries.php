@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Goal;
 use App\Repositories\GoalRepository;
 use App\Repositories\NotificationRepository;
+use App\Repositories\PaymentRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use ppeCore\dvtinh\Services\AttachmentService;
@@ -18,12 +19,14 @@ class UserQueries
         AttachmentService $attachmentService,
         NotificationRepository $notificationRepository,
         UserRepository $user_repository,
-        GoalRepository $goal_repository
+        GoalRepository $goal_repository,
+        PaymentRepository $payment_repository
     ) {
         $this->attachment_service = $attachmentService;
         $this->notificationRepository = $notificationRepository;
         $this->user_repository = $user_repository;
         $this->goal_repository = $goal_repository;
+        $this->payment_repository = $payment_repository;
     }
 
     public function me()
@@ -66,6 +69,7 @@ class UserQueries
             $user->self_goals = @$goals[$user->id];
             $user->inviation_goals = @$this->goal_repository->myGoalsAchieve($user->id);
             $user->shared_goals = @$this->goal_repository->myGoalShare($user->id);
+            $user->payments = @$this->payment_repository->detailPayments(['user_id' => $user->id]);
             $user->org = "ppe";
             $user->member_number = random_int(0,100);
             $user->business_field = "edu";
@@ -77,4 +81,5 @@ class UserQueries
         $listUsers["total_page"] = $page;
         return  $listUsers;
     }
+
 }

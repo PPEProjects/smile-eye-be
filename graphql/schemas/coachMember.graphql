@@ -35,6 +35,7 @@ type CoachMember{
     updated_at: DateTime
     members: [Member]
     name: String
+    payments: [Payment]
 }
 
 type Member{

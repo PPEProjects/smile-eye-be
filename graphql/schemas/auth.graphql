@@ -86,6 +86,7 @@ type ListUsers {
     business_field: String
     org: String
     is_flag: Boolean
+    payments: [Payment]
 }
 type AuthPayload {
     access_token: String

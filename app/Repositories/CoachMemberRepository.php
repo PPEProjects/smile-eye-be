@@ -188,7 +188,7 @@ class CoachMemberRepository
         $goalRoot = Goal::whereNull('parent_id')
                             ->where('user_id', $userId)
                             ->get();
-        $coachMember = CoachMember::all();
+        $coachMember = CoachMember::OrderBy('id', 'DESC')->get();
         $listCoachs = [];
         foreach($coachMember as $coach){
             $checkGoal = $goalRoot->whereIn('id',@$coach->goal_ids ?? []);
@@ -196,8 +196,13 @@ class CoachMemberRepository
                 continue;
             }
             $coach->goals = $checkGoal;
+            $getIdGoals = $checkGoal->pluck('id');
+            $payments = Payment::where('add_user_id', $coach->user_id)
+                                ->whereIn('goal_id', @$getIdGoals ?? [])
+                                ->get();
+            $coach->payments = @$payments;
             $listCoachs[] = $coach;
-        }
+        };
        return $listCoachs;
     }
 }

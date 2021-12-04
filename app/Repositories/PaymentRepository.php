@@ -50,8 +50,7 @@ class PaymentRepository
 
         if(isset($args['status'])){
             $payment = $payment->where('status', 'LIKE', $args['status']);
-        }
-        return $payment;
+        }        return $payment;
     }
    
 }
