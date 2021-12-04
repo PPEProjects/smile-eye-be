@@ -737,7 +737,9 @@ class GoalRepository
         //directive
         $goal = Goal::find($args["id"]);
         if ($this->isSmallest($goal)) {
-            $goalNew = Goal::create(array_diff_key($goal->toArray(), array_flip(["id", "directive"])));
+            $payload = array_diff_key($goal->toArray(), array_flip(["id", "directive"]));
+            $payload['id'] = time().'.'.rand();
+            $goalNew = Goal::create($payload);
             $general = @GeneralInfo::where("goal_id", $goal->id)->first();
             if ($general) {
                 $generalArr = @$general->toArray();
@@ -746,11 +748,15 @@ class GoalRepository
             }
             return true;
         } else {
-            $goalRoot = Goal::create(array_diff_key($goal->toArray(), array_flip(["id", "directive"])));
+            $payload = array_diff_key($goal->toArray(), array_flip(["id", "directive"]));
+            $payload['id'] = time().'.'.rand();
+            $goalRoot = Goal::create($payload)->toArray();
+            $goalRoot['id'] = $payload['id'];
+//            dd($goalRoot->toArray());
             $general = @GeneralInfo::where("goal_id", $goal->id)->first();
             if ($general) {
                 $generalArr = @$general->toArray();
-                $generalArr["goal_id"] = $goalRoot->id;
+                $generalArr["goal_id"] = $goalRoot['id'];
                 GeneralInfo::create(array_diff_key($generalArr, array_flip(["id", "directive"])));
             }
 
@@ -763,16 +769,17 @@ class GoalRepository
 
     public function dulicate($goalRoot, $goalChilds)
     {
-
         if (count($goalChilds) != 0) {
             foreach ($goalChilds as $g) {
                 $arr = $g->toArray();
-                $arr["parent_id"] = $goalRoot->id;
-                $dupG = Goal::create(array_diff_key($arr, array_flip(["id", "directive"])));
-                $general = @GeneralInfo::where("goal_id", $goalRoot->id)->first();
+                $arr["parent_id"] = $goalRoot['id'];
+                $arr["id"] = time().'.'.rand();
+                $dupG = Goal::create(array_diff_key($arr, array_flip(["directive"])))->toArray();
+                $dupG['id'] = $arr["id"];
+                $general = @GeneralInfo::where("goal_id", $goalRoot['id'])->first();
                 if ($general) {
                     $generalArr = @$general->toArray();
-                    $generalArr["goal_id"] = $dupG->id;
+                    $generalArr["goal_id"] = $dupG['id'];
                     GeneralInfo::create(array_diff_key($generalArr, array_flip(["id", "directive"])));
                 }
                 $gChilds = $this->findChilds($g);
