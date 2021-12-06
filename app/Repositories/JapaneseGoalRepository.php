@@ -245,7 +245,11 @@ class JapaneseGoalRepository
                 $users = [];
                 foreach ($listUsers as $id) {
                     $findUser = User::find($id);
-                    $users[] = $this->attachment_service->mappingAvatarBackgroud($findUser)->toArray();
+                    if(isset($findUser)){
+                        $users[] = $this->attachment_service
+                                        ->mappingAvatarBackgroud($findUser)
+                                        ->toArray();
+                    }
                 }
                 $detailJPGoal->list_users = @$users;
             }
