@@ -28,9 +28,9 @@ class UserMutations
     }
 
 
-    public function deleteUser($_, array $args): bool
-    {
-        $user = User::find($args['id']);
-        return $user->delete();
-    }
+    // public function deleteUser($_, array $args): bool
+    // {
+    //     $user = User::find($args['id']);
+    //     return $user->delete();
+    // }
 }
