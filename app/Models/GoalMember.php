@@ -18,6 +18,7 @@ class GoalMember extends Model
         'user_id',
         'add_user_id',
         'goal_id',
+        'rank',
         'teacher_id',
     ];
 

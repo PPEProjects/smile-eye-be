@@ -129,16 +129,14 @@ class GoalQueries
                 break;
         }
         $goals = $goals->get();
-
         //Get id goal from GoalMember
-        $goalMember = GoalMember::where("add_user_id", Auth::id())->get();
+        $goalMember = GoalMember::where("add_user_id", Auth::id())->get()->keyBy('goal_id');
         $idGoalMembers = $goalMember->pluck('goal_id');
         $myGoalMember = Goal::SelectRaw("*, 'goal_member' AS type")
             ->whereIn('id', @$idGoalMembers ?? [])
             ->get();
         $goals = $myGoalMember->merge($goals);
         //---------//
-
         $getgoalIds = $goals->pluck('id')->toArray();
         $japaneseGoals = JapaneseGoal::whereIn('goal_id', $getgoalIds)->get();
         if (isset($japaneseGoals) && $args['parent_id'] == 'root') {
@@ -157,15 +155,21 @@ class GoalQueries
 //                return $this->goal_repository->calculatorProcessTodolist($goal);
 //            });
 //        dd($goals->first()->toArray());
-        $goals = $goals->map(function ($goal) use ($nextGoal, $goalTemplate) {
-            $goalMember =  $this->goalMember_repository
+        $goals = $goals->map(function ($goal) use ($nextGoal, $goalTemplate, $goalMember) 
+        {
+            $countMember =  $this->goalMember_repository
                                         ->CountNumberMemberGoal($goal->id);
-            $goal->number_member = $goalMember->number_member; 
+            $rank = @$goal->rank;
+            if(isset($goalMember[$goal->id])){
+                $rank = @$goalMember[$goal->id]->rank;
+            }  
+            $goal->rank = $rank;
+            $goal->number_member = $countMember->number_member; 
             $goal->template = @$goalTemplate[$goal->id];
             $goal->next_goal = @$nextGoal[$goal->id];
             return $goal;
         });
-        return $goals;
+        return $goals->sortBy('rank');
     }
 
     public function nextGoal($goalIds = [])

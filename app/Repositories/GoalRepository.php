@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Achieve;
 use App\Models\GeneralInfo;
 use App\Models\Goal;
+use App\Models\GoalMember;
 use App\Models\JapaneseGoal;
 use App\Models\PublishInfo;
 use App\Models\Task;
@@ -891,9 +892,10 @@ class GoalRepository
         if (isset($goal->parent_id)) {
             throw new Error("This goal is not root");
         }
-        $myGoal = Goal::where('user_id', Auth::id())
+        $myGoal = Goal::selectRaw("*, 'goal_owner' AS type")
+            ->where('user_id', Auth::id())
             ->whereNull('parent_id')
-            ->orderByRaw('`rank` ASC, `id` DESC')
+            ->orderByRaw('`rank` ASC, `created_at` DESC')
             ->get()->keyby('id');
         $getIds = $myGoal->pluck('id');
 
@@ -901,7 +903,17 @@ class GoalRepository
         $idGoals = $jpGoal->pluck('goal_id');
 
         $myGoal = $myGoal->whereNotIn('id', $idGoals);
-
+        //Get id goal from GoalMember
+        $goalMember = GoalMember::where("add_user_id", Auth::id())->get()->keyBy('goal_id');
+        $idGoalMembers = $goalMember->pluck('goal_id');
+        $myGoalMember = Goal::SelectRaw("*, 'goal_member' AS type")
+            ->whereIn('id', @$idGoalMembers ?? [])
+            ->get();
+        $myGoalMember = $myGoalMember->map(function($goal) use ($goalMember){
+                $goal->rank = @$goalMember[$goal->id]->rank;
+                return $goal;
+        });
+        $myGoal = $myGoalMember->merge($myGoal);
         $rank = 1;
         $rankGoal = [];
         $getOldRank = 0;
@@ -931,10 +943,29 @@ class GoalRepository
                 $value->rank = $value->rank + 1;
             }
 
-            $rankGoal[$value->id] = ['id' => $value->id, 'rank' => $value->rank];
+            $rankGoal[$value->type][$value->id] = ['id' => $value->id, 'rank' => $value->rank];
         }
 
-        foreach ($rankGoal as $value) {
+        if(isset($rankGoal['goal_member']))
+        {
+            foreach($rankGoal['goal_member'] as $value)
+            {
+                $updateGoalMember = GoalMember::where('goal_id',$value["id"])
+                                    ->where('add_user_id', Auth::id())
+                                    ->first();
+                $updateGoalMember->update(['rank' => $value['rank']]);
+            }
+        }
+        if($goal->user_id != Auth::id()){
+            $goalMember = GoalMember::where('goal_id',$goal->id)
+                                    ->where('add_user_id', Auth::id())
+                                    ->first();
+            $goalMember->update([
+                'rank' => $args['rank']
+            ]);
+        }
+        foreach ($rankGoal['goal_owner'] as $value) 
+        {
             $rankGoal = tap(Goal::findOrFail($value["id"]))->update($value);
         }
         return $rankGoal;
@@ -945,7 +976,10 @@ class GoalRepository
         if (!isset($userId)) {
             $userId = Auth::id();
         }
-        $publish = PublishInfo::where('user_invite_id', $userId)->where("status", "accept")->get()->keyby('general_id');
+        $publish = PublishInfo::where('user_invite_id', $userId)
+                                ->where("status", "accept")
+                                ->get()
+                                ->keyby('general_id');
         $idGenerals = $publish->pluck('general_id');
         $general = GeneralInfo::whereIn("id", $idGenerals)->get();
         $idGoals = $general->pluck("goal_id")->toArray();

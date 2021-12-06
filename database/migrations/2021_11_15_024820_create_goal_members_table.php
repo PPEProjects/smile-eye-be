@@ -19,6 +19,7 @@ class CreateGoalMembersTable extends Migration
             $table->integer('user_id')->nullable();
             $table->string('goal_id')->nullable();
             $table->integer('teacher_id')->nullable();
+            $table->integer('rank')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

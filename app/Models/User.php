@@ -69,4 +69,7 @@ class User extends \ppeCore\dvtinh\Models\User implements MustVerifyEmail
     public function coachMember(){
         return $this->hasMany(CoachMember::class);
     }
+    public function Payment(){
+        return $this->hasMany(Payment::class);
+    }
 }
