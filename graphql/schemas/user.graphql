@@ -2,7 +2,7 @@
 extend type Mutation {
     create_user(input: CreateUserInput! @spread): User @guard @field(resolver: "App\\GraphQL\\Mutations\\UserMutations@createUser")
     update_user(input: UpdateUserInput! @spread): User @guard @field(resolver: "App\\GraphQL\\Mutations\\UserMutations@updateUser")
-    delete_user(input: DeleteUserInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\UserMutations@deleteUser")
+  #  delete_user(input: DeleteUserInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\UserMutations@deleteUser")
 
 }
 
