@@ -20,9 +20,12 @@ class Payment extends Model
         'goal_id',
         'type',
         'status',
-        'money'
+        'money',
+        'attachments'
     ];
-
+    protected $casts = [
+        'attachments' => 'json',
+    ];
     public function user(){
         return $this->belongsTo(User::class);
     }

@@ -353,8 +353,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\r\n    $id:ID\r\n   $add_user_id: ID\r\n    $goal_id: [ID]\r\n    $type: String\r\n    $status: String\r\n    $money: String\r\n\r\n) {\r\n  upsert_payment(\r\n    input: {\r\n        id: $id\r\n     add_user_id: $add_user_id\r\n     goal_id: $goal_id\r\n     money: $money\r\n     status: $status\r\n     type: $type\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    status\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"add_user_id\": 20332,\r\n    \"goal_id\":8425,\r\n    \"status\": \"pending\"\r\n}"
+								"query": "mutation(\r\n    $id:ID\r\n   $add_user_id: ID\r\n    $goal_id: [ID]\r\n    $type: String\r\n    $status: String\r\n    $money: String\r\n    $attachments: JSON\r\n) {\r\n  upsert_payment(\r\n    input: {\r\n        id: $id\r\n     add_user_id: $add_user_id\r\n     goal_id: $goal_id\r\n     money: $money\r\n     status: $status\r\n     type: $type\r\n     attachments: $attachments\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    status\r\n    type\r\n    money\r\n    attachments\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"add_user_id\": 2,\r\n    \"goal_id\":1,\r\n    \"status\": \"pending\",\r\n    \"attachments\":[{\r\n        \"id\":3,\r\n        \"thumb\":\"abc.img\"\r\n    }]\r\n}"
 							}
 						},
 						"url": {
@@ -443,7 +443,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($id: ID!){\r\n  detail_payment(\r\n      id: $id\r\n    ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    status\r\n    add_user_id\r\n    goal_id\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"query": "query($id: ID!){\r\n  detail_payment(\r\n      id: $id\r\n    ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    status\r\n    add_user_id\r\n    goal_id\r\n    type\r\n    money\r\n    attachments\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
 								"variables": "{\r\n    \"id\": 4\r\n}\r\n"
 							}
 						},
@@ -473,7 +473,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($goal_id: ID!){\r\n  detail_my_payment(\r\n      goal_id: $goal_id\r\n    ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    status\r\n    add_user_id\r\n    goal_id\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"query": "query($goal_id: ID!){\r\n  detail_my_payment(\r\n      goal_id: $goal_id\r\n    ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    status\r\n    add_user_id\r\n    goal_id\r\n    type\r\n    money\r\n    attachments\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
 								"variables": "{\r\n    \"goal_id\": 1\r\n}\r\n"
 							}
 						},
@@ -503,8 +503,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query(\r\n        $type: String,\r\n        $user_id: ID!,\r\n        $status: String\r\n        ){\r\n  detail_payment_by_user_id(\r\n      type:$type\r\n      user_id: $user_id\r\n      status: $status\r\n    ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    add_user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    add_user_id\r\n    status\r\n    goal_id\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"user_id\": 20300,\r\n    \"status\":\"paid\"\r\n}\r\n"
+								"query": "query(\r\n        $type: String,\r\n        $user_id: ID!,\r\n        $status: String\r\n        ){\r\n  detail_payment_by_user_id(\r\n      type:$type\r\n      user_id: $user_id\r\n      status: $status\r\n    ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    add_user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    add_user_id\r\n    status\r\n    goal_id\r\n    type\r\n    money\r\n    attachments\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
+								"variables": "{\r\n    \"user_id\": 2\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -533,7 +533,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query {\r\n  my_payments{\r\n    id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    status\r\n    type\r\n    money\r\n    created_at\r\n    updated_at\r\n  }\r\n    \r\n}",
+								"query": "query {\r\n  my_payments{\r\n    id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    status\r\n    type\r\n    money\r\n    attachments\r\n    created_at\r\n    updated_at\r\n  }\r\n    \r\n}",
 								"variables": "{\r\n    \r\n}"
 							}
 						},
@@ -4694,7 +4694,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query(\n    $first: Int!\n    $page: Int!\n    $orderBy: JSON\n    $search: JSON\n){\n  list_users(\n      first:$first\n      page: $page\n      orderBy: $orderBy\n      search: $search\n  ){data{\n      id\n      full\n      name\n      email\n      phone_number\n      roles\n      role_label\n      org\n     member_number\n     business_field\n     relation_level\n     payments{\n         id\n         goal{\n             id\n             name\n         }\n         status\n     }\n      self_goals{\n          id\n          name\n      }\n      inviation_goals{\n          id\n          name\n      }\n      shared_goals{\n          id\n          name\n      }\n    buy_goals{\n        id\n        name\n    }\n    start_smile_eye_time\n    profit_forSelf\n    profit_for_smile_eye\n  }\n    total_page\n  }\n}\n",
-								"variables": "{\r\n    \"first\":5,\r\n    \"page\":1,\r\n \r\n    \"orderBy\": {\r\n        \"column\": \"id\",\r\n        \"order\": \"ASC\"\r\n    }\r\n}\r\n"
+								"variables": "{\r\n    \"first\":5,\r\n    \"page\":1,\r\n    \"search\":{\r\n        \"roles\":\"updatePayment\"\r\n    },\r\n    \"orderBy\": {\r\n        \"column\": \"id\",\r\n        \"order\": \"ASC\"\r\n    }\r\n}\r\n"
 							}
 						},
 						"url": {

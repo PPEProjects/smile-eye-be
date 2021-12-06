@@ -19,7 +19,13 @@ class PaymentMutations
         $payment = [];
         $data = array_diff_key($args, array_flip(['goal_id']));
         foreach($args['goal_id'] as $goal_id)
-        {
+        { 
+            $detailPayment = Payment::where('goal_id', $goal_id)
+                                    ->where('add_user_id', $data['add_user_id'])
+                                    ->first();
+            if(isset($detailPayment->attachments) && isset($data['attachments'])){
+                $data['attachments'] = array_merge($data['attachments'],$detailPayment->attachments);
+            }
             $data['goal_id'] = $goal_id; 
                 $payment[] = Payment::updateOrCreate(
                 [
