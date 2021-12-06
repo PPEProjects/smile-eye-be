@@ -29,4 +29,7 @@ class CoachMemberQueries
     public function listMyCoachs($_, array $args){
         return $this->coach_member_repository->listMyCoachs($args);
     }
+    public function sortCoachMember($_, array $args){
+        return $this->coach_member_repository->sortCoachMember($args);
+    }
 }

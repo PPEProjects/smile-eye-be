@@ -92,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"nnahssam2@gmail.com\",\n    \"password\": \"123456789\"\n}",
+							"raw": "{\n    \"email\": \"dinhdongphuong@gmail.com\",\n    \"password\": \"PhuongPPe1234\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1435,21 +1435,21 @@
 					"response": []
 				},
 				{
-					"name": "sort_coach_members",
+					"name": "query list_coach_members",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
+								"value": "Bearer  {{token}}",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_coach_member(    \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n      id\r\n      user{\r\n          id\r\n          name\r\n      }\r\n      org\r\n      business_field\r\n      goal_ids\r\n    teacher_id\r\n      scale\r\n      created_at\r\n      updated_at\r\n  }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}",
-								"variables": "{ \r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
+								"query": "query( $first: Int!, $page: Int!, $orderBy: JSON){\r\n  list_coach_member(    \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {   \r\n    data{\r\n      id\r\n      user\r\n      {\r\n        id\r\n        name\r\n        email\r\n        phone_number\r\n      }\r\n      goals{\r\n          id\r\n          name\r\n      }\r\n      payments{\r\n          id\r\n          goal{\r\n              id\r\n              name\r\n          }\r\n          status\r\n      }\r\n      created_at\r\n    }\r\n    total_page\r\n  }\r\n}",
+								"variables": "{ \r\n    \"first\": 20,\r\n    \"page\": 1,\r\n    \"orderBy\": {\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }\r\n}"
 							}
 						},
 						"url": {
@@ -2584,7 +2584,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query(\r\n    $status: String\r\n) {\r\n  list_goal_templates(\r\n      status: $status\r\n  ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n        price\r\n        general_info {\r\n            id\r\n            attachments {\r\n                file\r\n                file_type\r\n                thumb\r\n            }\r\n    }\r\n    }\r\n    status\r\n    number_member\r\n    request\r\n    created_at\r\n    updated_at\r\n    }\r\n}",
-								"variables": "{\r\n    \"status\":\"all\"\r\n}"
+								"variables": "{\r\n    \"status\":\"accept\"\r\n}"
 							}
 						},
 						"url": {
@@ -3809,7 +3809,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id:ID, $goal_id: ID) {\n  detail_japanese_goal(\n      id : $id\n      goal_id: $goal_id\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n    payment_status\n     goal_root{\n         id\n         name\n         user{\n            id\n            name\n        }\n     }\n     next_goal{\n         id\n         name\n         type\n     }\n     prev_goal{\n         id\n         name\n         type\n     }\n    type\n    score\n    more\n      list_users{\n         id\n         name\n         attachment{\n             id\n             file\n             thumb\n         }\n     }\n  }\n}",
-								"variables": "{\r\n \"goal_id\": 16385127267\r\n}\r\n"
+								"variables": "{\r\n \"goal_id\": 10634\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -4693,7 +4693,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query(\n    $first: Int!\n    $page: Int!\n    $orderBy: JSON\n    $search: JSON\n){\n  list_users(\n      first:$first\n      page: $page\n      orderBy: $orderBy\n      search: $search\n  ){data{\n      id\n      full\n      name\n      email\n      roles\n      role_label\n      org\n     member_number\n     business_field\n     relation_level\n     payments{\n         id\n         goal{\n             id\n             name\n         }\n         status\n     }\n      self_goals{\n          id\n          name\n      }\n      inviation_goals{\n          id\n          name\n      }\n      shared_goals{\n          id\n          name\n      }\n    buy_goals{\n        id\n        name\n    }\n    start_smile_eye_time\n    profit_forSelf\n    profit_for_smile_eye\n  }\n    total_page\n  }\n}\n",
+								"query": "query(\n    $first: Int!\n    $page: Int!\n    $orderBy: JSON\n    $search: JSON\n){\n  list_users(\n      first:$first\n      page: $page\n      orderBy: $orderBy\n      search: $search\n  ){data{\n      id\n      full\n      name\n      email\n      phone_number\n      roles\n      role_label\n      org\n     member_number\n     business_field\n     relation_level\n     payments{\n         id\n         goal{\n             id\n             name\n         }\n         status\n     }\n      self_goals{\n          id\n          name\n      }\n      inviation_goals{\n          id\n          name\n      }\n      shared_goals{\n          id\n          name\n      }\n    buy_goals{\n        id\n        name\n    }\n    start_smile_eye_time\n    profit_forSelf\n    profit_for_smile_eye\n  }\n    total_page\n  }\n}\n",
 								"variables": "{\r\n    \"first\":5,\r\n    \"page\":1,\r\n \r\n    \"orderBy\": {\r\n        \"column\": \"id\",\r\n        \"order\": \"ASC\"\r\n    }\r\n}\r\n"
 							}
 						},
@@ -6728,7 +6728,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $id : ID\r\n    $root_id:ID\r\n    $task_id : ID\r\n    $report_type : String\r\n  $parent_id: ID\r\n  $name: String!\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $locks: JSON\r\n  $is_lock: Boolean\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n  $price: String\r\n  $trial_block: JSON\r\n  $banned_users: JSON\r\n) {\r\n  upsert_goal(\r\n    input: {\r\n        id : $id\r\n        root_id : $root_id\r\n        task_id : $task_id\r\n        report_type : $report_type\r\n      parent_id: $parent_id\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      locks: $locks\r\n      is_lock: $is_lock\r\n      is_pined: $is_pined\r\n      price: $price\r\n      trial_block: $trial_block\r\n      banned_users: $banned_users\r\n      general_info: $general_info\r\n    }\r\n  ) \r\n}\r\n",
-								"variables": "{\r\n    \"id\": 16380654667,\r\n    \"root_id\": 16380654667,\r\n    \"banned_users\":[2,4],\r\n    \"report_type\":null,\r\n    \"task_id\" : null,\r\n    \"parent_id\": null,\r\n    \"name\": \"new goals\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"locks\":{\r\n        \"user_ids\":[2,3]\r\n    },\r\n    \"is_lock\": false,\r\n    \"is_pined\": true,\r\n    \"price\": \"900000 vnd\",\r\n    \"trial_block\": [16380655991],\r\n    \"general_info\": {\r\n        \"address\": \"ultimate\",\r\n        \"zalo\": \"034470383822\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-06\",\r\n        \"action_at_time\": \"00:20:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
+								"variables": "{\r\n    \"banned_users\":[2,4],\r\n    \"report_type\":null,\r\n    \"task_id\" : null,\r\n    \"parent_id\": null,\r\n    \"name\": \"new goals\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"locks\":{\r\n        \"user_ids\":[2,3]\r\n    },\r\n    \"is_lock\": false,\r\n    \"is_pined\": true,\r\n    \"price\": \"900000 vnd\",\r\n    \"trial_block\": [16380655991],\r\n    \"general_info\": {\r\n        \"address\": \"ultimate\",\r\n        \"zalo\": \"034470383822\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-06\",\r\n        \"action_at_time\": \"00:20:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
 							}
 						},
 						"url": {
@@ -6968,7 +6968,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation($id:ID!, $rank: Int!) {\r\n  sort_rank_goal_root(\r\n      id: $id\r\n      rank: $rank\r\n  )\r\n}",
-								"variables": "{\r\n    \"id\": 3407,\r\n    \"rank\": 1\r\n}"
+								"variables": "{\r\n    \"id\": 18,\r\n    \"rank\": 2\r\n}"
 							}
 						},
 						"url": {
@@ -7028,6 +7028,36 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($parent_id: String!) {\r\n  my_goals(parent_id: $parent_id) {\r\n      id\r\n      name\r\n      start_day\r\n       template{\r\n           id\r\n           status\r\n       }\r\n       number_member\r\n      end_day\r\n      status\r\n      type\r\n      rank\r\n      task_id\r\n      locks\r\n      is_lock\r\n      is_pined\r\n      banned_users\r\n      progress\r\n      next_goal\r\n      price\r\n      is_trial_block\r\n      general_info {\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publish\r\n        color\r\n        attachments {\r\n          file\r\n          file_type\r\n          thumb\r\n        }\r\n        achieves {\r\n          id\r\n          user_invite {\r\n            id\r\n            name\r\n            attachment {\r\n              thumb\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n",
+								"variables": "{\r\n \"parent_id\": \"root\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_goals Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($parent_id: String!) {\r\n  my_goals(parent_id: $parent_id) {\r\n      id\r\n     name\r\n     rank\r\n     type \r\n    }\r\n  }\r\n",
 								"variables": "{\r\n \"parent_id\": \"root\"\r\n}"
 							}
 						},
@@ -7358,7 +7388,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID) {\r\n  my_goals_tree_sort(id: $id)\r\n}",
-								"variables": "{\r\n    \"id\":1\r\n}"
+								"variables": "{\r\n    \"id\":1994\r\n}"
 							}
 						},
 						"url": {

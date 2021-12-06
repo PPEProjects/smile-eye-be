@@ -13,7 +13,8 @@ extend type Query {
 # search_coach_member(status: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [CoachMember] @paginate(type: "paginator" model: "App\\Models\\CoachMember")
     detail_coach_member(user_id: ID! @eq): Member @guard @field(resolver:"CoachMemberQueries@detailCoachMembers")
 #    my_coach_members: [CoachMember] @guard@field(resolver:"CoachMemberQueries@my_coach_members")
-    sort_coach_member(orderBy: [OrderByClause!] @orderBy): [CoachMember] @paginate(type: "paginator" model: "App\\Models\\CoachMember")
+    # sort_coach_member(orderBy: [OrderByClause!] @orderBy): [CoachMember] @paginate(type: "paginator" model: "App\\Models\\CoachMember")
+    list_coach_member(first: Int!, page: Int!, orderBy: JSON, search: JSON): ListCoach @guard @field(resolver:"CoachMemberQueries@sortCoachMember")
     my_list_coach_members: [CoachMember] @guard @field(resolver:"CoachMemberQueries@myListCoachMembers")
     my_list_support_members: [CoachMember] @guard @field(resolver:"CoachMemberQueries@myListSupportMembers")
     list_my_coachs: [CoachMember] @guard @field(resolver:"CoachMemberQueries@listMyCoachs")
@@ -37,7 +38,10 @@ type CoachMember{
     name: String
     payments: [Payment]
 }
-
+type ListCoach{
+    data: [CoachMember]
+    total_page: String
+}
 type Member{
     id: ID
     name: String

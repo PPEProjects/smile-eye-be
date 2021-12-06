@@ -205,4 +205,27 @@ class CoachMemberRepository
         };
        return $listCoachs;
     }
+    public function sortCoachMember($args){
+        $orderBy = $args["orderBy"];
+        $coachMember =  CoachMember::orderBy($orderBy['column'], $orderBy['order'])
+                        ->paginate($args["first"], ['*'], 'page', $args["page"]);
+        $page = $coachMember->toArray()["last_page"];
+        $listCoachs = [];
+            foreach($coachMember as $coach){
+                $checkGoal = Goal::whereIn('id',@$coach->goal_ids ?? [])->get();
+                if($checkGoal->toArray() == []){
+                    continue;
+                }
+                $coach->goals = $checkGoal;
+                $getIdGoals = $checkGoal->pluck('id');
+                $payments = Payment::where('add_user_id', $coach->user_id)
+                                                ->whereIn('goal_id', @$getIdGoals ?? [])
+                                                ->get();
+                $coach->payments = @$payments;
+                $listCoachs['data'][] = $coach;
+            }
+            $listCoachs['total_page'] = $page; 
+        return $listCoachs;
+    }
+    
 }
