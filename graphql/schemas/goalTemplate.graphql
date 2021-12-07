@@ -10,6 +10,7 @@ extend type Query {
     my_goal_template(type: String): [GoalTemplate] @field(resolver:"GoalTemplateQueries@myGoalTemplate")
     detail_goal_template(id:ID, goal_id: ID): GoalTemplate @field(resolver:"GoalTemplateQueries@detailGoalTemplate")
     list_goal_templates(status: String): [GoalTemplate] @field(resolver:"GoalTemplateQueries@listGoalTemplates")
+    my_goal_template_unpaid: [Goal] @field(resolver:"GoalTemplateQueries@myGoalTemplateUnpaid")
 }
 
 type GoalTemplate{
