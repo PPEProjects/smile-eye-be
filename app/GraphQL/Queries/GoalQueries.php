@@ -135,7 +135,7 @@ class GoalQueries
         $myGoalMember = Goal::SelectRaw("*, 'goal_member' AS type")
             ->whereIn('id', @$idGoalMembers ?? [])
             ->get();
-        $goals = $myGoalMember->merge($goals);
+        $goals = $myGoalMember->merge($goals)->sortByDESC('created_at');
         //---------//
         $getgoalIds = $goals->pluck('id')->toArray();
         $japaneseGoals = JapaneseGoal::whereIn('goal_id', $getgoalIds)->get();

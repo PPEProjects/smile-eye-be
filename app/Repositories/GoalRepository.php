@@ -913,11 +913,9 @@ class GoalRepository
                 $goal->rank = @$goalMember[$goal->id]->rank;
                 return $goal;
         });
-        $myGoal = $myGoalMember->merge($myGoal)->sortBy('rank');
+        $myGoal = $myGoalMember->merge($myGoal)->sortByDESC('created_at')->sortBy('rank');
         $rank = 1;
         $rankGoal = [];
-        $getOldRank = 0;
-        $newRank = [];
         foreach ($myGoal as $value) {
             if($rank == $args['rank']){
                 $rank++;
@@ -929,33 +927,6 @@ class GoalRepository
             $rankGoal[$value->type][$value->id] = ['id' => $value->id, 'rank' => $rank];
             $rank++;
         }
-        // foreach ($myGoal as $value) {
-
-        //     if (!isset($value->rank) && $args['id'] != $value->id) {
-        //         $value->rank = $rank;
-        //         $newRank[] = $rank;
-        //         $rank++;
-        //     } else {
-        //         if (array_intersect($newRank, [$value->rank])) {
-        //             $value->rank = ($value->rank + $rank) - 1;
-        //         }
-        //     }
-
-        //     if ($args['id'] == $value->id) {
-        //         $getOldRank = @$value->rank ?? 0;
-        //         $value->rank = $args['rank'];
-        //     }
-
-        //     if ($getOldRank > 0 && $getOldRank < $value->rank && $args['id'] != $value->id) {
-        //         $value->rank = $value->rank - 1;
-        //     }
-
-        //     if ($args['rank'] <= $value->rank && $args['id'] != $value->id) {
-        //         $value->rank = $value->rank + 1;
-        //     }
-
-        //     $rankGoal[$value->type][$value->id] = ['id' => $value->id, 'rank' => $value->rank];
-        // }
 
         if(isset($rankGoal['goal_member']))
         {
