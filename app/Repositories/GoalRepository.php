@@ -913,7 +913,8 @@ class GoalRepository
                 $goal->rank = @$goalMember[$goal->id]->rank;
                 return $goal;
         });
-        $myGoal = $myGoalMember->merge($myGoal)->sortByDESC('created_at')->sortBy('rank');
+        $myGoal = $myGoalMember->merge($myGoal);
+        $myGoal = $myGoal->sortByDESC('created_at')->sortBy('rank');
         $rank = 1;
         $rankGoal = [];
         foreach ($myGoal as $value) {
