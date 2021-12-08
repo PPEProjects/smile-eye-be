@@ -278,6 +278,9 @@ class JapaneseGoalRepository
                 else {
                     $detailJPGoal->payment_status = true;
                 }
+                if($goalRoot->user_id == Auth::id()){
+                    $detailJPGoal->payment_status = true;
+                }
                 if($detailJPGoal->payment_status == false && $checkTrial)
                 {
                     $detailJPGoal->payment_status = true;
