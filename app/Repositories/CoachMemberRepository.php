@@ -139,6 +139,7 @@ class CoachMemberRepository
             $payment->user = $user;
             $payment->user->number_member = $numberMember->number_member;
             $payment->user->status = @$payment->status ?? "trial";
+            $payment->user->attachments = @$payment->attachments;
             return $payment;
         });
         return $payments;
