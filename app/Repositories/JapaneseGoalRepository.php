@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-
+use App\Models\CoachMember;
 use App\Models\Goal;
 use App\Models\GoalTemplate;
 use App\Models\JapaneseGoal;
@@ -278,9 +278,14 @@ class JapaneseGoalRepository
                 else {
                     $detailJPGoal->payment_status = true;
                 }
-                if($goalRoot->user_id == Auth::id()){
+
+                $coachMember = CoachMember::where('user_id', Auth::id())->first();
+                $checkIdGoal = array_search($goalRoot->id, @$coachMember->goal_ids ?? [], true);
+                $admin = User::where('id',Auth::id())->where('roles', 'like', '%admin%')->first();
+                if($goalRoot->user_id == Auth::id() || $checkIdGoal || $admin){
                     $detailJPGoal->payment_status = true;
                 }
+
                 if($detailJPGoal->payment_status == false && $checkTrial)
                 {
                     $detailJPGoal->payment_status = true;
