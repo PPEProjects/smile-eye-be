@@ -37,7 +37,7 @@ type JapaneseGoal{
     attachments_1 : JSON
     attachments_2 : JSON
     attachments_3 : JSON
-    payment_status: String
+    payment_status: Boolean
 }
 type NextAndPrevGoal{
     id: ID

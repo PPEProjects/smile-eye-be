@@ -4,12 +4,14 @@ namespace App\Repositories;
 
 
 use App\Models\Goal;
+use App\Models\GoalTemplate;
 use App\Models\JapaneseGoal;
 use App\Models\JapaneseLearn;
 use App\Models\Payment;
 use App\Models\User;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
+use phpDocumentor\Reflection\Types\Boolean;
 use ppeCore\dvtinh\Services\AttachmentService;
 
 class JapaneseGoalRepository
@@ -258,18 +260,27 @@ class JapaneseGoalRepository
             if (isset($goalRoot->id)) {
                 $childrenIds = $this->japaneseLearn_repository->goalNochild([$goalRoot->id]);
                 $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);
+
                 $trialIds = array_intersect($childrenIds, @$goalRoot->trial_block ?? []);
                 $checkTrial = in_array($detailJPGoal->goal_id, $trialIds);
-                $payment = Payment::where('goal_id', $goalRoot->id)
-                                ->where('add_user_id', Auth::id())
-                                ->first(); 
-                $detailJPGoal->payment_status = @$payment->status;
-                if($goalRoot->user_id == Auth::id() || @$payment->status == "confirm"){
-                    $detailJPGoal->payment_status = 'accept';
+
+                $status = ['accept', 'confirm', "paidConfirmed", "done"];
+                $goalTemplate = GoalTemplate::where('goal_id', $goalRoot->id)
+                                             ->whereIn('status', $status)
+                                             ->first();
+                if(isset($goalTemplate)){
+                    $payment = Payment::where('goal_id', $goalRoot->id)
+                                        ->where('add_user_id', Auth::id())
+                                        ->whereIn('status', $status)
+                                        ->first(); 
+                    $detailJPGoal->payment_status = (isset($payment->status)) ? true : false;
                 }
-                if(@$detailJPGoal->payment_status != "accept" && $checkTrial)
+                else {
+                    $detailJPGoal->payment_status = true;
+                }
+                if($detailJPGoal->payment_status == false && $checkTrial)
                 {
-                    $detailJPGoal->payment_status = "trial";
+                    $detailJPGoal->payment_status = true;
                     foreach ($trialIds as $key => $value) {
                         if ($key > $findIds) {
                             if (isset($getTypeNextGoal)) {
@@ -287,7 +298,7 @@ class JapaneseGoalRepository
                         }
                     }
                 }
-                if (@$detailJPGoal->payment_status == "accept" || $keyNext == 0) 
+                if ($keyNext == 0) 
                 {   
                     
                     foreach ($childrenIds as $key => $value) 
@@ -307,9 +318,7 @@ class JapaneseGoalRepository
                             $keyPrev = $childrenIds[$findIds - $key];
                         }
                     }
-                    if($detailJPGoal->payment_status != 'trial' && $detailJPGoal->payment_status != 'accept'){
-                        $detailJPGoal->payment_status = @$payment->status ?? 'unpaid';
-                    }
+                    
                  }
             }
             
