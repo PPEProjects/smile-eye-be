@@ -142,7 +142,7 @@ class CoachMemberRepository
             $payment->user->attachments = @$payment->attachments;
             return $payment;
         });
-        return $payments->sortByDesc('id');
+        return $payments->sortByDesc('updated_at');
     }
 
     public function detailCoachMembers($args)
