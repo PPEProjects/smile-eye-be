@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Friend;
 use App\Models\Goal;
+use App\Models\User;
 use ppeCore\dvtinh\Services\AttachmentService;
 
 class FriendRepository
@@ -280,7 +281,10 @@ class FriendRepository
         $myFriends = $this->getByNameStatus($userId)->sortBy("friend_status");
         $pendFriends = $this->pendFriend($userId);
         $listFriends = $myFriends->concat($pendFriends);
-        $recommentFriends = $this->recommentFriends($userId);
+        if ($name) {
+           $searchPeople = User::where('name', 'like', '%'.$name.'%')->get();
+        }
+        $recommentFriends =  @$searchPeople ?? $this->recommentFriends($userId);
 
         $people = $listFriends->concat($recommentFriends);
         if($name){
