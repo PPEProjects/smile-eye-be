@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Goal;
 use App\Models\GoalMember;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -47,5 +48,34 @@ class GoalMemberRepository
                         ->where('goal_id', $idGoal)
                         ->first();
 
+    }
+
+    public function goalMembers($args)
+    {
+        
+        $goalMembers = GoalMember::orderBy('id', 'desc')->get();
+        
+        $checkGoal = $goalMembers->pluck('goal_id');
+        $checkUser = $goalMembers->pluck('add_user_id');
+
+        $users = User::whereIn('id', @$checkUser ?? [])->get()->pluck('id');
+        $goals = Goal::whereIn('id', @$checkGoal ?? [])->get()->pluck('id');
+
+        $goalMembers = $goalMembers->whereIn('add_user_id', @$users ?? [])
+                                    ->whereIn('goal_id', @$goals ?? []);
+
+        $nameAddUser = @$args['name_add_user'];
+        $nameGoal = @$args['name_goal'];
+        if($nameAddUser){
+            $goalMembers =  $goalMembers->filter(function ($goalMember) use ($nameAddUser) {
+                return false !== stristr($goalMember->add_user->name, $nameAddUser);
+            });
+        }
+        if($nameGoal){
+            $goalMembers =  $goalMembers->filter(function ($goalMember) use ($nameGoal) {
+                return false !== stristr($goalMember->goal->name, $nameGoal);
+            });
+        }
+        return $goalMembers;
     }
 }

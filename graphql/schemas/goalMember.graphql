@@ -9,7 +9,7 @@ extend type Mutation {
 }
 
 extend type Query {
-    goal_members: [GoalMember] @guard @field(resolver:"GoalMemberQueries@goalMembers")
+    goal_members(name_add_user: String, name_goal: String): [GoalMember] @guard @field(resolver:"GoalMemberQueries@goalMembers")
     sort_goal_members(orderBy: [OrderByClause!] @orderBy): [GoalMember] @paginate(type: "paginator" model: "App\\Models\\GoalMember")
     my_goal_members: [GoalMember] @guard @field(resolver:"GoalMemberQueries@myGoalMembers")
     detail_goal_member(id : ID!): GoalMember @guard @field(resolver:"GoalMemberQueries@detailGoalMembers")

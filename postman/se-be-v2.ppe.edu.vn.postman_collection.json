@@ -354,7 +354,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $id:ID\r\n   $add_user_id: ID\r\n    $goal_id: [ID]\r\n    $type: String\r\n    $status: String\r\n    $money: String\r\n    $attachments: JSON\r\n) {\r\n  upsert_payment(\r\n    input: {\r\n        id: $id\r\n     add_user_id: $add_user_id\r\n     goal_id: $goal_id\r\n     money: $money\r\n     status: $status\r\n     type: $type\r\n     attachments: $attachments\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    status\r\n    type\r\n    money\r\n    attachments\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"add_user_id\": 2,\r\n    \"goal_id\":1,\r\n    \"status\": \"pending\",\r\n    \"attachments\":[{\r\n        \"id\":4,\r\n        \"thumb\":\"xyz.img\"\r\n    }]\r\n}"
+								"variables": "{\r\n    \"add_user_id\": 154,\r\n    \"goal_id\":1994,\r\n    \"status\": \"pending\",\r\n    \"attachments\":[{\r\n        \"id\":5,\r\n        \"thumb\":\"xbz.img\"\r\n    }]\r\n}"
 							}
 						},
 						"url": {
@@ -1389,7 +1389,37 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query{\r\n  my_list_coach_members{\r\n      id\r\n      goal{\r\n          id\r\n          name\r\n      }\r\n      user{\r\n          id\r\n          name\r\n          number_member\r\n          count_missing\r\n      }\r\n      created_at\r\n  }\r\n}",
-								"variables": "{\r\n\r\n}"
+								"variables": "{\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query list_student_members",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query(\r\n    $first: Int\r\n    $page: Int\r\n){\r\n  list_student_members(\r\n      first: $first\r\n      page: $page\r\n  ){\r\n      id\r\n      goal{\r\n          id\r\n          name\r\n      }\r\n      user{\r\n          id\r\n          name\r\n          number_member\r\n          count_missing\r\n      }\r\n      created_at\r\n  }\r\n}",
+								"variables": "{\r\n    \"first\": 4,\r\n    \"page\": 1\r\n}"
 							}
 						},
 						"url": {
@@ -1418,7 +1448,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query{\r\n  my_list_support_members{\r\n     id\r\n      goal{\r\n          id\r\n          name\r\n      }\r\n      user{\r\n          id\r\n          name\r\n          email\r\n          phone_number\r\n          number_member\r\n         status\r\n      }\r\n      created_at\r\n  }\r\n}",
+								"query": "query{\r\n  my_list_support_members{\r\n     id\r\n      goal{\r\n          id\r\n          name\r\n      }\r\n      user{\r\n          id\r\n          name\r\n          email\r\n          phone_number\r\n          number_member\r\n         status\r\n         attachments\r\n      }\r\n      created_at\r\n  }\r\n}",
 								"variables": "{\r\n\r\n}"
 							}
 						},
@@ -3839,7 +3869,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id:ID, $goal_id: ID) {\n  detail_japanese_goal(\n      id : $id\n      goal_id: $goal_id\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n    payment_status\n     goal_root{\n         id\n         name\n         user{\n            id\n            name\n        }\n     }\n     next_goal{\n         id\n         name\n         type\n     }\n     prev_goal{\n         id\n         name\n         type\n     }\n    type\n    score\n    more\n      list_users{\n         id\n         name\n         attachment{\n             id\n             file\n             thumb\n         }\n     }\n  }\n}",
-								"variables": "{\r\n \"goal_id\": 10633\r\n}\r\n"
+								"variables": "{\r\n \"goal_id\": 6\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -6758,7 +6788,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $id : ID\r\n    $root_id:ID\r\n    $task_id : ID\r\n    $report_type : String\r\n  $parent_id: ID\r\n  $name: String!\r\n  $start_day: DateTime!\r\n  $end_day: DateTime!\r\n  $status : String!\r\n  $locks: JSON\r\n  $is_lock: Boolean\r\n  $is_pined: Boolean\r\n  $general_info: JSON\r\n  $price: String\r\n  $trial_block: JSON\r\n  $banned_users: JSON\r\n) {\r\n  upsert_goal(\r\n    input: {\r\n        id : $id\r\n        root_id : $root_id\r\n        task_id : $task_id\r\n        report_type : $report_type\r\n      parent_id: $parent_id\r\n      name: $name\r\n      start_day: $start_day\r\n      end_day: $end_day\r\n      status: $status\r\n      locks: $locks\r\n      is_lock: $is_lock\r\n      is_pined: $is_pined\r\n      price: $price\r\n      trial_block: $trial_block\r\n      banned_users: $banned_users\r\n      general_info: $general_info\r\n    }\r\n  ) \r\n}\r\n",
-								"variables": "{\r\n    \"banned_users\":[2,4],\r\n    \"report_type\":null,\r\n    \"task_id\" : null,\r\n    \"parent_id\": null,\r\n    \"name\": \"new goals\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"locks\":{\r\n        \"user_ids\":[2,3]\r\n    },\r\n    \"is_lock\": false,\r\n    \"is_pined\": true,\r\n    \"price\": \"900000 vnd\",\r\n    \"trial_block\": [16380655991],\r\n    \"general_info\": {\r\n        \"address\": \"ultimate\",\r\n        \"zalo\": \"034470383822\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-06\",\r\n        \"action_at_time\": \"00:20:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
+								"variables": "{\r\n    \"banned_users\":[2,4],\r\n    \"report_type\":null,\r\n    \"task_id\" : null,\r\n    \"parent_id\": null,\r\n    \"name\": \"yoh bro 222\",\r\n    \"start_day\": \"2021-04-03 11:11:11\",\r\n    \"end_day\": \"2021-05-05 11:11:11\",\r\n    \"status\": \"todo\",\r\n    \"locks\":{\r\n        \"user_ids\":[2,3]\r\n    },\r\n    \"is_lock\": false,\r\n    \"is_pined\": true,\r\n    \"price\": \"900000 vnd\",\r\n    \"trial_block\": [16380655991],\r\n    \"general_info\": {\r\n        \"address\": \"ultimate\",\r\n        \"zalo\": \"034470383822\",\r\n        \"repeat\": \"every day\",\r\n        \"reminder\": \"10 minutes before\",\r\n        \"action_at\": \"2021-07-06\",\r\n        \"action_at_time\": \"00:20:00\",\r\n        \"note\": \"Hom nay that vui :D\",\r\n        \"attachment_ids\": [1, 2],\r\n        \"publish\": \"public\",\r\n        \"color\": \"red\"\r\n    } \r\n}"
 							}
 						},
 						"url": {
@@ -6998,7 +7028,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation($id:ID!, $rank: Int!) {\r\n  sort_rank_goal_root(\r\n      id: $id\r\n      rank: $rank\r\n  )\r\n}",
-								"variables": "{\r\n    \"id\": 40,\r\n    \"rank\": 1\r\n}"
+								"variables": "{\r\n    \"id\": 18,\r\n    \"rank\": 1\r\n}"
 							}
 						},
 						"url": {
@@ -7058,6 +7088,36 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($parent_id: String!) {\r\n  my_goals(parent_id: $parent_id) {\r\n      id\r\n      name\r\n      start_day\r\n       template{\r\n           id\r\n           status\r\n       }\r\n       number_member\r\n      end_day\r\n      status\r\n      type\r\n      rank\r\n      task_id\r\n      locks\r\n      is_lock\r\n      is_pined\r\n      banned_users\r\n      progress\r\n      next_goal\r\n      price\r\n      is_trial_block\r\n      general_info {\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publish\r\n        color\r\n        attachments {\r\n          file\r\n          file_type\r\n          thumb\r\n        }\r\n        achieves {\r\n          id\r\n          user_invite {\r\n            id\r\n            name\r\n            attachment {\r\n              thumb\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n",
+								"variables": "{\r\n \"parent_id\": \"root\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query my_goals Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($parent_id: String!) {\r\n  my_goals(parent_id: $parent_id) {\r\n      id\r\n      name\r\n      rank\r\n    }\r\n  }\r\n",
 								"variables": "{\r\n \"parent_id\": \"root\"\r\n}"
 							}
 						},
@@ -7238,7 +7298,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID!){\r\n  detail_goal(id: $id) {\r\n    id\r\n    name\r\n    banned_users\r\n    goal_root{\r\n        id\r\n        name\r\n    }\r\n    parent{\r\n        id\r\n    }\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publishs{\r\n            id\r\n        }\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n        achieves{\r\n            id\r\n            user{\r\n                id\r\n                name\r\n            \r\n        }\r\n        \r\n    }\r\n  }\r\n}\r\n}",
-								"variables": "{\r\n    \"id\":\"e0a040a-7e43-eb60-153e-8e2cbdd08017\"\r\n}\r\n"
+								"variables": "{\r\n    \"id\":\"fbc6e8-d2e2-84a0-ac43-8b3610db14a\"\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -7388,7 +7448,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID) {\r\n  my_goals_tree_sort(id: $id)\r\n}",
-								"variables": "{\r\n    \"id\":1\r\n}"
+								"variables": "{\r\n    \"id\":2\r\n}"
 							}
 						},
 						"url": {
@@ -7662,8 +7722,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query {\r\n  goal_members{\r\n        id\r\n        add_user{\r\n            id\r\n            name\r\n        }\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        goal{\r\n            id\r\n            name\r\n        }\r\n    }\r\n}\r\n",
-								"variables": ""
+								"query": "query(\r\n    $name_add_user: String\r\n    $name_goal: String\r\n) {\r\n  goal_members(\r\n      name_add_user: $name_add_user\r\n      name_goal: $name_goal\r\n  ){\r\n        id\r\n        add_user{\r\n            id\r\n            name\r\n        }\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        goal{\r\n            id\r\n            name\r\n        }\r\n        created_at\r\n    }\r\n}\r\n",
+								"variables": "{\r\n    \"name_add_user\":\"\",\r\n    \"name_goal\":\"\"\r\n}"
 							}
 						},
 						"url": {
