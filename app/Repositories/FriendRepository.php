@@ -96,7 +96,15 @@ class FriendRepository
         $fIds = $fIds1->merge($fIds2);
         $fIdsArr = $fIds;
         $fIdsArr[] = $userId;
-        $users = $this->user_repository->getWithoutIds($fIdsArr->toArray());
+        //$users = $this->user_repository->getWithoutIds($fIdsArr->toArray());
+        $users = User::whereNotIn('id', @$fIdsArr ?? []);
+        if($name){
+            $users = $users->where('name', 'LIKE', '%'.$name.'%')->get();
+        }
+        else
+        {
+            $users = $users->paginate('100', ['*'], 'page', '1');
+        }
         $idFriendNotYet = $users->pluck('id');
 
         $getIdGoal = $users->map(function ($user)  {
@@ -119,11 +127,7 @@ class FriendRepository
 
         $friends = $userFriends->toArray() + $friendFriends->toArray();
 
-        if($name){
-            $users = $users->filter(function ($user) use ($name) {
-                return false !== stristr($user->name, $name);
-            });
-        }
+        
         $users = $users->map(function($user) use($friends, $mutualFriend, $idGoals){
             $friend = @$friends[$user->id];
             $user->number_mutual = count($mutualFriend[$user->id]);
