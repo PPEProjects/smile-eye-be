@@ -904,9 +904,11 @@ class GoalRepository
 
         $myGoal = $myGoal->whereNotIn('id', $idGoals);
         //Get id goal from GoalMember
+        $myGoalIds = $myGoal->pluck('id')->toArray();
         $goalMember = GoalMember::where("add_user_id", Auth::id())
-                                    ->get()
-                                    ->keyBy('goal_id');
+                                ->whereNotIn('goal_id', @$myGoalIds ?? [])
+                                ->get()
+                                ->keyBy('goal_id');
                                     
         $idGoalMembers = $goalMember->pluck('goal_id');
         $myGoalMember = Goal::SelectRaw("*, 'goal_member' AS type")

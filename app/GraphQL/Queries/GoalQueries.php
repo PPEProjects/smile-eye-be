@@ -130,11 +130,13 @@ class GoalQueries
         }
         $goals = $goals->get();
         //Get id goal from GoalMember
+        $myGoalIds = $goals->pluck('id')->toArray();
         $goalMember = GoalMember::where("add_user_id", Auth::id())
-                                    ->get()->keyBy('goal_id');
+                                ->whereNotIn('goal_id', @$myGoalIds ?? [])
+                                ->get()->keyBy('goal_id');
         $idGoalMembers = $goalMember->pluck('goal_id');
         $myGoalMember = Goal::SelectRaw("*, 'goal_member' AS type")
-                                ->whereIn('id', @$idGoalMembers ?? [])
+                                ->whereIn('id', @$idGoalMembers ?? []) 
                                 ->get();
         $myGoalMember = $myGoalMember->map(function($goal) use($goalMember){
                 $goal->created_at = @$goalMember[$goal->id]->created_at ?? $goal->created_at;
