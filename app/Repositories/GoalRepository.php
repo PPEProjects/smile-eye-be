@@ -904,13 +904,18 @@ class GoalRepository
 
         $myGoal = $myGoal->whereNotIn('id', $idGoals);
         //Get id goal from GoalMember
-        $goalMember = GoalMember::where("add_user_id", Auth::id())->get()->keyBy('goal_id');
+        $goalMember = GoalMember::where("add_user_id", Auth::id())
+                                    ->get()
+                                    ->keyBy('goal_id');
+                                    
         $idGoalMembers = $goalMember->pluck('goal_id');
         $myGoalMember = Goal::SelectRaw("*, 'goal_member' AS type")
-            ->whereIn('id', @$idGoalMembers ?? [])
-            ->get();
+                                ->whereIn('id', @$idGoalMembers ?? [])
+                                ->get();
+
         $myGoalMember = $myGoalMember->map(function($goal) use ($goalMember){
                 $goal->rank = @$goalMember[$goal->id]->rank;
+                $goal->created_at = @$goalMember[$goal->id]->created_at ?? $goal->created_at;
                 return $goal;
         });
         $myGoal = $myGoalMember->merge($myGoal);

@@ -130,12 +130,16 @@ class GoalQueries
         }
         $goals = $goals->get();
         //Get id goal from GoalMember
-        $goalMember = GoalMember::where("add_user_id", Auth::id())->get()->keyBy('goal_id');
+        $goalMember = GoalMember::where("add_user_id", Auth::id())
+                                    ->get()->keyBy('goal_id');
         $idGoalMembers = $goalMember->pluck('goal_id');
         $myGoalMember = Goal::SelectRaw("*, 'goal_member' AS type")
-            ->whereIn('id', @$idGoalMembers ?? [])
-            ->orderBy('created_at', 'DESC')
-            ->get();
+                                ->whereIn('id', @$idGoalMembers ?? [])
+                                ->get();
+        $myGoalMember = $myGoalMember->map(function($goal) use($goalMember){
+                $goal->created_at = @$goalMember[$goal->id]->created_at ?? $goal->created_at;
+                return $goal;
+        });
         $goals = $myGoalMember->merge($goals);
         //---------//
         $goals = $goals->sortByDESC('created_at');
