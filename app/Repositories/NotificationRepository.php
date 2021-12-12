@@ -188,7 +188,8 @@ class NotificationRepository
                 case 'achieve':
                     $user = User::where("id",$noti->user_id)->first();
                     $content = $noti->content;
-                    if (@$content['status'] == 'pending') {
+                    $status = @$content['status'] ?? 'pending';
+                    if ($status == 'pending') {
                         $messages->push('invites you to achieve the');
                     }
                     $generalInfo = $this->generalinfo_repository->find($content['general_id']);
