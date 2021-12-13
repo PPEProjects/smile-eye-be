@@ -194,7 +194,7 @@ class JapaneseGoalRepository
                 $this->notification_repository->staticNotification("sing_with_friend", $japaneseGoal->goal_id,
                     $japaneseGoal, $user_invited_ids);
             }
-            $args['more'] = $japaneseGoal->more;
+         //   $args['more'] = $japaneseGoal->more;
         }
         return tap(JapaneseGoal::findOrFail($japaneseGoal->id))
             ->update($args);
