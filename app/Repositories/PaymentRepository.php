@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Goal;
 use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -69,6 +70,11 @@ class PaymentRepository
                                     ->get();
               break;
       }
+      $getIdGoals = $payments->pluck('goal_id');
+      $checkGoals = Goal::whereIn('id', @$getIdGoals ?? [])
+                            ->get()
+                            ->pluck('id');
+        $payments = $payments->whereIn('goal_id', @$checkGoals ?? []);
       return $payments->sortBy('created_at');
    }
 }

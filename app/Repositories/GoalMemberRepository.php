@@ -85,10 +85,15 @@ class GoalMemberRepository
         $status = ['accept', 'confirm', "paidConfirmed", 'paid', "done"];
         $goalTemplate = GoalTemplate::whereIn('status', $status)->get();
         $getIds = $goalTemplate->pluck('goal_id');
-        $goalMember = GoalMember::selectRaw("*, COUNT(add_user_id) as `number_member`")
+        $goalMembers = GoalMember::selectRaw("*, COUNT(add_user_id) as `number_member`")
                                     ->whereIn('goal_id', @$getIds ?? [])
                                     ->groupByRaw('goal_id, DATE(created_at)')
                                     ->get();
-        return  $goalMember->sortBy('created_at');
+        $getIdGoals = $goalMembers->pluck('goal_id');
+        $checkGoals = Goal::whereIn('id', @$getIdGoals ?? [])
+                            ->get()
+                            ->pluck('id');
+        $goalMembers = $goalMembers->whereIn('goal_id', @$checkGoals ?? []);
+        return  $goalMembers->sortBy('created_at');
     }
 }
