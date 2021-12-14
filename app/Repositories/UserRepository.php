@@ -124,5 +124,10 @@ class UserRepository
             ->update($args);
         return $update;
     }
-
+    public function summaryUsers($args){
+        $users = User::selectRaw("*, COUNT(id) as `number_member`")
+                        ->groupByRaw('DATE(created_at)')
+                        ->get();
+        return $users->sortBy('created_at');
+    }
 }

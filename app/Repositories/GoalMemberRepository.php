@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Goal;
 use App\Models\GoalMember;
+use App\Models\GoalTemplate;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -77,5 +78,17 @@ class GoalMemberRepository
             });
         }
         return $goalMembers;
+    }
+
+    public function summaryGoalMembers($args)
+    {
+        $status = ['accept', 'confirm', "paidConfirmed", 'paid', "done"];
+        $goalTemplate = GoalTemplate::whereIn('status', $status)->get();
+        $getIds = $goalTemplate->pluck('goal_id');
+        $goalMember = GoalMember::selectRaw("*, COUNT(add_user_id) as `number_member`")
+                                    ->whereIn('goal_id', @$getIds ?? [])
+                                    ->groupByRaw('goal_id, DATE(created_at)')
+                                    ->get();
+        return  $goalMember;
     }
 }

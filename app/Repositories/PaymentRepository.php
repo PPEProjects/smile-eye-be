@@ -52,5 +52,23 @@ class PaymentRepository
             $payment = $payment->where('status', 'LIKE', $args['status']);
         }        return $payment;
     }
-   
+   public function summaryPayments($args)
+   {
+      $status = @$args['status'] ?? 'all';
+      switch ($status) {
+          case 'all':
+              $payments = Payment::selectRaw("*, COUNT(add_user_id) as `number_member`")
+                                    ->groupByRaw('goal_id, DATE(created_at)')
+                                    ->get();
+              break;
+          
+          default:
+              $payments = Payment::selectRaw("*, COUNT(add_user_id) as `number_member`")
+                                    ->where('status', 'LIKE', '%'.$status.'%')
+                                    ->groupByRaw('goal_id, DATE(created_at)')
+                                    ->get();
+              break;
+      }
+      return $payments;
+   }
 }

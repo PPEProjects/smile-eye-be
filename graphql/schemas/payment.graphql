@@ -14,6 +14,7 @@ extend type Query {
     detail_payment(id : ID!): Payment @guard @field(resolver:"PaymentQueries@detailPayments")
     detail_payment_by_user_id(status: String, type: String, user_id: ID!): [Payment] @guard @field(resolver:"PaymentQueries@detailPayments")
     detail_my_payment(goal_id : ID!): Payment @guard @field(resolver:"PaymentQueries@detailPayments")
+    summary_payments(status: String): [Payment] @guard @field(resolver:"PaymentQueries@summaryPayments")
 }
 
 type Payment {
@@ -30,6 +31,7 @@ type Payment {
     attachments: JSON
     created_at: DateTime
     updated_at: DateTime
+    number_member: Int
 }
 input UpsertPaymentInput{
     id: ID

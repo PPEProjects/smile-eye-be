@@ -27,5 +27,7 @@ class PaymentQueries
     {
         return $this->payment_repository->detailPayments($args);
     }
-    
+    public function summaryPayments($_, array $args){
+        return $this->payment_repository->summaryPayments($args);
+    }
 }

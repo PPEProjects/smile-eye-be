@@ -26,5 +26,7 @@ class GoalMemberQueries
     {
         return $this->goal_member_repository->detailGoalMembers($args);
     }
-    
+    public function summaryGoalMembers($_, array $args){
+        return $this->goal_member_repository->summaryGoalMembers($args);
+      }
 }

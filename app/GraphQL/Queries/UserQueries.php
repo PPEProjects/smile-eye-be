@@ -81,5 +81,7 @@ class UserQueries
         $listUsers["total_page"] = $page;
         return  $listUsers;
     }
-
+    public function summaryUsers($_,array $args){
+        return $this->user_repository->summaryUsers($args);
+    }
 }

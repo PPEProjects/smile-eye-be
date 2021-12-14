@@ -18,6 +18,7 @@ type Query {
     search_users(name: String, username: String, email: String, phone_number: String   @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [User!]! @paginate(type: "paginator" model: "App\\Models\\User")
     sort_users(orderBy: [OrderByClause!] @orderBy): [User!]! @paginate(type: "paginator" model: "App\\Models\\User")
     list_users(first: Int!, page: Int!, orderBy: JSON, search: JSON): UsersAdmin @guard @field(resolver:"UserQueries@listUsers")
+    summary_users: [User] @guard @field(resolver:"UserQueries@summaryUsers")
 }
 input LoginInput {
     username: String!
@@ -47,6 +48,7 @@ type User {
     background_attachment : Attachment
     number_mutual: Int
     number_goals: Int
+    number_member: Int
     mutual_friend: [User]
     process : Float
     goals : [Goal]
