@@ -89,6 +89,6 @@ class GoalMemberRepository
                                     ->whereIn('goal_id', @$getIds ?? [])
                                     ->groupByRaw('goal_id, DATE(created_at)')
                                     ->get();
-        return  $goalMember;
+        return  $goalMember->sortBy('created_at');
     }
 }

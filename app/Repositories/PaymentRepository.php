@@ -69,6 +69,6 @@ class PaymentRepository
                                     ->get();
               break;
       }
-      return $payments;
+      return $payments->sortBy('created_at');
    }
 }
