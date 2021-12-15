@@ -156,7 +156,7 @@ class GoalRepository
             ->whereIn('goal_id', $getIdGoals)
             ->get()
             ->keyBy('goal_id')
-        ->toArray();
+            ->toArray();
 
         //Check goal have  task_id And Task have goal_id
         $getIdTasks = $goals->pluck('task_id');
@@ -739,8 +739,10 @@ class GoalRepository
         $goal = Goal::find($args["id"]);
         if ($this->isSmallest($goal)) {
             $payload = array_diff_key($goal->toArray(), array_flip(["id", "directive"]));
-            $payload['id'] = time().'.'.rand();
+            $payload['id'] = time() . '.' . rand();
             $goalNew = Goal::create($payload);
+            $this->duplicateJP($goal->toArray(), $goalNew->toArray());
+//            dd($goalNew);
             $general = @GeneralInfo::where("goal_id", $goal->id)->first();
             if ($general) {
                 $generalArr = @$general->toArray();
@@ -750,7 +752,7 @@ class GoalRepository
             return true;
         } else {
             $payload = array_diff_key($goal->toArray(), array_flip(["id", "directive"]));
-            $payload['id'] = time().'.'.rand();
+            $payload['id'] = time() . '.' . rand();
             $goalRoot = Goal::create($payload)->toArray();
             $goalRoot['id'] = $payload['id'];
 //            dd($goalRoot->toArray());
@@ -768,15 +770,29 @@ class GoalRepository
 
     }
 
+    public function duplicateJP($oGoal, $nGoal)
+    {
+        $jp = JapaneseGoal::where('goal_id', $oGoal['id'])->first();
+        if($jp){
+            $aJP = $jp->toArray();
+            $aJP['goal_id'] = $nGoal['id'];
+            unset($aJP['id']);
+            JapaneseGoal::create($aJP);
+        }
+    }
+
     public function dulicate($goalRoot, $goalChilds)
     {
         if (count($goalChilds) != 0) {
             foreach ($goalChilds as $g) {
                 $arr = $g->toArray();
+//                dd($arr);
                 $arr["parent_id"] = $goalRoot['id'];
-                $arr["id"] = time().'.'.rand();
+                $arr["id"] = time() . '.' . rand();
                 $dupG = Goal::create(array_diff_key($arr, array_flip(["directive"])))->toArray();
                 $dupG['id'] = $arr["id"];
+//                dd($dupG);
+                $this->duplicateJP($g->toArray(), $dupG);
                 $general = @GeneralInfo::where("goal_id", $goalRoot['id'])->first();
                 if ($general) {
                     $generalArr = @$general->toArray();
@@ -906,56 +922,53 @@ class GoalRepository
         //Get id goal from GoalMember
         $myGoalIds = $myGoal->pluck('id')->toArray();
         $goalMember = GoalMember::where("add_user_id", Auth::id())
-                                ->whereNotIn('goal_id', @$myGoalIds ?? [])
-                                ->get()
-                                ->keyBy('goal_id');
-                                    
+            ->whereNotIn('goal_id', @$myGoalIds ?? [])
+            ->get()
+            ->keyBy('goal_id');
+
         $idGoalMembers = $goalMember->pluck('goal_id');
         $myGoalMember = Goal::SelectRaw("*, 'goal_member' AS type")
-                                ->whereIn('id', @$idGoalMembers ?? [])
-                                ->get();
+            ->whereIn('id', @$idGoalMembers ?? [])
+            ->get();
 
-        $myGoalMember = $myGoalMember->map(function($goal) use ($goalMember){
-                $goal->rank = @$goalMember[$goal->id]->rank;
-                $goal->created_at = @$goalMember[$goal->id]->created_at ?? $goal->created_at;
-                return $goal;
+        $myGoalMember = $myGoalMember->map(function ($goal) use ($goalMember) {
+            $goal->rank = @$goalMember[$goal->id]->rank;
+            $goal->created_at = @$goalMember[$goal->id]->created_at ?? $goal->created_at;
+            return $goal;
         });
         $myGoal = $myGoalMember->merge($myGoal);
         $myGoal = $myGoal->sortByDESC('created_at')->sortBy('rank');
         $rank = 1;
         $rankGoal = [];
         foreach ($myGoal as $value) {
-            if($rank == $args['rank']){
+            if ($rank == $args['rank']) {
                 $rank++;
             }
             if ($value->id == $args['id']) {
-                $rankGoal[$value->type][$args['id']] = ['id' => $value->id, 'rank' => $args['rank']];                
+                $rankGoal[$value->type][$args['id']] = ['id' => $value->id, 'rank' => $args['rank']];
                 continue;
             }
             $rankGoal[$value->type][$value->id] = ['id' => $value->id, 'rank' => $rank];
             $rank++;
         }
 
-        if(isset($rankGoal['goal_member']))
-        {
-            foreach($rankGoal['goal_member'] as $value)
-            {
-                $updateGoalMember = GoalMember::where('goal_id',$value["id"])
-                                    ->where('add_user_id', Auth::id())
-                                    ->first();
+        if (isset($rankGoal['goal_member'])) {
+            foreach ($rankGoal['goal_member'] as $value) {
+                $updateGoalMember = GoalMember::where('goal_id', $value["id"])
+                    ->where('add_user_id', Auth::id())
+                    ->first();
                 $updateGoalMember->update(['rank' => $value['rank']]);
             }
         }
-        if($goal->user_id != Auth::id()){
-            $goalMember = GoalMember::where('goal_id',$goal->id)
-                                    ->where('add_user_id', Auth::id())
-                                    ->first();
+        if ($goal->user_id != Auth::id()) {
+            $goalMember = GoalMember::where('goal_id', $goal->id)
+                ->where('add_user_id', Auth::id())
+                ->first();
             $goalMember->update([
                 'rank' => $args['rank']
             ]);
         }
-        foreach ($rankGoal['goal_owner'] as $value) 
-        {
+        foreach ($rankGoal['goal_owner'] as $value) {
             $rankGoal = tap(Goal::findOrFail($value["id"]))->update($value);
         }
         return $rankGoal;
@@ -967,9 +980,9 @@ class GoalRepository
             $userId = Auth::id();
         }
         $publish = PublishInfo::where('user_invite_id', $userId)
-                                ->where("status", "accept")
-                                ->get()
-                                ->keyby('general_id');
+            ->where("status", "accept")
+            ->get()
+            ->keyby('general_id');
         $idGenerals = $publish->pluck('general_id');
         $general = GeneralInfo::whereIn("id", $idGenerals)->get();
         $idGoals = $general->pluck("goal_id")->toArray();

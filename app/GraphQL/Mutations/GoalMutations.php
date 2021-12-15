@@ -294,6 +294,7 @@ class GoalMutations
 
     public function updateGoalMove($_array, $args)
     {
+        if(empty($args['goal_move'])) return null;
         return $this->goal_repository->updateGoalMove($args);
     }
 
