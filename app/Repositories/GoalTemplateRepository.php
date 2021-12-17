@@ -117,7 +117,11 @@ class GoalTemplateRepository{
     public function myGoalTemplateUnpaid($args)
     {   
         $status = ['accept', 'paid','confirm', "paidConfirmed", "done"];
-        $goalTemplate = GoalTemplate::whereIn('status', $status)->get();
+        $goalMember = GoalMember::where('add_user_id', Auth::id())->get();
+        $getIdgoals = $goalMember->pluck('goal_id');
+        $goalTemplate = GoalTemplate::wherein('goal_id', @$getIdgoals ?? [])
+                                     ->whereIn('status', $status)
+                                     ->get();
         $idGoalTemplate = $goalTemplate->pluck('goal_id')->toArray();
         $payment = Payment::where('add_user_id', Auth::id())
                         ->whereIn('status', $status)
