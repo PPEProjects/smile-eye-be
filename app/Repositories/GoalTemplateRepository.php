@@ -58,11 +58,15 @@ class GoalTemplateRepository{
     }
 
     public function myGoalTemplate($args){ 
+        $status = @$args['status'] ?? 'all';
          $myGoals = Goal::whereNull('parent_id')
                          ->where('user_id', Auth::id())
                          ->get();
         $getIds = $myGoals->pluck('id');
         $goalTemplate = GoalTemplate::whereIn('goal_id',@$getIds ?? [])->get();
+        if($status != 'all'){
+            $goalTemplate = $goalTemplate->where('status', $status);
+        }
         $goalTemplate = $goalTemplate->map(function($template) {
             $goalMember = $this->goalMember_repository
                                    ->CountNumberMemberGoal($template->goal_id);

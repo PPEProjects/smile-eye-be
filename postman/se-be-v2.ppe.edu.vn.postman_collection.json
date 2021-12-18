@@ -564,7 +564,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query(\r\n    $status: String\r\n) {\r\n  summary_payments(\r\n      status: $status\r\n  ){\r\n    id\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n   number_member\r\n    status\r\n    type\r\n    created_at\r\n  }\r\n    \r\n}",
-								"variables": "{\r\n    \"status\": \"pending\"\r\n}"
+								"variables": "{\r\n    \"status\": \"penDing\"\r\n}"
 							}
 						},
 						"url": {
@@ -629,7 +629,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\n    $name : String\n    $people: JSON\n\n) {\n  create_friend_groups(\n    input: {\n      name : $name\n      people: $people\n    }\n  )\n  {\n      id\n    user{\n        id\n        name\n    }\n    name\n    people\n    created_at\n    updated_at\n    \n  }\n}",
-								"variables": "{\n    \"name\" : \"Nhóm học tiếng nhật\",\n    \"people\":[\n        {\n      \"user_id\":144,\n      \"role\":\"admin\"\n    },\n    {\n      \"user_id\":2,\n      \"role\":\"mod\"\n    },\n    {\n      \"user_id\":3,\n      \"role\":\"member\"\n    },\n    {\n      \"user_id\":4,\n      \"role\":\"member\"\n    }\n    ]\n\n}"
+								"variables": "{\n    \"name\" : \"Nhóm học tiếng nhật\",\n    \"people\":[\n        {\n      \"user_id\":154,\n      \"role\":\"admin\"\n    },\n    {\n      \"user_id\":120,\n      \"role\":\"mod\"\n    }\n    ]\n\n}"
 							}
 						},
 						"url": {
@@ -1879,7 +1879,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($ids: [ID]){\r\n  list_japanese_kanji(\r\n      ids: $ids  \r\n    ) {\r\n       id\r\n    user_id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    name\r\n    more\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"ids\": [\"4658\",\r\n    \"4656\",\r\n    \"4655\"]\r\n}\r\n"
+								"variables": "{\r\n    \"ids\": [\r\n    \"4655\",\r\n    \"4658\",\r\n    \"4656\"\r\n    ]\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -2279,7 +2279,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $goal_id : ID\r\n    $scores: JSON\r\n) {\r\n  upsert_goal_score(\r\n    input: {\r\n        goal_id:$goal_id\r\n        scores:$scores\r\n    }\r\n  ) {\r\n   id\r\n    user_id\r\n    goal_id\r\n    scores\r\n    created_at\r\n    updated_at\r\n}\r\n}\r\n",
-								"variables": "{\r\n  \"goal_id\": 1,\r\n  \"scores\": {\r\n    \"1\":9,\r\n    \"2\":5,\r\n    \"5\":3\r\n  }\r\n}"
+								"variables": "{\r\n  \"goal_id\": 16397065336,\r\n  \"scores\": {\r\n    \"1\":9,\r\n    \"2\":5,\r\n    \"5\":3\r\n  }\r\n}"
 							}
 						},
 						"url": {
@@ -2703,8 +2703,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "  query{\r\n  my_goal_template{\r\n     id\r\n    goal{\r\n        id\r\n        name\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        price\r\n        created_at\r\n    }\r\n    status\r\n    number_member\r\n    number_buy_on\r\n    number_paid\r\n    number_trials\r\n    number_done\r\n  }\r\n}",
-								"variables": "{\r\n   \r\n}"
+								"query": "  query(\r\n      $status: String\r\n  ){\r\n  my_goal_template(\r\n      status: $status\r\n  ){\r\n     id\r\n    goal{\r\n        id\r\n        name\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        price\r\n        created_at\r\n    }\r\n    status\r\n    number_member\r\n    number_buy_on\r\n    number_paid\r\n    number_trials\r\n    number_done\r\n  }\r\n}",
+								"variables": "{\r\n   \"status\": \"all\"\r\n}"
 							}
 						},
 						"url": {
@@ -4204,7 +4204,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($name: String){\n    recomment_friends(\n        name: $name\n    ){\n        number_goals\n        id\n        name\n        email\n        phone_number\n        number_mutual\n        attachment{\n            id\n            thumb\n        }\n        mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n        }\n    }\n}",
-								"variables": "{\r\n    \"name\": null\r\n}"
+								"variables": "{\r\n    \"name\": \"hihi\"\r\n}"
 							}
 						},
 						"url": {
@@ -4234,7 +4234,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($name: String, $status: String){\n  my_friends(\n   name: $name\n   status: $status){\n    friend{\n          id\n        }\n      id\n      name\n      email\n      phone_number\n      friend_status\n      attachment{\n          id\n          thumb\n      }\n      background_attachment{\n            id\n            thumb\n        }\n      mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n        \n   }\n  }\n}\n",
-								"variables": "{\n \"name\": null,\n \"status\": \"accept\"\n}"
+								"variables": "{\n \"name\": \"hihi\",\n \"status\": \"accept\"\n}"
 							}
 						},
 						"url": {
@@ -4294,7 +4294,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($name: String){\n  search_people(\n   name: $name){\n    \n      id\n      name\n      email\n      phone_number\n      friend_status\n      attachment{\n          id\n          thumb\n      }\n      background_attachment{\n            id\n            thumb\n        }\n         friend{\n           id\n       }\n      mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n        \n   }\n  }\n}\n",
-								"variables": "{\n \"name\": null\n}"
+								"variables": "{\n \"name\": \"hihi\"\n}"
 							}
 						},
 						"url": {
@@ -7508,7 +7508,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID) {\r\n  my_goals_tree_sort(id: $id)\r\n}",
-								"variables": "{\r\n    \"id\":16378294705\r\n}"
+								"variables": "{\r\n    \"id\":1\r\n}"
 							}
 						},
 						"url": {
