@@ -65,7 +65,7 @@ class GoalTemplateRepository{
         $getIds = $myGoals->pluck('id');
         $goalTemplate = GoalTemplate::whereIn('goal_id',@$getIds ?? [])->get();
         if($status != 'all'){
-            $goalTemplate = $goalTemplate->where('status', 'LIKE' ,$status);
+            $goalTemplate = $goalTemplate->where('status', 'LIKE' , '%'.$status.'%');
         }
         $goalTemplate = $goalTemplate->map(function($template) {
             $goalMember = $this->goalMember_repository
