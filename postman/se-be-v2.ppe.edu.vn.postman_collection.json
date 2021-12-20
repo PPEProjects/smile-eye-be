@@ -2494,7 +2494,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $goal_id : ID\r\n    $status: String   \r\n    $request: String\r\n) {\r\n  create_goal_template(\r\n    input: {\r\n        goal_id:$goal_id\r\n        status:$status\r\n        request:$request\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    status\r\n    request\r\n    created_at\r\n    updated_at\r\n}\r\n}\r\n",
-								"variables": "{\r\n  \"goal_id\": 10,\r\n  \"status\":\"pending\",\r\n  \"request\":\"admin\"\r\n}"
+								"variables": "{\r\n  \"goal_id\": 12,\r\n  \"status\":\"Inviting\",\r\n  \"request\":\"admin\"\r\n}"
 							}
 						},
 						"url": {
@@ -2643,8 +2643,38 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query(\r\n    $status: String\r\n) {\r\n  list_goal_templates(\r\n      status: $status\r\n  ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n        price\r\n        general_info {\r\n            id\r\n            attachments {\r\n                file\r\n                file_type\r\n                thumb\r\n            }\r\n    }\r\n    }\r\n    status\r\n    number_member\r\n    request\r\n    created_at\r\n    updated_at\r\n    }\r\n}",
-								"variables": "{\r\n    \"status\":\"accept\"\r\n}"
+								"query": "query(\r\n    $status: String\r\n) {\r\n  list_goal_templates(\r\n      status: $status\r\n  ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        price\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        general_info {\r\n            id\r\n            attachments {\r\n                file\r\n                file_type\r\n                thumb\r\n            }\r\n    }\r\n    }\r\n    status\r\n    number_member\r\n    request\r\n    checked_time\r\n    created_at\r\n    updated_at\r\n    }\r\n}",
+								"variables": "{\r\n    \"status\":\"all\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query_list_goal_potential",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query(\r\n    $number_potential: Int\r\n) {\r\n  list_goal_potential(\r\n      number_potential: $number_potential\r\n  ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    name\r\n    sum_achieve_share\r\n    status\r\n    }\r\n}",
+								"variables": "{\r\n    \"number_potential\": 2\r\n}"
 							}
 						},
 						"url": {
@@ -2673,7 +2703,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_goal_template(   \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n     id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    status\r\n    request\r\n    created_at\r\n    updated_at\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n\r\n",
+								"query": "query( $first: Int!, $page: Int!, $orderBy: [OrderByClause!]){\r\n  sort_goal_template(   \r\n      first: $first, \r\n      page: $page, \r\n      orderBy: $orderBy\r\n    ) {\r\n    data {\r\n     id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n        user{\r\n            id\r\n            name\r\n        }\r\n    }\r\n    status\r\n    request\r\n    created_at\r\n    updated_at\r\n    }\r\n    paginatorInfo {\r\n      total\r\n      currentPage\r\n      hasMorePages\r\n      lastPage\r\n    }\r\n  }\r\n}\r\n\r\n",
 								"variables": "{\r\n    \"first\": 10,\r\n    \"page\": 1,\r\n    \"orderBy\": [{\r\n        \"column\": \"id\",\r\n        \"order\": \"DESC\"\r\n    }]\r\n}"
 							}
 						},
@@ -2703,7 +2733,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "  query(\r\n      $status: String\r\n  ){\r\n  my_goal_template(\r\n      status: $status\r\n  ){\r\n     id\r\n    goal{\r\n        id\r\n        name\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        price\r\n        created_at\r\n    }\r\n    status\r\n    number_member\r\n    number_buy_on\r\n    number_paid\r\n    number_trials\r\n    number_done\r\n  }\r\n}",
+								"query": "  query(\r\n      $status: String\r\n  ){\r\n  my_goal_template(\r\n      status: $status\r\n  ){\r\n     id\r\n    goal{\r\n        id\r\n        name\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        price\r\n        created_at\r\n    }\r\n    status\r\n    checked_time\r\n    number_member\r\n    number_buy_on\r\n    number_paid\r\n    number_trials\r\n    number_done\r\n  }\r\n}",
 								"variables": "{\r\n   \"status\": \"all\"\r\n}"
 							}
 						},
@@ -3099,7 +3129,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "  query($types: [String]!){\r\n  my_notifications(\r\n      types: $types\r\n  ){\r\n    id\r\n    user_share_by\r\n    user{\r\n        id\r\n        name\r\n        attachment{\r\n            file_type\r\n            thumb\r\n            file\r\n        }\r\n    }\r\n    type\r\n    type_id\r\n    messages\r\n    created_at\r\n    updated_at\r\n  }\r\n}",
-								"variables": "{\r\n    \"types\":[\"ahieve\"]\r\n}"
+								"variables": "{\r\n    \"types\":[\"goal_to_template\"]\r\n}"
 							}
 						},
 						"url": {
