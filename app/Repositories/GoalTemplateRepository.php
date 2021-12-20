@@ -100,11 +100,13 @@ class GoalTemplateRepository{
         $goalTemplate = $goalTemplate->map(function($template) {
             $goalMember = $this->goalMember_repository
                                    ->CountNumberMemberGoal($template->goal_id);
-            $numberBuyOn = $this->CountMemberBuyOn($template->goal_id, 'pending');
-            $numberPaid = $this->CountMemberBuyOn($template->goal_id, 'accept');
+            $numberBuyOn = $this->CountMemberPayment($template->goal_id, ['pending', 'Sent Receipt','onBuy']);
+            $numberPaid = $this->CountMemberPayment($template->goal_id, ['accept', 'Paid Confirmed' ]);
             $template->number_member = $goalMember->number_member;
             $template->number_buy_on = $numberBuyOn->sum;
-            $template->number_paid   = $numberPaid->sum;         
+            $template->number_paid   = $numberPaid->sum;   
+            $price  = (int) @$template->goal->price ?? 0;
+            $template->sum_price = $price * $numberPaid->sum;
             $template->number_done = 0;
             $template->number_trials = 0;
             return $template;
@@ -140,11 +142,11 @@ class GoalTemplateRepository{
         return @$goalTemplate;
     }
     
-    public function CountMemberBuyOn($goalid, $status = null)
+    public function CountMemberPayment($goalid, $status = [])
     {
         $payMent = Payment::selectRaw("COUNT(goal_id) as `sum`")
                             ->where('goal_id', $goalid)
-                            ->where('status', 'like', $status)
+                            ->whereIn('status', $status)
                             ->first();
         return $payMent;
     }

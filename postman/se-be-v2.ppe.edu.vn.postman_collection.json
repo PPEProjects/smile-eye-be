@@ -2733,7 +2733,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "  query(\r\n      $status: String\r\n  ){\r\n  my_goal_template(\r\n      status: $status\r\n  ){\r\n     id\r\n    goal{\r\n        id\r\n        name\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        price\r\n        created_at\r\n    }\r\n    status\r\n    checked_time\r\n    number_member\r\n    number_buy_on\r\n    number_paid\r\n    number_trials\r\n    number_done\r\n  }\r\n}",
+								"query": "  query(\r\n      $status: String\r\n  ){\r\n  my_goal_template(\r\n      status: $status\r\n  ){\r\n     id\r\n    goal{\r\n        id\r\n        name\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        price\r\n        created_at\r\n    }\r\n    status\r\n    sum_price\r\n    checked_time\r\n    number_member\r\n    number_buy_on\r\n    number_paid\r\n    number_trials\r\n    number_done\r\n  }\r\n}",
 								"variables": "{\r\n   \"status\": \"all\"\r\n}"
 							}
 						},
