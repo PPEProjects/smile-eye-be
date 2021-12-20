@@ -2,10 +2,13 @@
 
 namespace App\Repositories;
 
+use App\Models\Achieve;
+use App\Models\GeneralInfo;
 use App\Models\Goal;
 use App\Models\GoalMember;
 use App\Models\GoalTemplate;
 use App\Models\Payment;
+use App\Models\PublishInfo;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,24 +16,49 @@ class GoalTemplateRepository{
 
     private $goalMember_repository;
     private $generalInfo_repository;
+    private $notification_repository;
+
     public function __construct(
         GoalMemberRepository $goalMember_repository,
+        NotificationRepository $notification_repository,
         GeneralInfoRepository $generalInfo_repository
     ) {
         $this->goalMember_repository = $goalMember_repository;
         $this->generalInfo_repository = $generalInfo_repository;
+        $this->notification_repository = $notification_repository;
     }
     public function createGoalTemplate($args)
     {
         $args['user_id'] = Auth::id();
-            return GoalTemplate::updateOrCreate([
+        $user = User::where('id', Auth::id())
+                        ->where('roles', 'LIKE', '%admin%')
+                        ->first();
+        if(isset($user)){
+            $goalTemplate = GoalTemplate::where('goal_id', $args['goal_id'])
+                                            ->first();
+            $args['checked_time'] = (@$goalTemplate->checked_time ?? 0) + 1;
+        }
+        $template = GoalTemplate::updateOrCreate([
                         'goal_id' => $args['goal_id']
                         ],$args);
+        if(strtolower(@$args['status']) == 'inviting'){
+            $this->notification_repository
+                ->staticNotification('goal_to_template', $template->goal_id, $template, [$template->goal->user->id]);
+        }
+        return $template;   
     }
 
     public function updateGoalTemplate($args)
     {    
         $args['user_id'] = Auth::id();   
+        $user = User::where('id', Auth::id())
+                        ->where('roles', 'LIKE', '%admin%')
+                        ->first();
+        if(isset($user)){
+            $goalTemplate = GoalTemplate::where('goal_id', $args['goal_id'])
+                                            ->first();
+            $args['checked_time'] = @$goalTemplate->checked_time ?? 0 + 1;
+        }
         $args = array_diff_key($args, array_flip(['goal_id']));  
         return tap(GoalTemplate::findOrFail($args["id"]))->update($args);
     }
@@ -137,5 +165,43 @@ class GoalTemplateRepository{
         $idGoal = array_diff(@$idGoalTemplate ?? [], @$idGoalPayment ?? []); 
         $goal = Goal::whereIn('id', @$idGoal ?? [])->get();
         return $goal;
+    }
+    public function listGoalPotential($args){
+        $numberPotential = @$args['number_potential'] ?? 0;
+        $listGoalTemplate = $this->listGoalTemplates(['all']);
+        $getIdTemplate = $listGoalTemplate->pluck('goal_id');
+        $goals = Goal::whereNull('parent_id') 
+                        ->whereNotIn('id', @$getIdTemplate ?? [])
+                        ->get();
+        $goals = $this->generalInfo_repository
+                ->setType('goal')
+                ->get($goals);
+        $potential = [];
+        foreach($goals as $goal){
+            $sumAchieve = @$this->countAchieve($goal->general_info->id);
+            $sumShare = @$this->countShare($goal->general_info->id);
+            $sum = $sumShare->sum_share + $sumAchieve->sum_achieve;
+            if( $sum >= $numberPotential){
+                $goal->sum_achieve_share = $sum;
+                $goal->status = 'potential';
+                $potential[] = $goal;
+            }
+        }
+        return $potential;
+    }
+
+    public function countAchieve($general_id){
+        $sumAchieve = Achieve::selectRaw("COUNT(general_id) as `sum_achieve`")
+                                ->where('general_id', $general_id)
+                                ->where('status', 'LIKE' ,'%accept%')
+                                ->first();
+        return $sumAchieve;
+    }
+    public function countShare($general_id){
+        $sumShare = PublishInfo::selectRaw("COUNT(general_id) as `sum_share`")
+                                ->where('general_id', $general_id)
+                                ->where('status', 'LIKE' ,'%accept%')
+                                ->first();
+        return $sumShare;
     }
 }

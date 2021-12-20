@@ -81,6 +81,7 @@ type Goal{
     template: GoalTemplate
     shares:   JSON
     achieves: JSON
+    sum_achieve_share: Int 
 }
 type CountGoal {
     status : String

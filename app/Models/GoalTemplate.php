@@ -18,7 +18,8 @@ class GoalTemplate extends Model
         'user_id',
         'goal_id',
         'status',
-        'request'
+        'request',
+        'checked_time'
     ];
     public function goal(){
         return $this->belongsTo(goal::class);

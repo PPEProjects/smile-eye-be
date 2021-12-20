@@ -16,6 +16,7 @@ class CreateGoalTemplatesTable extends Migration
         Schema::create('goal_templates', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("user_id")->nullable();
+            $table->unsignedBigInteger("checked_time")->nullable();
             $table->string("goal_id")->nullable();
             $table->string('status')->nullable();
             $table->string('request')->nullable();

@@ -26,4 +26,7 @@ class GoalTemplateQueries
  public function myGoalTemplateUnpaid($_,array $args){
    return $this->goal_template_repository->myGoalTemplateUnpaid($args);
  }
+ public function listGoalPotential($_,array $args){
+  return $this->goal_template_repository->listGoalPotential($args);
+ }
 }

@@ -381,6 +381,17 @@ class NotificationRepository
                         else return;
                         
                     break;
+                case 'goal_to_template':
+                        $content = @$noti->content;
+                        if(isset($content)){
+                            $key = array_key_first($content);
+                        }
+                        $goal = Goal::where('id',$noti->type_id)->first();
+                        if(isset($goal)){
+                            $user = User::where("id",$noti["user_id"])->first(); 
+                            $messages->push('Invite your goal to template "<b>'.$goal->name.'</b>"');                           
+                        } else return;
+                    break;
             }
             $noti->messages = $messages;
             return $noti;
