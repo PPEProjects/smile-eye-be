@@ -135,7 +135,11 @@ class GoalTemplateRepository{
                                     ->sortByDESC('id'); 
         $goalTemplate = $goalTemplate->map(function($template) use($goals) {
            $goalMember = $this->goalMember_repository->CountNumberMemberGoal($template->goal_id);
+           $sumAchieve = @$this->countAchieve($template->goal->general_info->id);
+           $sumShare = @$this->countShare($template->goal->general_info->id);
+           $sum = $sumShare->sum_share + $sumAchieve->sum_achieve;
            $template->goal = @$goals[$template->goal_id];
+           $template->goal->sum_achieve_share = $sum;
            $template->number_member = $goalMember->number_member; 
             return $template;
         });
