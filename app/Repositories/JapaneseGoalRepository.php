@@ -264,7 +264,7 @@ class JapaneseGoalRepository
                 $trialIds = array_intersect($childrenIds, @$goalRoot->trial_block ?? []);
                 $checkTrial = in_array($detailJPGoal->goal_id, $trialIds);
 
-                $status = ['accept', 'confirm', "paidConfirmed", "done"];
+                $status = ['accept', 'paused', 'paid', 'confirm', "paidConfirmed", "done"];
                 $goalTemplate = GoalTemplate::where('goal_id', $goalRoot->id)
                                              ->whereIn('status', $status)
                                              ->first();
