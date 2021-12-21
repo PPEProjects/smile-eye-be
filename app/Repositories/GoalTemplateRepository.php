@@ -100,8 +100,8 @@ class GoalTemplateRepository{
         $goalTemplate = $goalTemplate->map(function($template) {
             $goalMember = $this->goalMember_repository
                                    ->CountNumberMemberGoal($template->goal_id);
-            $numberBuyOn = $this->CountMemberPayment($template->goal_id, ['pending', 'Sent Receipt','onBuy']);
-            $numberPaid = $this->CountMemberPayment($template->goal_id, ['accept', 'Paid Confirmed' ]);
+            $numberBuyOn = $this->CountMemberPayment($template->goal_id, ['pending', 'sentReceipt','onBuy']);
+            $numberPaid = $this->CountMemberPayment($template->goal_id, ['accept', 'paidConfirmed' ]);
             $template->number_member = $goalMember->number_member;
             $template->number_buy_on = $numberBuyOn->sum;
             $template->number_paid   = $numberPaid->sum;   
