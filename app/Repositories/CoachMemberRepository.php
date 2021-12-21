@@ -122,7 +122,20 @@ class CoachMemberRepository
     public function myListSupportMembers($args)
     {
         $userId = Auth::id();
-        $payments = Payment::all();
+        $sentReceipt = Payment::where('status', 'LIKE','%sentReceipt%')
+                                ->orderBy('updated_at', 'DESC')
+                                ->get();
+        $getidReceipt = $sentReceipt->pluck('id')->toArray();
+        $onBuy = Payment::where('status', 'LIKE','%onBuy%')
+                                ->orderBy('updated_at', 'DESC')
+                                ->get();
+        $getidOnBuy = $onBuy->pluck('id')->toArray();
+        $idPayments = [];
+        $idPayments = ($getidReceipt ?? []) + ($getidOnBuy ?? []);
+        $orther = Payment::whereNotIn('id', $idPayments)
+                                ->orderBy('updated_at', 'DESC')
+                                ->get();
+        $payments = $sentReceipt->merge($onBuy)->merge($orther);
         $getIdUserAdd = $payments->pluck('add_user_id');
         $checkUserIsset = User::whereIn('id', @$getIdUserAdd ??[])
                         ->get()
@@ -142,7 +155,7 @@ class CoachMemberRepository
             $payment->user->attachments = @$payment->attachments;
             return $payment;
         });
-        return $payments->sortByDesc('updated_at');
+        return $payments;
     }
 
     public function detailCoachMembers($args)
