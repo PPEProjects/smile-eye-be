@@ -38,7 +38,7 @@ class GoalTemplateRepository{
         if(@$args['status'] == 'pending' && !isset($checkGoal->price) || @$checkGoal->price == 0.00){
              throw new Error("Please set price for the goal.");          
         }
-        if(@$args['status'] == 'accept' || @$args['status'] == 'confirm'){
+        if(strtolower(@$args['status'])  == 'accept' || @$args['status'] == 'confirm'){
             $coachMember = CoachMember::where('user_id', $checkGoal->user_id)->first();
             $goalIds = array_merge(@$coachMember->goal_ids ?? [], [$args['goal_id']]);
             $upsert = [
