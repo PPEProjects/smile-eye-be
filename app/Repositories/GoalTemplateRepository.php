@@ -38,7 +38,7 @@ class GoalTemplateRepository{
         if(@$args['status'] == 'pending' && !isset($checkGoal->price) || @$checkGoal->price == 0.00){
              throw new Error("Please set price for the goal.");          
         }
-        if(strtolower(@$args['status'])  == 'accept' || @$args['status'] == 'confirm'){
+        if(strtolower(@$args['status']) == 'accept' || @$args['status'] == 'confirm'){
             $coachMember = CoachMember::where('user_id', $checkGoal->user_id)->first();
             $goalIds = array_merge(@$coachMember->goal_ids ?? [], [$args['goal_id']]);
             $upsert = [
@@ -69,6 +69,16 @@ class GoalTemplateRepository{
     public function updateGoalTemplate($args)
     {    
         $args['user_id'] = Auth::id();   
+        $checkGoal = Goal::find($args['goal_id']);
+        if(strtolower(@$args['status']) == 'accept' || strtolower(@$args['status']) == 'confirm'){
+            $coachMember = CoachMember::where('user_id', $checkGoal->user_id)->first();
+            $goalIds = array_merge(@$coachMember->goal_ids ?? [], [$args['goal_id']]);
+            $upsert = [
+                    'user_id' => $checkGoal->user_id,
+                    'goal_ids' => $goalIds
+                    ];
+            $upsertCoachMember = $this->coach_member_repository->upsertCoachMember($upsert);
+        }
         $user = User::where('id', Auth::id())
                         ->where('roles', 'LIKE', '%admin%')
                         ->first();
