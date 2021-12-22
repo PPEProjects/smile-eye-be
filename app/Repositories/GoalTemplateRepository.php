@@ -43,7 +43,7 @@ class GoalTemplateRepository{
             $goalIds = array_merge(@$coachMember->goal_ids ?? [], [$args['goal_id']]);
             $upsert = [
                     'user_id' => $checkGoal->user_id,
-                    'goal_ids' => [$args['goal_id']]
+                    'goal_ids' => $goalIds
                     ];
             $upsertCoachMember = $this->coach_member_repository->upsertCoachMember($upsert);
         }
