@@ -65,7 +65,7 @@ class GoalQueries
     public function myGoalsTreeSelect($_, array $args){
         $goals = Goal::selectRaw('id as value, name as title, parent_id')
             ->where("root_id", $args['root_id'])
-            ->orderBy('id', 'desc')
+            ->orderByRaw('-`index` DESC, `created_at` ASC')
             ->get()
             ->toArray();
 //        return $goals;
