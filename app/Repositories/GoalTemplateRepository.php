@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Achieve;
+use App\Models\CoachMember;
 use App\Models\GeneralInfo;
 use App\Models\Goal;
 use App\Models\GoalMember;
@@ -18,26 +19,37 @@ class GoalTemplateRepository{
     private $goalMember_repository;
     private $generalInfo_repository;
     private $notification_repository;
-
+    private $coach_member_repository;
     public function __construct(
         GoalMemberRepository $goalMember_repository,
         NotificationRepository $notification_repository,
-        GeneralInfoRepository $generalInfo_repository
+        GeneralInfoRepository $generalInfo_repository,
+        CoachMemberRepository $coach_member_repository
     ) {
         $this->goalMember_repository = $goalMember_repository;
         $this->generalInfo_repository = $generalInfo_repository;
         $this->notification_repository = $notification_repository;
+        $this->coach_member_repository = $coach_member_repository;
     }
     public function createGoalTemplate($args)
     {
         $args['user_id'] = Auth::id();
+        $checkGoal = Goal::find($args['goal_id']);
+        if(@$args['status'] == 'pending' && !isset($checkGoal->price) || @$checkGoal->price == 0.00){
+             throw new Error("Please set price for the goal.");          
+        }
+        if(@$args['status'] == 'accept' || @$args['status'] == 'confirm'){
+            $coachMember = CoachMember::where('user_id', $checkGoal->user_id)->first();
+            $goalIds = array_merge(@$coachMember->goal_ids ?? [], [$args['goal_id']]);
+            $upsert = [
+                    'user_id' => $checkGoal->user_id,
+                    'goal_ids' => [$args['goal_id']]
+                    ];
+            $upsertCoachMember = $this->coach_member_repository->upsertCoachMember($upsert);
+        }
         $user = User::where('id', Auth::id())
                         ->where('roles', 'LIKE', '%admin%')
                         ->first();
-        $checkGoal = Goal::find($args['goal_id']);
-        if(@$args['status'] != 'pending' && !isset($checkGoal->price) || @$checkGoal->price == 0.00){
-             throw new Error("Please set price for the goal.");          
-        }
         if(isset($user)){
             $goalTemplate = GoalTemplate::where('goal_id', $args['goal_id'])
                                             ->first();
