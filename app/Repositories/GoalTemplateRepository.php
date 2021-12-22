@@ -36,7 +36,7 @@ class GoalTemplateRepository{
                         ->first();
         $checkGoal = Goal::find($args['goal_id']);
         if(@$args['status'] != 'pending' && !isset($checkGoal->price)){
-             throw new Error("Please input price your goal");          
+             throw new Error("Please set price for the goal.");          
         }
         if(isset($user)){
             $goalTemplate = GoalTemplate::where('goal_id', $args['goal_id'])
