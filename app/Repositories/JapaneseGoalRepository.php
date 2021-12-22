@@ -260,8 +260,8 @@ class JapaneseGoalRepository
             if (isset($goalRoot->id)) {
                 $childrenIds = $this->japaneseLearn_repository->goalNochild([$goalRoot->id]);
                 $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);
-
-                $trialIds = array_intersect($childrenIds, @$goalRoot->trial_block ?? []);
+                $trials = $this->findJapaneseGoals(@$goalRoot->trial_block ?? []);
+                $trialIds = array_intersect($childrenIds, @$trials ?? []);
                 $checkTrial = in_array($detailJPGoal->goal_id, $trialIds);
 
                 $status = ['accept', 'paused', 'paid', 'confirm', "paidConfirmed", "done"];
@@ -360,6 +360,20 @@ class JapaneseGoalRepository
         return $detailJPGoal;
     }
 
+    public function findJapaneseGoals($ids, $idBlocks = []){
+        $idJP = $idBlocks;
+        $goals =  Goal::whereIn('parent_id', @$ids ?? [])->get();
+        foreach ($goals as $key => $goal) {
+          $jpGoal =  $this->getJapaneseGoal('goal_id', $goal->id)->first();
+            if(isset($jpGoal)){
+                $idJP[] = $goal->id;
+            }
+            else{
+              $idJP =  self::findJapaneseGoals([$goal->id], $idJP);
+            }
+        }
+        return $idJP;
+    }
     public function findGoal($id)
     {
         $goal = Goal::where('id', $id)->first();
