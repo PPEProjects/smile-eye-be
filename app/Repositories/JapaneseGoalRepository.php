@@ -363,6 +363,7 @@ class JapaneseGoalRepository
     public function findJapaneseGoals($ids, $idBlocks = []){
         $idJP = $idBlocks;
         $goals =  Goal::whereIn('parent_id', @$ids ?? [])->get();
+        
         foreach ($goals as $key => $goal) {
           $jpGoal =  $this->getJapaneseGoal('goal_id', $goal->id)->first();
             if(isset($jpGoal)){
@@ -371,6 +372,9 @@ class JapaneseGoalRepository
             else{
               $idJP =  self::findJapaneseGoals([$goal->id], $idJP);
             }
+        }
+        if($goals->toArray() == []){
+            $idJP = $ids;
         }
         return $idJP;
     }
