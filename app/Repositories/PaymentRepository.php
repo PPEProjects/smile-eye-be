@@ -51,12 +51,15 @@ class PaymentRepository
 
         if(isset($args['status'])){
             $payment = $payment->where('status', 'LIKE', $args['status']);
-        }       
-        $getIdGoals = $payment->pluck('goal_id'); 
-        $checkGoal = Goal::whereIn('id', @$getIdGoals ?? [])
+        }      
+        if(isset($payment))
+        {
+            $getIdGoals = $payment->pluck('goal_id'); 
+            $checkGoal = Goal::whereIn('id', @$getIdGoals ?? [])
                             ->get()
                             ->pluck('id'); 
-        $payment = $payment->whereIn('goal_id', @$checkGoal ?? []);
+            $payment = $payment->whereIn('goal_id', @$checkGoal ?? []);
+        }
         return $payment;
     }
    public function summaryPayments($args)
