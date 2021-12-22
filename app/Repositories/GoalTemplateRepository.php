@@ -10,6 +10,7 @@ use App\Models\GoalTemplate;
 use App\Models\Payment;
 use App\Models\PublishInfo;
 use App\Models\User;
+use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 class GoalTemplateRepository{
@@ -33,6 +34,10 @@ class GoalTemplateRepository{
         $user = User::where('id', Auth::id())
                         ->where('roles', 'LIKE', '%admin%')
                         ->first();
+        $checkGoal = Goal::find($args['goal_id']);
+        if(@$args['status'] != 'pending' && !isset($checkGoal->price)){
+             throw new Error("Please input price your goal");          
+        }
         if(isset($user)){
             $goalTemplate = GoalTemplate::where('goal_id', $args['goal_id'])
                                             ->first();
@@ -41,7 +46,8 @@ class GoalTemplateRepository{
         $template = GoalTemplate::updateOrCreate([
                         'goal_id' => $args['goal_id']
                         ],$args);
-        if(strtolower(@$args['status']) == 'inviting'){
+        if(strtolower(@$args['status']) == 'inviting')
+        {
             $this->notification_repository
                 ->staticNotification('goal_to_template', $template->goal_id, $template, [$template->goal->user->id]);
         }
