@@ -111,13 +111,20 @@ class GoalTemplateRepository{
             $template->number_member = $goalMember->number_member;
             $template->number_buy_on = $numberBuyOn->sum;
             $template->number_paid   = $numberPaid->sum;   
-            $price  = (int) @$template->goal->price ?? 0;
-            $template->sum_price = $price * $numberPaid->sum;
+            $price  = $this->sumPriceSellGoal($template->goal_id);
+            $template->sum_price = @$price->money ?? 0;
             $template->number_done = 0;
             $template->number_trials = 0;
             return $template;
         });   
         return $goalTemplate;
+    }
+    public function sumPriceSellGoal($id){
+        $payments = Payment::selectRaw('*, SUM(money) as money')
+                            ->where('goal_id', $id)
+                            ->whereIn('status', ['accept', 'paidConfirmed', 'done'])
+                            ->first();
+        return @$payments;
     }
     public function listGoalTemplates($args){
         $status = @$args["status"] ?? "all";
