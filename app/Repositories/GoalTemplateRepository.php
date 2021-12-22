@@ -35,7 +35,7 @@ class GoalTemplateRepository{
                         ->where('roles', 'LIKE', '%admin%')
                         ->first();
         $checkGoal = Goal::find($args['goal_id']);
-        if(@$args['status'] != 'pending' && !isset($checkGoal->price)){
+        if(@$args['status'] != 'pending' && !isset($checkGoal->price) || @$checkGoal->price == 0.00){
              throw new Error("Please set price for the goal.");          
         }
         if(isset($user)){
