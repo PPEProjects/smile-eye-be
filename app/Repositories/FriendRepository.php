@@ -103,7 +103,17 @@ class FriendRepository
         }
         else
         {
-            $users = $users->paginate('100', ['*'], 'page', '1');
+            $numberUsers = 500;
+            $listUsers = $users->paginate($numberUsers , ['*'], 'page', '1');
+            $sumPage = $listUsers->toArray();
+            $sumPage = $sumPage['last_page'];
+            for ($i = 2; $i <= $sumPage; $i++){
+                $getUsers = $users->paginate($numberUsers , ['*'], 'page',$i);
+                if(isset($getUsers)) {
+                    $listUsers = $listUsers->merge($getUsers);
+                }
+            }
+            $users = $listUsers;
         }
         $idFriendNotYet = $users->pluck('id');
 
