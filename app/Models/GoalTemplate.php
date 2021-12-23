@@ -19,6 +19,7 @@ class GoalTemplate extends Model
         'goal_id',
         'status',
         'request',
+        'sell_goal',
         'checked_time'
     ];
     public function goal(){

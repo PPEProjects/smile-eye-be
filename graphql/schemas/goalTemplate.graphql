@@ -22,6 +22,7 @@ type GoalTemplate{
     goal: Goal
     members: [User]
     status: String
+    sell_goal: String
     request: String
     created_at: DateTime
     updated_at: DateTime
@@ -37,12 +38,14 @@ type GoalTemplate{
 input CreateGoalTemplateInput{
     goal_id: ID
     status: String
+    sell_goal: String
     request: String
 }
 input UpdateGoalTemplateInput{
     id : ID!
     goal_id: ID
     status: String
+    sell_goal: String
     request: String
 }
 input DeleteGoalTemplateInput{

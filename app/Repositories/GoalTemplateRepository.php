@@ -38,7 +38,7 @@ class GoalTemplateRepository{
         if(@$args['status'] == 'pending' && !isset($checkGoal->price) || @$checkGoal->price == 0.00){
              throw new Error("Please set price for the goal.");          
         }
-        if(strtolower(@$args['status']) == 'accept' || @$args['status'] == 'confirm'){
+        if(strtolower(@$args['status']) == 'accept' || strtolower(@$args['status']) == 'confirmed'){
             $coachMember = CoachMember::where('user_id', $checkGoal->user_id)->first();
             $goalIds = array_merge(@$coachMember->goal_ids ?? [], [$args['goal_id']]);
             $upsert = [
@@ -63,6 +63,11 @@ class GoalTemplateRepository{
             $this->notification_repository
                 ->staticNotification('goal_to_template', $template->goal_id, $template, [$template->goal->user->id]);
         }
+        $sellGoal = @$args['sell_goal'] ?? 0;
+        if($sellGoal != 0){
+            $this->notification_repository
+                ->staticNotification('sell_goal_template', $template->goal_id, $template, [$template->goal->user->id]);
+        }
         return $template;   
     }
 
@@ -70,7 +75,7 @@ class GoalTemplateRepository{
     {    
         $args['user_id'] = Auth::id();   
         $checkGoal = Goal::find($args['goal_id']);
-        if(strtolower(@$args['status']) == 'accept' || strtolower(@$args['status']) == 'confirm'){
+        if(strtolower(@$args['status']) == 'accept' || strtolower(@$args['status']) == 'confirmed'){
             $coachMember = CoachMember::where('user_id', $checkGoal->user_id)->first();
             $goalIds = array_merge(@$coachMember->goal_ids ?? [], [$args['goal_id']]);
             $upsert = [
@@ -191,7 +196,7 @@ class GoalTemplateRepository{
     }
     public function myGoalTemplateUnpaid($args)
     {   
-        $status = ['accept', 'paused','paid','confirm', "paidConfirmed", "done"];
+        $status = ['accept', 'paused','paid','confirmed', "paidConfirmed", "done"];
         $goalMember = GoalMember::where('add_user_id', Auth::id())->get();
         $getIdgoals = $goalMember->pluck('goal_id');
         $goalTemplate = GoalTemplate::wherein('goal_id', @$getIdgoals ?? [])

@@ -19,6 +19,7 @@ class CreateGoalTemplatesTable extends Migration
             $table->unsignedBigInteger("checked_time")->nullable();
             $table->string("goal_id")->nullable();
             $table->string('status')->nullable();
+            $table->string('sell_goal')->nullable();
             $table->string('request')->nullable();
             $table->timestamps();
         });

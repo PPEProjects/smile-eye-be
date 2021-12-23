@@ -10,6 +10,7 @@ use App\Models\Friend;
 use App\Models\FriendGroup;
 use App\Models\GeneralInfo;
 use App\Models\Goal;
+use App\Models\GoalTemplate;
 use App\Models\JapaneseGoal;
 use App\Models\JapaneseLearn;
 use App\Models\Notification;
@@ -391,6 +392,22 @@ class NotificationRepository
                             $user = User::where("id",$noti["user_id"])->first(); 
                             $messages->push('Invite your goal to template "<b>'.$goal->name.'</b>"');                           
                         } else return;
+                    break;
+                case 'sell_goal_template':
+                    $content = @$noti->content;
+                    if(isset($content)){
+                        $key = array_key_first($content);
+                    }
+                    $goal = Goal::where('id',$noti->type_id)->first();
+                    if(isset($goal)){
+                        $goalTemplate = GoalTemplate::where('goal_id', $goal->id)->first();
+                        if(isset($goalTemplate->sell_goal)) {
+                            $messages->push('Want sell your goal "<b>'
+                                . $goal->name . '</b>" with price "'
+                                . @$goalTemplate->sell_goal . '"');
+                        }
+                        else return;
+                    } else return;
                     break;
             }
             $noti->messages = $messages;
