@@ -80,3 +80,20 @@ Route::post('/sender', function () {
     $data = request()->data;
     event(new \App\Events\LoginMessage($data));
 });
+
+
+Route::get('/japanese_kanjis', function () {
+//    return view('sender');
+//    dd(1);
+    $JapaneseKanji = \App\Models\JapaneseKanji::all();
+    foreach ($JapaneseKanji as $item) {
+        $more = $item->more;
+        $more['writing'] = [
+            'radioKey' => 'image',
+            'file'     => @$more['img']
+        ];
+        $item->more = $more;
+        $item->save();
+    }
+    dd('done');
+});
