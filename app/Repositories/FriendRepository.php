@@ -103,7 +103,7 @@ class FriendRepository
         }
         else
         {
-            $numberUsers = 500;
+            $numberUsers = 1000;
             $listUsers = $users->paginate($numberUsers , ['*'], 'page', '1');
             $sumPage = $listUsers->toArray();
             $sumPage = $sumPage['last_page'];
