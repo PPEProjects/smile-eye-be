@@ -28,7 +28,7 @@ class PaymentRepository
              $data = [
                  'goal_id' => $goal_id,
                  'user_id' => Auth::id(),
-                 'add_user_id' => $goal_id,
+                 'add_user_id' => $addUserId,
                  'status' => 'trial'
              ];
              $createPayment = Payment::create($data);
