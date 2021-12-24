@@ -374,7 +374,7 @@ class JapaneseGoalRepository
             }
         }
         if($goals->toArray() == []){
-            $idJP = $ids;
+            $idJP = array_merge($ids);
         }
         return $idJP;
     }
