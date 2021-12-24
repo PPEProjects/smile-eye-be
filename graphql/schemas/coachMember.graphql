@@ -37,6 +37,7 @@ type CoachMember{
     members: [Member]
     name: String
     payments: [Payment]
+    money: String
 }
 type ListCoach{
     data: [CoachMember]
