@@ -370,11 +370,12 @@ class JapaneseGoalRepository
                 $idJP[] = $goal->id;
             }
             else{
-              $idJP =  self::findJapaneseGoals([$goal->id], $idJP);
+              $findBlock =  self::findJapaneseGoals([$goal->id], $idJP);
+              $idJP = array_merge($idJP, $findBlock);
             }
         }
         if($goals->toArray() == []){
-            $idJP = array_merge($ids);
+            $idJP = array_merge($idJP, $ids);
         }
         return $idJP;
     }
