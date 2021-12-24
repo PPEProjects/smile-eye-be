@@ -28,6 +28,8 @@ class JapaneseGoalRepository
         $this->attachment_service = $attachment_service;
         $this->notification_repository = $notificationRepository;
         $this->japaneseLearn_repository = $japaneseLearn_repository;
+        ini_set('memory_limit', '300M');
+
     }
 
     public function createJapaneseGoal($args)
