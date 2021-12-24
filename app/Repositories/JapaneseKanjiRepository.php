@@ -20,33 +20,35 @@ class JapaneseKanjiRepository
             $vocabulary['more'] = array_diff_key($value, array_flip(['id', 'name']));
             JapaneseKanji::create($vocabulary);
         }
-    
+
         return true;
     }
 
     public function upsertJapaneseKanji($args)
     {
         $args['user_id'] = Auth::id();
-        if(isset($args['name']))
-        {
+        if (isset($args['name'])) {
             // if(preg_match('/[\x{4E00}-\x{9FBF}]/u', $args['name']) <= 0){
             //     throw new Error("This is not a Kanji. Please input Kanji letter!");
             // }   
-        
-            if(strlen($args['name']) > 3){
+
+            if (strlen($args['name']) > 3) {
                 throw new Error("Please input 1 Kanji letter!");
             }
         }
-        if(@$args['more'] == []){
+        if (@$args['more'] == []) {
             $args = array_diff_key($args, array_flip(['more']));
         }
         $checkDataKanji = ['name' => @$args['name']];
-        if(isset($args['id']))
-        {
+        if (isset($args['id'])) {
             $checkDataKanji = ['id' => $args['id']];
-        }            
+            if (!is_numeric($args['id'])) {
+                $checkDataKanji = ['name' => $args['name']];
+                unset($args['id']);
+            }
+        }
         $kanji = JapaneseKanji::updateOrCreate($checkDataKanji, $args);
-        return $kanji;  
+        return $kanji;
     }
 
     public function updateJapaneseKanji($args)
@@ -80,10 +82,10 @@ class JapaneseKanjiRepository
     {
         if (!empty($args['ids'])) {
             $japaneseKanji = [];
-            foreach($args['ids'] as $id){
+            foreach ($args['ids'] as $id) {
                 $japaneseKanji[] = JapaneseKanji::find($id);
             }
-           return $japaneseKanji;
+            return $japaneseKanji;
         }
         return JapaneseKanji::all();
     }
