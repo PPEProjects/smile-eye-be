@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Goal;
+use App\Models\GoalTemplate;
 use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -15,8 +16,26 @@ class PaymentRepository
         $args["user_id"] = Auth::id();
         return Payment::create($args);
     }
-
-
+     public function updateTrial($goal_id, $addUserId){
+         $status = ['accept', 'paused', 'confirmed', "paidConfirmed", "done"];
+         $payment= Payment::where('goal_id', $goal_id)
+             ->where("add_user_id", $addUserId)
+             ->first();
+         $template = GoalTemplate::where('goal_id', $goal_id)
+             ->whereIn('status', $status)
+             ->first();
+         if(!isset($payment) && isset($template)){
+             $data = [
+                 'goal_id' => $goal_id,
+                 'user_id' => Auth::id(),
+                 'add_user_id' => $goal_id,
+                 'status' => 'trial'
+             ];
+             $createPayment = Payment::create($data);
+             return $createPayment;
+         }
+         return ;
+     }
     public function updatePayment($args)
     {
         return tap(Payment::findOrFail($args["id"]))->update($args);
