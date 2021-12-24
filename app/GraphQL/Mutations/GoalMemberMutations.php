@@ -51,6 +51,7 @@ class GoalMemberMutations
                 if(!isset($payment) && isset($template)){
                     $data = [
                         'goal_id' => $goal_id,
+                        'user_id' => $args['user_id'],
                         'add_user_id' => $arr['add_user_id'],
                         'status' => 'trial'
                     ];
