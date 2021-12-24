@@ -150,7 +150,7 @@ class FriendGroupRepository
     public function myfriendGroups(){
         $userId = Auth::id();
         $myGroups = FriendGroup::where('user_id',$userId)->orderBy('id', 'DESC')->get();
-        $inviteGroups = FriendGroup::where('people', 'like', '%"user_id":'.$userId.'%')
+        $inviteGroups = FriendGroup::where('people', 'like', '%'.$userId.'%')
                                         ->whereNotIn('user_id', [$userId])
                                         ->orderBy('id', 'DESC')->get();
         $groups = $myGroups->merge($inviteGroups);
