@@ -253,10 +253,9 @@ class JapaneseGoalRepository
             $keyNext = 0;
             $keyPrev = 0;
             if (isset($goalRoot->id)) {
-                $listGoals = Goal::where('root_id', $goalRoot->id);
-                $childrenIds = $this->findBlock($listGoals,[$goalRoot->id]);
+                $childrenIds = $this->findBlock([$goalRoot->id]);
                 $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);
-                $trials = $this->findBlock($listGoals,@$goalRoot->trial_block ?? []);
+                $trials = $this->findBlock(@$goalRoot->trial_block ?? []);
                 $trialIds = array_intersect($childrenIds, @$trials ?? []);
                 $checkTrial = in_array($detailJPGoal->goal_id, $trialIds);
 
@@ -355,15 +354,15 @@ class JapaneseGoalRepository
         }
         return $detailJPGoal;
     }
-    public function findBlock($listGoals, $ids, $children = [])
+    public function findBlock($ids, $children = [])
     {
         $getchildren = $children;
         foreach($ids as $value)
         {
-            $find = $listGoals->where('parent_id', $value)->orderByRaw('-`index` DESC')->get();
+            $find = Goal::where('parent_id', $value)->orderByRaw('-`index` DESC')->get();
             if($find->toArray() != []){
                 $idParent = $find->pluck('id')->toArray();
-                $getchildren =  self::findBlock($listGoals, $idParent, $getchildren);
+                $getchildren =  self::findBlock($idParent, $getchildren);
             }
             else  $getchildren[] = (string)$value;
         }
