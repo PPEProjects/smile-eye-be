@@ -28,7 +28,7 @@ class JapaneseGoalRepository
         $this->attachment_service = $attachment_service;
         $this->notification_repository = $notificationRepository;
         $this->japaneseLearn_repository = $japaneseLearn_repository;
-        ini_set('memory_limit', '300M');
+        ini_set('memory_limit', '3000M');
 
     }
 
