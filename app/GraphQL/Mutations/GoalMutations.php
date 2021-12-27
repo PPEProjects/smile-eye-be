@@ -68,10 +68,13 @@ class GoalMutations
     {
 //        $goal = Goal::find($args['id']);
         $args = array_diff_key($args, array_flip(['directive']));
+        $deleteGoal = Goal::find($args['id']);
+        if (empty($deleteGoal)) {
+            return false;
+        }
         $args['status'] = 'delete';
         $update = tap(Goal::findOrFail($args["id"]))
             ->update($args);
-        $deleteGoal = Goal::find($args['id']);
         return $deleteGoal->delete();
     }
 

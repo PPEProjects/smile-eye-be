@@ -149,7 +149,8 @@ input UpdateGoalInput{
 }
 
 input DeleteGoalInput{
-    id: ID! @rules(apply: ["required","App\\Rules\\OwnerCheckGoal"])
+    # id: ID! @rules(apply: ["required","App\\Rules\\OwnerCheckGoal"])
+     id: ID!
 }
 
 # Ver 2
