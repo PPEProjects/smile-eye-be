@@ -71,20 +71,18 @@ class CoachMemberRepository
         $userId = Auth::id();
         $coachMember = CoachMember::where('user_id', $userId)
                                     ->first();
-                                    
+        $goals = Goal::where('user_id', $userId)->whereNull('parent_id')->get();
+        $goalIds =  $goals->pluck('id')->toArray();
+        $listGoalIds = array_merge(@$goalIds ?? [], @$coachMember->goal_ids ?? []);                        
         $goalMembers = GoalMember::SelectRaw("id, goal_id, add_user_id as user_id, teacher_id, created_at")
                                     ->where('teacher_id',  $userId)
-                                    ->orWhereIn('goal_id', @$coachMember->goal_ids ?? [])
+                                    ->orWhereIn('goal_id', @$listGoalIds ?? [])
                                     ->get();
         $getIdUserAdd = $goalMembers->pluck('user_id');
         $checkUserIsset = User::whereIn('id', @$getIdUserAdd ??[])
                                 ->get()
                                 ->pluck('id'); 
-        $goalMembers = $goalMembers->whereIn('user_id', @$checkUserIsset ?? []);
-        $goalIds = $goalMembers->pluck('goal_id');
-        $goals = Goal::whereIn('id', @$goalIds ?? [])->get();
-        $getIds = $goals->pluck('id');
-        $listMembers = $goalMembers->whereIn('goal_id', @$getIds ?? []);
+        $listMembers = $goalMembers->whereIn('user_id', @$checkUserIsset ?? []);
         $typeNotis = ["diary", "achieve", "edit_diary", "communication", "sing_with_friend"];
 
         $listMembers = $listMembers->map(function($list) use($typeNotis){
@@ -99,6 +97,7 @@ class CoachMemberRepository
                 $list->user->count_missing = $countMissing;
                 return $list;
         });
+        
         return $listMembers;
     }
     public function numberMember($userId)
