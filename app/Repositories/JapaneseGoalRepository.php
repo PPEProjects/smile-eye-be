@@ -255,28 +255,31 @@ class JapaneseGoalRepository
             if (isset($goalRoot->id)) {
                 $listGoals = Goal::where('root_id', $goalRoot->id)->orderByRaw('-`index` DESC')->get();
 
-                $status = ['accept', 'paused', 'paid', 'confirmed', "paidConfirmed", "done"];
-                $statusTemplate = @$goalRoot->goalTemplate->status ?? "";
-                $goalTemplate = in_array(strtolower($statusTemplate), $status);
-                if($goalTemplate){
-                    $payment = $goalRoot->payMent
-                                        ->where('add_user_id', Auth::id())
-                                        ->whereIn('status', $status)
-                                        ->first(); 
-                    $detailJPGoal->payment_status = (isset($payment->status)) ? true : false;
-                }
-                else {
-                    $detailJPGoal->payment_status = true;
-                }
-
                 $coachMember = CoachMember::where('user_id', Auth::id())
                                             ->first();
                 $checkIdGoal = in_array($goalRoot->id, @$coachMember->goal_ids ?? []);
-                $admin = User::where('id',Auth::id())->where('roles', 'like', '%admin%')->first();
+                $admin = User::where('id',Auth::id())
+                                ->where('roles', 'like', '%admin%')
+                                ->first();
                 if($goalRoot->user_id == Auth::id() || $checkIdGoal || $admin){
                     $detailJPGoal->payment_status = true;
                 }
-
+                if(empty($detailJPGoal->payment_status))
+                {
+                    $status = ['accept', 'paused', 'paid', 'confirmed', "paidConfirmed", "done"];
+                    $statusTemplate = @$goalRoot->goalTemplate->status ?? "";
+                    $goalTemplate = in_array(strtolower($statusTemplate), $status);
+                    if($goalTemplate){
+                        $payment = $goalRoot->payMent
+                                            ->where('add_user_id', Auth::id())
+                                            ->whereIn('status', $status)
+                                            ->first(); 
+                        $detailJPGoal->payment_status = (isset($payment->status)) ? true : false;
+                    }
+                    else {
+                    $detailJPGoal->payment_status = true;
+                    }
+                }
                 if($detailJPGoal->payment_status == false)
                 {
                     $trialIds = $this->findBlock($listGoals, @$goalRoot->trial_block ?? []);
