@@ -27,6 +27,7 @@ type GeneralInfo{
     action_at_time: String
     note : String
     attachments : [Attachment]
+    storage : JSON
     publish : String
     contest : JSON
     color : String

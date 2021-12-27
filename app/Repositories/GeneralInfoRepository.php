@@ -48,6 +48,9 @@ class GeneralInfoRepository
                 if(isset($payload['id']) && GeneralInfo::where('goal_id', $payload['id'])->exists()){
                     unset($data['user_id']);
                 }
+                \Illuminate\Support\Facades\Log::channel('single')->info('$data', [$data]);
+                \Illuminate\Support\Facades\Log::channel('single')->info('$payload', [$payload]);
+                
                 GeneralInfo::updateOrCreate(
                     ['goal_id' => $payload['id']],
                     $data

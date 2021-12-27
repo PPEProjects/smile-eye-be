@@ -27,6 +27,7 @@ class GeneralInfo extends Model
         'action_at_time',
         'note',
         'attachment_ids',
+        'storage',
         'publish',
         'contest',
         'color',
@@ -35,6 +36,7 @@ class GeneralInfo extends Model
     ];
     protected $casts = [
         'attachment_ids' => 'json',
+        'storage' => 'json',
         'contest' => 'json',
 
     ];
