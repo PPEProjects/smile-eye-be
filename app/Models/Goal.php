@@ -68,4 +68,11 @@ class Goal extends Model
     public function attachment(){
         return $this->belongsToJson(Attachment::class,"attachment_ids");
     }
+    public function goalTemplate(){
+        return $this->belongsTo(GoalTemplate::class, "id","goal_id");
+    }
+    public function payMent()
+    {
+        return $this->hasMany(Payment::class, "goal_id");
+    }
 }

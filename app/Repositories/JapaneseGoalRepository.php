@@ -254,18 +254,12 @@ class JapaneseGoalRepository
             $keyPrev = 0;
             if (isset($goalRoot->id)) {
                 $listGoals = Goal::where('root_id', $goalRoot->id)->orderByRaw('-`index` DESC')->get();
-                $childrenIds = $this->findBlock($listGoals, [$goalRoot->id]);
-                $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);
-                $trials = $this->findBlock($listGoals, @$goalRoot->trial_block ?? []);
-                $trialIds = array_intersect($childrenIds, @$trials ?? []);
-                $checkTrial = in_array($detailJPGoal->goal_id, $trialIds);
 
                 $status = ['accept', 'paused', 'paid', 'confirmed', "paidConfirmed", "done"];
-                $goalTemplate = GoalTemplate::where('goal_id', $goalRoot->id)
-                                             ->whereIn('status', $status)
-                                             ->first();
-                if(isset($goalTemplate)){
-                    $payment = Payment::where('goal_id', $goalRoot->id)
+                $statusTemplate = @$goalRoot->goalTemplate->status ?? "";
+                $goalTemplate = in_array(strtolower($statusTemplate), $status);
+                if($goalTemplate){
+                    $payment = $goalRoot->payMent
                                         ->where('add_user_id', Auth::id())
                                         ->whereIn('status', $status)
                                         ->first(); 
@@ -283,29 +277,38 @@ class JapaneseGoalRepository
                     $detailJPGoal->payment_status = true;
                 }
 
-                if($detailJPGoal->payment_status == false && $checkTrial)
+                if($detailJPGoal->payment_status == false)
                 {
-                    $detailJPGoal->payment_status = true;
-                    foreach ($trialIds as $key => $value) {
-                        if ($key > $findIds) {
-                            if (isset($getTypeNextGoal)) {
+                    $trialIds = $this->findBlock($listGoals, @$goalRoot->trial_block ?? []);
+
+                    // $trialIds = array_intersect($childrenIds, @$trials ?? []);
+                    $checkTrial = in_array($detailJPGoal->goal_id, @$trialIds ?? []);
+                    $findIds = array_search($detailJPGoal->goal_id, $trialIds , true);                              
+                    if($checkTrial)
+                    {
+                        $detailJPGoal->payment_status = true;
+                        foreach ($trialIds as $key => $value) {
+                            if ($key > $findIds) {
+                                if (isset($getTypeNextGoal)) {
                                 continue;
+                                }
+                                $getTypeNextGoal = @$this->getJapaneseGoal('goal_id', $value)->first();
+                                $keyNext = $value;
                             }
-                            $getTypeNextGoal = @$this->getJapaneseGoal('goal_id', $value)->first();
-                            $keyNext = $value;
-                        }
-                        if ($key > 0 && $key < $findIds) {
-                            if (isset($getTypePrevGoal)) {
+                            if ($key > 0 && $key < $findIds) {
+                                if (isset($getTypePrevGoal)) {
                                 continue;
+                                }
+                                $getTypePrevGoal = @$this->getJapaneseGoal('goal_id', @$trialIds[$findIds - $key])->first();
+                                $keyPrev = @$trialIds[$findIds - $key];
                             }
-                            $getTypePrevGoal = @$this->getJapaneseGoal('goal_id', @$trialIds[$findIds - $key])->first();
-                            $keyPrev = @$trialIds[$findIds - $key];
                         }
                     }
                 }
                 if ($keyNext == 0)
                 {
-
+                    $childrenIds = $this->findBlock($listGoals, [$goalRoot->id]);
+                    $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);      
                     foreach ($childrenIds as $key => $value)
                     {
                         if ($key > $findIds) {
