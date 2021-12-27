@@ -42,13 +42,13 @@ class GoalQueries
         $this->goalMember_repository = $goalMember_repository;
     }
 
-    public function goalsChildren($_, array $args)
-    {
-        $cons = array_merge(['user_id' => Auth::id()], $args);
-        $cons = array_intersect_key($cons, array_flip(['user_id', 'goal_id']));
-        $goals = $this->goal_repository->getGoalsChildren($cons);
-        return $goals;
-    }
+    // public function goalsChildren($_, array $args)
+    // {
+    //     $cons = array_merge(['user_id' => Auth::id()], $args);
+    //     $cons = array_intersect_key($cons, array_flip(['user_id', 'goal_id']));
+    //     $goals = $this->goal_repository->getGoalsChildren($cons);
+    //     return $goals;
+    // }
 
     public function my_parentGoal($_, array $args)
     {
@@ -152,18 +152,14 @@ class GoalQueries
             $goals = $goals->whereNotIn('id', $getIdJapaneseGoals);
         }
         $goalIds = $goals->pluck('id')->toArray();
-        $goalTemplate = GoalTemplate::whereIn('goal_id',@$goalIds ?? [])
-                                        ->get()
-                                        ->keyBy('goal_id');
+        // $goalTemplate = GoalTemplate::whereIn('goal_id',@$goalIds ?? [])
+        //                                 ->get()
+        //                                 ->keyBy('goal_id');
         $nextGoal = $this->nextGoal($goalIds);
         $goals = $this->generalinfo_repository
             ->setType('goal')
             ->get($goals);
-//            ->map(function ($goal) {
-//                return $this->goal_repository->calculatorProcessTodolist($goal);
-//            });
-//        dd($goals->first()->toArray());
-        $goals = $goals->map(function ($goal) use ($nextGoal, $goalTemplate, $goalMember) 
+        $goals = $goals->map(function ($goal) use ($nextGoal, $goalMember) 
         {
             $countMember =  $this->goalMember_repository
                                         ->CountNumberMemberGoal($goal->id);
@@ -173,7 +169,7 @@ class GoalQueries
             }  
             $goal->rank = $rank;
             $goal->number_member = $countMember->number_member; 
-            $goal->template = @$goalTemplate[$goal->id];
+            $goal->template = @$goal->goalTemplate;
             $goal->next_goal = @$nextGoal[$goal->id];
             return $goal;
         });
