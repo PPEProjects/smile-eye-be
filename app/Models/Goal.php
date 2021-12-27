@@ -76,6 +76,6 @@ class Goal extends Model
         return $this->hasMany(Payment::class, "goal_id");
     }
     public function japaneseGoal(){
-        return $this->belongsTo(GoalTemplate::class, "id","goal_id");
+        return $this->belongsTo(JapaneseGoal::class, "id","goal_id");
     }
 }
