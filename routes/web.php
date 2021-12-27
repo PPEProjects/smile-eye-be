@@ -1,5 +1,6 @@
 <?php
 // test git
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -83,8 +84,6 @@ Route::post('/sender', function () {
 
 
 Route::get('/japanese_kanjis', function () {
-//    return view('sender');
-//    dd(1);
     $JapaneseKanji = \App\Models\JapaneseKanji::all();
     foreach ($JapaneseKanji as $item) {
         $more = $item->more;
@@ -94,6 +93,27 @@ Route::get('/japanese_kanjis', function () {
         ];
         $item->more = $more;
         $item->save();
+    }
+    dd('done');
+});
+
+
+Route::get('/japanese_goals', function () {
+    $query = "SELECT id, more FROM japanese_goals WHERE more like '%radioKey%';";
+    $results = DB::select(DB::raw($query));
+    $res = json_decode(json_encode($results), true);
+    foreach ($res as $re) {
+        $more = $re['more'];
+        $more = preg_replace('#Audio#', 'audio', $more);
+        $more = preg_replace('#Image#', 'image', $more);
+        $more = preg_replace('#Video#', 'video', $more);
+        $more = preg_replace('#Record#', 'record', $more);
+        $more = preg_replace('#recorder#', 'record', $more);
+        $more = json_decode($more, true);
+        \App\Models\JapaneseGoal::where('id', $re['id'])
+            ->update(['more'=>$more]);
+//           "UPDATE `japanese_goals` SET `more` =\"\" WHERE `japanese_goals`.`id` = 1585;"
+//            dd($more);
     }
     dd('done');
 });
