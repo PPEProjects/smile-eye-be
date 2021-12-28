@@ -111,8 +111,8 @@ class GoalQueries
 
     public function myGoals($_, array $args)
     {
-        $this->goal_repository->calculatorProcessTodolist();
-        $this->goal_repository->calculatorProcessUpdate();
+//        $this->goal_repository->calculatorProcessTodolist();
+//        $this->goal_repository->calculatorProcessUpdate();
         $goals = Goal::SelectRaw("*, 'goal_owner' AS type")
             ->where('user_id', Auth::id())
             ->orderByRaw('`rank` ASC, `created_at` DESC');
