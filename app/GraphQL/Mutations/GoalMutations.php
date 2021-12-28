@@ -134,7 +134,7 @@ class GoalMutations
                 throw new Error('Start day must less than end day');
             }
         }
-        if (!isset($args['id'])) {
+        if (!isset($args['id'])  || @$args["id"] == "" ) {
             $args['user_id'] = Auth::id();
             $args['id'] = time().rand(0,9);
         }
