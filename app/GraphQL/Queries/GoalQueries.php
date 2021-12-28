@@ -87,6 +87,9 @@ class GoalQueries
             }
             $goal->goal_root = @$goalRoot;
             $goal->setting_for_sell = true;
+            if(@$goalRoot->goalTemplate->status == "Confirmed"){
+                $goal->setting_for_sell = false;
+            }
             $generalInfo = $this->generalinfo_repository
                                 ->setType('goal')
                                 ->findByTypeId($goal->id);
@@ -108,8 +111,8 @@ class GoalQueries
 
     public function myGoals($_, array $args)
     {
-//        $this->goal_repository->calculatorProcessTodolist();
-//        $this->goal_repository->calculatorProcessUpdate();
+        $this->goal_repository->calculatorProcessTodolist();
+        $this->goal_repository->calculatorProcessUpdate();
         $goals = Goal::SelectRaw("*, 'goal_owner' AS type")
             ->where('user_id', Auth::id())
             ->orderByRaw('`rank` ASC, `created_at` DESC');
