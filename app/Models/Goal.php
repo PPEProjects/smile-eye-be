@@ -34,7 +34,8 @@ class Goal extends Model
         'updated_at',
         'price',
         'trial_block',
-        'banned_users'
+        'banned_users',
+        'owner_percent'
     ];
     protected $casts = [
         'id' => 'string',

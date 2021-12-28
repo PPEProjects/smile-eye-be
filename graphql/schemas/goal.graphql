@@ -81,7 +81,9 @@ type Goal{
     template: GoalTemplate
     shares:   JSON
     achieves: JSON
-    sum_achieve_share: Int 
+    sum_achieve_share: Int
+    owner_percent: String
+    setting_for_sell: Boolean
 }
 type CountGoal {
     status : String
@@ -128,6 +130,8 @@ input CreateGoalInput{
     price: String
     is_trial_block: Boolean
     trial_block: JSON
+    owner_percent: String
+
 }
 
 input UpdateGoalInput{
@@ -146,6 +150,8 @@ input UpdateGoalInput{
     is_trial_block: Boolean
     banned_users: JSON
     trial_block: JSON
+    owner_percent: String
+
 }
 
 input DeleteGoalInput{
@@ -173,6 +179,8 @@ input UpsertGoalInput{
     is_trial_block: Boolean
     banned_users: JSON
     trial_block: JSON
+    owner_percent: String
+
 }
 
 input UpdateGoalMoveInput{
