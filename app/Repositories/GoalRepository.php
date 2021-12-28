@@ -859,6 +859,7 @@ class GoalRepository
             $japaneseGoal = JapaneseGoal::where('goal_id', $value)->first();
             $args = array_diff_key($value, array_flip(['user_id', 'id', 'parent_id']));
             $args['user_id'] = $userId;
+            $args['id'] = time().rand(0,9);
             $createGoal = Goal::create($args);
             if ($general) {
                 $general = array_diff_key($general->toArray(),
