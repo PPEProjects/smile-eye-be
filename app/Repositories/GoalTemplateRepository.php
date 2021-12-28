@@ -98,8 +98,11 @@ class GoalTemplateRepository{
 
     public function deleteGoalTemplate($args)
     {
-        $GoalTemplate = GoalTemplate::find($args['id']);
-        return $GoalTemplate->delete();
+        $goalTemplate = GoalTemplate::find($args['id']);
+        if (isset($goalTemplate)) {
+            return $goalTemplate->delete();
+        }
+        return  false;
     }
 
     public function detailGoalTemplate($args){
