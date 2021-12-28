@@ -113,8 +113,8 @@ class GoalQueries
 
     public function myGoals($_, array $args)
     {
-        $this->goal_repository->calculatorProcessTodolist();
-        $this->goal_repository->calculatorProcessUpdate();
+//        $this->goal_repository->calculatorProcessTodolist();
+//        $this->goal_repository->calculatorProcessUpdate();
         $goals = Goal::SelectRaw("*, 'goal_owner' AS type")
             ->where('user_id', Auth::id())
             ->orderByRaw('`rank` ASC, `created_at` DESC');
@@ -155,11 +155,11 @@ class GoalQueries
         // $goalTemplate = GoalTemplate::whereIn('goal_id',@$goalIds ?? [])
         //                                 ->get()
         //                                 ->keyBy('goal_id');
-//        $nextGoal = $this->nextGoal($goalIds);
+        $nextGoal = $this->nextGoal($goalIds);
         $goals = $this->generalinfo_repository
             ->setType('goal')
             ->get($goals);
-        $goals = $goals->map(function ($goal) use ( $goalMember)
+        $goals = $goals->map(function ($goal) use ($nextGoal, $goalMember)
         {
             $countMember =  $this->goalMember_repository
                                         ->CountNumberMemberGoal($goal->id);
@@ -170,41 +170,41 @@ class GoalQueries
             $goal->rank = $rank;
             $goal->number_member = $countMember->number_member; 
             $goal->template = @$goal->goalTemplate;
-//            $goal->next_goal = @$nextGoal[$goal->id];
+            $goal->next_goal = @$nextGoal[$goal->id];
             return $goal;
         });
         return $goals->sortBy('rank');
     }
 
-//    public function nextGoal($goalIds = [])
-//    {
-//        $listGoals = Goal::whereIn('root_id', $goalIds)->orderByRaw('-`index` DESC')->get();
-//        foreach ($goalIds as $value) {
-//            $children[$value] = $this->japaneseGoal_repository->findBlock($listGoals, [$value]);
-//        }
-//
-//        $japaneseLearn = JapaneseLearn::where('user_id', Auth::id())->get();
-//        $getIds = $japaneseLearn->pluck('goal_id')->toArray();
-//        $nextGoal = [];
-//        foreach ($goalIds as $value) {
-//            $findIdLearn = array_intersect($children[$value], $getIds);
-//            if ($findIdLearn != []) {
-//                $JapaneseLearn = $japaneseLearn->whereIn('goal_id', $findIdLearn)->sortByDESC('id')->first();
-//                $nextJapanseseLearn = $this->findNextGoals($JapaneseLearn->goal_id);
-//
-//                if (isset($nextJapanseseLearn) || isset($prevJapanseseLearn)) {
-//                    $nextGoal[$value] = $nextJapanseseLearn;
-//                }
-//            }
-//            if (!isset($nextGoal[$value])) {
-//                $getInfoGoal = $this->findNextGoals(current($children[$value]));
-//                if (isset($getInfoGoal)) {
-//                    $nextGoal[$value] = $getInfoGoal;
-//                }
-//            }
-//        }
-//        return $nextGoal;
-//    }
+    public function nextGoal($goalIds = [])
+    {
+        $listGoals = Goal::whereIn('root_id', $goalIds)->orderByRaw('-`index` DESC')->get();
+        foreach ($goalIds as $value) {
+            $children[$value] = $this->japaneseGoal_repository->findBlock($listGoals, [$value]);
+        }
+
+        $japaneseLearn = JapaneseLearn::where('user_id', Auth::id())->get();
+        $getIds = $japaneseLearn->pluck('goal_id')->toArray();
+        $nextGoal = [];
+        foreach ($goalIds as $value) {
+            $findIdLearn = array_intersect($children[$value], $getIds);
+            if ($findIdLearn != []) {
+                $JapaneseLearn = $japaneseLearn->whereIn('goal_id', $findIdLearn)->sortByDESC('id')->first();
+                $nextJapanseseLearn = $this->findNextGoals($JapaneseLearn->goal_id);
+
+                if (isset($nextJapanseseLearn) || isset($prevJapanseseLearn)) {
+                    $nextGoal[$value] = $nextJapanseseLearn;
+                }
+            }
+            if (!isset($nextGoal[$value])) {
+                $getInfoGoal = $this->findNextGoals(current($children[$value]));
+                if (isset($getInfoGoal)) {
+                    $nextGoal[$value] = $getInfoGoal;
+                }
+            }
+        }
+        return $nextGoal;
+    }
 
     public function findNextGoals($id)
     {
