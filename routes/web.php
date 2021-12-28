@@ -98,6 +98,24 @@ Route::get('/japanese_kanjis', function () {
 });
 
 
+Route::get('/general_infos', function () {
+    $count = 0;
+    $general = \App\Models\GeneralInfo::whereNotNull('attachment_ids')
+        ->get()
+        ->map(function ($item) use (&$count) {
+            if ($item->attachments->isNotEmpty()) {
+//                dd($item->toArray());
+                $attachment = $item->attachments->first()->toArray();
+                $attachment['file'] = "https://be-ppe.codeby.com/storage/" . $attachment['file'];
+
+                $count += \App\Models\GeneralInfo::where('id', $item->id)->update(['storage'=>$attachment]);
+            }
+        });
+
+    dd('done', $count);
+});
+
+
 Route::get('/japanese_goals', function () {
     $query = "SELECT id, more FROM japanese_goals WHERE more like '%radioKey%';";
     $results = DB::select(DB::raw($query));
@@ -111,7 +129,7 @@ Route::get('/japanese_goals', function () {
         $more = preg_replace('#recorder#', 'record', $more);
         $more = json_decode($more, true);
         \App\Models\JapaneseGoal::where('id', $re['id'])
-            ->update(['more'=>$more]);
+            ->update(['more' => $more]);
 //           "UPDATE `japanese_goals` SET `more` =\"\" WHERE `japanese_goals`.`id` = 1585;"
 //            dd($more);
     }
