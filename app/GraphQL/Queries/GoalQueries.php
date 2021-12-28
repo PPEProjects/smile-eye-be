@@ -178,8 +178,9 @@ class GoalQueries
 
     public function nextGoal($goalIds = [])
     {
+        $listGoals = Goal::whereIn('root_id', $goalIds)->orderByRaw('-`index` DESC')->get();
         foreach ($goalIds as $value) {
-            $children[$value] = $this->japaneseLearn_repository->goalNochild([$value]);
+            $children[$value] = $this->japaneseGoal_repository->findBlock($listGoals, [$value]);
         }
 
         $japaneseLearn = JapaneseLearn::where('user_id', Auth::id())->get();
@@ -188,8 +189,7 @@ class GoalQueries
         foreach ($goalIds as $value) {
             $findIdLearn = array_intersect($children[$value], $getIds);
             if ($findIdLearn != []) {
-                $JapaneseLearn = JapaneseLearn::whereIn('goal_id', $findIdLearn)->where('user_id',
-                    Auth::id())->OrderBy('id', 'desc')->first();
+                $JapaneseLearn = $japaneseLearn->whereIn('goal_id', $findIdLearn)->sortByDESC('id')->first();
                 $nextJapanseseLearn = $this->findNextGoals($JapaneseLearn->goal_id);
 
                 if (isset($nextJapanseseLearn) || isset($prevJapanseseLearn)) {
