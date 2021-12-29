@@ -73,7 +73,8 @@ class CoachMemberRepository
                                     ->first();
         $goals = Goal::where('user_id', $userId)->whereNull('parent_id')->get();
         $goalIds =  $goals->pluck('id')->toArray();
-        $listGoalIds = array_merge(@$goalIds ?? [], @$coachMember->goal_ids ?? []);                        
+        $listGoalIds = array_merge(@$goalIds ?? [], @$coachMember->goal_ids ?? []);
+
         $goalMembers = GoalMember::SelectRaw("id, goal_id, add_user_id as user_id, teacher_id, created_at")
                                     ->where('teacher_id',  $userId)
                                     ->orWhereIn('goal_id', @$listGoalIds ?? [])
@@ -84,7 +85,10 @@ class CoachMemberRepository
                                 ->pluck('id'); 
         $listMembers = $goalMembers->whereIn('user_id', @$checkUserIsset ?? []);
         $typeNotis = ["diary", "achieve", "edit_diary", "communication", "sing_with_friend"];
-
+        $checkGoals = Goal::whereIn('id', @$listMembers->pluck('goal_id') ?? [])
+                            ->get()
+                            ->pluck('id');
+        $listMembers = $listMembers->whereIn('goal_id', @$checkGoals ?? []);
         $listMembers = $listMembers->map(function($list) use($typeNotis){
                 $numberMember = $this->numberMember($list->user_id);
                 $notification = $this->notification($list->user_id, Auth::id(), $typeNotis);
