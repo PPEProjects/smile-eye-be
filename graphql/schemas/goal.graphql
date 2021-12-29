@@ -179,7 +179,7 @@ input UpsertGoalInput{
     is_trial_block: Boolean
     banned_users: JSON
     trial_block: JSON
-    owner_percent: String
+    owner_percent: Int
 
 }
 

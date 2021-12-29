@@ -33,4 +33,7 @@ class Achieve extends Model
     public function user_invite(){
         return $this->belongsTo(User::class);
     }
+    public function goal(){
+         return $this->belongsTo(Goal::class);
+    }
 }

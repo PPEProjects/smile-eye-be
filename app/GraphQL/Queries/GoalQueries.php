@@ -262,7 +262,7 @@ class GoalQueries
         $achieve = Achieve::where('general_infos.goal_id', $args['id'])
             ->join('general_infos', 'general_infos.id', '=', 'achieves.general_id')
             ->first();
-        return $this->goal_repository->getTreeSortByGoalId(@$achieve->goal_id, @$achieve->user_id);
+        return $this->goal_repository->getTreeSortByGoalId(@$achieve->goal_id, @$achieve->user_id, @$achieve->goal->root_id);
     }
 
     public function reportGoal($_, array $args)

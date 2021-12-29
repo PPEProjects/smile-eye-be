@@ -140,17 +140,17 @@ class GoalRepository
         return $branch;
     }
 
-    public function getTreeSortByGoalId($goalId, $userId = null)
+    public function getTreeSortByGoalId($goalId, $userId = null, $rootId = null)
     {
+        $rootId = @$rootId ?? $goalId;
         $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id, created_at')
-            ->whereRaw("id='$goalId' OR root_id='$goalId'")
+            ->whereRaw("id='$goalId' OR root_id='$rootId'")
             ->orderByRaw('-`index` DESC, `created_at` ASC');
 
         if ($userId) {
             $goals = $goals->where("user_id", $userId);
         }
         $goals = $goals->get();
-
         $getIdGoals = $goals->pluck('id');
         $japaneseGoals = JapaneseGoal::select('id', 'type', 'goal_id')
             ->whereIn('goal_id', $getIdGoals)
