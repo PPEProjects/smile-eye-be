@@ -124,10 +124,11 @@ class FriendGroupRepository
                     if($value['user_id'] == $args['user_id']){
                         $resetMember[] = ['user_id'=> intval($args['user_id']), 'role' => $args['role']];
                         $resetMember[] = ['user_id'=> intval($userId), 'role' => $value['role']];
+                        continue;
                     }
                     if($value['user_id'] == $userId ) continue;
                     $resetMember[] = $value;
-                }            
+                }
             }
             else
             {
@@ -136,8 +137,8 @@ class FriendGroupRepository
                         $resetMember[] = ['user_id'=> intval($args['user_id']), 'role' => $args['role']];
                     }
                     else $resetMember[] = $value;
-                }  
-            }   
+                }
+            }
             $updateFriendGroup = ['id'=> $args['id'], 'people' => $resetMember];
             $this->updatefriendGroups($updateFriendGroup);      
         }
