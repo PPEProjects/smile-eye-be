@@ -1006,7 +1006,8 @@ class GoalRepository
     {
         $getMyGoalShare = $this->myGoalShare()->pluck('id');
         if (array_intersect($getMyGoalShare->toArray(), [$args['id']])) {
-            return $this->getTreeSortByGoalId($args['id']);
+            $goal = Goal::find($args['id']);
+            return $this->getTreeSortByGoalId(@$goal->id, null, @$goal->root_id);
         }
         return;
     }
