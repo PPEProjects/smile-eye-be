@@ -191,7 +191,7 @@ class NotificationRepository
                     $content = $noti->content;
                     $status = @$content['status'] ?? 'pending';
                     if ($status == 'pending') {
-                        $messages->push("invites you to <b>achieve<b> the");
+                        $messages->push("invites you to <b>achieve</b> the");
                     }
                     $generalInfo = $this->generalinfo_repository->find($content['general_id']);
                     if(isset($generalInfo))
