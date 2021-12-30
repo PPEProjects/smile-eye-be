@@ -228,8 +228,8 @@ class NotificationRepository
                     $generalInfo = $this->generalinfo_repository->find($content['general_id']);
                     $PublishInfo =  $this->publish_info_repository->find($content['general_id'], Auth::id());
                     if(!@$PublishInfo->rule){
-                        $messages->push('invites you to <b>view</b>');
-                    }else  $messages->push('invites you to <b>'.$PublishInfo->rule.'</b>');
+                        $messages->push('invites you to <b>view</b> the');
+                    }else  $messages->push('invites you to <b>'.$PublishInfo->rule.'</b> the');
                     if (@$generalInfo->task_id) {
                         $messages->push('task');
                         $task = $this->task_repository->find($generalInfo->task_id);
