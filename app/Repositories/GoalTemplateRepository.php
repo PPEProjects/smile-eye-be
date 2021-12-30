@@ -35,8 +35,10 @@ class GoalTemplateRepository{
     {
         $args['user_id'] = Auth::id();
         $checkGoal = Goal::find($args['goal_id']);
-        if(@$args['status'] == 'pending' && !isset($checkGoal->price) || @$checkGoal->price == 0.00){
-             throw new Error("Please set price for the goal.");          
+        if(@$args['status'] == 'pending'){
+            if (!isset($checkGoal->price) || @$checkGoal->price == 0.00) {
+                throw new Error("Please set price for the goal.");
+            }
         }
         if(strtolower(@$args['status']) == 'accept' || strtolower(@$args['status']) == 'confirmed'){
             $coachMember = CoachMember::where('user_id', $checkGoal->user_id)->first();
