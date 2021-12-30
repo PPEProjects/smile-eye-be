@@ -862,8 +862,7 @@ class GoalRepository
             $japaneseGoal = JapaneseGoal::where('goal_id', $value)->first();
             $args = array_diff_key($value, array_flip(['user_id', 'id', 'parent_id']));
             $args['user_id'] = $userId;
-            $args['id'] = time().rand(0,9);
-            $args['root_id'] = $goalRoot->id;
+            $args['id'] = time() . '.' . rand();
             $createGoal = Goal::create($args);
             if ($general) {
                 $general = array_diff_key($general->toArray(),
@@ -875,20 +874,21 @@ class GoalRepository
             if ($japaneseGoal) {
                 $japaneseGoal = array_diff_key($japaneseGoal->toArray(),
                     array_flip(['user_id', 'id', 'goal_id']));
-                $japaneseGoal['goal_id'] = $createGoal->id;
+                $japaneseGoal['goal_id'] = $args['id'];
                 $japaneseGoal['user_id'] = $args['user_id'];
                 $createJapaneseGoal = JapaneseGoal::create($japaneseGoal);
             }
-            $newGoals[$value['id']] = $createGoal->id;
+            $newGoals[$value['id']] = $args['id'];
         }
-
         //update parent_id
         foreach ($newGoals as $key => $value) {
             $id = $key;
             foreach ($goals as $v) {
                 if ($id == $v['parent_id']) {
                     $update = Goal::where("id", $newGoals[$v['id']])
-                        ->update(['parent_id' => $newGoals[$id]]);
+                        ->update(['parent_id' => $newGoals[$id],
+                                    'root_id' => $newGoals[$goalRoot->id]
+                                ]);
                 }
             }
         }
