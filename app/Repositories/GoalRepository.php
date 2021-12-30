@@ -860,7 +860,7 @@ class GoalRepository
         foreach ($goals as $value) {
             $general = GeneralInfo::where('goal_id', $value['id'])->first();
             $japaneseGoal = JapaneseGoal::where('goal_id', $value)->first();
-            $args = array_diff_key($value, array_flip(['user_id', 'id', 'parent_id']));
+            $args = array_diff_key($value, array_flip(['user_id', 'rank','id', 'parent_id']));
             $args['user_id'] = $userId;
             $args['id'] = time() . '.' . rand();
             $createGoal = Goal::create($args);
