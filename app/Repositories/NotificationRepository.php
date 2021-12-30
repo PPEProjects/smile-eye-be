@@ -191,7 +191,7 @@ class NotificationRepository
                     $content = $noti->content;
                     $status = @$content['status'] ?? 'pending';
                     if ($status == 'pending') {
-                        $messages->push('invites you to achieve the');
+                        $messages->push("invites you to <b>achieve<b> the");
                     }
                     $generalInfo = $this->generalinfo_repository->find($content['general_id']);
                     if(isset($generalInfo))
@@ -227,33 +227,34 @@ class NotificationRepository
                     $content = $noti->content;
                     $generalInfo = $this->generalinfo_repository->find($content['general_id']);
                     $PublishInfo =  $this->publish_info_repository->find($content['general_id'], Auth::id());
+                    if(!@$PublishInfo->rule){
+                        $messages->push('invites you to <b>view</b>');
+                    }else  $messages->push('invites you to <b>'.$PublishInfo->rule.'</b>');
                     if (@$generalInfo->task_id) {
                         $messages->push('task');
                         $task = $this->task_repository->find($generalInfo->task_id);
                         if(!$task) return;
-                        $messages->push($task->name);
+                        $messages->push("<b>".$task->name."</b>");
                         $noti->task_id = $generalInfo->task_id;
                     }
                     else if (@$generalInfo->goal_id) {
                         $messages->push('goal');
                         $goal = $this->goal_repository->find($generalInfo->goal_id);
                         if(!$goal) return;
-                        $messages->push($goal->name);
+                        $messages->push("<b>".$goal->name."</b>");
                         $noti->goal_id = $generalInfo->goal_id;
                         //find goal
                     }else if (@$generalInfo->todolist_id) {
                         $messages->push('todolist');
                         $todo = $this->todolist_repository->find($generalInfo->todolist_id);
                         if(!$todo) return;
-                        $messages->push($todo->name);
+                        $messages->push("<b>".$todo->name."</b>");
                         $noti->todolist_id = $generalInfo->todolist_id;
                         //find todolist
                     }else{
                         return;
                     }
-                    if(!@$PublishInfo->rule){
-                        $messages->push('with rule: "view"');
-                    }else  $messages->push('with rule: "'.$PublishInfo->rule.'"');
+
                 break;
                 case 'comment':
                     $content = $noti->content;
