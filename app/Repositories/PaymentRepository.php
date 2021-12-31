@@ -183,6 +183,8 @@ class PaymentRepository
           $owner = $percent[$id]["owner_percent"];
           $admin =  $percent[$id]["admin_percent"];
            $sumMoney = $payments->where('goal_id', $id)->sum('money');
+           $sum = $payments->sum('money');
+           $money["sum_goal"]["sum"]  = $sum;
            $totalAdmin = $totalAdmin + ( $sumMoney * $admin);
            $money["sum_goal"]["total_admin"] = $totalAdmin/100;
            $totalOwner = $totalOwner + ($sumMoney * $owner);

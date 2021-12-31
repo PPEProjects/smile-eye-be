@@ -49,6 +49,7 @@ type SumDate {
 type SumGoal {
     total_admin: Int
     total_owner: Int
+    sum: Int
     list: [List]
 }
 type List {
