@@ -867,7 +867,7 @@ class GoalRepository
             if ($general) {
                 $general = array_diff_key($general->toArray(),
                     array_flip(['user_id', 'id', 'goal_id']));
-                $general['goal_id'] = $createGoal->id;
+                $general['goal_id'] = $args['id'];
                 $general['user_id'] = $args['user_id'];
                 $createGeneral = GeneralInfo::create($general);
             }
