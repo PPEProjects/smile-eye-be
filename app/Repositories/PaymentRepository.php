@@ -131,7 +131,7 @@ class PaymentRepository
        $checkGoals = [];
        $goals = [];
        foreach ($payments as $payment){
-           if (isset($payment->goal)){
+           if (isset($payment->goal) && !isset($goals[$payment->goal->id])){
                $checkGoals[] = $payment->goal_id;
                $goals[$payment->goal->id] = $payment->goal;
            }
@@ -149,6 +149,7 @@ class PaymentRepository
            $percent[$payment->goal->id]["owner_percent"] = intval($ownerPercent);
            $percent[$payment->goal->id]["admin_percent"] = $adminPercent;
        }
+       $test = [];
            foreach ($getDate as $date){
                $totalOwner = 0;
                $totalAdmin = 0;
@@ -157,6 +158,7 @@ class PaymentRepository
                                         ->where('date', $date)
                                         ->sum('money');
                    $totalAdmin = $totalAdmin + ( $moneyDay * $percent[$id]["admin_percent"]);
+                   $test[$date]["total_admin"][] = $totalAdmin;
                    $total[$date]["total_admin"] = $totalAdmin/100;
                    $totalOwner = $totalOwner + ( $moneyDay * $percent[$id]["owner_percent"]);
                    $total[$date]["total_owner"] = $totalOwner/100;
