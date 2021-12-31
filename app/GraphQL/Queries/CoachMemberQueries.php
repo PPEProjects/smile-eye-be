@@ -32,4 +32,7 @@ class CoachMemberQueries
     public function sortCoachMember($_, array $args){
         return $this->coach_member_repository->sortCoachMember($args);
     }
+    public function myGoalOwnerCoach($_, array $args){
+        return $this->coach_member_repository->myGoalOwnerCoach($args);
+    }
 }

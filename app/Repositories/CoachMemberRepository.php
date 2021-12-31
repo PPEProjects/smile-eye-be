@@ -244,5 +244,22 @@ class CoachMemberRepository
             $listCoachs['total_page'] = $page; 
         return $listCoachs;
     }
-    
+    public function myGoalOwnerCoach($args){
+        $userId = Auth::id();
+        $goalMembers = GoalMember::where('add_user_id', $userId)->get();
+        $listMyCoach = [];
+        $listGoals = collect();
+         foreach ($goalMembers as $goalMember){
+             if(isset($goalMember->goal)) {
+                 $myCoach = CoachMember::where('goal_ids', 'like', '%' . $goalMember->goal_id . '%')->get();
+                 $listMyCoach[$goalMember->goal_id] = $myCoach;
+                 $listGoals->push($goalMember);
+             }
+         }
+         $goalMembers = $listGoals->map(function ($goalMember) use ($listMyCoach){
+                 $goalMember->coach = @$listMyCoach[$goalMember->goal_id];
+                return $goalMember;
+         });
+         return $goalMembers;
+    }
 }

@@ -33,6 +33,7 @@ type GoalTemplate{
     number_done: Int 
     checked_time: Int
     sum_price: String
+    coach: [CoachMember]
 }
 
 input CreateGoalTemplateInput{
