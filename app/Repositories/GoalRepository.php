@@ -146,7 +146,7 @@ class GoalRepository
         {
             $rootId = $goalId;
         }
-        $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id, created_at')
+        $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id, created_at, root_id')
             ->whereRaw("id='$goalId' OR root_id='$rootId'")
             ->orderByRaw('-`index` DESC, `created_at` ASC');
 
