@@ -15,6 +15,8 @@ extend type Query {
     detail_payment_by_user_id(status: String, type: String, user_id: ID!): [Payment] @guard @field(resolver:"PaymentQueries@detailPayments")
     detail_my_payment(goal_id : ID!): Payment @guard @field(resolver:"PaymentQueries@detailPayments")
     summary_payments(status: String): [Payment] @guard @field(resolver:"PaymentQueries@summaryPayments")
+    total_income(year: String, month: String): TotalIncome @guard @field(resolver:"PaymentQueries@totalIncome")
+
 }
 
 type Payment {
@@ -32,6 +34,28 @@ type Payment {
     created_at: DateTime
     updated_at: DateTime
     number_member: Int
+}
+type TotalIncome {
+    sum_date: [SumDate]
+    sum_goal: SumGoal
+}
+type SumDate {
+    date: String
+    sum: Int
+    total_admin: Int
+    total_owner: Int
+    list: [List]
+}
+type SumGoal {
+    total_admin: Int
+    total_owner: Int
+    list: [List]
+}
+type List {
+    goal: Goal
+    money: Int
+    owner_percent: Int
+    admin_percent: Int
 }
 input UpsertPaymentInput{
     id: ID

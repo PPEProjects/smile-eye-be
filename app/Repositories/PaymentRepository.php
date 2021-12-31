@@ -105,4 +105,94 @@ class PaymentRepository
         $payments = $payments->whereIn('goal_id', @$checkGoals ?? []);
       return $payments->sortBy('created_at');
    }
+   public function totalIncome($args){
+        $status = ['paidConfirmed', 'done', 'Confirmed'];
+       $payments = Payment::selectRaw("id, add_user_id, money, status, goal_id")
+                            ->whereIn("status", $status);
+        if(isset($args) && @$args != [])
+        {
+            $month = @$args['month'] ?? "";
+            $year = @$args['year'] ?? date('Y');
+            switch ($month){
+                case "":
+                   $payments = $payments->selectRaw(" DATE_FORMAT(updated_at, '%Y-%m') as `date`")
+                                        ->whereRaw("YEAR(updated_at) = '".$year."'");
+                    break;
+                default:
+                   $payments = $payments->selectRaw(" DATE(updated_at) as `date`")
+                                        ->whereRaw("DATE_FORMAT(updated_at, '%Y-%m') = '".$year."-".$month."'");
+            }
+            if($payments->get()->toArray() == []) return ;
+        }
+        else{
+            $payments = $payments->selectRaw("DATE(updated_at) as `date`");
+        }
+        $payments = $payments->get();
+       $checkGoals = [];
+       $goals = [];
+       foreach ($payments as $payment){
+           if (isset($payment->goal)){
+               $checkGoals[] = $payment->goal_id;
+               $goals[$payment->goal->id] = $payment->goal;
+           }
+       }
+       $payments = $payments->whereIn('goal_id', $checkGoals);
+        $getDate = $payments->pluck('date')->toArray();
+        $total = [];
+        $dateList = [];
+        $money = [];
+        $percent = [];
+        $getDate = array_unique($getDate);
+       foreach ($payments as $payment) {
+           $ownerPercent = @$payment->goal->owner_percent ?? 0;
+           $adminPercent = 100 - intval($ownerPercent);
+           $percent[$payment->goal->id]["owner_percent"] = intval($ownerPercent);
+           $percent[$payment->goal->id]["admin_percent"] = $adminPercent;
+       }
+           foreach ($getDate as $date){
+               $totalOwner = 0;
+               $totalAdmin = 0;
+               foreach (@$checkGoals ?? [] as $id){
+                   $moneyDay = $payments->where('goal_id', $id)
+                                        ->where('date', $date)
+                                        ->sum('money');
+                   $totalAdmin = $totalAdmin + ( $moneyDay * $percent[$id]["admin_percent"]);
+                   $total[$date]["total_admin"] = $totalAdmin/100;
+                   $totalOwner = $totalOwner + ( $moneyDay * $percent[$id]["owner_percent"]);
+                   $total[$date]["total_owner"] = $totalOwner/100;
+                   $dateList[$date][$id] = ['goal'=> $goals[$id],
+                                            "money"=> $moneyDay,
+                                            "owner_percent" => $percent[$id]["owner_percent"],
+                                            "admin_percent" => $percent[$id]["admin_percent"]];
+
+                }
+               $sumDay = $payments->where('date', $date)
+                                    ->sum('money');
+               $money["sum_date"][$date] = ['date' => $date,
+                                            'sum'=>$sumDay,
+                                            'total_admin' => $total[$date]["total_admin"],
+                                            'total_owner' => $total[$date]["total_owner"],
+                                            'list' => $dateList[$date]];
+            }
+
+            $totalOwner = 0;
+           $totalAdmin = 0;
+       foreach (@$checkGoals ?? [] as $id){
+          $owner = $percent[$id]["owner_percent"];
+          $admin =  $percent[$id]["admin_percent"];
+           $sumMoney = $payments->where('goal_id', $id)->sum('money');
+           $totalAdmin = $totalAdmin + ( $sumMoney * $admin);
+           $money["sum_goal"]["total_admin"] = $totalAdmin/100;
+           $totalOwner = $totalOwner + ($sumMoney * $owner);
+           $money["sum_goal"]["total_owner"] = $totalOwner/100;
+           $money["sum_goal"]["list"][$id] = [
+                                            "goal"=> $goals[$id],
+                                            "money" => $sumMoney,
+                                            "owner_percent" => $owner,
+                                            "admin_percent" => $admin
+                                        ];
+       }
+       $total = $money;
+       return $total;
+   }
 }
