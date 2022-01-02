@@ -563,7 +563,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query(\r\n    $year: String\r\n    $month: String\r\n) {\r\n  total_income(\r\n      year: $year\r\n      month: $month\r\n  ){\r\n      sum_date{\r\n          date \r\n          sum\r\n          total_admin\r\n          total_owner\r\n          list{\r\n              goal{\r\n                  id\r\n                  name\r\n              }\r\n              money\r\n              owner_percent\r\n              admin_percent\r\n          }\r\n      }\r\n      sum_goal{\r\n          total_admin\r\n          total_owner\r\n          sum\r\n          list{\r\n              goal{\r\n                  id\r\n                  name\r\n              }\r\n              money\r\n              owner_percent\r\n              admin_percent\r\n          }\r\n      }\r\n  }\r\n    \r\n}",
+								"query": "query(\r\n    $year: String\r\n    $month: String\r\n) {\r\n  total_income(\r\n      year: $year\r\n      month: $month\r\n  )\r\n    \r\n  \r\n    \r\n}",
 								"variables": "{\r\n    \"year\":\"2021\",\r\n    \"month\":\"12\"\r\n}"
 							}
 						},

@@ -15,7 +15,7 @@ extend type Query {
     detail_payment_by_user_id(status: String, type: String, user_id: ID!): [Payment] @guard @field(resolver:"PaymentQueries@detailPayments")
     detail_my_payment(goal_id : ID!): Payment @guard @field(resolver:"PaymentQueries@detailPayments")
     summary_payments(status: String): [Payment] @guard @field(resolver:"PaymentQueries@summaryPayments")
-    total_income(year: String, month: String): TotalIncome @guard @field(resolver:"PaymentQueries@totalIncome")
+    total_income(year: String, month: String): JSON @guard @field(resolver:"PaymentQueries@totalIncome")
 
 }
 
