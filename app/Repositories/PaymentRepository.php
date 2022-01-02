@@ -210,6 +210,6 @@ class PaymentRepository
 //                                        ];
 //       }
 
-       return $totalIncome;
+       return  array_values($totalIncome);
    }
 }
