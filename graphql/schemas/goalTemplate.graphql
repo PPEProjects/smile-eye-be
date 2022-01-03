@@ -35,6 +35,7 @@ type GoalTemplate{
     number_trials: String
     trials_percent: String
     number_end_trial: String
+    end_trial_percent: String
     number_done: String
     done_percent: String
     checked_time: Int
