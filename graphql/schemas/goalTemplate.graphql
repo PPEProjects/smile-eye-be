@@ -26,11 +26,17 @@ type GoalTemplate{
     request: String
     created_at: DateTime
     updated_at: DateTime
-    number_member: Int
-    number_buy_on: Int
-    number_paid: Int 
-    number_trials: Int 
-    number_done: Int 
+    number_member: String
+    member_percent:String
+    number_buy_on: String
+    buy_on_percent: String
+    number_paid: String
+    paid_percent: String
+    number_trials: String
+    trials_percent: String
+    number_end_trial: String
+    number_done: String
+    done_percent: String
     checked_time: Int
     sum_price: String
     coach: [CoachMember]

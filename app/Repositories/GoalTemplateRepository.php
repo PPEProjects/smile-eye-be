@@ -70,12 +70,12 @@ class GoalTemplateRepository{
             $this->notification_repository
                 ->staticNotification('sell_goal_template', $template->goal_id, $template, [$template->goal->user->id]);
         }
-        return $template;   
+        return $template;
     }
 
     public function updateGoalTemplate($args)
-    {    
-        $args['user_id'] = Auth::id();   
+    {
+        $args['user_id'] = Auth::id();
         $checkGoal = Goal::find($args['goal_id']);
         if(strtolower(@$args['status']) == 'accept' || strtolower(@$args['status']) == 'confirmed'){
             $coachMember = CoachMember::where('user_id', $checkGoal->user_id)->first();
@@ -94,7 +94,7 @@ class GoalTemplateRepository{
                                             ->first();
             $args['checked_time'] = @$goalTemplate->checked_time ?? 0 + 1;
         }
-        $args = array_diff_key($args, array_flip(['goal_id']));  
+        $args = array_diff_key($args, array_flip(['goal_id']));
         return tap(GoalTemplate::findOrFail($args["id"]))->update($args);
     }
 
@@ -123,7 +123,7 @@ class GoalTemplateRepository{
         return $goalTemplate;
     }
 
-    public function myGoalTemplate($args){ 
+    public function myGoalTemplate($args){
         $status = @$args['status'] ?? 'all';
          $myGoals = Goal::whereNull('parent_id')
                          ->where('user_id', Auth::id())
@@ -142,13 +142,13 @@ class GoalTemplateRepository{
             $numberPaid = $this->CountMemberPayment($template->goal_id, ['accept', 'paidConfirmed', 'done']);
             $template->number_member = $goalMember->number_member;
             $template->number_buy_on = $numberBuyOn->sum;
-            $template->number_paid   = $numberPaid->sum;   
+            $template->number_paid   = $numberPaid->sum;
             $price  = $this->sumPriceSellGoal($template->goal_id);
             $template->sum_price = @$price->money ?? 0;
             $template->number_done = 0;
             $template->number_trials = 0;
             return $template;
-        });   
+        });
         return $goalTemplate;
     }
     public function sumPriceSellGoal($id){
@@ -160,16 +160,16 @@ class GoalTemplateRepository{
     }
     public function listGoalTemplates($args){
         $status = @$args["status"] ?? "all";
-        switch ($status) 
+        switch ($status)
         {
             case 'all':
                 $goalTemplate = GoalTemplate::all();
-                break;  
+                break;
             default:
                 $goalTemplate = GoalTemplate::where('status', 'like', $status)->get();
                 break;
-        }     
-            
+        }
+
         $goalIds = $goalTemplate->pluck('goal_id');
         $goals = Goal::whereIn('id', @$goalIds ?? [])->get()->keyBy('id');
         $goals = $this->generalInfo_repository
@@ -177,20 +177,72 @@ class GoalTemplateRepository{
             ->get($goals);
         $getId = $goals->pluck('id');
         $goalTemplate = $goalTemplate->whereIn('goal_id', @$getId ?? [])
-                                    ->sortByDESC('id'); 
-        $goalTemplate = $goalTemplate->map(function($template) use($goals) {
-           $goalMember = $this->goalMember_repository->CountNumberMemberGoal($template->goal_id);
+                                    ->sortByDESC('id');
+        $allUser = User::count('id');
+
+        $goalTemplate = $goalTemplate->map(function($template) use($goals, $allUser) {
            $sumAchieve = @$this->countAchieve($template->goal->general_info->id);
            $sumShare = @$this->countShare($template->goal->general_info->id);
            $sum = $sumShare->sum_share + $sumAchieve->sum_achieve;
+
+           $numberMember = $this->numberMember($template->goal_id);
+           $memberPercent = $this->convertToPercent($numberMember, $allUser);
+
+           $numberTrial = $this->percentAllPayment($template->goal_id, 'trial');
+           $numberEndTrial = $this->percentAllPayment($template->goal_id, 'EndTrial');
+           $numberOnBuy = $this->percentAllPayment($template->goal_id, 'onBuy');
+           $numberPairConfirmed = $this->percentAllPayment($template->goal_id, 'PaidConfirmed');
+           $numberDone = $this->percentAllPayment($template->goal_id, 'done');
+
+
+            $trialPercent = 0;
+            $endTrialPercent = 0;
+            $onBuyPercent = 0;
+            $paidConfirmedPercent = 0;
+            $donePercent = 0;
+
+            if ($numberMember > 0){
+                $trialPercent = $this->convertToPercent($numberTrial, $numberMember);
+                $endTrialPercent = $this->convertToPercent($numberEndTrial, $numberMember);
+                $onBuyPercent = $this->convertToPercent($numberOnBuy, $numberMember);
+                $paidConfirmedPercent = $this->convertToPercent($numberPairConfirmed, $numberMember);
+                $donePercent = $this->convertToPercent($numberDone, $numberMember);
+            }
            $template->goal = @$goals[$template->goal_id];
            $template->goal->sum_achieve_share = $sum;
-           $template->number_member = $goalMember->number_member; 
+
+           $template->number_member = $numberMember;
+           $template->member_percent = $memberPercent;
+
+           $template->number_trials = $numberTrial;
+           $template->trials_percent = $trialPercent;
+
+           $template->number_end_trial = $numberEndTrial;
+           $template->end_trial_percent = $endTrialPercent;
+
+           $template->number_buy_on = $numberOnBuy;
+           $template->buy_on_percent = $onBuyPercent;
+
+           $template->number_paid= $numberPairConfirmed;
+           $template->paid_percent = $paidConfirmedPercent;
+
+           $template->number_done = $numberDone;
+           $template->done_percent = $donePercent;
+
             return $template;
         });
         return @$goalTemplate;
     }
-    
+    public function convertToPercent($number, $sum){
+        return ($number / $sum) * 100;
+    }
+    public function percentAllPayment($goalid, $status)
+    {
+        $payment = Payment::where('goal_id', $goalid)
+                            ->where('status', 'like', '%'.$status.'%')
+                            ->count('goal_id');
+        return $payment;
+    }
     public function CountMemberPayment($goalid, $status = [])
     {
         $payMent = Payment::selectRaw("COUNT(goal_id) as `sum`")
@@ -199,8 +251,15 @@ class GoalTemplateRepository{
                             ->first();
         return $payMent;
     }
+
+    public function numberMember($goalid)
+    {
+        $goalMember = GoalMember::where('goal_id', $goalid)
+                                    ->count('add_user_id');
+        return $goalMember;
+    }
     public function myGoalTemplateUnpaid($args)
-    {   
+    {
         $status = ['accept', 'paused','paid','confirmed', "paidConfirmed", "done"];
         $goalMember = GoalMember::where('add_user_id', Auth::id())->get();
         $getIdgoals = $goalMember->pluck('goal_id');
@@ -213,7 +272,7 @@ class GoalTemplateRepository{
                         ->whereIn('goal_id', @$idGoalTemplate ?? [])
                         ->get();
         $idGoalPayment = $payment->pluck('goal_id')->toArray();
-        $idGoal = array_diff(@$idGoalTemplate ?? [], @$idGoalPayment ?? []); 
+        $idGoal = array_diff(@$idGoalTemplate ?? [], @$idGoalPayment ?? []);
         $goal = Goal::whereIn('id', @$idGoal ?? [])->get();
         return $goal;
     }
@@ -221,7 +280,7 @@ class GoalTemplateRepository{
         $numberPotential = @$args['number_potential'] ?? 0;
         $listGoalTemplate = $this->listGoalTemplates(['all']);
         $getIdTemplate = $listGoalTemplate->pluck('goal_id');
-        $goals = Goal::whereNull('parent_id') 
+        $goals = Goal::whereNull('parent_id')
                         ->whereNotIn('id', @$getIdTemplate ?? [])
                         ->get();
         $goals = $this->generalInfo_repository

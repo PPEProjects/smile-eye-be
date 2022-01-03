@@ -2703,7 +2703,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query(\r\n    $status: String\r\n) {\r\n  list_goal_templates(\r\n      status: $status\r\n  ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        sum_achieve_share\r\n        price\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        general_info {\r\n            id\r\n            attachments {\r\n                file\r\n                file_type\r\n                thumb\r\n            }\r\n    }\r\n    }\r\n    status\r\n    sell_goal\r\n    number_member\r\n    request\r\n    checked_time\r\n    created_at\r\n    updated_at\r\n    }\r\n}",
+								"query": "query(\r\n    $status: String\r\n) {\r\n  list_goal_templates(\r\n      status: $status\r\n  ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        sum_achieve_share\r\n        price\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        general_info {\r\n            id\r\n            attachments {\r\n                file\r\n                file_type\r\n                thumb\r\n            }\r\n    }\r\n    }\r\n    status\r\n    sell_goal\r\n    number_member\r\n    member_percent\r\n    number_buy_on\r\n    buy_on_percent\r\n    number_paid\r\n    paid_percent\r\n    number_trials\r\n    trials_percent\r\n    number_end_trial\r\n    number_done\r\n    done_percent\r\n    request\r\n    checked_time\r\n    created_at\r\n    updated_at\r\n    }\r\n}",
 								"variables": "{\r\n    \"status\":\"all\"\r\n}"
 							}
 						},
@@ -7448,7 +7448,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID!){\r\n  detail_goal(id: $id) {\r\n    id\r\n    name\r\n    banned_users\r\n    price\r\n    owner_percent\r\n    setting_for_sell\r\n    goal_root{\r\n        id\r\n        name\r\n    }\r\n    parent{\r\n        id\r\n    }\r\n    trial_block\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publishs{\r\n            id\r\n        }\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n        achieves{\r\n            id\r\n            user{\r\n                id\r\n                name\r\n            \r\n        }\r\n        \r\n    }\r\n  }\r\n}\r\n}",
-								"variables": "{\r\n    \"id\":\"b45f30-2f5-b5bc-7fa2-e8474a720a14\"\r\n}\r\n"
+								"variables": "{\r\n    \"id\":\"1994\"\r\n}\r\n"
 							}
 						},
 						"url": {
