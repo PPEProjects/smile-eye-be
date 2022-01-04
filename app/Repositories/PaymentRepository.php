@@ -119,6 +119,7 @@ class PaymentRepository
                                         ->whereRaw("YEAR(updated_at) = '".$year."'");
                     break;
                 default:
+                    if(intval($month) < 10){ $month = "0".$month; }
                    $payments = $payments->selectRaw(" DATE(updated_at) as `date`")
                                         ->whereRaw("DATE_FORMAT(updated_at, '%Y-%m') = '".$year."-".$month."'");
             }
