@@ -30,6 +30,7 @@ type Payment {
     type: String
     status: String
     money: String
+    note: String
     attachments: JSON
     created_at: DateTime
     updated_at: DateTime
@@ -65,6 +66,7 @@ input UpsertPaymentInput{
     status: String
     type: String
     money: String
+    note: String
     attachments: JSON
 }
 input CreatePaymentInput{
@@ -73,6 +75,7 @@ input CreatePaymentInput{
     status: String
     type: String
     money: String
+    note: String
     attachments: JSON
 }
 
@@ -83,6 +86,7 @@ input UpdatePaymentInput{
     status: String
     type: String
     money: String
+    note: String
     attachments: JSON
 }
 

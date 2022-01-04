@@ -20,6 +20,7 @@ class CreatePaymentsTable extends Migration
             $table->string('goal_id')->nullable();
             $table->string('type')->nullable();
             $table->string('money')->nullable();
+            $table->string('note')->nullable();
             $table->json('attachments')->nullable();
             $table->timestamps();
             $table->softDeletes();
