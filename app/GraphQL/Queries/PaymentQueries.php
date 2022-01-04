@@ -34,4 +34,7 @@ class PaymentQueries
         $args = array_diff_key($args, array_flip(["directive"]));
         return $this->payment_repository->totalIncome($args);
     }
+    public function paymentsList($_, array $args){
+        return $this->payment_repository->paymentsList($args);
+    }
 }

@@ -212,4 +212,29 @@ class PaymentRepository
         $totalIncome = array_merge($totalIncome, $moneyTotal);
        return  array_values($totalIncome);
    }
+   public function paymentsList($args){
+        $status = ['paidConfirmed', 'done', 'Confirmed'];
+        $day = @$args['day'] ?? "0";
+        $month = @$args['month'] ?? "0";
+        $year = @$args['year'] ?? "0";
+        $date = $year."-".$month."-".$day;
+        if($day == "0" && $month == "0" && $year == "0"){
+            $date = date('Y-m-d');
+        }
+        $payments = Payment::whereIn('status', $status)
+                            ->whereRaw("DATE(updated_at) = '".$date."'")
+                            ->orderBy('updated_at', 'ASC')
+                            ->get();
+        $getIdGoals = $payments->pluck('goal_id');
+        $checkIssetGoals = Goal::whereIn('id', @$getIdGoals ?? []);
+        if (isset($args["name_goal"]) || @$args["name_goal"] !=""){
+            $nameGoal = $args["name_goal"];
+            $checkIssetGoals = $checkIssetGoals->where('name', 'LIKE', "%".$nameGoal."%");
+        }
+        $checkIssetGoals = $checkIssetGoals->get()->pluck('id');
+        $payments = $payments->whereIn('goal_id', @$checkIssetGoals ?? []);
+
+
+        return $payments;
+   }
 }
