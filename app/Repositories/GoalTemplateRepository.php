@@ -178,15 +178,16 @@ class GoalTemplateRepository{
         $getId = $goals->pluck('id');
         $goalTemplate = $goalTemplate->whereIn('goal_id', @$getId ?? [])
                                     ->sortByDESC('id');
-        $allUser = User::count('id');
 
-        $goalTemplate = $goalTemplate->map(function($template) use($goals, $allUser) {
+        $goalTemplate = $goalTemplate->map(function($template) use($goals) {
            $sumAchieve = @$this->countAchieve($template->goal->general_info->id);
            $sumShare = @$this->countShare($template->goal->general_info->id);
            $sum = $sumShare->sum_share + $sumAchieve->sum_achieve;
 
            $numberMember = $this->numberMember($template->goal_id);
-           $memberPercent = $this->convertToPercent($numberMember, $allUser);
+           $memberPercent = 0;
+
+           $sumPayment = $this->percentAllPayment($template->goal_id, 'all');
 
            $numberTrial = $this->percentAllPayment($template->goal_id, 'trial');
            $numberEndTrial = $this->percentAllPayment($template->goal_id, 'EndTrial');
@@ -200,7 +201,9 @@ class GoalTemplateRepository{
             $onBuyPercent = 0;
             $paidConfirmedPercent = 0;
             $donePercent = 0;
-
+            if($numberMember < $sumPayment){
+                $numberMember = $sumPayment;
+            }
             if ($numberMember > 0){
                 $trialPercent = $this->convertToPercent($numberTrial, $numberMember);
                 $endTrialPercent = $this->convertToPercent($numberEndTrial, $numberMember);
@@ -238,9 +241,15 @@ class GoalTemplateRepository{
     }
     public function percentAllPayment($goalid, $status)
     {
-        $payment = Payment::where('goal_id', $goalid)
-                            ->where('status', 'like', '%'.$status.'%')
-                            ->count('goal_id');
+        $payment = Payment::where('goal_id', $goalid);
+        switch ($status){
+            case "all":
+                $payment = $payment->count('goal_id');
+                break;
+            default:
+                $payment = $payment->where('status', 'like', '%'.$status.'%')
+                                    ->count('goal_id');
+        }
         return $payment;
     }
     public function CountMemberPayment($goalid, $status = [])
