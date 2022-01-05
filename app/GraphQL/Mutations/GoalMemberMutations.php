@@ -8,6 +8,7 @@ use App\Models\GoalTemplate;
 use App\Models\Payment;
 use App\Repositories\GoalMemberRepository;
 use App\Repositories\PaymentRepository;
+use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 
 class GoalMemberMutations
@@ -33,6 +34,12 @@ class GoalMemberMutations
     {
         $args['user_id'] = Auth::id();
         if(!isset($args['teacher_id']) && isset($args['goal_id'])){
+            $goalMember = GoalMember::where('goal_id', $args['goal_id'])
+                                        ->where('add_user_id', $args['add_user_id'])
+                                        ->first();
+            if (isset($goalMember)){
+                throw new Error("This goal already exists in your goal list!");
+            }
             $goal = Goal::find($args['goal_id']);
             $args['teacher_id'] = @$goal->user_id ?? $args['user_id'];
         }
