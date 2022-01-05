@@ -35,7 +35,10 @@ class GoalScoreRepository{
     public function detailGoalScore($args){
         if(isset($args['goal_id']))
         {
-            $goalScore = GoalScore::where('goal_id', $args['goal_id'])->first();
+            $args['user_id'] = Auth::id();
+            $goalScore = GoalScore::where('goal_id', $args['goal_id'])
+                ->where('user_id', $args['user_id'])
+                ->first();
         }
         else
         {
