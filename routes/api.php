@@ -42,6 +42,36 @@ Route::prefix('/auth-service')->group(function () {
 Route::resource('attachment', AttachmentController::class)
     ->middleware('auth');
 
+    Route::post('attachment-letter/{type}', function($type, Request $request){
+        $file = $request->file('file');
+        $checkTail = $file->getClientOriginalExtension();
+        $fileRootName = $file->getClientOriginalName();
+        $filePath = storage_path() . "/app/public";
+        if ($type == "example-hiragana") {
+            $folder = 'hiragana';
+            if ($checkTail == "mp3"){
+                $folder = $folder."/audio";
+            }
+        }
+        else if($type == "example-katakana"){
+            $folder = 'katakana';
+            if ($checkTail == "mp3"){
+                $folder = $folder."/audio";
+            }
+        }
+        else if ($type == "audio" && $checkTail == "mp3") {
+            $folder = 'a';
+        }
+        else{
+            return response()->json([
+                "status"=>false
+            ]);
+        }
+        $file->move($filePath . '/Letter/'. $folder, $fileRootName);
+        return response()->json([
+            "status"=>true
+        ]);
+    });
 
 Route::get('goals/gantt-chart/{user_id}', [GoalController::class, 'ganttChart']);
 

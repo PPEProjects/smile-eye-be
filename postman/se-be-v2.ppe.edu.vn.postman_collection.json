@@ -5001,7 +5001,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/HoaiNam/OneDrive/Pictures/new.jpg"
+									"src": []
 								},
 								{
 									"key": "audio_base64",
@@ -5018,6 +5018,111 @@
 							"path": [
 								"api",
 								"attachment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{url}}/api/attachment-letter/audio",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/attachment-letter/audio",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"attachment-letter",
+								"audio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{url}}/api/attachment-letter/example-hiragana",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/attachment-letter/example-hiragana",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"attachment-letter",
+								"example-hiragana"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{url}}/api/attachment-letter/example-katakana",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/F:/project/php/smile-eye-be/storage/app/public/Letter/hiragana/audio/aka.mp3"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/attachment-letter/example-katakana",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"attachment-letter",
+								"example-katakana"
 							]
 						}
 					},
