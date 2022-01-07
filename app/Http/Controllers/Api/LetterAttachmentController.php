@@ -57,13 +57,13 @@ class LetterAttachmentController extends Controller
         if ($type == "example-hiragana") {
             $folder = 'hiragana';
             if ($checkTail == "mp3"){
-                $folder = $folder."/audio";
+                $folder = $folder."audio";
             }
         }
         else if($type == "example-katakana"){
             $folder = 'katakana';
             if ($checkTail == "mp3"){
-                $folder = $folder."/audio";
+                $folder = $folder."audio";
             }
         }
         else if ($type == "audio" && $checkTail == "mp3") {
