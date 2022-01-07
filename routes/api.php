@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AttachmentController;
 use App\Http\Controllers\Api\GoalController;
+use App\Http\Controllers\Api\LetterAttachmentController;
 use App\Services\GoogleService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -42,36 +43,7 @@ Route::prefix('/auth-service')->group(function () {
 Route::resource('attachment', AttachmentController::class)
     ->middleware('auth');
 
-    Route::post('attachment-letter/{type}', function($type, Request $request){
-        $file = $request->file('file');
-        $checkTail = $file->getClientOriginalExtension();
-        $fileRootName = $file->getClientOriginalName();
-        $filePath = storage_path() . "/app/public";
-        if ($type == "example-hiragana") {
-            $folder = 'hiragana';
-            if ($checkTail == "mp3"){
-                $folder = $folder."/audio";
-            }
-        }
-        else if($type == "example-katakana"){
-            $folder = 'katakana';
-            if ($checkTail == "mp3"){
-                $folder = $folder."/audio";
-            }
-        }
-        else if ($type == "audio" && $checkTail == "mp3") {
-            $folder = 'a';
-        }
-        else{
-            return response()->json([
-                "status"=>false
-            ]);
-        }
-        $file->move($filePath . '/Letter/'. $folder, $fileRootName);
-        return response()->json([
-            "status"=>true
-        ]);
-    });
+Route::resource('attachment-letter/{type}', LetterAttachmentController::class)->middleware('auth');
 
 Route::get('goals/gantt-chart/{user_id}', [GoalController::class, 'ganttChart']);
 
