@@ -153,11 +153,11 @@ class GoalQueries
         // $goalTemplate = GoalTemplate::whereIn('goal_id',@$goalIds ?? [])
         //                                 ->get()
         //                                 ->keyBy('goal_id');
-        $nextGoal = $this->nextGoal($goalIds);
+        // $nextGoal = $this->nextGoal($goalIds);
         $goals = $this->generalinfo_repository
             ->setType('goal')
             ->get($goals);
-        $goals = $goals->map(function ($goal) use ($nextGoal, $goalMember)
+        $goals = $goals->map(function ($goal) use ( $goalMember)
         {
             $countMember =  $this->goalMember_repository
                                         ->CountNumberMemberGoal($goal->id);
@@ -168,7 +168,7 @@ class GoalQueries
             $goal->rank = $rank;
             $goal->number_member = $countMember->number_member; 
             $goal->template = @$goal->goalTemplate;
-            $goal->next_goal = @$nextGoal[$goal->id];
+            // $goal->next_goal = @$nextGoal[$goal->id];
             return $goal;
         });
         return $goals->sortBy('rank');
