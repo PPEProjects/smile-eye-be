@@ -97,4 +97,7 @@ class JapaneseGoalQueries
  public function myFlashcardStudy($_,array $args){
     return $this->japanese_goal_repository->myFlashcardStudy($args);
 }
+    public function autoPlayJapaneseGoal($_, array $args){
+        return $this->japanese_goal_repository->autoPlayJapaneseGoal(@$args['root_id']);
+    }
 }

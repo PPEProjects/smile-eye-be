@@ -506,4 +506,19 @@ class JapaneseGoalRepository
             ->update(['more' => $jpGoal->more]);
         return $jpGoal;
     }
+
+    public function autoPlayJapaneseGoal($goalRootId)
+    {
+        $listGoals = Goal::where('root_id',$goalRootId)
+                            ->orderByRaw('-`index` DESC')
+                            ->get();
+        $children = $this->findBlock($listGoals, [$goalRootId]);
+        $japaneseLearn = JapaneseLearn::where('user_id', Auth::id())
+                                        ->whereIn('goal_id', $children)
+                                        ->get();
+        $getGoalIds = $japaneseLearn->pluck('goal_id')->toArray();
+        $nextGoal = @$this->getJapaneseGoal('goal_id', end($getGoalIds))
+                                ->first();
+       return $nextGoal;
+    }
 }

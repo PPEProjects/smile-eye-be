@@ -1634,7 +1634,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $goal_id : ID\r\n) {\r\n  upsert_japanese_learn(\r\n    input: {\r\n    goal_id:$goal_id\r\n    }\r\n  ) {\r\n   id\r\n    user_id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal_id\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    updated_at\r\n}\r\n}\r\n",
-								"variables": "{\r\n    \"goal_id\":16380655991\r\n}"
+								"variables": "{\r\n    \"goal_id\":16398807693\r\n}"
 							}
 						},
 						"url": {
@@ -4019,7 +4019,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id:ID, $goal_id: ID) {\n  detail_japanese_goal(\n      id : $id\n      goal_id: $goal_id\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n    payment_status\n     goal_root{\n         id\n         name\n         price\n         user{\n            id\n            name\n        }\n     }\n     next_goal{\n         id\n         name\n         type\n     }\n     prev_goal{\n         id\n         name\n         type\n     }\n    type\n    score\n    more\n      list_users{\n         id\n         name\n         attachment{\n             id\n             file\n             thumb\n         }\n     }\n  }\n}",
-								"variables": "{\r\n \"goal_id\": \"16394701838\"\r\n}\r\n"
+								"variables": "{\r\n \"goal_id\": \"16398807693\"\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -4170,6 +4170,36 @@
 							"graphql": {
 								"query": "query($type: String) {\n  search_by_type_japanese_goal(\n      type : $type\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n     goal_id\n    type\n    score\n    more\n  }\n}",
 								"variables": "{\r\n    \"type\":\"communication\"\r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query auto_play_japanese_goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($root_id: ID) {\n   auto_play_japanese_goal(\n      root_id: $root_id\n  ) {\n     id\n     goal{\n         id\n         name\n     }\n    type\n  }\n}",
+								"variables": "{\r\n    \"root_id\":\"1994\"\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -5001,7 +5031,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": []
+									"src": "/F:/project/php/smile-eye-be/storage/app/public/Letter/hiragana/a.gif"
 								},
 								{
 									"key": "audio_base64",
@@ -5011,13 +5041,14 @@
 							]
 						},
 						"url": {
-							"raw": "{{url}}/api/attachment",
+							"raw": "{{url}}/api/attachment-letter/example-katakana",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"attachment"
+								"attachment-letter",
+								"example-katakana"
 							]
 						}
 					},
@@ -5040,7 +5071,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": []
+									"src": "/F:/project/php/smile-eye-be/storage/app/public/Letter/a/ba.mp3"
 								}
 							]
 						},
@@ -5075,7 +5106,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": []
+									"src": "/F:/project/php/smile-eye-be/storage/app/public/Letter/hiragana/aicon.png"
 								}
 							]
 						},
