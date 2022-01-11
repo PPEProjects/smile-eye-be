@@ -283,14 +283,11 @@ class JapaneseGoalRepository
                 if($detailJPGoal->payment_status == false)
                 {
                     $trialIds = $this->findBlock($listGoals, @$goalRoot->trial_block ?? []);
-
-                    // $trialIds = array_intersect($childrenIds, @$trials ?? []);
                     $checkTrial = in_array($detailJPGoal->goal_id, @$trialIds ?? []);
                     $findIds = array_search($detailJPGoal->goal_id, @$trialIds ?? [] , true);   
                     if($checkTrial)
                     {
                         $detailJPGoal->payment_status = true;
-                       
                         $numberTrial = count($trialIds);
                         if(($numberTrial - 1) > $findIds){
                             $getTypeNextGoal = @$this->getJapaneseGoal('goal_id',  $trialIds[$findIds + 1])
@@ -303,28 +300,11 @@ class JapaneseGoalRepository
                             $keyPrev =  $trialIds[$findIds - 1];
                         }
                     }
-              
-                //         foreach ($trialIds as $key => $value) {
-                //             if ($key > $findIds) {
-                //                 if (isset($getTypeNextGoal)) {
-                //                 continue;
-                //                 }
-                //                 $getTypeNextGoal = @$this->getJapaneseGoal('goal_id', $value)->first();
-                //                 $keyNext = $value;
-                //             }
-                //             if ($key > 0 && $key < $findIds) {
-                //                 if (isset($getTypePrevGoal)) {
-                //                 continue;
-                //                 }
-                //                 $getTypePrevGoal = @$this->getJapaneseGoal('goal_id', @$trialIds[$findIds - $key])->first();
-                //                 $keyPrev = @$trialIds[$findIds - $key];
-                //             }
-                //         }
-                //     }
+            
                 }
                 if ($keyNext == 0)
                 {
-                    $childrenIds = $this->findBlock($listGoals, [$goalRoot->id]);
+                    $childrenIds = $this->listBlock($listGoals);
                     $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);
                     $numberBlock = count($childrenIds);
                     if(($numberBlock - 1) > $findIds){
@@ -337,27 +317,11 @@ class JapaneseGoalRepository
                                                     ->first();
                         $keyPrev = $childrenIds[$findIds - 1];
                     }
-                    // foreach ($childrenIds as $key => $value)
-                    // {
-                    //     if ($key > $findIds) {
-                    //         if (isset($getTypeNextGoal)) {
-                    //             continue;
-                    //         }
-                    //         $getTypeNextGoal = @$this->getJapaneseGoal('goal_id', $value)->first();
-                    //         $keyNext = $value;
-                    //     }
-                    //     if ($key > 0 && $key <= $findIds) {
-                    //         if (isset($getTypePrevGoal)) {
-                    //             continue;
-                    //         }
-                    //         $getTypePrevGoal = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds - $key])->first();
-                    //         $keyPrev = $childrenIds[$findIds - $key];
-                    //     }
-                    // }
-
                 }
             }
-
+            $linkNext = url('/api/redirect/nextBlock?goal_id='.$detailJPGoal->goal_id.'&user_id='.Auth::id());
+            $linkPrev = url('/api/redirect/nextBlock?goal_id='.$detailJPGoal->goal_id.'&user_id='.Auth::id());
+            
             $nextGoal = @$this->findGoal($keyNext);
             $prevGoal = @$this->findGoal($keyPrev);
             if (isset($nextGoal) && isset($getTypeNextGoal->type)) {
@@ -372,7 +336,11 @@ class JapaneseGoalRepository
                 $prevGoal = null;
             }
             $detailJPGoal->next_goal = $nextGoal;
+            $detailJPGoal->link_next = $linkNext;
+
             $detailJPGoal->prev_goal = $prevGoal;
+            $detailJPGoal->link_prev= $linkPrev;
+
         }
         if ($detailJPGoal->type == 'flashcard_study') {
             $flashCardIds = $detailJPGoal->more['flashcard_ids'];
@@ -406,6 +374,20 @@ class JapaneseGoalRepository
         }
         return $getchildren;
     }
+
+    public function listBlock($listGoal)
+    {
+        $idListGoals = $listGoal->pluck('id');
+        $jpGoal = JapaneseGoal::whereIn('goal_id', @$idListGoals ?? [])->get();
+        $getids = $jpGoal->pluck('goal_id');
+        $goals = Goal::whereIn('id', @$getids ?? [])
+                        ->orderByRaw('-`index` DESC')
+                        ->get()
+                        ->pluck('id')
+                        ->toArray();
+        return $goals;
+    }
+    
     public function findGoal($id)
     {
         $goal = Goal::where('id', $id)->first();
