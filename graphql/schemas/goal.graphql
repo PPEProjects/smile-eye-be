@@ -84,6 +84,7 @@ type Goal{
     sum_achieve_share: Int
     owner_percent: String
     setting_for_sell: Boolean
+    redirect_autoplay: String
 }
 type CountGoal {
     status : String

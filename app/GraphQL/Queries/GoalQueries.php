@@ -149,6 +149,7 @@ class GoalQueries
             $getIdJapaneseGoals = $japaneseGoals->pluck('goal_id')->toArray();
             $goals = $goals->whereNotIn('id', $getIdJapaneseGoals);
         }
+        
         $goalIds = $goals->pluck('id')->toArray();
         // $goalTemplate = GoalTemplate::whereIn('goal_id',@$goalIds ?? [])
         //                                 ->get()
@@ -168,6 +169,7 @@ class GoalQueries
             $goal->rank = $rank;
             $goal->number_member = $countMember->number_member; 
             $goal->template = @$goal->goalTemplate;
+            $goal->redirect_autoplay = url('/api/redirect/autoplay?root_id='.$goal->id.'&user_id='.Auth::id());
             // $goal->next_goal = @$nextGoal[$goal->id];
             return $goal;
         });

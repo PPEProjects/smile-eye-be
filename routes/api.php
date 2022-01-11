@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AttachmentController;
 use App\Http\Controllers\Api\GoalController;
 use App\Http\Controllers\Api\LetterAttachmentController;
+use App\Http\Controllers\Api\RedirectController;
 use App\Services\GoogleService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,11 @@ Route::prefix('/auth-service')->group(function () {
     });
 });
 
+
+Route::prefix('/redirect')->group(function () {
+    Route::get('/autoplay', [RedirectController::class, 'autoplay']);
+});
+
 Route::resource('attachment', AttachmentController::class)
     ->middleware('auth');
 
@@ -52,3 +58,6 @@ Route::prefix('/momo')->group(function () {
     Route::post('/generate-url/{type}', [MomoController::class, 'generateUrl']);
     Route::get('/callback/{type}', [MomoController::class, 'callback']);
 });
+
+
+
