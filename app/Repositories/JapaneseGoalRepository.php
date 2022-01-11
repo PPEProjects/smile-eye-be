@@ -304,7 +304,7 @@ class JapaneseGoalRepository
                 }
                 if ($keyNext == 0)
                 {
-                    $childrenIds = $this->listBlock($listGoals);
+                    $childrenIds = $this->findBlock($listGoals, [$goalRoot->id]);
                     $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);
                     $numberBlock = count($childrenIds);
                     if(($numberBlock - 1) > $findIds){
@@ -387,7 +387,7 @@ class JapaneseGoalRepository
                         ->toArray();
         return $goals;
     }
-    
+
     public function findGoal($id)
     {
         $goal = Goal::where('id', $id)->first();
