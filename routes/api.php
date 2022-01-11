@@ -44,6 +44,8 @@ Route::prefix('/auth-service')->group(function () {
 
 Route::prefix('/redirect')->group(function () {
     Route::get('/autoplay', [RedirectController::class, 'autoplay']);
+    Route::get('/nextBlock', [RedirectController::class, 'nextBlock']);
+    Route::get('/prevBlock', [RedirectController::class, 'prevBlock']);
 });
 
 Route::resource('attachment', AttachmentController::class)
