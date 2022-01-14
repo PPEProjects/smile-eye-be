@@ -254,7 +254,7 @@ class JapaneseGoalRepository
             $keyPrev = 0;
             if (isset($goalRoot->id)) {
                 $listGoals = Goal::where('root_id', $goalRoot->id)->orderByRaw('-`index` DESC')->get();
-
+              
                 $coachMember = CoachMember::where('user_id', Auth::id())
                                             ->first();
                 $checkIdGoal = in_array($goalRoot->id, @$coachMember->goal_ids ?? []);
@@ -282,7 +282,7 @@ class JapaneseGoalRepository
                 }
                 if($detailJPGoal->payment_status == false)
                 {
-                    $trialIds = $this->findBlock($listGoals, @$goalRoot->trial_block ?? []);
+                    $trialIds = $this->findParent($listGoals, @$goalRoot->trial_block ?? []);
                     $checkTrial = in_array($detailJPGoal->goal_id, @$trialIds ?? []);
                     $findIds = array_search($detailJPGoal->goal_id, @$trialIds ?? [] , true);   
                     if($checkTrial)
@@ -304,7 +304,7 @@ class JapaneseGoalRepository
                 }
                 if ($keyNext == 0)
                 {
-                    $childrenIds = $this->findBlock($listGoals, [$goalRoot->id]);
+                    $childrenIds = $this->findParent($listGoals, [$goalRoot->id]);
                     $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);
                     $numberBlock = count($childrenIds);
                     if(($numberBlock - 1) > $findIds){
@@ -374,7 +374,19 @@ class JapaneseGoalRepository
         }
         return $getchildren;
     }
-
+    public function findParent($listGoals, $ids = null, $children = [])
+    {
+                $goals = [];
+               foreach ($listGoals as $goal){
+                   if($goal->id == $goal->root_id){
+                       continue;
+                   }
+                   if(isset($goal->parent)){
+                    $goals[] = $goal->id;
+                   }
+               }
+        return $goals;
+    }
     public function listBlock($listGoal)
     {
         $idListGoals = $listGoal->pluck('id');
