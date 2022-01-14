@@ -13,6 +13,8 @@ extend type Query {
     friend_and_goal(status:String, name:String): [User] @guard @field(resolver:"FriendQueries@friendAndGoal")
     list_pend_friends(status:String): [User] @guard @field(resolver:"FriendQueries@pendFriend")
     search_people(name:String): [User] @guard @field(resolver:"FriendQueries@searchPeople")
+    list_user_by_ids(user_ids:[ID]): [User] @guard @field(resolver:"FriendQueries@listUserByIds")
+
 #    search_friends_content(content: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [Friend!]! @paginate(type: "paginator" model: "App\\Models\\Friend")
 #    search_friends_name_friend : [Friend] @all @where(relation: "friends")
 

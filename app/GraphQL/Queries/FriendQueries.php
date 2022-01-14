@@ -45,5 +45,9 @@ class FriendQueries
     {
         return $this->friend_repository->searchPeople(Auth::id(), @$args['name']);
     }
+    public function listUserByIds($_, array $args)
+    {
+        return $this->friend_repository->listUserByIds($args);
+    }
 
 }

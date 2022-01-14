@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Friend;
 use App\Models\Goal;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use ppeCore\dvtinh\Services\AttachmentService;
 
 class FriendRepository
@@ -298,5 +299,18 @@ class FriendRepository
         }
 
         return $people;
+    }
+
+    public function listUserByIds($args){
+        $userId = Auth::id();
+        $myFriends = $this->getByNameStatus($userId);
+        $myFriends = $myFriends->whereIn('id', @$args['user_ids'] ?? []);
+        $listUser = User::whereIn('id', @$args['user_ids'] ?? [])->get();
+        $list = $myFriends->concat($listUser);
+        $list = $list->map(function($user) {
+            $user = $this->attachment_service->mappingAvatarBackgroud($user);
+            return $user;
+        });
+       return $list;
     }
 }

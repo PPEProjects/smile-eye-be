@@ -21,7 +21,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Hoai Nam\",\n    \"email\": \"hoainam123@gmail.com\",\n    \"password\": \"hoainam123\",\n    \"password_confirmation\": \"hoainam123\"\n}",
+							"raw": "{\n    \"name\": \"SmileAdmin\",\n    \"email\": \"SmileAdmin@gmail.com\",\n    \"password\": \"PTTSmile@012021\",\n    \"password_confirmation\": \"PTTSmile@012021\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -354,7 +354,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $id:ID\r\n   $add_user_id: ID\r\n    $goal_id: [ID]\r\n    $type: String\r\n    $status: String\r\n    $note: String\r\n    $money: String\r\n    $attachments: JSON\r\n) {\r\n  upsert_payment(\r\n    input: {\r\n        id: $id\r\n     add_user_id: $add_user_id\r\n     goal_id: $goal_id\r\n     money: $money\r\n     note : $note\r\n     status: $status\r\n     type: $type\r\n     attachments: $attachments\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n    }\r\n    add_user_id\r\n    goal_id\r\n    status\r\n    type\r\n    money\r\n    note\r\n    attachments\r\n    created_at\r\n    updated_at\r\n  }\r\n}\r\n",
-								"variables": "{\r\n    \"add_user_id\": 154,\r\n    \"goal_id\":1,\r\n    \"status\": \"paidConfirmed\",\r\n    \"money\": \"20000\",\r\n    \"note\":\"ahihi\",\r\n    \"attachments\":[{\r\n        \"id\":5,\r\n        \"thumb\":\"xbz.img\"\r\n    }]\r\n}"
+								"variables": "{\r\n    \"add_user_id\": 154,\r\n    \"goal_id\":1,\r\n    \"status\": \"paidConfirmed\",\r\n    \"money\": null,\r\n    \"note\":\"ahihi\",\r\n    \"attachments\":[{\r\n        \"id\":5,\r\n        \"thumb\":\"xbz.img\"\r\n    }]\r\n}"
 							}
 						},
 						"url": {
@@ -4018,8 +4018,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query($id:ID, $goal_id: ID) {\n  detail_japanese_goal(\n      id : $id\n      goal_id: $goal_id\n  ) {\n     id\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n    payment_status\n     goal_root{\n         id\n         name\n         price\n         user{\n            id\n            name\n        }\n     }\n     next_goal{\n         id\n         name\n         type\n     }\n     prev_goal{\n         id\n         name\n         type\n     }\n    type\n    score\n    more\n      list_users{\n         id\n         name\n         attachment{\n             id\n             file\n             thumb\n         }\n     }\n  }\n}",
-								"variables": "{\r\n \"goal_id\": \"16398807693\"\r\n}\r\n"
+								"query": "query($id:ID, $goal_id: ID) {\n  detail_japanese_goal(\n      id : $id\n      goal_id: $goal_id\n  ) {\n     id\n    link_next\n    link_prev\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n    payment_status\n     goal_root{\n         id\n         name\n         price\n         user{\n            id\n            name\n        }\n     }\n     next_goal{\n         id\n         name\n         type\n     }\n     prev_goal{\n         id\n         name\n         type\n     }\n    type\n    score\n    more\n      list_users{\n         id\n         name\n         attachment{\n             id\n             file\n             thumb\n         }\n     }\n  }\n}",
+								"variables": "{\r\n \"goal_id\": \"16400406670\"\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -4415,6 +4415,36 @@
 							"graphql": {
 								"query": "query($status: String){\n  list_pend_friends\n  (\n   status: $status\n   ){\n       friend{\n           id\n           status\n       }\n      id\n      messages\n      name\n      email\n      phone_number\n      quotes\n       attachment{\n          id\n          thumb\n      }\n       mutual_friend{\n            id\n        name\n        attachment{\n            id\n            thumb\n        }\n       }\n      \n    \n   }\n}\n\n",
 								"variables": "{\r\n    \r\n}\r\n"
+							}
+						},
+						"url": {
+							"raw": "{{url}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query list_user_by_ids",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query($user_ids: [ID]){\n  list_user_by_ids\n  (\n   user_ids: $user_ids\n   ){\n      id\n      name\n       attachment{\n          id\n          thumb\n      }\n      friend_status\n    \n   }\n}\n\n",
+								"variables": "{\r\n    \"user_ids\":[1, 23, 150, 155, 24] \r\n}\r\n"
 							}
 						},
 						"url": {
