@@ -282,7 +282,7 @@ class JapaneseGoalRepository
                 }
                 if($detailJPGoal->payment_status == false)
                 {
-                    $trialIds = $this->findParent($listGoals, @$goalRoot->trial_block ?? []);
+                    $trialIds = $this->findBlock($listGoals, @$goalRoot->trial_block ?? []);
                     $checkTrial = in_array($detailJPGoal->goal_id, @$trialIds ?? []);
                     $findIds = array_search($detailJPGoal->goal_id, @$trialIds ?? [] , true);   
                     if($checkTrial)
@@ -304,7 +304,7 @@ class JapaneseGoalRepository
                 }
                 if ($keyNext == 0)
                 {
-                    $childrenIds = $this->findParent($listGoals, [$goalRoot->id]);
+                    $childrenIds = $this->findBlock($listGoals, [$goalRoot->id]);
                     $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);
                     $numberBlock = count($childrenIds);
                     if(($numberBlock - 1) > $findIds){
