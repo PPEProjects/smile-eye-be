@@ -19,12 +19,14 @@ class JapanesePost extends Model
          'description',
          'media',
          'likes',
+         'more',
         'created_at',
         'updated_at'
     ];
     protected $casts = [
         'media' => 'json',
         'likes' => 'json',
+        'more' => 'json',
     ];
     public function goal(){
         return $this->belongsTo(goal::class);

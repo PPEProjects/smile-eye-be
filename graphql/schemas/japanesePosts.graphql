@@ -23,6 +23,7 @@ type JapanesePost{
     description: String
     media : JSON
     likes : JSON
+    more : JSON
     created_at: DateTime
     updated_at: DateTime
 }
@@ -33,6 +34,7 @@ input CreateJapanesePostInput{
     description: String
     media : JSON
     likes : JSON
+    more : JSON
 }
 input UpdateJapanesePostInput{
     id : ID!
@@ -40,6 +42,7 @@ input UpdateJapanesePostInput{
     description: String
     media : JSON
     likes : JSON
+    more : JSON
 }
 input DeleteJapanesePostInput{
     id: ID!
@@ -49,4 +52,7 @@ input UpsertJapanesePostInput{
     goal_id:ID
     title:String
     description: String
+    media : JSON
+    likes : JSON
+    more : JSON
 }
