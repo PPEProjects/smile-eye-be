@@ -8,7 +8,22 @@ use App\Models\JapaneseGoal;
 use App\Models\JapanesePost;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use ppeCore\dvtinh\Services\AttachmentService;
+
+use function PHPSTORM_META\map;
+
 class JapanesePostRepository{
+
+
+    private $attachment_service;
+
+    public function __construct(
+   
+        AttachmentService $attachment_service
+    ) {
+        $this->attachment_service = $attachment_service;
+
+    }
 
     public function createJapanesePost($args)
     {
@@ -46,7 +61,13 @@ class JapanesePostRepository{
     }
 
     public function myJapanesePost(){     
-        return JapanesePost::where('user_id',Auth::id())->get();
+        $japanesePost = JapanesePost::where('user_id',Auth::id())->get();
+        $japanesePost = $japanesePost->map(function($post){
+            $user = $this->attachment_service->mappingAvatarBackgroud($post->user);
+            $post->user = $user;
+            return $post;
+        });
+        return $japanesePost;
     }
     public function otherJapanesePost($args)
     {
