@@ -320,7 +320,7 @@ class JapaneseGoalRepository
                 }
             }
             $linkNext = url('/api/redirect/nextBlock?goal_id='.$detailJPGoal->goal_id.'&user_id='.Auth::id());
-            $linkPrev = url('/api/redirect/nextBlock?goal_id='.$detailJPGoal->goal_id.'&user_id='.Auth::id());
+            $linkPrev = url('/api/redirect/prevBlock?goal_id='.$detailJPGoal->goal_id.'&user_id='.Auth::id());
             
             $nextGoal = @$this->findGoal($keyNext);
             $prevGoal = @$this->findGoal($keyPrev);
