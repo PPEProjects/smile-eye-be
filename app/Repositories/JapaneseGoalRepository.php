@@ -250,8 +250,7 @@ class JapaneseGoalRepository
                 }
                 $detailJPGoal->list_users = @$users;
             }
-            $keyNext = 0;
-            $keyPrev = 0;
+
             if (isset($goalRoot->id)) {
                 $listGoals = Goal::where('root_id', $goalRoot->id)->orderByRaw('-`index` DESC')->get();
               
@@ -282,8 +281,7 @@ class JapaneseGoalRepository
                 }
                 if($detailJPGoal->payment_status == false && isset($goalRoot->trial_block))
                 {
-                    $goalTrials = $listGoals->whereIn('parent_id', @$goalRoot->trial_block);
-                    $trialIds = $this->findBlock($goalTrials, @$goalRoot->trial_block ?? []);
+                    $trialIds = $this->findBlock($listGoals, @$goalRoot->trial_block ?? []);
                     $checkTrial = in_array($detailJPGoal->goal_id, @$trialIds ?? []);
                     // $findIds = array_search($detailJPGoal->goal_id, @$trialIds ?? [] , true);   
                     if($checkTrial)
@@ -375,21 +373,30 @@ class JapaneseGoalRepository
         }
         return $getchildren;
     }
-    public function findParent($listGoals, $ids = null, $children = [])
+    public function findParent($listGoals, $ids = [], $children = [])
     {
        
         $findGoal = [];
-        $idParent = [];
-        foreach($listGoals as $goal){
-            if (empty($goal->parent)) {
-                $idParent[] = $goal->id;
-                $idParent[] = $goal->parent_id;
-            }
-            $check = array_intersect($idParent, [@$goal->parent_id]);
-            if(!$check){
-                $findGoal[] = $goal->id;
+        $listTrial = $listGoals->whereIn('parent_id', $ids);
+        $idParent = @$listTrial->pluck('id')->toArray() ?? [];
+        while(true){
+            $findGoal = array_merge($findGoal, $idParent);
+            $listTrial = $listGoals->whereIn('parent_id', $idParent);
+            $idParent = @$listTrial->pluck('id')->toArray() ?? [];
+            if ($idParent == []) {
+                break;
             }
         }
+        // foreach($listGoals as $goal){
+        //     if (empty($goal->parent)) {
+        //         $idParent[] = $goal->id;
+        //         $idParent[] = $goal->parent_id;
+        //     }
+        //     $check = array_intersect($idParent, [@$goal->parent_id]);
+        //     if(!$check){
+        //         $findGoal[] = $goal->id;
+        //     }
+        // }
         $jpGoal = JapaneseGoal::whereIn('goal_id', @$findGoal ?? [])->get();
         $getids = $jpGoal->pluck('goal_id');
         $goals = Goal::whereIn('id', @$getids ?? [])
@@ -397,7 +404,6 @@ class JapaneseGoalRepository
                         ->get()
                         ->pluck('id')
                         ->toArray();
-        // dd($goals);
         return $goals;
     }
     public function listBlock($listGoal)
