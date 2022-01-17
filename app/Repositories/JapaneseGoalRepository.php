@@ -281,7 +281,7 @@ class JapaneseGoalRepository
                 }
                 if($detailJPGoal->payment_status == false && isset($goalRoot->trial_block))
                 {
-                    $trialIds = $this->findBlock($listGoals, @$goalRoot->trial_block ?? []);
+                    $trialIds = $this->findParent($listGoals, @$goalRoot->trial_block ?? []);
                     $checkTrial = in_array($detailJPGoal->goal_id, @$trialIds ?? []);
                     // $findIds = array_search($detailJPGoal->goal_id, @$trialIds ?? [] , true);   
                     if($checkTrial)
