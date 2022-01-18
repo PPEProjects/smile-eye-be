@@ -85,6 +85,7 @@ type Goal{
     owner_percent: String
     setting_for_sell: Boolean
     redirect_autoplay: String
+    root_id: ID
 }
 type CountGoal {
     status : String
