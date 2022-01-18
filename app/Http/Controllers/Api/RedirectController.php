@@ -114,27 +114,49 @@ class RedirectController extends Controller
         $link = $this->requestLink(@$prevGoal, @$prevGoal->type);
         return redirect($link);
     }
-    public function findBlock($listGoals, $ids, $children = [])
+    // public function findBlock($listGoals, $ids, $children = [])
+    // {
+    //     $getchildren = $children;
+    //     $goals = $listGoals;
+    //     foreach($ids as $value)
+    //     {
+    //         $find = $goals->where('parent_id', $value);
+    //         if($find->toArray() != []){
+    //             $idParent = $find->pluck('id')->toArray();
+    //             $getchildren =  self::findBlock($listGoals, $idParent, $getchildren);
+    //         }
+    //         else{
+    //             $checkBlock = $goals->where('id', $value)->first();
+    //             if(isset($checkBlock->japaneseGoal)){
+    //                 $getchildren[] = (string)$value;
+    //             }
+    //         }
+    //     }
+    //     return $getchildren;
+    // }
+    public function findBlock($listGoals, $ids = [], $children = [])
     {
-        $getchildren = $children;
-        $goals = $listGoals;
-        foreach($ids as $value)
-        {
-            $find = $goals->where('parent_id', $value);
-            if($find->toArray() != []){
-                $idParent = $find->pluck('id')->toArray();
-                $getchildren =  self::findBlock($listGoals, $idParent, $getchildren);
-            }
-            else{
-                $checkBlock = $goals->where('id', $value)->first();
-                if(isset($checkBlock->japaneseGoal)){
-                    $getchildren[] = (string)$value;
-                }
+       
+        $findGoal = [];
+        $listTrial = $listGoals->whereIn('parent_id', $ids);
+        $idParent = @$listTrial->pluck('id')->toArray() ?? [];
+        while(true){
+            $findGoal = array_merge($findGoal, $idParent);
+            $listTrial = $listGoals->whereIn('parent_id', $idParent);
+            $idParent = @$listTrial->pluck('id')->toArray() ?? [];
+            if ($idParent == []) {
+                break;
             }
         }
-        return $getchildren;
+        $jpGoal = JapaneseGoal::whereIn('goal_id', @$findGoal ?? [])->get();
+        $getids = $jpGoal->pluck('goal_id');
+        $goals = Goal::whereIn('id', @$getids ?? [])
+                        ->orderByRaw('-`index` DESC')
+                        ->get()
+                        ->pluck('id')
+                        ->toArray();
+        return $goals;
     }
-
     public function listBlock($listGoal)
     {
         $idListGoals = $listGoal->pluck('id');
