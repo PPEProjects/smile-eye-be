@@ -61,7 +61,7 @@ class JapanesePostRepository{
     }
 
     public function myJapanesePost(){     
-        $japanesePost = JapanesePost::where('user_id',Auth::id())->orderBy('created_at')->get();
+        $japanesePost = JapanesePost::where('user_id',Auth::id())->orderBy('created_at', 'DESC')->get();
         $japanesePost = $japanesePost->map(function($post){
             $user = $this->attachment_service->mappingAvatarBackgroud($post->user);
             $post->user = $user;
