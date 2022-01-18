@@ -21,6 +21,7 @@ class CreateJapanesePostsTable extends Migration
             $table->text("description")->nullable();
             $table->json("media")->nullable();
             $table->json("likes")->nullable();
+            $table->json("more")->nullable();
             $table->timestamps();
         });
     }

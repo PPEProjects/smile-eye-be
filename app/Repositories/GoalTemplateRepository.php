@@ -36,7 +36,7 @@ class GoalTemplateRepository{
         $args['user_id'] = Auth::id();
         $checkGoal = Goal::find($args['goal_id']);
         if(@$args['status'] == 'pending'){
-            if (!isset($checkGoal->price) || @$checkGoal->price == 0.00) {
+            if (empty($checkGoal->price) || @$checkGoal->price == 0.00) {
                 throw new Error("Please set price for the goal.");
             }
         }
