@@ -158,13 +158,13 @@ class PaymentRepository
        $moneyTotal["sum_admin_income"]["sum"] = $sumAll;
        $moneyTotal["sum_owner_income"]["sum"] = $sumAll;
 
-       $moneyAdmin = 0;
-       $moneyOwner = 0;
        foreach (@$checkGoals ?? [] as $id){
                  $totalOwner = 0;
                  $totalAdmin = 0;
                  $sumOwner = 0;
                  $sumAdmin = 0;
+                 $moneyAdmin = 0;
+                 $moneyOwner = 0;
            foreach ($getDate as $date){
                    $moneyDay = $payments->where('goal_id', $id)
                                         ->where('date', $date)
