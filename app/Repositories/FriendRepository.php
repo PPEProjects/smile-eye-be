@@ -307,7 +307,7 @@ class FriendRepository
         $myFriends = $this->getByNameStatus($userId);
         $myFriends = $myFriends->whereIn('id', @$args['user_ids'] ?? []);
         $listUser = User::whereIn('id', @$args['user_ids'] ?? [])->get();
-        $list = $myFriends->concat($listUser);
+        $list = $listUser->merge($myFriends);
         $list = $list->map(function($user) {
             $user = $this->attachment_service->mappingAvatarBackgroud($user);
             return $user;
