@@ -303,6 +303,7 @@ class FriendRepository
 
     public function listUserByIds($args){
         $userId = Auth::id();
+        $args['user_ids'] = array_diff( @$args['user_ids'] ?? [], [$userId]);
         $myFriends = $this->getByNameStatus($userId);
         $myFriends = $myFriends->whereIn('id', @$args['user_ids'] ?? []);
         $listUser = User::whereIn('id', @$args['user_ids'] ?? [])->get();
