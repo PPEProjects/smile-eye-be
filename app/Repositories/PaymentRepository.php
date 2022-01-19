@@ -157,6 +157,9 @@ class PaymentRepository
        $moneyTotal["sum_total_income"]["sum"] = $sumAll;
        $moneyTotal["sum_admin_income"]["sum"] = $sumAll;
        $moneyTotal["sum_owner_income"]["sum"] = $sumAll;
+
+       $moneyAdmin = 0;
+       $moneyOwner = 0;
        foreach (@$checkGoals ?? [] as $id){
                  $totalOwner = 0;
                  $totalAdmin = 0;
@@ -180,16 +183,19 @@ class PaymentRepository
                     $sumDate = $payments->where('date', $date)
                                             ->sum('money');
 
-                    $moneyTotal["sum_total_income"]["admin"] = $total[$date]["total_admin"];
-                    $moneyTotal["sum_total_income"]["owner"] = $total[$date]["total_owner"];
+                    $moneyAdmin = $moneyAdmin + $total[$date]["total_admin"];
+                    $moneyOwner = $moneyOwner + $total[$date]["total_owner"];
+
+                    $moneyTotal["sum_total_income"]["admin"] = $moneyAdmin;
+                    $moneyTotal["sum_total_income"]["owner"] = $moneyOwner;
                     $moneyTotal["sum_total_income"]["date".$date] =  $sumDate;
 
-                    $moneyTotal["sum_admin_income"]["admin"] = $total[$date]["total_admin"];
-                    $moneyTotal["sum_admin_income"]["owner"] = $total[$date]["total_owner"];
+                    $moneyTotal["sum_admin_income"]["admin"] = $moneyAdmin;
+                    $moneyTotal["sum_admin_income"]["owner"] = $moneyOwner;
                     $moneyTotal["sum_admin_income"]["date".$date] =  $sumDate;
 
-                    $moneyTotal["sum_owner_income"]["admin"] = $total[$date]["total_admin"];
-                    $moneyTotal["sum_owner_income"]["owner"] = $total[$date]["total_owner"];
+                    $moneyTotal["sum_owner_income"]["admin"] = $moneyAdmin;
+                    $moneyTotal["sum_owner_income"]["owner"] = $moneyOwner;
                     $moneyTotal["sum_owner_income"]["date".$date] =  $sumDate;
 
 
