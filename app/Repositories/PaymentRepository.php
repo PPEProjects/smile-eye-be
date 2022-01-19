@@ -106,7 +106,7 @@ class PaymentRepository
       return $payments->sortBy('created_at');
    }
    public function totalIncome($args){
-        $status = ['paidConfirmed', 'done', 'Confirmed'];
+        $status = ['paidConfirmed', 'done', 'Confirmed', 'pause'];
        $payments = Payment::selectRaw("id, add_user_id, money, status, goal_id")
                             ->whereIn("status", $status);
         if(isset($args) && @$args != [])
@@ -137,6 +137,7 @@ class PaymentRepository
                $goals[$payment->goal->id] = $payment->goal;
            }
        }
+        
        $payments = $payments->whereIn('goal_id', $checkGoals);
         $getDate = $payments->pluck('date')->toArray();
         $total = [];
@@ -222,10 +223,35 @@ class PaymentRepository
                 $totalIncome[$id] = array_merge($getSum, $totalIncome[$id]);
 
             }
-
-        $totalIncome = array_merge($totalIncome, $moneyTotal);
+        $otherGoal = [];
+        if(@$args['all_template'])
+        {
+            $otherTemplate = GoalTemplate::whereIn('status', $status)
+                                            ->whereNotIn('goal_id', $checkGoals)
+                                            ->get();
+            foreach ($otherTemplate as $template) {
+                if(isset($template->goal))
+                {
+                    $ownerPercent = @$template->goal->owner_percent ?? 0;
+                    $adminPercent = 100 - intval($ownerPercent);
+                    $otherGoal[$template->goal_id] = [
+                        'name' =>  $template->goal->name,
+                        "owner_percent" => intval($ownerPercent),
+                        "admin_percent" => $adminPercent,
+                        "owner" => 0,
+                        "admin" => 0,
+                        "sum" => 0
+                    ];
+                    foreach ($getDate as $date){
+                        $otherGoal[$template->goal_id]['date'.$date] = 0; 
+                    }
+                }
+            }   
+        }            
+        $totalIncome = array_merge($totalIncome, $otherGoal, $moneyTotal);
        return  array_values($totalIncome);
    }
+
    public function paymentsList($args){
         $status = ['paidConfirmed', 'done', 'Confirmed'];
         $day = @$args['day'] ?? "0";
@@ -248,6 +274,15 @@ class PaymentRepository
         $checkIssetGoals = $checkIssetGoals->get()->pluck('id');
         $payments = $payments->whereIn('goal_id', @$checkIssetGoals ?? []);
 
+        // $checkIssetGoals = $checkIssetGoals->get();
+        // $payments = $payments->whereIn('goal_id', @$checkIssetGoals->pluck('id') ?? []);
+        // $sum = [];
+        // $sum['sum'] = $payments->sum('money');
+        // foreach($checkIssetGoals as $goal){
+        //     $money = $payments->where('goal_id', $goal->id)->sum('money');
+        //     $sum[$goal->name] = $money;
+            
+        // }
 
         return $payments;
    }
