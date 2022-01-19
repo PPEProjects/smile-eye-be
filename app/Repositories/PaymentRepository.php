@@ -158,13 +158,13 @@ class PaymentRepository
        $moneyTotal["sum_admin_income"]["sum"] = $sumAll;
        $moneyTotal["sum_owner_income"]["sum"] = $sumAll;
 
+       $moneyAdmin = 0;
+       $moneyOwner = 0;
        foreach (@$checkGoals ?? [] as $id){
                  $totalOwner = 0;
                  $totalAdmin = 0;
                  $sumOwner = 0;
                  $sumAdmin = 0;
-                 $moneyAdmin = 0;
-                 $moneyOwner = 0;
            foreach ($getDate as $date){
                    $moneyDay = $payments->where('goal_id', $id)
                                         ->where('date', $date)
@@ -183,19 +183,13 @@ class PaymentRepository
                     $sumDate = $payments->where('date', $date)
                                             ->sum('money');
 
-                    $moneyAdmin = $moneyAdmin + $total[$date]["total_admin"];
-                    $moneyOwner = $moneyOwner + $total[$date]["total_owner"];
+                    
 
-                    $moneyTotal["sum_total_income"]["admin"] = $moneyAdmin;
-                    $moneyTotal["sum_total_income"]["owner"] = $moneyOwner;
+                  
                     $moneyTotal["sum_total_income"]["date".$date] =  $sumDate;
 
-                    $moneyTotal["sum_admin_income"]["admin"] = $moneyAdmin;
-                    $moneyTotal["sum_admin_income"]["owner"] = $moneyOwner;
                     $moneyTotal["sum_admin_income"]["date".$date] =  $sumDate;
 
-                    $moneyTotal["sum_owner_income"]["admin"] = $moneyAdmin;
-                    $moneyTotal["sum_owner_income"]["owner"] = $moneyOwner;
                     $moneyTotal["sum_owner_income"]["date".$date] =  $sumDate;
 
 
@@ -211,6 +205,20 @@ class PaymentRepository
                         "admin" => $total[$id]["total_admin"],
                         "sum" => $sumGoal,
                 ];
+
+                $moneyAdmin = $moneyAdmin + $total[$id]["total_admin"];
+                $moneyOwner = $moneyOwner + $total[$id]["total_owner"];
+
+                
+                $moneyTotal["sum_admin_income"]["admin"] = $moneyAdmin;
+                $moneyTotal["sum_admin_income"]["owner"] = $moneyOwner;
+
+                $moneyTotal["sum_total_income"]["admin"] = $moneyAdmin;
+                $moneyTotal["sum_total_income"]["owner"] = $moneyOwner;
+
+                
+                $moneyTotal["sum_owner_income"]["admin"] = $moneyAdmin;
+                $moneyTotal["sum_owner_income"]["owner"] = $moneyOwner;
                 $totalIncome[$id] = array_merge($getSum, $totalIncome[$id]);
 
             }
