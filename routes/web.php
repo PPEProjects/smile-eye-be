@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
+use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,7 +20,7 @@ use Laravel\Socialite\Facades\Socialite;
 Route::get('/', function () {
     return response()->json([
         'status' => true,
-        'path'   => 'homepage'
+        'path' => 'homepage'
     ]);
 });
 Route::get('/file', function () {
@@ -89,7 +91,7 @@ Route::get('/japanese_kanjis', function () {
         $more = $item->more;
         $more['writing'] = [
             'radioKey' => 'image',
-            'file'     => @$more['img']
+            'file' => @$more['img']
         ];
         $item->more = $more;
         $item->save();
@@ -108,7 +110,7 @@ Route::get('/general_infos', function () {
                 $attachment = $item->attachments->first()->toArray();
                 $attachment['file'] = "https://be-ppe.codeby.com/storage/" . $attachment['file'];
 
-                $count += \App\Models\GeneralInfo::where('id', $item->id)->update(['storage'=>$attachment]);
+                $count += \App\Models\GeneralInfo::where('id', $item->id)->update(['storage' => $attachment]);
             }
         });
 
@@ -134,4 +136,22 @@ Route::get('/japanese_goals', function () {
 //            dd($more);
     }
     dd('done');
+});
+
+
+Route::get('/update_letter', function () {
+    return view('update_letter');
+});
+Route::post('/update_letter', function (Request $request) {
+    if ($request->hasFile('LetterExample')) {
+        $file = $request->LetterExample;
+        $fileRootName = $file->getClientOriginalName();
+        $file->move(storage_path() . "/app/public/Letter/example", $fileRootName);
+    }
+    if ($request->hasFile('LetterA')) {
+        $file = $request->LetterA;
+        $fileRootName = $file->getClientOriginalName();
+        $file->move(storage_path() . "/app/public/Letter/a", $fileRootName);
+    }
+   return redirect('/update_letter?success');
 });
