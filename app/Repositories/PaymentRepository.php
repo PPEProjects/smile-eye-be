@@ -271,19 +271,16 @@ class PaymentRepository
             $nameGoal = $args["name_goal"];
             $checkIssetGoals = $checkIssetGoals->where('name', 'LIKE', "%".$nameGoal."%");
         }
-        $checkIssetGoals = $checkIssetGoals->get()->pluck('id');
-        $payments = $payments->whereIn('goal_id', @$checkIssetGoals ?? []);
-
-        // $checkIssetGoals = $checkIssetGoals->get();
-        // $payments = $payments->whereIn('goal_id', @$checkIssetGoals->pluck('id') ?? []);
-        // $sum = [];
-        // $sum['sum'] = $payments->sum('money');
-        // foreach($checkIssetGoals as $goal){
-        //     $money = $payments->where('goal_id', $goal->id)->sum('money');
-        //     $sum[$goal->name] = $money;
+        $checkIssetGoals = $checkIssetGoals->get();
+        $payments = $payments->whereIn('goal_id', @$checkIssetGoals->pluck('id') ?? []);
+        $sum = [];
+        $sum['sum'] = $payments->sum('money');
+        foreach($checkIssetGoals as $goal){
+            $money = $payments->where('goal_id', $goal->id)->sum('money');
+            $sum[$goal->name] = $money;
             
-        // }
+        }
 
-        return $payments;
+        return ['sum' => $sum, 'payments' => $payments];
    }
 }
