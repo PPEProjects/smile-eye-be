@@ -279,7 +279,7 @@ class PaymentRepository
         $i = 1;
         foreach($checkIssetGoals as $goal){
             $money = $payments->where('goal_id', $goal->id)->sum('money');
-            $sum[] = ['key'=> $i,'name' => 'sum '.$goal->name, 'money' => $money, 'date' => $date];
+            $sum[] = ['key'=> $i,'name' => 'Sum '.$goal->name, 'money' => $money, 'date' => $date];
             $i++;
         }
 
