@@ -274,10 +274,11 @@ class PaymentRepository
         $checkIssetGoals = $checkIssetGoals->get();
         $payments = $payments->whereIn('goal_id', @$checkIssetGoals->pluck('id') ?? []);
         $sum = [];
-        $sum['sum'] = $payments->sum('money');
+        $sumMoney = $payments->sum('money');
+        $sum[] = ['name' => 'sum', 'money' => $sumMoney];
         foreach($checkIssetGoals as $goal){
             $money = $payments->where('goal_id', $goal->id)->sum('money');
-            $sum[$goal->name] = $money;
+            $sum[] = ['name' => $goal->name, 'money' => $money];
             
         }
 
