@@ -246,15 +246,18 @@ class GoalRepository
         }
     }
 
-    public function buildTree(array $elements, $parentId = 0)
+    public function buildTree(array $elements, $parentId = 0, $parentIds = [])
     {
         $branch = array();
         foreach ($elements as $element) {
 //            if(empty($parentId)) continue;
             if ($element['parent_id'] == $parentId) {
-                $children = self::buildTree($elements, $element['value']);
+                $parentIds[] = $element['parent_id'];
+                $element['parent_ids'] = array_unique($parentIds);
+                $children = self::buildTree($elements, $element['value'], $element['parent_ids']);
                 if ($children) {
                     $element['children'] = $children;
+                    $parentIds = [$element['root_id']];
                 }
                 $branch[] = $element;
             }
