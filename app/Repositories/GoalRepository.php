@@ -108,7 +108,7 @@ class GoalRepository
 
         $this->calculatorProcessTodolist();
         $this->calculatorProcessUpdate();
-        $goals = Goal::selectRaw('id, name, parent_id, progress, start_day, end_day')
+        $goals = Goal::selectRaw('id, name, parent_id, progress, start_day, end_day, root_id')
             ->orderBy('created_at', 'desc');
         if ($userId) {
             $goals = $goals->where("user_id", $userId);
