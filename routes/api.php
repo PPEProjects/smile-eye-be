@@ -51,7 +51,7 @@ Route::prefix('/redirect')->group(function () {
 Route::resource('attachment', AttachmentController::class)
     ->middleware('auth');
 
-//Route::resource('attachment-letter/{type}', LetterAttachmentController::class)->middleware('auth');
+Route::resource('attachment-letter/{type}', LetterAttachmentController::class)->middleware('auth');
 
 Route::get('goals/gantt-chart/{user_id}', [GoalController::class, 'ganttChart']);
 

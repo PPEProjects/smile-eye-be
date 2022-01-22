@@ -55,7 +55,7 @@ class LetterAttachmentController extends Controller
         $fileRootName = $file->getClientOriginalName();
         $filePath = storage_path() . "/app/public";
         if ($type == "example-hiragana") {
-            $folder = 'hiragana';
+            $folder = 'example';
             if ($checkTail == "mp3"){
                 $folder = $folder."audio";
             }
