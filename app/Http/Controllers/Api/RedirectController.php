@@ -62,6 +62,10 @@ class RedirectController extends Controller
     }
     public function nextBlock(Request $request){
         $goal = Goal::find($request->goal_id);
+        $japaneseLearn = JapaneseLearn::updateOrCreate(
+            ['user_id' => $request->user_id, 'goal_id' => $request->goal_id],
+           ['user_id' => $request->user_id, 'goal_id' => $request->goal_id]
+        );
         $goalRoot = Goal::find($goal->root_id);
         $listGoals = Goal::where('root_id', $goalRoot->id)->orderByRaw('-`index` DESC')->get();
         $trialIds = $this->findBlock($listGoals, @$goalRoot->trial_block ?? []);
