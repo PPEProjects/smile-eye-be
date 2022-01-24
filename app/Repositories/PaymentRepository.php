@@ -181,19 +181,7 @@ class PaymentRepository
                     $sumOwner = $sumOwner + ( $moneyDay * $percent[$id]["owner_percent"]);
                     $total[$date]["total_owner"] = $totalOwner/100;
 
-                    $sumDate = $payments->where('date', $date)
-                                            ->sum('money');
-
-                    
-
-                  
-                    $moneyTotal["sum_total_income"]["date".$date] =  $sumDate;
-
-                    $moneyTotal["sum_admin_income"]["date".$date] =  $sumDate;
-
-                    $moneyTotal["sum_owner_income"]["date".$date] =  $sumDate;
-
-
+                
                 $totalIncome[$id]["date".$date] =  $moneyDay;
                 }
                      $sumGoal = $payments->where('goal_id', $id)
@@ -222,6 +210,29 @@ class PaymentRepository
                 $moneyTotal["sum_owner_income"]["owner"] = $moneyOwner;
                 $totalIncome[$id] = array_merge($getSum, $totalIncome[$id]);
 
+            }
+            $test = [];
+            foreach($getDate as $date){
+                $totalAdminInDate = 0;
+                $totalOwnerInDate = 0;
+                $sumDate = $payments->where('date', $date)
+                                        ->sum('money');
+                $test[$date]['sum'] = $sumDate;
+                $moneyTotal["sum_total_income"]["date".$date] =  $sumDate;
+                foreach(@$checkGoals ?? [] as $id)
+                {
+                    $moneyDay = $payments->where('goal_id', $id)
+                                            ->where('date', $date)
+                                            ->sum('money');
+
+                    $totalAdminInDate = $totalAdminInDate  + ( $moneyDay * $percent[$id]["admin_percent"]);
+                    $totalOwnerInDate = $totalOwnerInDate + ( $moneyDay * $percent[$id]["owner_percent"]);
+                   $test[$date][$id] = $totalOwnerInDate/100;
+
+                    $moneyTotal["sum_admin_income"]["date".$date] =   $totalAdminInDate/100;
+
+                    $moneyTotal["sum_owner_income"]["date".$date] =  $totalOwnerInDate/100;
+                }
             }
         $otherGoal = [];
         if(@$args['all_template'])
