@@ -55,6 +55,8 @@ input UpdateGoalTemplateInput{
     status: String
     sell_goal: String
     request: String
+    price: String
+    owner_percent: Int
 }
 input DeleteGoalTemplateInput{
     id : ID!

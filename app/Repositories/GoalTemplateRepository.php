@@ -77,6 +77,13 @@ class GoalTemplateRepository{
     {
         $args['user_id'] = Auth::id();
         $checkGoal = Goal::find($args['goal_id']);
+        if(isset($checkGoal) && isset($args['price']) && isset($args['owner_percent'])){
+            $updateGoal = $checkGoal->update([
+                                            'price' => $args['price'], 
+                                            'owner_percent' => $args['owner_percent']
+                                        ]);
+        }
+        $args = array_diff_key($args, array_flip(['owner_percent', 'price']));
         if(strtolower(@$args['status']) == 'accept' || strtolower(@$args['status']) == 'confirmed'){
             $coachMember = CoachMember::where('user_id', $checkGoal->user_id)->first();
             $goalIds = array_merge(@$coachMember->goal_ids ?? [], [$args['goal_id']]);

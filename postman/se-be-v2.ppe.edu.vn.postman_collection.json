@@ -92,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"dinhdongphuong@gmail.com\",\n    \"password\": \"PhuongPPe1234\"\n}",
+							"raw": "{\n    \"email\": \"thaithao99@gmail.com\",\n    \"password\": \"Monmen2021\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -563,7 +563,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query(\r\n    $day : String\r\n    $month: String\r\n    $year: String,\r\n    $name_goal: String\r\n) {\r\n payments_list(\r\n     day: $day\r\n     month: $month\r\n     year: $year\r\n     name_goal: $name_goal\r\n ){\r\n    id\r\n    add_user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n        price\r\n    }\r\n    goal_id\r\n    status\r\n    type\r\n    money\r\n    note\r\n    attachments\r\n    updated_at\r\n  }\r\n    \r\n}",
+								"query": "query(\r\n    $day : String\r\n    $month: String\r\n    $year: String,\r\n    $name_goal: String\r\n) {\r\n payments_list(\r\n     day: $day\r\n     month: $month\r\n     year: $year\r\n     name_goal: $name_goal\r\n ){\r\n    payments{\r\n        id\r\n        add_user{\r\n            id\r\n            name\r\n        }\r\n        goal{\r\n            id\r\n            name\r\n            price\r\n        }\r\n        goal_id\r\n        status\r\n        type\r\n        money\r\n        note\r\n        attachments\r\n        updated_at\r\n    }\r\n    sum\r\n }\r\n    \r\n}",
 								"variables": "{\r\n    \"day\":\"08\",\r\n    \"month\":\"12\",\r\n    \"year\": \"2021\",\r\n    \"name_goal\":null\r\n}"
 							}
 						},
@@ -593,8 +593,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query(\r\n    $year: String\r\n    $month: String\r\n) {\r\n  total_income(\r\n      year: $year\r\n      month: $month\r\n  )\r\n    \r\n  \r\n    \r\n}",
-								"variables": "{\r\n    \"year\":\"2022\",\r\n    \"month\":\"1\"\r\n}"
+								"query": "query(\r\n    $year: String\r\n    $month: String\r\n    $all_template: Boolean\r\n) {\r\n  total_income(\r\n      year: $year\r\n      month: $month\r\n      all_template: $all_template\r\n  )\r\n    \r\n  \r\n    \r\n}",
+								"variables": "{\r\n    \"year\":\"2022\",\r\n    \"month\":\"1\",\r\n    \"all_template\":true\r\n}"
 							}
 						},
 						"url": {
@@ -2124,7 +2124,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\r\n    $goal_id : ID\r\n    $title: String\r\n    $description: String\r\n    $media: JSON\r\n    $likes: JSON\r\n    $more : JSON\r\n) {\r\n  create_japanese_posts(\r\n    input: {\r\n        goal_id:$goal_id\r\n        title:$title\r\n        description:$description\r\n        media:$media\r\n        likes:$likes\r\n        more:$more\r\n    }\r\n  ) {\r\n   id\r\n    user_id\r\n    goal_id\r\n    title\r\n    description\r\n    media\r\n    likes\r\n    more\r\n    created_at\r\n    updated_at\r\n}\r\n}\r\n",
-								"variables": "{\r\n  \"goal_id\": 18,\r\n  \"title\": \"Trứng chiên nước mắm\",\r\n  \"description\": \"Với nguyên liệu và cách làm đơn giản, bạn có thể tạo nên một món ăn thưởng thức cùng cơm trắng cho ngày cuối tuần.\",\r\n  \"media\": {\r\n    \"radioKey\": \"Audio\",\r\n    \"file\": \"http://japanese-dev-be.test/storage/media/audios/2021-08-27-1630055113-356968074-10.mp3\",\r\n    \"file_type\": \"audio\",\r\n    \"thumb\": \"http://japanese-dev-be.test/storage/media/audios/2021-08-27-1630055113-356968074-10.mp3\"\r\n  },\r\n  \"likes\": [\r\n    1,\r\n    2,\r\n    3\r\n  ],\r\n  \"more\":{\r\n        \"id\":5,\r\n        \"thumb\":\"xbz.mp4\"\r\n  }\r\n}"
+								"variables": "{\r\n  \"goal_id\": 18,\r\n  \"title\": \"nam test\",\r\n  \"description\": \"Với nguyên liệu và cách làm đơn giản, bạn có thể tạo nên một món ăn thưởng thức cùng cơm trắng cho ngày cuối tuần.\",\r\n  \"media\": {\r\n    \"radioKey\": \"Audio\",\r\n    \"file\": \"http://japanese-dev-be.test/storage/media/audios/2021-08-27-1630055113-356968074-10.mp3\",\r\n    \"file_type\": \"audio\",\r\n    \"thumb\": \"http://japanese-dev-be.test/storage/media/audios/2021-08-27-1630055113-356968074-10.mp3\"\r\n  },\r\n  \"likes\": [\r\n    1,\r\n    2,\r\n    3\r\n  ],\r\n  \"more\":{\r\n        \"id\":5,\r\n        \"thumb\":\"xbz.mp4\"\r\n  }\r\n}"
 							}
 						},
 						"url": {
@@ -2333,7 +2333,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "  query{\r\n  my_japanese_posts{\r\n     id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    title\r\n    description\r\n    media\r\n    likes\r\n    more\r\n  }\r\n}",
+								"query": "  query{\r\n  my_japanese_posts{\r\n     id\r\n    user{\r\n        id\r\n        name\r\n        attachment{\r\n          id\r\n          thumb\r\n      }\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    title\r\n    description\r\n    media\r\n    likes\r\n    more\r\n    created_at\r\n  }\r\n}",
 								"variables": "{\r\n}"
 							}
 						},
@@ -2643,8 +2643,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation(\r\n    $id:ID!\r\n    $goal_id : ID\r\n    $status: String   \r\n    $request: String\r\n    $sell_goal: String\r\n) {\r\n  update_goal_template(\r\n    input: {\r\n        id: $id\r\n        goal_id:$goal_id\r\n        status:$status\r\n        request:$request\r\n        sell_goal: $sell_goal\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    sell_goal\r\n    status\r\n    request\r\n    created_at\r\n    updated_at\r\n}\r\n}\r\n",
-								"variables": "{\r\n    \"id\": 1,\r\n    \"goal_id\": 1,\r\n    \"sell_goal\":\"90000\"\r\n}"
+								"query": "mutation(\r\n    $id:ID!\r\n    $goal_id : ID\r\n    $status: String   \r\n    $request: String\r\n    $sell_goal: String\r\n    $price: String\r\n    $owner_percent: Int\r\n) {\r\n  update_goal_template(\r\n    input: {\r\n        id: $id\r\n        goal_id:$goal_id\r\n        status:$status\r\n        request:$request\r\n        sell_goal: $sell_goal\r\n        price: $price\r\n        owner_percent: $owner_percent\r\n    }\r\n  ) {\r\n    id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n    }\r\n    sell_goal\r\n    status\r\n    request\r\n    created_at\r\n    updated_at\r\n}\r\n}\r\n",
+								"variables": "{\r\n    \"id\": 1,\r\n    \"goal_id\": 1,\r\n    \"sell_goal\":\"90000\",\r\n    \"price\": \"30000\",\r\n    \"owner_percent\": 40\r\n}"
 							}
 						},
 						"url": {
@@ -2763,7 +2763,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query(\r\n    $status: String\r\n) {\r\n  list_goal_templates(\r\n      status: $status\r\n  ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        owner_percent\r\n        sum_achieve_share\r\n        price\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        general_info {\r\n            id\r\n            attachments {\r\n                file\r\n                file_type\r\n                thumb\r\n            }\r\n    }\r\n    }\r\n    status\r\n    sell_goal\r\n    number_member\r\n    member_percent\r\n    number_buy_on\r\n    buy_on_percent\r\n    number_paid\r\n    paid_percent\r\n    number_trials\r\n    trials_percent\r\n    number_end_trial\r\n    end_trial_percent\r\n    number_done\r\n    done_percent\r\n    request\r\n    checked_time\r\n    created_at\r\n    updated_at\r\n    }\r\n}",
+								"query": "query(\r\n    $status: String\r\n) {\r\n  list_goal_templates(\r\n      status: $status\r\n  ) {\r\n   id\r\n    user{\r\n        id\r\n        name\r\n    }\r\n    goal{\r\n        id\r\n        name\r\n        status\r\n         start_day\r\n        end_day\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        owner_percent\r\n        sum_achieve_share\r\n        price\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        general_info {\r\n            id\r\n            attachments {\r\n                file\r\n                file_type\r\n                thumb\r\n            }\r\n    }\r\n    }\r\n    status\r\n    sell_goal\r\n    number_member\r\n    member_percent\r\n    number_buy_on\r\n    buy_on_percent\r\n    number_paid\r\n    paid_percent\r\n    number_trials\r\n    trials_percent\r\n    number_end_trial\r\n    end_trial_percent\r\n    number_done\r\n    done_percent\r\n    request\r\n    checked_time\r\n    created_at\r\n    updated_at\r\n    }\r\n}",
 								"variables": "{\r\n    \"status\":\"all\"\r\n}"
 							}
 						},
@@ -2853,7 +2853,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "  query(\r\n      $status: String\r\n  ){\r\n  my_goal_template(\r\n      status: $status\r\n  ){\r\n     id\r\n    goal{\r\n        id\r\n        name\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        price\r\n        created_at\r\n    }\r\n    status\r\n    sell_goal\r\n    sum_price\r\n    checked_time\r\n    number_member\r\n    number_buy_on\r\n    number_paid\r\n    number_trials\r\n    number_done\r\n  }\r\n}",
+								"query": "  query(\r\n      $status: String\r\n  ){\r\n  my_goal_template(\r\n      status: $status\r\n  ){\r\n     id\r\n    goal{\r\n        id\r\n        name\r\n        root_id\r\n        status\r\n        user{\r\n            id\r\n            name\r\n        }\r\n        price\r\n        created_at\r\n    }\r\n    status\r\n    sell_goal\r\n    sum_price\r\n    checked_time\r\n    number_member\r\n    number_buy_on\r\n    number_paid\r\n    number_trials\r\n    number_done\r\n  }\r\n}",
 								"variables": "{\r\n   \"status\": \"all\"\r\n}"
 							}
 						},
@@ -4049,7 +4049,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id:ID, $goal_id: ID) {\n  detail_japanese_goal(\n      id : $id\n      goal_id: $goal_id\n  ) {\n     id\n    link_next\n    link_prev\n     goal{\n         id\n         name\n         parent{\n             id\n             name\n         }\n     }\n    payment_status\n     goal_root{\n         id\n         name\n         price\n         user{\n            id\n            name\n        }\n     }\n     next_goal{\n         id\n         name\n         type\n     }\n     prev_goal{\n         id\n         name\n         type\n     }\n    type\n    score\n    more\n      list_users{\n         id\n         name\n         attachment{\n             id\n             file\n             thumb\n         }\n     }\n  }\n}",
-								"variables": "{\r\n \"goal_id\": \"16411820940\"\r\n}\r\n"
+								"variables": "{\r\n \"goal_id\": \"16402496143\"\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -4264,7 +4264,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation(\n    $user_id_friend:ID!, \n    $status:String\n    )\n{\n  create_friend(\n    input: \n    {\n      user_id_friend: $user_id_friend\n      status: $status\n    }) \n  \n}",
-								"variables": "{\n    \"user_id_friend\": 41,\n    \"status\": \"accept\"\n}"
+								"variables": "{\n    \"user_id_friend\": 154,\n    \"status\": \"pending\"\n}"
 							}
 						},
 						"url": {
@@ -4474,7 +4474,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($user_ids: [ID]){\n  list_user_by_ids\n  (\n   user_ids: $user_ids\n   ){\n      id\n      name\n       attachment{\n          id\n          thumb\n      }\n      friend_status\n    \n   }\n}\n\n",
-								"variables": "{\r\n    \"user_ids\":[1, 23, 150, 155, 24] \r\n}\r\n"
+								"variables": "{\r\n    \"user_ids\":[154] \r\n}\r\n"
 							}
 						},
 						"url": {
@@ -5166,7 +5166,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/F:/project/php/smile-eye-be/storage/app/public/Letter/hiragana/aicon.png"
+									"src": "/F:/project/hiza.png"
 								}
 							]
 						},
@@ -7674,7 +7674,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query($id: ID!){\r\n  detail_goal(id: $id) {\r\n    id\r\n    name\r\n    banned_users\r\n    price\r\n    owner_percent\r\n    setting_for_sell\r\n    goal_root{\r\n        id\r\n        name\r\n    }\r\n    parent{\r\n        id\r\n    }\r\n    trial_block\r\n    start_day\r\n    end_day\r\n    status\r\n    is_pined\r\n    general_info{\r\n        id\r\n        address\r\n        zalo\r\n        repeat\r\n        reminder\r\n        action_at\r\n        action_at_time\r\n        note\r\n        publishs{\r\n            id\r\n        }\r\n        color\r\n        attachments{\r\n            file\r\n            file_type\r\n            thumb\r\n        }\r\n        achieves{\r\n            id\r\n            user{\r\n                id\r\n                name\r\n            \r\n        }\r\n        \r\n    }\r\n  }\r\n}\r\n}",
-								"variables": "{\r\n    \"id\":\"1994\"\r\n}\r\n"
+								"variables": "{\r\n    \"id\":\"8bb4dff-258-cfc-3e12-b1637b1c1fd6\"\r\n}\r\n"
 							}
 						},
 						"url": {
@@ -7824,7 +7824,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query ($id: ID, $not_auth: Boolean) {  my_goals_tree_sort(id: $id, not_auth: $not_auth)}",
-								"variables": "{\r\n    \"id\":\"73dbe6-8e8c-612-621c-a2035b7fd\",\r\n    \"not_auth\":\ttrue\r\n}"
+								"variables": "{\r\n    \"id\":\"1994\",\r\n    \"not_auth\":\ttrue\r\n}"
 							}
 						},
 						"url": {
