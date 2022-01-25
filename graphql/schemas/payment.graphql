@@ -21,7 +21,7 @@ extend type Query {
 }
 
 type ListPayment{
-    list_goals: [Payment]
+    children: [Payment]
     key: Int
     name: String
     money: String

@@ -290,7 +290,7 @@ class PaymentRepository
                     'name' => 'Sum', 
                     'money' => $sumMoney, 
                     'date' => $date,
-                    'list_goals' => $payments
+                    'children' => $payments
                 ];
         $i = 1;
         foreach($checkIssetGoals as $goal){
