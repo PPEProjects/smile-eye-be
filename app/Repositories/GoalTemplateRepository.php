@@ -178,7 +178,7 @@ class GoalTemplateRepository{
         }
 
         $goalIds = $goalTemplate->pluck('goal_id');
-        $goals = Goal::whereIn('id', @$goalIds ?? [])->get()->keyBy('id');
+        $goals = Goal::whereIn('id', @$goalIds ?? [])->withTrashed()->get()->keyBy('id');
         $goals = $this->generalInfo_repository
             ->setType('goal')
             ->get($goals);

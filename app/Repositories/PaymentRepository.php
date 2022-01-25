@@ -129,16 +129,25 @@ class PaymentRepository
             $payments = $payments->selectRaw("DATE(updated_at) as `date`");
         }
         $payments = $payments->get();
-       $checkGoals = [];
-       $goals = [];
-       foreach ($payments as $payment){
-           if (isset($payment->goal) && !isset($goals[$payment->goal->id])){
-               $checkGoals[] = $payment->goal_id;
-               $goals[$payment->goal->id] = $payment->goal;
-           }
-       }
+        $checkGoals = $payments->pluck('goal_id')->toArray();
+        $goals = Goal::whereIn('id', @$checkGoals ?? [])
+                        ->withTrashed()
+                        ->get()
+                        ->keyBy('id');
+        $checkGoals = @$goals->pluck('id')->toArray() ?? [];
+    //    $goals = [];
+    //    foreach ($payments as $payment){
+    //        if (isset($payment->goal) && !isset($goals[$payment->goal->id])){
+    //            $checkGoals[] = $payment->goal_id;
+    //            $goals[$payment->goal->id] = $payment->goal;
+    //        }
+    //    }
         
        $payments = $payments->whereIn('goal_id', $checkGoals);
+       $payments = $payments->map(function($payment) use ($goals){
+           $payment->goal = @$goals[$payment->goal_id];
+           return $payment;
+       });
         $getDate = $payments->pluck('date')->toArray();
         $total = [];
         $totalIncome = [];

@@ -40,7 +40,7 @@ class RedirectController extends Controller
                 $link = $url."WordGrammar_V2?goal_id=".$block->goal_id;
                 break;
             case 'post':
-                $link = $url."WatchPost_V5?goal_id=".$block->goal_id;
+                $link = $url."WatchPost_V6?goal_id=".$block->goal_id;
                 break;
             case 'watch_diary':
                 $link = $url."DiaryAndShare?goal_id=".$block->goal_id;
