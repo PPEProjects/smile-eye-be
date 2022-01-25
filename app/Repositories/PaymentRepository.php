@@ -300,7 +300,7 @@ class PaymentRepository
                 'status' => @$pay->status,
                 'type' => @$pay->type,
                 'money' => @$pay->money ?? '0',
-                'perGoal' =>$pay->goal->price,
+                'perGoal' => @$pay->goal->price ?? 0,
                 'note' => @$pay->note,
                 'attachments' => $pay->attachments,
                 'date' => $pay->updated_at
