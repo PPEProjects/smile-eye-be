@@ -299,7 +299,7 @@ class PaymentRepository
             $sum[] = [  'key'=> $i,
                         'name' => 'Sum '.$goal->name, 
                         'money' => $money, 'date' => $date, 
-                        'list_goals' => $payment];
+                        'children' => $payment];
             $i++;
         }
 
