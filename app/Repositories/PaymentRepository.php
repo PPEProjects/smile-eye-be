@@ -286,23 +286,46 @@ class PaymentRepository
         $payments = $payments->whereIn('goal_id', @$checkIssetGoals->pluck('id') ?? []);
         $sum = [];
         $sumMoney = $payments->sum('money');
+     
+        $i = 1;
+        $children = [];
+        $all = [];
+        $key = 0;
+        foreach($payments as $pay){
+            $inforGoal = [
+                'key' => $key,
+                'id' => $pay->id,
+                'name' => $pay->add_user->name,
+                'goal' => $pay->goal->name,
+                'status' => @$pay->status,
+                'type' => @$pay->type,
+                'money' => @$pay->money ?? '0',
+                'note' => @$pay->note,
+                'attachments' => $pay->attachments,
+                'date' => $pay->updated_at
+            ];
+            $children[$pay->goal_id][] = $inforGoal;
+            $all[] = $inforGoal;
+            $key++;
+        }
         $sum[] = [ 'key'=> 0,
                     'name' => 'Sum', 
                     'money' => $sumMoney, 
                     'date' => $date,
-                    'children' => $payments
+                    'children' => $all
                 ];
-        $i = 1;
+
         foreach($checkIssetGoals as $goal){
             $money = $payments->where('goal_id', $goal->id)->sum('money');
-            $payment = $payments->where('goal_id', $goal->id);
             $sum[] = [  'key'=> $i,
                         'name' => 'Sum '.$goal->name, 
-                        'money' => $money, 'date' => $date, 
-                        'children' => $payment];
+                        'money' => $money, 
+                        'date' => $date, 
+                        'children' => $children[$goal->id]
+                    ];
             $i++;
         }
-
+    
         return $sum;
    }
 }
