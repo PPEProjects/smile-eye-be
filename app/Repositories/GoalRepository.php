@@ -914,7 +914,7 @@ class GoalRepository
     {
         $goal = Goal::find($args['id']);
         if (isset($goal->parent_id)) {
-            throw new Error("This goal is not root");
+            throw new Error("This goal is not root.");
         }
         $myGoal = Goal::selectRaw("*, 'goal_owner' AS type")
             ->where('user_id', Auth::id())

@@ -40,12 +40,12 @@ class TaskMutations
         }
         if (isset($args['general_info']['repeat']) && !in_array($args['general_info']['repeat'],
                 [null, 'every day', 'every week', 'every month'])) {
-            throw new Error('General Info Repeat invalid');
+            throw new Error('General Info Repeat invalid.');
         }
         if(isset($args['goal_id'])) {
             $checkGoalId = Task::where('goal_id', $args['goal_id'])->first();
             if ($checkGoalId) {
-                throw new Error("This goal already add to task ");
+                throw new Error("This goal already add to task. ");
             }
         }
 //        if(!isset($args['general_info']['reminder'])){

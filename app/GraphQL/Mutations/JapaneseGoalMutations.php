@@ -29,7 +29,7 @@ class JapaneseGoalMutations
     {
         $args["user_id"] = Auth::id();
         if (!isset($args['type'])) {
-            throw new Error('You must input type');
+            throw new Error('You must input type.');
         }
         return $this->japanese_goal_repository->createJapaneseGoal($args);
         /*if ($args['type'] == "diary" && isset($args['more'][0]['user_invite_ids'])) {
@@ -118,7 +118,7 @@ class JapaneseGoalMutations
         }
         $args["user_id"] = Auth::id();
         if (!isset($args['type'])) {
-            throw new Error('You must input type');
+            throw new Error('You must input type.');
         }
         return $this->japanese_goal_repository->createJapaneseGoal($args);
 //        $args = array_diff_key($args, array_flip(['type']));
@@ -141,7 +141,7 @@ class JapaneseGoalMutations
             ->where('type', 'sing_with_friend')
             ->first();
         if (!$jpGoal) {
-            throw new Error('Japanese Goal not found');
+            throw new Error('Japanese Goal not found.');
         }
         $jpGoal = $jpGoal->toArray();
         $jpGoal['more']['meet'] = $args['meet'];

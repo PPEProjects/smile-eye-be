@@ -183,7 +183,7 @@ class AchieveRepository
                 }
                 else 
                 { 
-                    throw new Error("Can't accept because this task is deleted"); 
+                    throw new Error("Can't accept because this task is deleted."); 
                 }
                 
             }
@@ -196,7 +196,7 @@ class AchieveRepository
     public function addTemplate($args){
         $general = GeneralInfo::where("goal_id",$args["goal_id"])->first();
         if(!isset($general)){
-            throw new Error("This goal does not exist");        
+            throw new Error("This goal does not exist.");        
         }
         $createAchieve = Achieve::create([
                             "general_id" => $general->id,

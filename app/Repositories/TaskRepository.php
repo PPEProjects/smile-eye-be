@@ -65,7 +65,7 @@ class TaskRepository
     {
         if (isset($args['general_info']['repeat']) && !in_array($args['general_info']['repeat'],
                 [null, 'every day', 'every week', 'every month'])) {
-            throw new Error('General Info Repeat invalid');
+            throw new Error('General Info Repeat invalid.');
         }
         $task = $this->updateTask($args);
         $generalInfo = $this->generalinfo_repository

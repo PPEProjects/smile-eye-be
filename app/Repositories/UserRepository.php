@@ -116,7 +116,7 @@ class UserRepository
         $phone = @$args["phone_number"];
         if(isset($phone)) {
             if (strlen($phone) > 14 || strlen($phone) < 8) {
-                throw new Error("Phone number must be greater 8 and less than 14 characters");
+                throw new Error("Phone number must be greater 8 and less than 14 characters.");
             }
         }
         $args = array_diff_key($args, array_flip(['directive', 'email']));

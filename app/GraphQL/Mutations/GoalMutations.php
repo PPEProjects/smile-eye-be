@@ -49,7 +49,7 @@ class GoalMutations
             $startDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['start_day']);
             $endDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['end_day']);
             if (!$startDay->lte($endDay)) {
-                throw new Error('Start day must less than end day');
+                throw new Error('Start day must less than end day.');
             }
         }
 
@@ -91,7 +91,7 @@ class GoalMutations
         $startDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['start_day']);
         $endDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['end_day']);
         if (!$startDay->lte($endDay)) {
-            throw new Error('Start day must less than end day');
+            throw new Error('Start day must less than end day.');
         }
         $taskDt = $this->task_repository->find($args['task_id']);
         $goal_id = $taskDt->toArray()['goal_id'];
@@ -120,21 +120,21 @@ class GoalMutations
                 $checkTaskExists = $checkTaskExists->where('id', '!=', $args['id']);
             }
             if ($checkTaskExists->exists()) {
-                throw new Error('This task already move to the goal');
+                throw new Error('This task already move to the goal.');
             }
         }
         if (!empty($args['parent_id'])) {
             $checkTaskParent = Goal::where('id', $args['parent_id'])
                 ->whereNotNull('task_id');
             if ($checkTaskParent->exists()) {
-                throw new Error('Can\'t assign task to parent');
+                throw new Error('Can\'t assign task to parent.');
             }
         }
         if (isset($args['start_day'], $args['end_day'])) {
             $startDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['start_day']);
             $endDay = Carbon::createFromFormat('Y-m-d H:i:s', $args['end_day']);
             if (!$startDay->lte($endDay)) {
-                throw new Error('Start day must less than end day');
+                throw new Error('Start day must less than end day.');
             }
         }
         if (!isset($args['id'])  || @$args["id"] == "" ) {
@@ -201,7 +201,7 @@ class GoalMutations
         if (isset($args['parent_id'])) {
             $checkIdTask = $this->checkTaskId($args['parent_id']);
             if ($checkIdTask != false) {
-                throw new Error("Can't add branch with this parent goal");;
+                throw new Error("Can't add branch with this parent goal.");;
             }
         }
 

@@ -69,7 +69,7 @@ class AttachmentController extends Controller
             $checkTail = $file->getClientOriginalExtension();
             if (preg_match('(php|exe)', $checkTail) === 1) 
             {
-                throw new Error("This file is not support");                
+                throw new Error("This file is not support.");                
             }
         } 
         else
