@@ -27,6 +27,7 @@ class GeneralInfo extends Model
         'action_at_time',
         'note',
         'attachment_ids',
+        'images',
         'storage',
         'publish',
         'contest',
@@ -38,7 +39,7 @@ class GeneralInfo extends Model
         'attachment_ids' => 'json',
         'storage' => 'json',
         'contest' => 'json',
-
+        'images' => 'json'
     ];
 
     public function user(){

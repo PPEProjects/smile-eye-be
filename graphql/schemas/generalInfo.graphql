@@ -31,6 +31,7 @@ type GeneralInfo{
     publish : String
     contest : JSON
     color : String
+    images: JSON
     created_at: DateTime
     updated_at: DateTime
     achieves: [Achieve]
@@ -52,7 +53,7 @@ input CreateGeneralInfoInput{
     publish : String
     contest : JSON
     color : String
-
+    images: JSON
 }
 input DeleteGeneralInfoInput{
     id:ID!
@@ -73,5 +74,6 @@ input UpdateGeneralInfoInput{
     publish : String
     contest : JSON
     color : String
+    images: JSON
 }
 

@@ -27,6 +27,7 @@ class CreateGeneralInfo extends Migration
             $table->time('action_at_time')->nullable();
             $table->text('note')->nullable();
             $table->json('attachment_ids')->nullable();
+            $table->json('images')->nullable();
             $table->string('publish')->nullable();
             $table->json('contest')->nullable();
             $table->string('color')->nullable();
