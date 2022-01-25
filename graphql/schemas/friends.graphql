@@ -1,7 +1,8 @@
 
 extend type Mutation {
-    create_friend(input: CreateFriendInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\FriendMutations@createFriend")
+    create_friend(input: CreateFriendInput! @spread): Friend @guard @field(resolver: "App\\GraphQL\\Mutations\\FriendMutations@createFriend")
     update_friend(input: UpdateFriendInput! @spread): Friend @guard @field(resolver: "App\\GraphQL\\Mutations\\FriendMutations@updateFriend")
+    accept_friend(input: UpdateFriendInput! @spread): Friend @guard @field(resolver: "App\\GraphQL\\Mutations\\FriendMutations@acceptFriend")
     delete_friend(input: DeleteFriendInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\FriendMutations@deleteFriend")
 }
 
@@ -40,6 +41,7 @@ input CreateFriendInput{
 
 input UpdateFriendInput{
     id: ID
+    status: String @rules(apply: ["nullable", "in:pending,accept,block"])
     goal_ids: [ID] @rules(apply: ["nullable","App\\Rules\\OwnerCheckGoal"])
 }
 

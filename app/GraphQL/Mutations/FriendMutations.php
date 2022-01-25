@@ -18,7 +18,7 @@ class FriendMutations
         $this->friend_repository = $FriendRepository;
     }
 
-    public function createFriend($_, array $args):bool
+    public function createFriend($_, array $args)
     {
         return $this->friend_repository->createFriend(Auth::id(), $args['user_id_friend'], @$args['status']);
     }
@@ -28,6 +28,17 @@ class FriendMutations
     {
         return $this->friend_repository->updateFriend($args);
 
+    }
+    public function acceptFriend($_, array $args)
+    {
+        return tap(Friend::find($args['id']))->update(['status'=>'accept']);
+//        return $this->friend_repository->updateFriend($args);
+//        $args = array_diff_key($args, array_flip(['directive']));
+//        $query = Friend::findOrFail($args['id']);
+//        $args['status'] = 'accept';
+//        dd($query);
+//        $update = tap($query)->update($args);
+//        return $update;
     }
 
 

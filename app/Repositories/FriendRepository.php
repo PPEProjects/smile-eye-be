@@ -25,7 +25,7 @@ class FriendRepository
         $this->notification_repository = $notification_repository;
     }
 
-    public function getByNameStatus($userId, $name=null, $status = null)
+    public function getByNameStatus($userId, $name = null, $status = null)
     {
         $userFriends = Friend::whereRaw("user_id={$userId}")->get()->keyBy('user_id_friend');
         $fIds = $userFriends->pluck('user_id_friend');
@@ -37,24 +37,25 @@ class FriendRepository
         $friends = $userFriends->toArray() + $friendFriends->toArray();
         $users = $users1->merge($users2);
 
-        if($name){
+        if ($name) {
             $users = $users->filter(function ($user) use ($name) {
                 return false !== stristr($user->name, $name);
             });
         }
 
-        $users = $users->map(function($user) use($friends){
+        $users = $users->map(function ($user) use ($friends) {
             $friend = @$friends[$user->id];
             $user->friend = $friend;
             $user->friend_status = @$friend['status'];
             return $user;
         });
-        $users = $users->map(function($user) {
+        $users = $users->map(function ($user) {
             $user = $this->attachment_service->mappingAvatarBackgroud($user);
             return $user;
         });
-        if($status)
+        if ($status) {
             $users = $users->where('friend_status', $status);
+        }
         return $users;
     }
 
@@ -64,11 +65,11 @@ class FriendRepository
         $fIds = $friendFriends->pluck('user_id');
 
         $users = $this->user_repository->getByIds($fIds);
-        $friends =$friendFriends->toArray();
+        $friends = $friendFriends->toArray();
 
         $mutualFriend = $this->mutualFriends($userId, $fIds, $fIds);
 
-        $users = $users->map(function($user) use($friends, $mutualFriend){
+        $users = $users->map(function ($user) use ($friends, $mutualFriend) {
             $friend = @$friends[$user->id];
             $user->friend = $friend;
             $user->number_mutual = count($mutualFriend[$user->id]);
@@ -76,12 +77,12 @@ class FriendRepository
             $user->friend_status = @$friend['status'];
             return $user;
         });
-        $user = $users->map(function ($u){
+        $user = $users->map(function ($u) {
             $u = $this->attachment_service->mappingAvatarBackgroud($u);
             return $u;
         });
 
-        $sortUsers = $users->sortByDESC(function ($item, $key){
+        $sortUsers = $users->sortByDESC(function ($item, $key) {
             return $item->friend["id"];
         });
         return $sortUsers;
@@ -99,37 +100,34 @@ class FriendRepository
         $fIdsArr[] = $userId;
         //$users = $this->user_repository->getWithoutIds($fIdsArr->toArray());
         $users = User::whereNotIn('id', @$fIdsArr ?? []);
-        if($name){
-            $users = $users->where('name', 'LIKE', '%'.$name.'%')->get();
-        }
-        else
-        {
-            $users = $users->paginate('500' , ['*'], 'page', '1');
+        if ($name) {
+            $users = $users->where('name', 'LIKE', '%' . $name . '%')->get();
+        } else {
+            $users = $users->paginate('500', ['*'], 'page', '1');
         }
         $idFriendNotYet = $users->pluck('id');
 
-        $getIdGoal = $users->map(function ($user)  {
-                $goal = Goal::Where('user_id', $user->id);
-                $fid[$user->id] = $goal->pluck('id');
-                return $fid;
+        $getIdGoal = $users->map(function ($user) {
+            $goal = Goal::Where('user_id', $user->id);
+            $fid[$user->id] = $goal->pluck('id');
+            return $fid;
         });
         $idGoals = [];
-       foreach ($getIdGoal as $value)
-       {
-           foreach ($value as $k => $v){
-               $idGoals[$k] = $v;
-           }
-       }
+        foreach ($getIdGoal as $value) {
+            foreach ($value as $k => $v) {
+                $idGoals[$k] = $v;
+            }
+        }
         $idCompare = [];
-        foreach ($users as $key){
+        foreach ($users as $key) {
             $idCompare[] = $key->id;
         }
         $mutualFriend = $this->mutualFriends($userId, $idFriendNotYet, $idCompare);
 
         $friends = $userFriends->toArray() + $friendFriends->toArray();
 
-        
-        $users = $users->map(function($user) use($friends, $mutualFriend, $idGoals){
+
+        $users = $users->map(function ($user) use ($friends, $mutualFriend, $idGoals) {
             $friend = @$friends[$user->id];
             $user->number_mutual = count($mutualFriend[$user->id]);
             $user->number_goals = count($idGoals[$user->id]);
@@ -139,21 +137,20 @@ class FriendRepository
             return $user;
         });
 
-        if (!empty($fIds))
-        {
-            $sortUsers =  $users->sortByDesc("number_mutual");
-        }
-        else{
+        if (!empty($fIds)) {
+            $sortUsers = $users->sortByDesc("number_mutual");
+        } else {
             $sortUsers = $users->sortByDesc("number_goals");
         }
-        $users = $users->map(function ($user){
+        $users = $users->map(function ($user) {
             $user = $this->attachment_service->mappingAvatarBackgroud($user);
             return $user;
         });
         return $users;
     }
 
-    public function mutualFriends($userId, $idYourFriend, $idCompare){
+    public function mutualFriends($userId, $idYourFriend, $idCompare)
+    {
 
         $myFriend = Friend::whereRaw("user_id = {$userId} AND status like 'accept' 
                             OR user_id_friend = {$userId} AND status like 'accept'")->get();
@@ -171,16 +168,14 @@ class FriendRepository
             $fid[$id] = ($fid1->merge($fid2))->toArray();
             return $fid;
         });
-        foreach($yourFriends as $value)
-        {
-            foreach($value as $k => $v)
-            {
-               $ids = array_diff($v, [$k]);
-                $filter[$k] = array_intersect($ids, $idMyFriends );
+        foreach ($yourFriends as $value) {
+            foreach ($value as $k => $v) {
+                $ids = array_diff($v, [$k]);
+                $filter[$k] = array_intersect($ids, $idMyFriends);
             }
         }
         $mutualFriends = [];
-        foreach ($idCompare as $key){
+        foreach ($idCompare as $key) {
             $mutualFriends[$key] = $this->user_repository->getByIds($filter[$key])->toArray();
         }
         return $mutualFriends;
@@ -191,7 +186,7 @@ class FriendRepository
         $friend = Friend::whereRaw("user_id={$userId} AND user_id_friend={$userIdFriend} OR user_id={$userIdFriend} AND user_id_friend={$userId}");
         if (!$friend->first()) {
             $status = 'pending';
-            if ($userIdFriend == $userId){
+            if ($userIdFriend == $userId) {
                 return false;
             }
             $update = Friend::create([
@@ -199,30 +194,46 @@ class FriendRepository
                 'user_id_friend' => $userIdFriend,
                 'status'         => $status,
             ]);
-            $this->notification_repository->saveNotification("friend",$update->id,$update);
+            $this->notification_repository->saveNotification("friend", $update->id, $update);
         } else {
             $fOld = $friend->first();
-            if ($status == 'pending') return false;
-            if($fOld->user_id == $userId && $status=='accept') return false;
+            if ($status == 'pending') {
+                return false;
+            }
+            if ($fOld->user_id == $userId && $status == 'accept') {
+                return false;
+            }
             $update = $friend->update(['status' => $status]);
             $fOld->status = "accept";
-
-            $this->notification_repository->saveNotification("friend",@$fOld->id,$fOld);
+            $this->notification_repository->saveNotification("friend", @$fOld->id, $fOld);
+            return $fOld;
         }
-        return (bool)$update;
+        return $update;
     }
 
     public function updateFriend($args)
     {
         $args = array_diff_key($args, array_flip(['directive']));
-            $query =  Friend::findOrFail($args['id']);
-            $getStatus = $query->toArray();
-            $status = $getStatus["status"];
-            if ($status == 'accept'){
-                $update = tap($query)->update($args);
-                return  $update;
-            } return null;
+        $query = Friend::findOrFail($args['id']);
+        $getStatus = $query->toArray();
+        dd($getStatus);
+        $status = $getStatus["status"];
+        if ($status == 'accept') {
+            dd($args);
+            $update = tap($query)->update($args);
+            return $update;
+        }
+        return null;
     }
+
+//    public function acceptFriend($args)
+//    {
+//        $args = array_diff_key($args, array_flip(['directive']));
+//        $query = Friend::findOrFail($args['id']);
+//        $args['status'] = 'accept';
+//        $update = tap($query)->update($args);
+//        return $update;
+//    }
 
     public function deleteFriend($userId, $userIdFriend)
     {
@@ -230,7 +241,8 @@ class FriendRepository
             ->delete();
     }
 
-    public  function friendAndGoal($userId, $name=null, $status = null){
+    public function friendAndGoal($userId, $name = null, $status = null)
+    {
 
         $userFriendsquery = Friend::whereRaw("user_id={$userId}")->get();
         $userFriends = $userFriendsquery->keyBy('user_id_friend');
@@ -241,7 +253,7 @@ class FriendRepository
         $fgoalIds = $userFriendsquery->pluck('goal_ids')->flatten();
         $goals1 = $this->goal_repository->getByIds($fgoalIds)->keyBy('id');
 
-        $friendFriendsquery= Friend::whereRaw("user_id_friend={$userId}")->get();
+        $friendFriendsquery = Friend::whereRaw("user_id_friend={$userId}")->get();
         $friendFriends = $friendFriendsquery->keyBy('user_id');
 
         $fIds = $friendFriends->keyBy('user_id_friend')->pluck('user_id');
@@ -250,23 +262,23 @@ class FriendRepository
         $fgoalIds = $friendFriendsquery->pluck('goal_ids')->flatten();
         $goals2 = $this->goal_repository->getByIds($fgoalIds)->keyBy('id');
 
-        $friends = $userFriends->toArray()  + $friendFriends->toArray();
+        $friends = $userFriends->toArray() + $friendFriends->toArray();
 
         $goals = $goals1->toArray() + $goals2->toArray();
 
         $users = $users1->merge($users2);
 
-        if($name){
+        if ($name) {
             $users = $users->filter(function ($user) use ($name) {
                 return false !== stristr($user->name, $name);
             });
         }
 
-        $users = $users->map(function($user) use($friends, $goals){
+        $users = $users->map(function ($user) use ($friends, $goals) {
             $friendId = $friends[$user->id]["id"];
             $query = Friend::where('id', $friendId);
             $getGoal = $query->pluck('goal_ids')->flatten();
-            $f= $getGoal->map(function ($id) use ($goals){
+            $f = $getGoal->map(function ($id) use ($goals) {
                 return @$goals[$id];
             });
             $friend = $friends[$user->id];
@@ -276,23 +288,25 @@ class FriendRepository
             return $user;
         });
 
-        if($status) {
+        if ($status) {
             $users = $users->where('friend_status', $status);
         }
 
         return $users;
     }
-    public function searchPeople($userId, $name = null){
+
+    public function searchPeople($userId, $name = null)
+    {
         $myFriends = $this->getByNameStatus($userId)->sortBy("friend_status");
         $pendFriends = $this->pendFriend($userId);
         $listFriends = $myFriends->concat($pendFriends);
         if ($name) {
-           $searchPeople = User::where('name', 'like', '%'.$name.'%')->get();
+            $searchPeople = User::where('name', 'like', '%' . $name . '%')->get();
         }
-        $recommentFriends =  @$searchPeople ?? $this->recommentFriends($userId);
+        $recommentFriends = @$searchPeople ?? $this->recommentFriends($userId);
 
         $people = $listFriends->concat($recommentFriends);
-        if($name){
+        if ($name) {
             $people = $people->filter(function ($user) use ($name) {
                 return false !== stristr($user->name, $name);
             });
@@ -301,17 +315,18 @@ class FriendRepository
         return $people;
     }
 
-    public function listUserByIds($args){
+    public function listUserByIds($args)
+    {
         $userId = Auth::id();
-        $args['user_ids'] = array_diff( @$args['user_ids'] ?? [], [$userId]);
+        $args['user_ids'] = array_diff(@$args['user_ids'] ?? [], [$userId]);
         $myFriends = $this->getByNameStatus($userId);
         $myFriends = $myFriends->whereIn('id', @$args['user_ids'] ?? []);
         $listUser = User::whereIn('id', @$args['user_ids'] ?? [])->get();
         $list = $listUser->merge($myFriends);
-        $list = $list->map(function($user) {
+        $list = $list->map(function ($user) {
             $user = $this->attachment_service->mappingAvatarBackgroud($user);
             return $user;
         });
-       return $list;
+        return $list;
     }
 }
