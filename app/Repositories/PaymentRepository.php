@@ -249,9 +249,17 @@ class PaymentRepository
             $otherTemplate = GoalTemplate::whereIn('status', $status)
                                             ->whereNotIn('goal_id', $checkGoals)
                                             ->get();
+            $goalDelete = Goal::whereIn('id', @$otherTemplate->pluck('goal_id') ?? [])
+                                ->withTrashed()
+                                ->get()
+                                ->keyBy('id');
+            $otherTemplate = $otherTemplate->whereIn('goal_id', @$goalDelete->pluck('id') ?? []);
+            $otherTemplate = $otherTemplate->map(function($template) use($goalDelete){
+                        $template->goal = $goalDelete[$template->goal_id];
+                        return $template;
+            });
             foreach ($otherTemplate as $template) {
-                if(isset($template->goal))
-                {
+
                     $ownerPercent = @$template->goal->owner_percent ?? 0;
                     $adminPercent = 100 - intval($ownerPercent);
                     $otherGoal[$template->goal_id] = [
@@ -265,7 +273,7 @@ class PaymentRepository
                     foreach ($getDate as $date){
                         $otherGoal[$template->goal_id]['date'.$date] = 0; 
                     }
-                }
+                
             }   
         }            
         $totalIncome = array_merge($totalIncome, $otherGoal, $moneyTotal);
