@@ -183,7 +183,7 @@ class NotificationRepository
                 case 'share_user_info':
                     $user = User::where("id",$noti->user_id)->first();
                     $user_share_by = User::where("id",$noti->type_id)->first();
-                    $messages->push("share info '".@$user_share_by->name."' with you");
+                    $messages->push("share info '".@$user_share_by->name."' with you.");
                     $noti->user_share_by = @$user_share_by->id;
                     break;
                 case 'achieve':
@@ -234,21 +234,21 @@ class NotificationRepository
                         $messages->push('task');
                         $task = $this->task_repository->find($generalInfo->task_id);
                         if(!$task) return;
-                        $messages->push("<b>".$task->name."</b>");
+                        $messages->push("<b>".$task->name."</b>.");
                         $noti->task_id = $generalInfo->task_id;
                     }
                     else if (@$generalInfo->goal_id) {
                         $messages->push('goal');
                         $goal = $this->goal_repository->find($generalInfo->goal_id);
                         if(!$goal) return;
-                        $messages->push("<b>".$goal->name."</b>");
+                        $messages->push("<b>".$goal->name."</b>.");
                         $noti->goal_id = $generalInfo->goal_id;
                         //find goal
                     }else if (@$generalInfo->todolist_id) {
                         $messages->push('todolist');
                         $todo = $this->todolist_repository->find($generalInfo->todolist_id);
                         if(!$todo) return;
-                        $messages->push("<b>".$todo->name."</b>");
+                        $messages->push("<b>".$todo->name."</b>.");
                         $noti->todolist_id = $generalInfo->todolist_id;
                         //find todolist
                     }else{
@@ -282,11 +282,11 @@ class NotificationRepository
 
                     $messages->push($user->name);
                     if ($content["status"] == "pending") {
-                        $messages->push('sent you a friend request');
+                        $messages->push('sent you a friend request.');
                     }
                     else {
                         $messages->push('accept');
-                        $messages->push("accept you're friend request");
+                        $messages->push("accept you're friend request.");
                     }
                     break;
                 case 'edit_goal':
@@ -298,7 +298,7 @@ class NotificationRepository
                     $messages
                         ->push($user->name ." change ".
                             $key." ".$content[$key]["old"]." to ".$content[$key]["new"].
-                            " at your goal name '".$goal->name."'" );
+                            " at your goal name '".$goal->name."'." );
                     break;
                 case 'sing_with_friend':
                         $content = @$noti->content;
@@ -312,11 +312,11 @@ class NotificationRepository
                             if(isset($goal)){
                                 if(isset($content['message']))
                                 {
-                                    $messages->push('invites you to sing "<b>'.$goal->name.'</b>"');
+                                    $messages->push('invites you to sing "<b>'.$goal->name.'</b>".');
                                 }
                                 else
                                 {
-                                  $messages->push('Invite you join "<b>'.$goal->name.'</b>"');
+                                  $messages->push('Invite you join "<b>'.$goal->name.'</b>".');
                                 }
                                 $noti->type_id = $goal->id;
                             } else return;
@@ -334,11 +334,11 @@ class NotificationRepository
                             if(isset($goal)){  
                                  if(isset($content['message']))
                                 {
-                                     $messages->push('Invites to join communication with "<b>'.$goal->name.'</b>"');
+                                     $messages->push('Invites to join communication with "<b>'.$goal->name.'</b>".');
                                 }
                                  else
                                 {
-                                 $messages->push('Invite you join "<b>'.$goal->name.'</b>"');
+                                 $messages->push('Invite you join "<b>'.$goal->name.'</b>".');
                                 }
                                 $noti->type_id = @$goal->id;
                             } else return;
@@ -349,7 +349,7 @@ class NotificationRepository
                         $key = array_key_first($content);
                         $friendGroup = FriendGroup::find($noti->type_id);
                         if(isset($friendGroup)){
-                            $messages->push('Invite you to join group "<b>'.$friendGroup->name.'</b>"' );
+                            $messages->push('Invite you to join group "<b>'.$friendGroup->name.'</b>".' );
                         }else return;
                     break;    
                 case 'diary':
@@ -361,7 +361,7 @@ class NotificationRepository
                             $user = User::where("id",$noti["user_id"])->first();
                             $goal = Goal::where("id",$japaneseGoal->goal_id)->first(); 
                             if(isset($goal)){  
-                                $messages->push('Invites you to review "<b>'.$goal->name.'</b>"' );
+                                $messages->push('Invites you to review "<b>'.$goal->name.'</b>".' );
                                 $noti->type_id = $goal->id;
                             } else return;
                         }
@@ -376,7 +376,7 @@ class NotificationRepository
                             $user = User::where("id",$noti["user_id"])->first();
                             $goal = Goal::where("id",$japaneseGoal->goal_id)->first();   
                             if(isset($goal)){
-                                 $messages->push('edited diary "<b>'.$goal->name.'</b>"' );
+                                 $messages->push('edited diary "<b>'.$goal->name.'</b>".' );
                                 $noti->type_id = $goal->id;
                             } else return;
                         }
@@ -391,7 +391,7 @@ class NotificationRepository
                         $goal = Goal::where('id',$noti->type_id)->first();
                         if(isset($goal)){
                             $user = User::where("id",$noti["user_id"])->first(); 
-                            $messages->push('Invite your goal to template "<b>'.$goal->name.'</b>"');                           
+                            $messages->push('Invite your goal to template "<b>'.$goal->name.'</b>".');                           
                         } else return;
                     break;
                 case 'sell_goal_template':
@@ -405,7 +405,7 @@ class NotificationRepository
                         if(isset($goalTemplate->sell_goal)) {
                             $messages->push('Want sell your goal "<b>'
                                 . $goal->name . '</b>" with price "'
-                                . @$goalTemplate->sell_goal . '"');
+                                . @$goalTemplate->sell_goal . '".');
                         }
                         else return;
                     } else return;
