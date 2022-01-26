@@ -152,8 +152,9 @@ class GoalTemplateRepository{
             $template->number_paid   = $numberPaid->sum;
             $price  = $this->sumPriceSellGoal($template->goal_id);
             $template->sum_price = @$price->money ?? 0;
-            $template->number_done = 0;
-            $template->number_trials = 0;
+            $template->number_done = $this->percentAllPayment($template->goal_id, 'done');
+            $numberTrial = $this->percentAllPayment($template->goal_id, 'Trial');
+            $template->number_trials = $numberTrial;
             return $template;
         });
         return $goalTemplate;
