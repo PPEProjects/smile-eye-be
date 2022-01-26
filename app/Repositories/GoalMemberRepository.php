@@ -45,11 +45,8 @@ class GoalMemberRepository
 
    public function CountNumberMemberGoal($idGoal)
     {
-        $goalTemplate = GoalMember::where('goal_id', $idGoal)->get()->pluck('add_user_id');
-        $checkUser = User::whereIn('id', @$goalTemplate ?? [])->get()->pluck('id');
        return GoalMember::selectRaw("COUNT(goal_id) as `number_member`")
                         ->where('goal_id', $idGoal)
-                        ->whereIn('add_user_id', @$checkUser ?? [])
                         ->first();
 
     }

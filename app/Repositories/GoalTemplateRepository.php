@@ -273,7 +273,7 @@ class GoalTemplateRepository{
     public function numberMember($goalid)
     {
         $goalMember = GoalMember::where('goal_id', $goalid)
-                                    ->count('add_user_id');
+                                    ->count('goal_id');
         return $goalMember;
     }
     public function myGoalTemplateUnpaid($args)
