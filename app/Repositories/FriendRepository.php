@@ -297,6 +297,7 @@ class FriendRepository
 
     public function searchPeople($userId, $name = null)
     {
+        $myUserId = Auth::id();
         $myFriends = $this->getByNameStatus($userId)->sortBy("friend_status");
         $pendFriends = $this->pendFriend($userId);
         $listFriends = $myFriends->concat($pendFriends);
@@ -306,6 +307,7 @@ class FriendRepository
         $recommentFriends = @$searchPeople ?? $this->recommentFriends($userId);
 
         $people = $listFriends->concat($recommentFriends);
+        $people = $people->WhereNotIn('id', [$myUserId]);
         if ($name) {
             $people = $people->filter(function ($user) use ($name) {
                 return false !== stristr($user->name, $name);
