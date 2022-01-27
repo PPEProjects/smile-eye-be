@@ -79,4 +79,8 @@ class Goal extends Model
     public function japaneseGoal(){
         return $this->belongsTo(JapaneseGoal::class, "id","goal_id");
     }
+    public function goal_root()
+    {
+        return $this->belongsTo(Goal::class, "root_id");
+    }
 }
