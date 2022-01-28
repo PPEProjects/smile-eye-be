@@ -330,13 +330,14 @@ class PaymentRepository
             $children[$pay->goal_id][] = $inforGoal;
             $all[] = $inforGoal;
         }
-        $sum[] = [ 'key'=> 0,
+        if(empty($nameGoal)){
+            $sum[] = [ 'key'=> 0,
                     'name' => 'Sum', 
                     'money' => $sumMoney, 
                     'date' => $date,
                     'children' => $all
-                ];
-
+                    ];
+            }
         foreach($checkIssetGoals as $goal){
             $money = $payments->where('goal_id', $goal->id)->sum('money');
             $sum[] = [  'key'=> $i,
