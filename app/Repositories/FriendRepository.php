@@ -304,6 +304,9 @@ class FriendRepository
         if ($name) {
             $searchPeople = User::where('name', 'like', '%' . $name . '%')->get();
         }
+        else{
+            return $myFriends;
+        }
         $recommentFriends = @$searchPeople ?? $this->recommentFriends($userId);
 
         $people = $listFriends->concat($recommentFriends);
