@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class PaymentRepository
 {
+    private $CONVERT_TIME_ZONE = "CONVERT_TZ(updated_at , '+00:00', '+07:00')";
     public function createPayment($args)
     {
         $args["user_id"] = Auth::id();
@@ -115,18 +116,19 @@ class PaymentRepository
             $year = @$args['year'] ?? date('Y');
             switch ($month){
                 case "":
-                   $payments = $payments->selectRaw(" DATE_FORMAT(updated_at, '%Y-%m') as `date`")
-                                        ->whereRaw("YEAR(updated_at) = '".$year."'");
+                   $payments = $payments->selectRaw(" DATE_FORMAT(".$this->CONVERT_TIME_ZONE.", '%Y-%m') as `date`")
+                                        ->whereRaw("YEAR(".$this->CONVERT_TIME_ZONE.") = '".$year."'");
                     break;
                 default:
                     if(intval($month) < 10){ $month = "0".$month; }
-                   $payments = $payments->selectRaw(" DATE(updated_at) as `date`")
-                                        ->whereRaw("DATE_FORMAT(updated_at, '%Y-%m') = '".$year."-".$month."'");
+                   $payments = $payments->selectRaw(" DATE(".$this->CONVERT_TIME_ZONE.") as `date`")
+                                        ->whereRaw("DATE_FORMAT(".$this->CONVERT_TIME_ZONE.", '%Y-%m') = '".$year."-".$month."'");
+    
             }
             if($payments->get()->toArray() == []) return ;
         }
         else{
-            $payments = $payments->selectRaw("DATE(updated_at) as `date`");
+            $payments = $payments->selectRaw("DATE(".$this->CONVERT_TIME_ZONE.") as `date`");
         }
         $payments = $payments->get();
         $checkGoals = $payments->pluck('goal_id')->toArray();
@@ -290,7 +292,7 @@ class PaymentRepository
             $date = date('Y-m-d');
         }
         $payments = Payment::whereIn('status', $status)
-                            ->whereRaw("DATE(updated_at) = '".$date."'")
+                            ->whereRaw("DATE(".$this->CONVERT_TIME_ZONE.") = '".$date."'")
                             ->orderBy('updated_at', 'ASC')
                             ->get();
         $getIdGoals = $payments->pluck('goal_id');
@@ -309,11 +311,14 @@ class PaymentRepository
         $all = [];
         $key = 0;
         foreach($payments as $pay){
+            // if (empty($pay->add_user->name) || empty($pay->goal->name)) {
+            //     continue;
+            // }
             $inforGoal = [
                 'key' => $key,
                 'id' => $pay->id,
-                'name' => $pay->add_user->name,
-                'goal' => $pay->goal->name,
+                'name' => @$pay->add_user->name,
+                'goal' => @$pay->goal->name,
                 'status' => @$pay->status,
                 'type' => @$pay->type,
                 'money' => @$pay->money ?? '0',
@@ -339,7 +344,7 @@ class PaymentRepository
                         'name' => 'Sum '.$goal->name, 
                         'money' => $money, 
                         'date' => $date, 
-                        'children' => $children[$goal->id]
+                        'children' => @$children[$goal->id]
                     ];
             $i++;
         }
