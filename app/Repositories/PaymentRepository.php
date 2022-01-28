@@ -315,7 +315,7 @@ class PaymentRepository
             //     continue;
             // }
             $inforGoal = [
-                'key' => $key,
+                'key' => $pay->id,
                 'id' => $pay->id,
                 'name' => @$pay->add_user->name,
                 'goal' => @$pay->goal->name,
@@ -329,7 +329,6 @@ class PaymentRepository
             ];
             $children[$pay->goal_id][] = $inforGoal;
             $all[] = $inforGoal;
-            $key++;
         }
         $sum[] = [ 'key'=> 0,
                     'name' => 'Sum', 
