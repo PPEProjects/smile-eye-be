@@ -20,7 +20,7 @@ use ppeCore\dvtinh\Services\MediaService;
 class CoachMemberRepository
 {
     private $goal_repository;
-
+    private $CONVERT_TIME_ZONE = "CONVERT_TZ(updated_at , '+00:00', '+07:00')";
     public function __construct(
             GoalRepository $goal_repository,
             AttachmentService $attachmentService
@@ -125,17 +125,20 @@ class CoachMemberRepository
     public function myListSupportMembers($args)
     {
         $userId = Auth::id();
-        $sentReceipt = Payment::where('status', 'LIKE','%sentReceipt%')
+        $sentReceipt = Payment::SelectRaw('*, '.$this->CONVERT_TIME_ZONE.' as "updated_at" ')
+                                ->where('status', 'LIKE','%sentReceipt%')
                                 ->orderBy('updated_at', 'DESC')
                                 ->get();
         $getidReceipt = $sentReceipt->pluck('id')->toArray();
-        $onBuy = Payment::where('status', 'LIKE','%onBuy%')
+        $onBuy = Payment::SelectRaw('*, '.$this->CONVERT_TIME_ZONE.' as "updated_at" ')
+                                ->where('status', 'LIKE','%onBuy%')
                                 ->orderBy('updated_at', 'DESC')
                                 ->get();
         $getidOnBuy = $onBuy->pluck('id')->toArray();
         $idPayments = [];
         $idPayments = ($getidReceipt ?? []) + ($getidOnBuy ?? []);
-        $orther = Payment::whereNotIn('id', $idPayments)
+        $orther = Payment::SelectRaw('*, '.$this->CONVERT_TIME_ZONE.' as "updated_at" ')
+                                ->whereNotIn('id', $idPayments)
                                 ->orderBy('updated_at', 'DESC')
                                 ->get();
         $payments = $sentReceipt->merge($onBuy)->merge($orther);
