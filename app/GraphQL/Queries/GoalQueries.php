@@ -128,18 +128,24 @@ class GoalQueries
         }
         $goals = $goals->get();
         //Get id goal from GoalMember
+// start rank
         $myGoalIds = $goals->pluck('id')->toArray();
         $goalMember = GoalMember::where("add_user_id", Auth::id())
                                 ->whereNotIn('goal_id', @$myGoalIds ?? [])
-                                ->get()->keyBy('goal_id');
+                                ->get()
+                                ->keyBy('goal_id');
+
+//        dd($goalMember->toArray());
         $idGoalMembers = $goalMember->pluck('goal_id');
         $myGoalMember = Goal::SelectRaw("*, 'goal_member' AS type")
                                 ->whereIn('id', @$idGoalMembers ?? []) 
                                 ->get();
         $myGoalMember = $myGoalMember->map(function($goal) use($goalMember){
                 $goal->created_at = @$goalMember[$goal->id]->created_at ?? $goal->created_at;
+                $goal->updated_at = @$goalMember[$goal->id]->updated_at ?? $goal->updated_at;
                 return $goal;
         });
+//        dd($myGoalMember->toArray());
         $goals = $myGoalMember->merge($goals);
         //---------//
         $goals = $goals->sortByDESC('created_at');
@@ -167,13 +173,23 @@ class GoalQueries
                 $rank = @$goalMember[$goal->id]->rank;
             }  
             $goal->rank = $rank;
+// end rank
             $goal->number_member = $countMember->number_member; 
             $goal->template = @$goal->goalTemplate;
             $goal->redirect_autoplay = url('/api/redirect/autoplay?root_id='.$goal->id.'&user_id='.Auth::id());
             // $goal->next_goal = @$nextGoal[$goal->id];
             return $goal;
         });
-        return $goals->sortBy('rank');
+//        dd($goals
+//            ->sortByDESC('updated_at')
+//            ->pluck('id', 'updated_at')
+//            ->toArray());
+//        dd($goals->sortBy('rank')
+//            ->sortByDESC('updated_at')
+//            ->pluck('id', 'rank', 'updated_at'));
+        return $goals
+            ->sortBy('rank')
+            ->sortByDESC('updated_at');
     }
 
     public function nextGoal($goalIds = [])

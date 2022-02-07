@@ -24,11 +24,12 @@ class GoalRepository
     private $child_ids = [];
 
     public function __construct(
-        UserRepository $UserRepository,
-        AttachmentService $AttachmentService,
-        AttachmentRepository $attachment_repository,
+        UserRepository        $UserRepository,
+        AttachmentService     $AttachmentService,
+        AttachmentRepository  $attachment_repository,
         GeneralInfoRepository $generalinfo_repository
-    ) {
+    )
+    {
         $this->user_repository = $UserRepository;
         $this->attachment_service = $AttachmentService;
         $this->attachment_repository = $attachment_repository;
@@ -142,8 +143,7 @@ class GoalRepository
 
     public function getTreeSortByGoalId($goalId, $userId = null, $rootId = null)
     {
-        if(empty($rootId) || $rootId == "")
-        {
+        if (empty($rootId) || $rootId == "") {
             $rootId = $goalId;
         }
         $goals = Goal::selectRaw('id, id as value, name, name as title, parent_id, task_id, created_at, root_id')
@@ -779,7 +779,7 @@ class GoalRepository
     public function duplicateJP($oGoal, $nGoal)
     {
         $jp = JapaneseGoal::where('goal_id', $oGoal['id'])->first();
-        if($jp){
+        if ($jp) {
             $aJP = $jp->toArray();
             $aJP['goal_id'] = $nGoal['id'];
             unset($aJP['id']);
@@ -836,7 +836,7 @@ class GoalRepository
             }
             Goal::where('id', $value['id'])->update([
                 'parent_id' => $value['parent_id'],
-                'index'     => $value['index']
+                'index' => $value['index']
             ]);
 //            $goalMove = tap(Goal::find($value["id"]))->update($value);
             $i++;
@@ -863,7 +863,7 @@ class GoalRepository
         foreach ($goals as $value) {
             $general = GeneralInfo::where('goal_id', $value['id'])->first();
             $japaneseGoal = JapaneseGoal::where('goal_id', $value)->first();
-            $args = array_diff_key($value, array_flip(['user_id', 'rank','id', 'parent_id']));
+            $args = array_diff_key($value, array_flip(['user_id', 'rank', 'id', 'parent_id']));
             $args['user_id'] = $userId;
             $args['id'] = time() . '.' . rand();
             $createGoal = Goal::create($args);
@@ -890,8 +890,8 @@ class GoalRepository
                 if ($id == $v['parent_id']) {
                     $update = Goal::where("id", $newGoals[$v['id']])
                         ->update(['parent_id' => $newGoals[$id],
-                                    'root_id' => $newGoals[$goalRoot->id]
-                                ]);
+                            'root_id' => $newGoals[$goalRoot->id]
+                        ]);
                 }
             }
         }
@@ -911,6 +911,17 @@ class GoalRepository
     }
 
     public function sortRankGoalRoot($args)
+    {
+        Goal::where('id', $args['id'])
+            ->where('user_id', Auth::id())
+            ->update(['rank' => $args['rank']]);
+        GoalMember::where("add_user_id", Auth::id())
+            ->where('goal_id', $args['id'])
+            ->update(['rank' => $args['rank']]);
+        return true;
+    }
+
+    public function sortRankGoalRoot1($args)
     {
         $goal = Goal::find($args['id']);
         if (isset($goal->parent_id)) {
