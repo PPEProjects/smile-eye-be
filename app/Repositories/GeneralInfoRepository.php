@@ -30,6 +30,7 @@ class GeneralInfoRepository
 
     public function upsert($payload)
     {
+//        dd($payload);
 //        \Illuminate\Support\Facades\Log::channel('single')->info('$payload', [$payload]);
 //        \Illuminate\Support\Facades\Log::channel('single')->info('$this->type', [$this->type]);
         
@@ -50,7 +51,7 @@ class GeneralInfoRepository
                 }
                 \Illuminate\Support\Facades\Log::channel('single')->info('$data', [$data]);
                 \Illuminate\Support\Facades\Log::channel('single')->info('$payload', [$payload]);
-                
+//                dd($payload['id'], $data);
                 GeneralInfo::updateOrCreate(
                     ['goal_id' => $payload['id']],
                     $data

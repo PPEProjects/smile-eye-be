@@ -13,9 +13,9 @@ class CreateCoachMembersTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('coach_members');
         Schema::create('coach_members', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("user_id")->nullable();
             $table->unsignedBigInteger("user_id")->nullable();
             $table->string('org')->nullable();
 //            $table->string('business_field')->nullable();
