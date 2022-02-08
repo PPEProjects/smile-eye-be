@@ -94,6 +94,7 @@ class GoalQueries
                                 ->setType('goal')
                                 ->findByTypeId($goal->id);
             $goal->general_info = $generalInfo;
+            $goal->type = $goal->user_id==Auth::id() ? 'goal_owner': 'goal_member';
             return $goal;
         }
         return null;
