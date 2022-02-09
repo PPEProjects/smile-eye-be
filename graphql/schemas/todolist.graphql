@@ -10,6 +10,7 @@ extend type Query {
     search_todolists(name: String @where(operator: "like") orderBy: [OrderByClause!] @orderBy): [Todolist!]! @paginate(type: "paginator" model: "App\\Models\\Todolist")
     detail_todolist(id: ID,task_id: ID, checked_at: String): Todolist @guard @field(resolver:"TodoListQueries@detailTodolist")
     my_todolists_with_month(created_at: String!): JSON @guard @field(resolver:"TodoListQueries@my_todolists_with_month")
+    my_todolists_with_month_v2(created_at: String!): JSON @guard @field(resolver:"TodoListQueries@myTodolistsWithMonthV2")
     my_todolists_from_now: JSON @guard @field(resolver:"TodoListQueries@myTodolistsFromNow")
     sort_todolists(orderBy: [OrderByClause!] @orderBy): [Todolist!]! @paginate(type: "paginator" model: "App\\Models\\Todolist")
     search_todolist_month(month: String): [Todolist]@guard @field(resolver:"TodoListQueries@search_todolist_month")

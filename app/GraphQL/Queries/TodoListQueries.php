@@ -18,9 +18,10 @@ class TodoListQueries
     private $generalinfo_repository;
 
     public function __construct(
-        TodolistRepository $TodolistRepository,
+        TodolistRepository    $TodolistRepository,
         GeneralInfoRepository $generalinfo_repository
-    ) {
+    )
+    {
         $this->todolist_repository = $TodolistRepository;
         $this->generalinfo_repository = $generalinfo_repository;
     }
@@ -169,16 +170,16 @@ WHERE
             default:
                 $tasks = $tasks->sortByDESC('task_id');
         }
-        $tasks = $tasks->map(function($task){
+        $tasks = $tasks->map(function ($task) {
             $task->is_action_at_time = true;
             $task->is_reminder = true;
-            if($task->general_info['action_at_time'] == null){
+            if ($task->general_info['action_at_time'] == null) {
                 $task->is_action_at_time = false;
             }
-            if($task->general_info['reminder'] == null){
+            if ($task->general_info['reminder'] == null) {
                 $task->is_reminder = false;
             }
-        return $task;
+            return $task;
 
         });
         return $tasks;
@@ -241,6 +242,17 @@ FROM tasks
 WHERE tasks.user_id=" . Auth::id() . " AND tasks.deleted_at IS NULL AND gi.`repeat`='every day'";
         $results = DB::select(DB::raw($query));
         $tasksEveryDay = json_decode(json_encode($results), true);
+        $taskIds = collect($tasksEveryDay)->pluck('id')->toArray();
+        $todolistsEveryDayDel = Todolist::whereIn('task_id', $taskIds)
+            ->where('user_id', Auth::id())
+            ->where('status', 'delete')
+            ->get()
+            ->map(function ($item) {
+                $item['check'] = Carbon::createFromFormat('Y-m-d H:i:s', $item['checked_at'])->format('Y-m-d');
+                return $item['check'];
+            })
+            ->toArray();
+        $todolistsEveryDayDel = array_count_values($todolistsEveryDayDel);
         $tasksEveryDay = array_map(function ($item) {
             return $item['action_at'];
         }, $tasksEveryDay);
@@ -249,20 +261,75 @@ WHERE tasks.user_id=" . Auth::id() . " AND tasks.deleted_at IS NULL AND gi.`repe
         $numberDay = 0;
         foreach (CarbonPeriod::create($startDate, $endDate) as $date) {
             $date = $date->format('Y-m-d');
-            // if(isset($checkTasksEveryDay[$date])){
-            //     $day[] = $date;
-            //    $numberDay = count(array_intersect($tasksEveryDay, $day));
-            // }
             $numberDay = count($tasksEveryDay);
+            if (isset($checkTasksEveryDay[$date])) {
+                $day[] = $date;
+                $numberDay = count(array_intersect($tasksEveryDay, $day));
+            }
             $workload = [
-                'date'     => $date,
-                'workload' => 
-                (@$tasksAction[$date] ?? 0)  + $numberDay
+                'date' => $date,
+                'workload' => (@$tasksAction[$date] ?? 0) + $numberDay - (@$todolistsEveryDayDel[$date] ?? 0),
             ];
             if (!empty($workload['workload'])) {
                 $workloads[] = $workload;
             }
-           
+        }
+        return $workloads;
+    }
+
+    public function myTodolistsWithMonthV2($_, array $args)
+    {
+        $startDate = Carbon::createFromFormat('Y-m', $args['created_at'])->subDays(30);
+        $endDate = Carbon::createFromFormat('Y-m', $args['created_at'])->addDays(30);
+
+        $query = "SELECT tasks.id, DATE(IFNULL(gi.action_at, tasks.created_at)) as action_at
+FROM tasks
+     left join general_infos gi on tasks.id = gi.task_id
+WHERE tasks.user_id=" . Auth::id() . " AND tasks.deleted_at IS NULL AND gi.`repeat` is NULL AND (action_at IS NULL AND DATE(tasks.created_at) BETWEEN '$startDate' AND '$endDate'
+   OR DATE(action_at) BETWEEN '$startDate' AND '$endDate')";
+        $results = DB::select(DB::raw($query));
+        $tasksAction = json_decode(json_encode($results), true);
+        $tasksAction = array_map(function ($item) {
+            return $item['action_at'];
+        }, $tasksAction);
+        $tasksAction = array_count_values($tasksAction);
+        $query = "SELECT tasks.id, DATE(IFNULL(gi.action_at, tasks.created_at)) as action_at
+FROM tasks
+     inner join general_infos gi on tasks.id = gi.task_id
+WHERE tasks.user_id=" . Auth::id() . " AND tasks.deleted_at IS NULL AND gi.`repeat`='every day'";
+        $results = DB::select(DB::raw($query));
+        $tasksEveryDay = json_decode(json_encode($results), true);
+        $taskIds = collect($tasksEveryDay)->pluck('id')->toArray();
+        $todolistsEveryDayDel = Todolist::whereIn('task_id', $taskIds)
+            ->where('user_id', Auth::id())
+            ->where('status', 'delete')
+            ->get()
+            ->map(function ($item) {
+                $item['check'] = Carbon::createFromFormat('Y-m-d H:i:s', $item['checked_at'])->format('Y-m-d');
+                return $item['check'];
+            })
+            ->toArray();
+        $todolistsEveryDayDel = array_count_values($todolistsEveryDayDel);
+        $tasksEveryDay = array_map(function ($item) {
+            return $item['action_at'];
+        }, $tasksEveryDay);
+        $checkTasksEveryDay = array_count_values($tasksEveryDay);
+        $workloads = [];
+        $numberDay = 0;
+        foreach (CarbonPeriod::create($startDate, $endDate) as $date) {
+            $date = $date->format('Y-m-d');
+            $numberDay = count($tasksEveryDay);
+            if (isset($checkTasksEveryDay[$date])) {
+                $day[] = $date;
+                $numberDay = count(array_intersect($tasksEveryDay, $day));
+            }
+            $workload = [
+                'date' => $date,
+                'workload' => (@$tasksAction[$date] ?? 0) + $numberDay - (@$todolistsEveryDayDel[$date] ?? 0),
+            ];
+            if (!empty($workload['workload'])) {
+                $workloads[] = $workload;
+            }
         }
         return $workloads;
     }
