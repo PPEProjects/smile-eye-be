@@ -29,7 +29,10 @@ Route::get('/file', function () {
 //    echo ini_get('post_max_size');
     echo phpinfo();
 });
-
+Route::get('get-token', function(Request $request){
+    $user = \Illuminate\Support\Facades\Auth::id();
+    return $user;
+});
 
 Auth::routes();
 
