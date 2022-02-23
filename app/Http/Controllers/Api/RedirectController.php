@@ -140,7 +140,6 @@ class RedirectController extends Controller
     // }
     public function findBlock($listGoals, $ids = [], $children = [])
     {
-       
         $findGoal = [];
         $listTrial = $listGoals->whereIn('parent_id', $ids);
         $idParent = @$listTrial->pluck('id')->toArray() ?? [];

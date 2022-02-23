@@ -1,0 +1,19 @@
+extend type Mutation {
+    upsert_goal_prev_next(input: UpsertGoalPrevNextInput! @spread): GoalPrevNext @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalPrevNextMutations@upsertGoalPrevNext")
+}
+extend type Query {
+    detail_goal_prev_next(goal_id: ID @eq, root_id: ID): GoalPrevNext @field(resolver:"GoalPrevNextQueries@detailGoalPrevNext")
+}
+type GoalPrevNext{
+    id: ID
+    root_id: ID
+    jp_ids: JSON
+    current: JSON
+    prev:JSON
+    next:JSON
+}
+
+input UpsertGoalPrevNextInput{
+    root_id: ID
+    jp_ids: JSON
+}
