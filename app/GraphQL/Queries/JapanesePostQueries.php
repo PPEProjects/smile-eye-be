@@ -33,11 +33,15 @@ class JapanesePostQueries
     public function listJapanesePost($_, array $args)
     {
 //        $posts = JapanesePost::selectRaw("id, user_id, CASE
-        $posts = JapanesePost::selectRaw("*, CASE
-                WHEN user_id = ".Auth::id()." THEN 1
-                ELSE 0 END AS pin_index")
+//        $posts = JapanesePost::selectRaw("*, CASE
+//                WHEN user_id = ".Auth::id()." THEN 1
+//                ELSE 0 END AS pin_index")
+//            ->where('goal_id', $args['goal_id'])
+//            ->orderBy('pin_index', 'desc')
+//            ->get();
+        $posts = JapanesePost::selectRaw("*")
             ->where('goal_id', $args['goal_id'])
-            ->orderBy('pin_index', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->get();
         return $posts;
     }
