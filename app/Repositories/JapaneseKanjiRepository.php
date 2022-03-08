@@ -80,9 +80,6 @@ class JapaneseKanjiRepository
 
     public function listJapaneseKanji($args)
     {
-        $getKanjiJsonFile = file_get_contents(dirname(__FILE__)."/kanji.json");
-        $convertKanji = json_decode($getKanjiJsonFile, true);
-        $kanji = $convertKanji["data"]["list_japanese_kanji"];
         if (!empty($args['ids'])) {
             $japaneseKanji = [];
             foreach ($args['ids'] as $id) {
@@ -90,13 +87,7 @@ class JapaneseKanjiRepository
             }
             return $japaneseKanji;
         }
-        $japaneseKanji = JapaneseKanji::all()->toArray();
-        $mergeKanji = array_merge($kanji, $japaneseKanji);
-        $unquieKanji = [];
-        foreach ($mergeKanji as $value){
-           $unquieKanji[$value['name']] = $value;
-        }
-        $listKanji = array_values($unquieKanji);
-        return $listKanji;
+        $japaneseKanji = JapaneseKanji::all();
+        return $japaneseKanji;
     }
 }
