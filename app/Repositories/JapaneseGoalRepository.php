@@ -19,11 +19,12 @@ class JapaneseGoalRepository
     private $japaneseLearn_repository;
 
     public function __construct(
-        GeneralInfoRepository $generalInfoRepository,
-        AttachmentService $attachment_service,
-        NotificationRepository $notificationRepository,
+        GeneralInfoRepository   $generalInfoRepository,
+        AttachmentService       $attachment_service,
+        NotificationRepository  $notificationRepository,
         JapaneseLearnRepository $japaneseLearn_repository
-    ) {
+    )
+    {
         $this->generalinfo_repository = $generalInfoRepository;
         $this->attachment_service = $attachment_service;
         $this->notification_repository = $notificationRepository;
@@ -49,6 +50,8 @@ class JapaneseGoalRepository
             }
         }
         if ($args['type'] == "diary" && isset($args['more'][0]['user_invite_ids'])) {
+            \Illuminate\Support\Facades\Log::channel('single')->info('1', []);
+
             $idUserInvited = $args['more'][0]['user_invite_ids'];
             foreach ($idUserInvited as $value) {
                 $args['more'][0]['other_' . $value] = $args['more'][0]['content'];
@@ -56,8 +59,8 @@ class JapaneseGoalRepository
         }
         if (isset($args['name_goal'])) {
             $dataGoal = [
-                'id'      => time().rand(0,9),
-                'name'    => $args['name_goal'],
+                'id' => time() . rand(0, 9),
+                'name' => $args['name_goal'],
                 'user_id' => $args["user_id"],
                 'root_id' => $args["root_id"],
             ];
@@ -90,6 +93,9 @@ class JapaneseGoalRepository
         //        return $japanese;
 
         if ($args["type"] == "diary") {
+            $jpGoal->root_id = $args['root_id'];
+            \Illuminate\Support\Facades\Log::channel('single')->info('2', [$jpGoal]);
+
             $more = $jpGoal->more;
             $more = array_shift($more);
             if (isset($more["user_invite_ids"])) {
@@ -196,7 +202,7 @@ class JapaneseGoalRepository
                 $this->notification_repository->staticNotification("sing_with_friend", $japaneseGoal->goal_id,
                     $japaneseGoal, $user_invited_ids);
             }
-         //   $args['more'] = $japaneseGoal->more;
+            //   $args['more'] = $japaneseGoal->more;
         }
         return tap(JapaneseGoal::findOrFail($japaneseGoal->id))
             ->update($args);
@@ -242,7 +248,7 @@ class JapaneseGoalRepository
                 $users = [];
                 foreach ($listUsers as $id) {
                     $findUser = User::find($id);
-                    if(isset($findUser)){
+                    if (isset($findUser)) {
                         $users[] = $this->attachment_service
                             ->mappingAvatarBackgroud($findUser)
                             ->toArray();
@@ -253,39 +259,35 @@ class JapaneseGoalRepository
 
             if (isset($goalRoot->id)) {
                 $listGoals = Goal::where('root_id', $goalRoot->id)->orderByRaw('-`index` DESC')->get();
-              
+
                 $coachMember = CoachMember::where('user_id', Auth::id())
-                                            ->first();
+                    ->first();
                 $checkIdGoal = in_array($goalRoot->id, @$coachMember->goal_ids ?? []);
-                $admin = User::where('id',Auth::id())
-                                ->where('roles', 'like', '%admin%')
-                                ->first();
-                if($goalRoot->user_id == Auth::id() || $checkIdGoal || $admin){
+                $admin = User::where('id', Auth::id())
+                    ->where('roles', 'like', '%admin%')
+                    ->first();
+                if ($goalRoot->user_id == Auth::id() || $checkIdGoal || $admin) {
                     $detailJPGoal->payment_status = true;
                 }
-                if(empty($detailJPGoal->payment_status))
-                {
+                if (empty($detailJPGoal->payment_status)) {
                     $status = ['accept', 'paused', 'paid', 'confirmed', "paidConfirmed", "done"];
                     $statusTemplate = @$goalRoot->goalTemplate->status ?? "";
                     $goalTemplate = in_array(strtolower($statusTemplate), $status);
-                    if($goalTemplate){
+                    if ($goalTemplate) {
                         $payment = $goalRoot->payMent
-                                            ->where('add_user_id', Auth::id())
-                                            ->whereIn('status', $status)
-                                            ->first(); 
+                            ->where('add_user_id', Auth::id())
+                            ->whereIn('status', $status)
+                            ->first();
                         $detailJPGoal->payment_status = (isset($payment->status)) ? true : false;
-                    }
-                    else {
+                    } else {
                         $detailJPGoal->payment_status = true;
                     }
                 }
-                if($detailJPGoal->payment_status == false && isset($goalRoot->trial_block))
-                {
+                if ($detailJPGoal->payment_status == false && isset($goalRoot->trial_block)) {
                     $trialIds = $this->findParent($listGoals, @$goalRoot->trial_block ?? []);
                     $checkTrial = in_array($detailJPGoal->goal_id, @$trialIds ?? []);
                     // $findIds = array_search($detailJPGoal->goal_id, @$trialIds ?? [] , true);   
-                    if($checkTrial)
-                    {
+                    if ($checkTrial) {
                         $detailJPGoal->payment_status = true;
                         // $numberTrial = count($trialIds);
                         // if(($numberTrial - 1) > $findIds){
@@ -299,28 +301,28 @@ class JapaneseGoalRepository
                         //     $keyPrev =  $trialIds[$findIds - 1];
                         // }
                     }
-            
+
                 }
-            //     if ($keyNext == 0)
-            //     {
-            //         $childrenIds = $this->findParent($listGoals, [$goalRoot->id]);
-            //         $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);
-            //         $numberBlock = count($childrenIds);
-            //         if(($numberBlock - 1) > $findIds){
-            //             $getTypeNextGoal = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds + 1])
-            //                                         ->first();
-            //             $keyNext = $childrenIds[$findIds + 1];  
-            //         }
-            //         if ($findIds > 0 && $findIds < ($numberBlock - 1)) {               
-            //             $getTypePrevGoal = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds - 1])
-            //                                         ->first();
-            //             $keyPrev = $childrenIds[$findIds - 1];
-            //         }
-            //     }
+                //     if ($keyNext == 0)
+                //     {
+                //         $childrenIds = $this->findParent($listGoals, [$goalRoot->id]);
+                //         $findIds = array_search($detailJPGoal->goal_id, $childrenIds, true);
+                //         $numberBlock = count($childrenIds);
+                //         if(($numberBlock - 1) > $findIds){
+                //             $getTypeNextGoal = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds + 1])
+                //                                         ->first();
+                //             $keyNext = $childrenIds[$findIds + 1];
+                //         }
+                //         if ($findIds > 0 && $findIds < ($numberBlock - 1)) {
+                //             $getTypePrevGoal = @$this->getJapaneseGoal('goal_id', $childrenIds[$findIds - 1])
+                //                                         ->first();
+                //             $keyPrev = $childrenIds[$findIds - 1];
+                //         }
+                //     }
             }
-            $linkNext = url('/api/redirect/nextBlock?goal_id='.$detailJPGoal->goal_id.'&user_id='.Auth::id());
-            $linkPrev = url('/api/redirect/prevBlock?goal_id='.$detailJPGoal->goal_id.'&user_id='.Auth::id());
-            
+            $linkNext = url('/api/redirect/nextBlock?goal_id=' . $detailJPGoal->goal_id . '&user_id=' . Auth::id());
+            $linkPrev = url('/api/redirect/prevBlock?goal_id=' . $detailJPGoal->goal_id . '&user_id=' . Auth::id());
+
             // $nextGoal = @$this->findGoal($keyNext);
             // $prevGoal = @$this->findGoal($keyPrev);
             // if (isset($nextGoal) && isset($getTypeNextGoal->type)) {
@@ -338,7 +340,7 @@ class JapaneseGoalRepository
             $detailJPGoal->link_next = $linkNext;
 
             // $detailJPGoal->prev_goal = $prevGoal;
-            $detailJPGoal->link_prev= $linkPrev;
+            $detailJPGoal->link_prev = $linkPrev;
 
         }
         if ($detailJPGoal->type == 'flashcard_study') {
@@ -353,33 +355,33 @@ class JapaneseGoalRepository
         }
         return $detailJPGoal;
     }
+
     public function findBlock($listGoals, $ids, $children = [])
     {
         $getchildren = $children;
         $goals = $listGoals;
-        foreach($ids as $value)
-        {
+        foreach ($ids as $value) {
             $find = $goals->where('parent_id', $value);
-            if($find->toArray() != []){
+            if ($find->toArray() != []) {
                 $idParent = $find->pluck('id')->toArray();
-                $getchildren =  self::findBlock($listGoals, $idParent, $getchildren);
-            }
-            else{
+                $getchildren = self::findBlock($listGoals, $idParent, $getchildren);
+            } else {
                 $checkBlock = $goals->where('id', $value)->first();
-                if(isset($checkBlock->japaneseGoal)){
+                if (isset($checkBlock->japaneseGoal)) {
                     $getchildren[] = (string)$value;
                 }
             }
         }
         return $getchildren;
     }
+
     public function findParent($listGoals, $ids = [], $children = [])
     {
-       
+
         $findGoal = [];
         $listTrial = $listGoals->whereIn('parent_id', $ids);
         $idParent = @$listTrial->pluck('id')->toArray() ?? [];
-        while(true){
+        while (true) {
             $findGoal = array_merge($findGoal, $idParent);
             $listTrial = $listGoals->whereIn('parent_id', $idParent);
             $idParent = @$listTrial->pluck('id')->toArray() ?? [];
@@ -400,22 +402,23 @@ class JapaneseGoalRepository
         $jpGoal = JapaneseGoal::whereIn('goal_id', @$findGoal ?? [])->get();
         $getids = $jpGoal->pluck('goal_id');
         $goals = Goal::whereIn('id', @$getids ?? [])
-                        ->orderByRaw('-`index` DESC')
-                        ->get()
-                        ->pluck('id')
-                        ->toArray();
+            ->orderByRaw('-`index` DESC')
+            ->get()
+            ->pluck('id')
+            ->toArray();
         return $goals;
     }
+
     public function listBlock($listGoal)
     {
         $idListGoals = $listGoal->pluck('id');
         $jpGoal = JapaneseGoal::whereIn('goal_id', @$idListGoals ?? [])->get();
         $getids = $jpGoal->pluck('goal_id');
         $goals = Goal::whereIn('id', @$getids ?? [])
-                        ->orderByRaw('-`index` DESC')
-                        ->get()
-                        ->pluck('id')
-                        ->toArray();
+            ->orderByRaw('-`index` DESC')
+            ->get()
+            ->pluck('id')
+            ->toArray();
         return $goals;
     }
 
@@ -464,7 +467,7 @@ class JapaneseGoalRepository
                         $media = null;
                     }
                     $flashCardCate[] = [
-                        'name'  => $key,
+                        'name' => $key,
                         'count' => count($category[$key]),
                         'media' => $media
                     ];
@@ -522,16 +525,16 @@ class JapaneseGoalRepository
 
     public function autoPlayJapaneseGoal($goalRootId)
     {
-        $listGoals = Goal::where('root_id',$goalRootId)
-                            ->orderByRaw('-`index` DESC')
-                            ->get();
+        $listGoals = Goal::where('root_id', $goalRootId)
+            ->orderByRaw('-`index` DESC')
+            ->get();
         $children = $this->findBlock($listGoals, [$goalRootId]);
         $japaneseLearn = JapaneseLearn::where('user_id', Auth::id())
-                                        ->whereIn('goal_id', $children)
-                                        ->get();
+            ->whereIn('goal_id', $children)
+            ->get();
         $getGoalIds = $japaneseLearn->pluck('goal_id')->toArray();
         $nextGoal = @$this->getJapaneseGoal('goal_id', end($getGoalIds))
-                                ->first();
-       return $nextGoal;
+            ->first();
+        return $nextGoal;
     }
 }

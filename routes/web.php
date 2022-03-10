@@ -29,7 +29,7 @@ Route::get('/file', function () {
 //    echo ini_get('post_max_size');
     echo phpinfo();
 });
-Route::get('get-token', function(Request $request){
+Route::get('get-token', function (Request $request) {
     $user = \Illuminate\Support\Facades\Auth::id();
     return $user;
 });
@@ -156,5 +156,29 @@ Route::post('/update_letter', function (Request $request) {
         $fileRootName = $file->getClientOriginalName();
         $file->move(storage_path() . "/app/public/Letter/a", $fileRootName);
     }
-   return redirect('/update_letter?success');
+    return redirect('/update_letter?success');
+});
+
+Route::get('/update_watch', function (Request $request) {
+    $updateCount = ['total' => 0, 'update' => 0];
+    $jpGoals = \App\Models\JapaneseGoal::where('type', 'watch_video')
+        ->get()
+        ->map(function ($item) use (&$updateCount) {
+//            $updateCount += 1;
+            $item = $item->toArray();
+            $skit_video = @$item['more']['skit_video'];
+            if ($skit_video && !@$skit_video['video']) {
+                $skit_video['video'] = $skit_video;
+                $skit_video['thumb'] = $skit_video;
+                $item['more']['skit_video'] = $skit_video;
+//                dd($item);
+                $updated = \App\Models\JapaneseGoal::where('id', $item['id'])
+                    ->update(['more' => $item['more']]);
+                $updateCount['update'] += $updated;
+                $updateCount['total'] += 1;
+
+            }
+        });
+    dd($updateCount);
+//   return redirect('/update_letter?success');
 });

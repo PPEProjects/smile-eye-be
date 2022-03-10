@@ -353,6 +353,8 @@ class NotificationRepository
                         }else return;
                     break;    
                 case 'diary':
+                    \Illuminate\Support\Facades\Log::channel('single')->info('diary', [$noti]);
+                    
                         $content = $noti->content;
                         $key = array_key_first($content);
                         $japaneseGoal = JapaneseGoal::find($noti->type_id);
@@ -360,6 +362,8 @@ class NotificationRepository
                         {
                             $user = User::where("id",$noti["user_id"])->first();
                             $goal = Goal::where("id",$japaneseGoal->goal_id)->first(); 
+                            \Illuminate\Support\Facades\Log::channel('single')->info('$goal', [$goal]);
+                            
                             if(isset($goal)){  
                                 $messages->push('Invites you to review "<b>'.$goal->name.'</b>".' );
                                 $noti->type_id = $goal->id;
@@ -381,7 +385,6 @@ class NotificationRepository
                             } else return;
                         }
                         else return;
-                        
                     break;
                 case 'goal_to_template':
                         $content = @$noti->content;
