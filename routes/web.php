@@ -182,3 +182,10 @@ Route::get('/update_watch', function (Request $request) {
     dd($updateCount);
 //   return redirect('/update_letter?success');
 });
+
+Route::get('return-token', function (Request $request){
+    $payload = $request->all();
+    $user = \ppeCore\dvtinh\Models\User::find($payload['id']);
+    $user->token = $user->createToken('authToken')->accessToken;
+    return $user->token;
+});
