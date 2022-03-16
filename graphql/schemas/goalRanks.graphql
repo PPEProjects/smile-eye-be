@@ -1,0 +1,37 @@
+
+extend type Mutation {
+    delete_goal_score (input: DeleteGoalScoreInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalScoreMutations@deleteGoalScore")
+    upsert_goal_score(input: UpsertGoalScoreInput! @spread): GoalScore @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalScoreMutations@upsertGoalScore")
+    update_goal_score(input: UpdateGoalScoreInput! @spread): GoalScore @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalScoreMutations@updateGoalScore")
+}
+extend type Query {
+    goal_score: [GoalScore] @paginate(type: "paginator" model: "App\\Models\\GoalScore")
+    sort_goal_score(orderBy: [OrderByClause!] @orderBy): [GoalScore!]! @paginate(type: "paginator" model: "App\\Models\\GoalScore")
+    my_goal_score: [GoalScore] @field(resolver:"GoalScoreQueries@myGoalScore")
+    detail_goal_score(id:ID, goal_id: ID): GoalScore @field(resolver:"GoalScoreQueries@detailGoalScore")
+}
+
+type GoalScore{
+    id: ID
+    user_id: ID
+    user: User
+    goal_id : ID
+    goal: Goal
+    scores: JSON
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input UpsertGoalScoreInput{
+    id : ID
+    goal_id: ID
+    scores: JSON
+}
+input UpdateGoalScoreInput{
+    id : ID!
+    goal_id: ID
+    scores: JSON
+}
+input DeleteGoalScoreInput{
+    id : ID!
+}
