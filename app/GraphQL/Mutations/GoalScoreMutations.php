@@ -7,7 +7,8 @@ use App\Repositories\GoalScoreRepository;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 
-class GoalScoreMutations{
+class GoalScoreMutations
+{
 
     private $goal_score_repository;
 
@@ -15,15 +16,18 @@ class GoalScoreMutations{
     {
         $this->goal_score_repository = $goal_score_repository;
     }
-    public function upsertGoalScore($_,array $args)
+
+    public function upsertGoalScore($_, array $args)
     {
-       return $this->goal_score_repository->upsertGoalScore($args);
+        return $this->goal_score_repository->upsertGoalScore($args);
     }
-    public function updateGoalScore($_,array $args)
+
+    public function updateGoalScore($_, array $args)
     {
         return $this->goal_score_repository->updateGoalScore($args);
     }
-    public function deleteGoalScore($_,array $args)
+
+    public function deleteGoalScore($_, array $args)
     {
         return $this->goal_score_repository->deleteGoalScore($args);
     }

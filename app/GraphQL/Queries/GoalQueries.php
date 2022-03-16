@@ -6,6 +6,7 @@ use App\Models\Achieve;
 use App\Models\GeneralInfo;
 use App\Models\Goal;
 use App\Models\GoalMember;
+use App\Models\GoalRank;
 use App\Models\GoalTemplate;
 use App\Models\JapaneseGoal;
 use App\Models\JapaneseLearn;
@@ -26,14 +27,16 @@ class GoalQueries
     private $japaneseLearn_repository;
     private $japaneseGoal_repository;
     private $goalMember_repository;
+
     public function __construct(
-        GeneralInfoRepository $generalinfo_repository,
-        GoalRepository $GoalRepository,
-        TodoListRepository $TodoListRepository,
+        GeneralInfoRepository   $generalinfo_repository,
+        GoalRepository          $GoalRepository,
+        TodoListRepository      $TodoListRepository,
         JapaneseLearnRepository $japaneseLearn_repository,
-        JapaneseGoalRepository $japaneseGoal_repository,
-        GoalMemberRepository $goalMember_repository
-    ) {
+        JapaneseGoalRepository  $japaneseGoal_repository,
+        GoalMemberRepository    $goalMember_repository
+    )
+    {
         $this->generalinfo_repository = $generalinfo_repository;
         $this->goal_repository = $GoalRepository;
         $this->todolist_repository = $TodoListRepository;
@@ -62,7 +65,8 @@ class GoalQueries
     }
 
 
-    public function myGoalsTreeSelect($_, array $args){
+    public function myGoalsTreeSelect($_, array $args)
+    {
         $goals = Goal::selectRaw('id as value, name as title, parent_id, root_id')
             ->where("root_id", $args['root_id'])
             ->orderByRaw('-`index` DESC, `created_at` ASC')
@@ -79,22 +83,21 @@ class GoalQueries
     {
         $goal = Goal::where('id', $args['id'])->first();
         if ($goal) {
-            if (isset($goal->parent_id)){
+            if (isset($goal->parent_id)) {
                 $goalRoot = Goal::where('id', $goal->root_id)->first();
-            }
-            else{
+            } else {
                 $goalRoot = $goal;
             }
             $goal->goal_root = @$goalRoot;
             $goal->setting_for_sell = true;
-            if(@$goalRoot->goalTemplate->status == "Confirmed"){
+            if (@$goalRoot->goalTemplate->status == "Confirmed") {
                 $goal->setting_for_sell = false;
             }
             $generalInfo = $this->generalinfo_repository
-                                ->setType('goal')
-                                ->findByTypeId($goal->id);
+                ->setType('goal')
+                ->findByTypeId($goal->id);
             $goal->general_info = $generalInfo;
-            $goal->type = $goal->user_id==Auth::id() ? 'goal_owner': 'goal_member';
+            $goal->type = $goal->user_id == Auth::id() ? 'goal_owner' : 'goal_member';
             return $goal;
         }
         return null;
@@ -132,31 +135,31 @@ class GoalQueries
 // start rank
         $myGoalIds = $goals->pluck('id')->toArray();
         $goalMember = GoalMember::where("add_user_id", Auth::id())
-                                ->whereNotIn('goal_id', @$myGoalIds ?? [])
-                                ->get()
-                                ->keyBy('goal_id');
+            ->whereNotIn('goal_id', @$myGoalIds ?? [])
+            ->get()
+            ->keyBy('goal_id');
 
 //        dd($goalMember->toArray());
         $idGoalMembers = $goalMember->pluck('goal_id');
         $myGoalMember = Goal::SelectRaw("*, 'goal_member' AS type")
-                                ->whereIn('id', @$idGoalMembers ?? []) 
-                                ->get();
-        $myGoalMember = $myGoalMember->map(function($goal) use($goalMember){
-                $goal->created_at = @$goalMember[$goal->id]->created_at ?? $goal->created_at;
-                $goal->updated_at = @$goalMember[$goal->id]->updated_at ?? $goal->updated_at;
-                return $goal;
-        });
+            ->whereIn('id', @$idGoalMembers ?? [])
+            ->get();
+//        $myGoalMember = $myGoalMember->map(function ($goal) use ($goalMember) {
+//            $goal->created_at = @$goalMember[$goal->id]->created_at ?? $goal->created_at;
+//            $goal->updated_at = @$goalMember[$goal->id]->updated_at ?? $goal->updated_at;
+//            return $goal;
+//        });
 //        dd($myGoalMember->toArray());
         $goals = $myGoalMember->merge($goals);
         //---------//
-        $goals = $goals->sortByDESC('created_at');
+//        $goals = $goals->sortByDESC('created_at');
         $getgoalIds = $goals->pluck('id')->toArray();
         $japaneseGoals = JapaneseGoal::whereIn('goal_id', $getgoalIds)->get();
         if (isset($japaneseGoals) && $args['parent_id'] == 'root') {
             $getIdJapaneseGoals = $japaneseGoals->pluck('goal_id')->toArray();
             $goals = $goals->whereNotIn('id', $getIdJapaneseGoals);
         }
-        
+
         $goalIds = $goals->pluck('id')->toArray();
         // $goalTemplate = GoalTemplate::whereIn('goal_id',@$goalIds ?? [])
         //                                 ->get()
@@ -165,19 +168,18 @@ class GoalQueries
         $goals = $this->generalinfo_repository
             ->setType('goal')
             ->get($goals);
-        $goals = $goals->map(function ($goal) use ( $goalMember)
-        {
-            $countMember =  $this->goalMember_repository
-                                        ->CountNumberMemberGoal($goal->id);
-            $rank = @$goal->rank;
-            if(isset($goalMember[$goal->id])){
-                $rank = @$goalMember[$goal->id]->rank;
-            }  
-            $goal->rank = $rank;
+        $goals = $goals->map(function ($goal) use ($goalMember) {
+            $countMember = $this->goalMember_repository
+                ->CountNumberMemberGoal($goal->id);
+//            $rank = @$goal->rank;
+//            if(isset($goalMember[$goal->id])){
+//                $rank = @$goalMember[$goal->id]->rank;
+//            }
+//            $goal->rank = $rank;
 // end rank
-            $goal->number_member = $countMember->number_member; 
+            $goal->number_member = $countMember->number_member;
             $goal->template = @$goal->goalTemplate;
-            $goal->redirect_autoplay = url('/api/redirect/autoplay?root_id='.$goal->id.'&user_id='.Auth::id());
+            $goal->redirect_autoplay = url('/api/redirect/autoplay?root_id=' . $goal->id . '&user_id=' . Auth::id());
             // $goal->next_goal = @$nextGoal[$goal->id];
             return $goal;
         });
@@ -188,9 +190,29 @@ class GoalQueries
 //        dd($goals->sortBy('rank')
 //            ->sortByDESC('updated_at')
 //            ->pluck('id', 'rank', 'updated_at'));
-        return $goals
-            ->sortBy('rank')
-            ->sortByDESC('updated_at');
+        // START RANK
+        $ids = GoalRank::where('user_id', Auth::id())
+            ->orderBy('pin_index', 'asc')
+//            ->orderBy('updated_at', 'desc')
+            ->get()
+            ->pluck('goal_id');
+//            ->toArray();
+        $goalSorts = $goals->whereNotIn('id', $ids);
+        $sorted = $ids->map(function ($id) use ($goals) {
+            return $goals->where('id', $id)->first();
+        });
+//        dd($sorted);/
+        $goalSorts = $goalSorts->merge($sorted);
+//        dd($goalRankIds, $goals->toArray());
+//        $goalRes = [];
+//        foreach ($goalRankIds as $goalRankId) {
+//
+//        }
+        // END RANK
+        return $goalSorts;
+//        return $goals;
+//            ->sortBy('rank')
+//            ->sortByDESC('updated_at');
     }
 
     public function nextGoal($goalIds = [])
@@ -230,7 +252,7 @@ class GoalQueries
         $nextGoal = null;
         if (isset($japaneseGoal)) {
             $nextGoal = [
-                'id'   => @$japaneseGoal->goal_id,
+                'id' => @$japaneseGoal->goal_id,
                 'name' => @$getNameGoal->name,
                 'type' => @$japaneseGoal->type
             ];
@@ -281,7 +303,7 @@ class GoalQueries
         $achieve = Achieve::where('general_infos.goal_id', $args['id'])
             ->join('general_infos', 'general_infos.id', '=', 'achieves.general_id')
             ->first();
-        return $this->goal_repository->getTreeSortByGoalId(@$achieve->goal_id, null,@$achieve->goal->root_id);
+        return $this->goal_repository->getTreeSortByGoalId(@$achieve->goal_id, null, @$achieve->goal->root_id);
     }
 
     public function reportGoal($_, array $args)
@@ -303,27 +325,28 @@ class GoalQueries
     {
         $goals = Goal::select('*')->whereNull('parent_id');
         $orderBy = $args["orderBy"];
-        if(isset($args["search"])){
-            foreach($args['search'] as $key => $value){
-                $goals = $goals->where( $key, 'like', '%'.$value.'%');
+        if (isset($args["search"])) {
+            foreach ($args['search'] as $key => $value) {
+                $goals = $goals->where($key, 'like', '%' . $value . '%');
             }
         }
         $goals = $goals->orderBy($orderBy['column'], $orderBy['order'])
-                        ->paginate($args["first"], ['*'], 'page', $args["page"]);
+            ->paginate($args["first"], ['*'], 'page', $args["page"]);
         $page = $goals->toArray()["last_page"];
         $getIds = $goals->pluck('id');
         $templates = GoalTemplate::whereIn('goal_id', @$getIds ?? [])
-                                    ->get()
-                                    ->keyBy('goal_id');
-        $goals = $goals->map(function($goal) use ($templates){
+            ->get()
+            ->keyBy('goal_id');
+        $goals = $goals->map(function ($goal) use ($templates) {
             $goal->status = @$templates[$goal->id]->status;
             $goalMember = $this->goalMember_repository->CountNumberMemberGoal($goal->id);
             $goal->number_member = $goalMember->number_member;
             return $goal;
         });
-        $goalsRoot = ["goals" => $goals, "total_page" => $page];      
+        $goalsRoot = ["goals" => $goals, "total_page" => $page];
         return $goalsRoot;
     }
+
     public function myGoalsPublish($_, array $args)
     {
         $goals = Goal::whereNull('parent_id')->get();
@@ -331,19 +354,19 @@ class GoalQueries
         $generalInfo = GeneralInfo::whereIn('goal_id', @$goalIds ?? [])->get();
         $generalIds = $generalInfo->pluck('id');
         $achieves = Achieve::whereIn('general_id', @$generalIds ?? [])
-                            ->where('status', 'like', 'accept')
-                            ->get();
-     
+            ->where('status', 'like', 'accept')
+            ->get();
+
         $listAchieves = [];
         $listIdAchieves = [];
-        foreach($achieves as $achieve){
+        foreach ($achieves as $achieve) {
             $idAchieve = @$achieve->general->goal->id;
             $user = $achieve->user_invite;
             if (isset($idAchieve) && isset($user)) {
                 $listAchieves[$idAchieve][] = [
-                    'id' =>$user->id,
-                    'name'=> $user->name,
-                    'email'=> $user->email,
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
                     'status' => "achieve"
                 ];
                 $listIdAchieves[] = $idAchieve;
@@ -352,29 +375,28 @@ class GoalQueries
         $listShares = [];
         $listIdShares = [];
         $shares = PublishInfo::whereIn('general_id', @$generalIds ?? [])
-                                ->get();
-        foreach($shares as $share){
+            ->get();
+        foreach ($shares as $share) {
             $idShare = @$share->general->goal->id;
             $user = $share->user_invite;
             if (isset($idShare) && isset($user)) {
                 $listShares[$idShare][] = [
-                    'id' =>$user->id,
-                    'name'=> $user->name,
-                    'email'=> $user->email,
-                    'status' =>"share ".@$share->rule ?? 'view'
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'status' => "share " . @$share->rule ?? 'view'
                 ];
                 $listIdShares[] = $idShare;
             }
         }
-        $idGoals = array_merge($listIdAchieves , $listIdShares);
+        $idGoals = array_merge($listIdAchieves, $listIdShares);
         $goals = $goals->whereIn('id', @$idGoals ?? []);
-        $goals = $goals->map(function($goal) use($listShares, $listAchieves)
-        {
+        $goals = $goals->map(function ($goal) use ($listShares, $listAchieves) {
             $goal->achieves = @$listAchieves[$goal->id] ?? [];
-            $goal->shares =  @$listShares[$goal->id] ?? [];
+            $goal->shares = @$listShares[$goal->id] ?? [];
             return $goal;
         });
         return $goals;
     }
-    
+
 }

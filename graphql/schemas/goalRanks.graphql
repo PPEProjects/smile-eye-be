@@ -1,37 +1,34 @@
-
 extend type Mutation {
-    delete_goal_score (input: DeleteGoalScoreInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalScoreMutations@deleteGoalScore")
-    upsert_goal_score(input: UpsertGoalScoreInput! @spread): GoalScore @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalScoreMutations@upsertGoalScore")
-    update_goal_score(input: UpdateGoalScoreInput! @spread): GoalScore @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalScoreMutations@updateGoalScore")
+#    delete_goal_rank (input: DeleteGoalRankInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalRankMutations@deleteGoalRank")
+    upsert_goal_rank(input: UpsertGoalRankInput! @spread): Boolean @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalRankMutations@upsertGoalRank")
+    update_goal_rank(input: UpdateGoalRankInput! @spread): GoalRank @guard @field(resolver: "App\\GraphQL\\Mutations\\GoalRankMutations@updateGoalRank")
 }
-extend type Query {
-    goal_score: [GoalScore] @paginate(type: "paginator" model: "App\\Models\\GoalScore")
-    sort_goal_score(orderBy: [OrderByClause!] @orderBy): [GoalScore!]! @paginate(type: "paginator" model: "App\\Models\\GoalScore")
-    my_goal_score: [GoalScore] @field(resolver:"GoalScoreQueries@myGoalScore")
-    detail_goal_score(id:ID, goal_id: ID): GoalScore @field(resolver:"GoalScoreQueries@detailGoalScore")
-}
+#extend type Query {
+#    goal_rank: [GoalRank] @paginate(type: "paginator" model: "App\\Models\\GoalRank")
+#    sort_goal_rank(orderBy: [OrderByClause!] @orderBy): [GoalRank!]! @paginate(type: "paginator" model: "App\\Models\\GoalRank")
+#    my_goal_rank: [GoalRank] @field(resolver:"GoalRankQueries@myGoalRank")
+#    detail_goal_rank(id:ID, goal_id: ID): GoalRank @field(resolver:"GoalRankQueries@detailGoalRank")
+#}
 
-type GoalScore{
+type GoalRank{
     id: ID
     user_id: ID
     user: User
     goal_id : ID
     goal: Goal
-    scores: JSON
+    pin_index:Int
     created_at: DateTime
     updated_at: DateTime
 }
 
-input UpsertGoalScoreInput{
-    id : ID
-    goal_id: ID
-    scores: JSON
+input UpsertGoalRankInput{
+    newIds:[ID]
 }
-input UpdateGoalScoreInput{
+input UpdateGoalRankInput{
     id : ID!
     goal_id: ID
-    scores: JSON
+    pin_index: Int
 }
-input DeleteGoalScoreInput{
-    id : ID!
-}
+#input DeleteGoalRankInput{
+#    id : ID!
+#}
