@@ -11,6 +11,7 @@ use App\Models\GoalTemplate;
 use App\Models\JapaneseGoal;
 use App\Models\JapaneseLearn;
 use App\Models\PublishInfo;
+use App\Models\User;
 use App\Repositories\GeneralInfoRepository;
 use App\Repositories\GoalMemberRepository;
 use App\Repositories\GoalRepository;
@@ -323,7 +324,7 @@ class GoalQueries
 
     public function listGoalsRoot($_, array $args)
     {
-        $goals = Goal::select('*')->whereNull('parent_id');
+        $goals = Goal::select('*')->whereNull('parent_id')->WhereNotNull('user_id');
         $orderBy = $args["orderBy"];
         if (isset($args["search"])) {
             foreach ($args['search'] as $key => $value) {
@@ -334,14 +335,17 @@ class GoalQueries
             ->paginate($args["first"], ['*'], 'page', $args["page"]);
         $page = $goals->toArray()["last_page"];
         $getIds = $goals->pluck('id');
+        $getUserId = $goals->pluck('user_id');
+        $checkUser = User::whereIn('id', @$getUserId ?? [])->get()->pluck('id');
+        $goals = $goals->whereIn('user_id', @$checkUser ?? []);
         $templates = GoalTemplate::whereIn('goal_id', @$getIds ?? [])
             ->get()
             ->keyBy('goal_id');
         $goals = $goals->map(function ($goal) use ($templates) {
-            $goal->status = @$templates[$goal->id]->status;
-            $goalMember = $this->goalMember_repository->CountNumberMemberGoal($goal->id);
-            $goal->number_member = $goalMember->number_member;
-            return $goal;
+                $goal->status = @$templates[$goal->id]->status;
+                $goalMember = $this->goalMember_repository->CountNumberMemberGoal($goal->id);
+                $goal->number_member = $goalMember->number_member;
+                return $goal;
         });
         $goalsRoot = ["goals" => $goals, "total_page" => $page];
         return $goalsRoot;
