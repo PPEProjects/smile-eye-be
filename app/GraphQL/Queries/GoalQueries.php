@@ -324,7 +324,7 @@ class GoalQueries
 
     public function listGoalsRoot($_, array $args)
     {
-        $goals = Goal::select('*')->whereNull('parent_id')->WhereNotNull('user_id');
+        $goals = Goal::select('*')->whereNull('parent_id');
         $orderBy = $args["orderBy"];
         if (isset($args["search"])) {
             foreach ($args['search'] as $key => $value) {
