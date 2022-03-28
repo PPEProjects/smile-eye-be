@@ -64,6 +64,8 @@ type User {
     achieves: [Goal]
     diary: [JapaneseGoal]
     notes: [Note]
+    avatar_attachment_id: JSON
+    background_attachment_id: JSON
 }
 type UsersAdmin{
     total_page: Int

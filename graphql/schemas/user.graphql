@@ -19,8 +19,8 @@ input CreateUserInput{
     username: String
     quotes: String
     phone_number: String
-    avatar_attachment_id: ID
-    background_attachment_id : ID
+    avatar_attachment_id: JSON
+    background_attachment_id : JSON
 }
 
 input UpdateUserInput{
@@ -32,8 +32,8 @@ input UpdateUserInput{
     username: String
     quotes: String
     phone_number: String
-    avatar_attachment_id: ID
-    background_attachment_id : ID
+    avatar_attachment_id: JSON
+    background_attachment_id : JSON
     is_flag: Boolean
 }
 input DeleteUserInput{

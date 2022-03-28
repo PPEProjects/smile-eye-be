@@ -11,6 +11,8 @@ type User {
     id: ID!
     name: String!
     email: String!
+    avatar_attachment_id: JSON
+    background_attachment_id: JSON
 }
 
 type AuthPayload {

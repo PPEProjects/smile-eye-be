@@ -24,6 +24,8 @@ class UserMutations
     }
     public function updateUser($_, array $args): User
     {
+        \Illuminate\Support\Facades\Log::channel('single')->info('$args', [$args]);
+        
         return $this->userRepository->updateUser($args);
     }
 
