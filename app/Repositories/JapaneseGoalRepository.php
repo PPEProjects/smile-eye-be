@@ -236,6 +236,10 @@ class JapaneseGoalRepository
                 return;
             }
         }
+
+        //create japanese learn
+        $this->japaneseLearn_repository->upsertJapaneseLearn(['user_id' => Auth::id(), 'goal_id' => $args['goal_id']]);
+
         $detailJPGoal = $this->getJapaneseGoal($nameCollum, $value)->first();
         if (isset($detailJPGoal->goal_id)) {
             $goalRoot = $this->findGoal($detailJPGoal->goal->root_id);
@@ -343,7 +347,7 @@ class JapaneseGoalRepository
             $detailJPGoal->link_prev = $linkPrev;
 
         }
-        if ($detailJPGoal->type == 'flashcard_study') {
+        if (@$detailJPGoal->type == 'flashcard_study') {
             $flashCardIds = $detailJPGoal->more['flashcard_ids'];
             $flashCard = JapaneseGoal::whereIn('id', $flashCardIds)->get();
             $detailJPGoal->card_box_topics = @$detailJPGoal->more['card_box_topics'];
