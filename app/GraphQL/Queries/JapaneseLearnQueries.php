@@ -33,5 +33,7 @@ class JapaneseLearnQueries
             ->toArray();
         return ['user_ids' => $userIds];
     }
-
+    public  function progressUserJapaneseLearn($_, array  $args){
+        return $this->japanese_learn_repository->progressUserJapaneseLearn($args);
+    }
 }

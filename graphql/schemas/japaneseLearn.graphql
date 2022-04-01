@@ -10,6 +10,7 @@ extend type Query {
     my_japanese_learn: [JapaneseLearn] @field(resolver:"JapaneseLearnQueries@myJapaneseLearn")
     detail_japanese_learn(id:ID): JapaneseLearn @field(resolver:"JapaneseLearnQueries@detailJapaneseLearn")
     list_userid_japanese_learn(goal_id:ID!): UserID @field(resolver:"JapaneseLearnQueries@listUserIDJapaneseLearn")
+    progress_user_japanese_learn(name: String): JSON @field(resolver:"JapaneseLearnQueries@progressUserJapaneseLearn")
 }
 
 type UserID{
