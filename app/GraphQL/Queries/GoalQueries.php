@@ -204,9 +204,8 @@ class GoalQueries
             return $goals->where('id', $id)->first();
         });
 
-
-//        dd($sorted);
-        $goalSorts = $goalSorts->concat($sorted);
+        $sorted = $sorted->whereNotNull('id');
+        $goalSorts = $goalSorts->merge($sorted);
 
 //        dd($goalRankIds, $goals->toArray());
 //        $goalRes = [];
