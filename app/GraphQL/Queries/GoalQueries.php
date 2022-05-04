@@ -170,7 +170,7 @@ class GoalQueries
             ->setType('goal')
             ->get($goals);
         $goals = $goals->map(function ($goal) use ($goalMember) {
-            $countMember = $this->goalMember_repository
+            $countMember = @$this->goalMember_repository
                 ->CountNumberMemberGoal($goal->id);
 //            $rank = @$goal->rank;
 //            if(isset($goalMember[$goal->id])){
@@ -184,6 +184,7 @@ class GoalQueries
             // $goal->next_goal = @$nextGoal[$goal->id];
             return $goal;
         });
+
 //        dd($goals
 //            ->sortByDESC('updated_at')
 //            ->pluck('id', 'updated_at')
@@ -202,8 +203,11 @@ class GoalQueries
         $sorted = $ids->map(function ($id) use ($goals) {
             return $goals->where('id', $id)->first();
         });
-//        dd($sorted);/
-        $goalSorts = $goalSorts->merge($sorted);
+
+
+//        dd($sorted);
+        $goalSorts = $goalSorts->concat($sorted);
+
 //        dd($goalRankIds, $goals->toArray());
 //        $goalRes = [];
 //        foreach ($goalRankIds as $goalRankId) {
