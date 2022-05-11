@@ -20,5 +20,9 @@ class GoalScoreQueries
  public function detailGoalScore($_,array $args){
   return $this->goal_score_repository->detailGoalScore($args);
  }
+
+ public function listGoalScore($_, array $args){
+      return $this->goal_score_repository->listGoalScore($args);
+ }
  
 }

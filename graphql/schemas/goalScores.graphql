@@ -9,6 +9,7 @@ extend type Query {
     sort_goal_score(orderBy: [OrderByClause!] @orderBy): [GoalScore!]! @paginate(type: "paginator" model: "App\\Models\\GoalScore")
     my_goal_score: [GoalScore] @field(resolver:"GoalScoreQueries@myGoalScore")
     detail_goal_score(id:ID, goal_id: ID): GoalScore @field(resolver:"GoalScoreQueries@detailGoalScore")
+    list_goal_score(user_id: ID, goal_root_id: ID): JSON @field(resolver:"GoalScoreQueries@listGoalScore")
 }
 
 type GoalScore{
