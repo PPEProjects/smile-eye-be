@@ -11,6 +11,7 @@ extend type Query {
     my_japanese_posts: [JapanesePost] @field(resolver:"JapanesePostQueries@myJapanesePost")
     other_japanese_posts(goal_id: ID): [JapanesePost] @field(resolver:"JapanesePostQueries@otherJapanesePost")
     list_japanese_post(goal_id: ID): [JapanesePost] @field(resolver:"JapanesePostQueries@listJapanesePost")
+    list_japanese_posts_by_goal_root(user_id: ID, goal_root_id: ID): [JapanesePost] @field(resolver:"JapanesePostQueries@listJapanesePostsByGoalRoot")
 }
 
 type JapanesePost{

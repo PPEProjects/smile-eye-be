@@ -75,4 +75,13 @@ class JapanesePostRepository{
         $japanesePost = JapanesePost::whereNotIn('user_id', [$userId])->where('goal_id', $args['goal_id'])->get();
         return $japanesePost;
     }
+
+    public function listJapanesePostsByGoalRoot($args){
+        $goals = Goal::where('root_id', $args['goal_root_id'])->get();
+        $getIdGoals = $goals->pluck('id')->toArray();
+        $japanesePosts = JapanesePost::whereIn('goal_id', @$getIdGoals ?? [])
+                                        ->where('user_id', $args['user_id'])
+                                        ->orderBy('updated_at', 'DESC')->get();
+        return $japanesePosts;
+    }
 }

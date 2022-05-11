@@ -45,4 +45,8 @@ class JapanesePostQueries
             ->get();
         return $posts;
     }
+
+    public function listJapanesePostsByGoalRoot($_, array $args){
+        return $this->japanese_post_repository->listJapanesePostsByGoalRoot($args);
+    }
 }
