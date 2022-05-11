@@ -1043,4 +1043,12 @@ class GoalRepository
         }
         return $goal;
     }
+
+//    ver 2
+    public function listGoalByParentId($args){
+        $goals = Goal::where('parent_id', $args['parent_id'])->get();
+        return $goals;
+    }
+
 }
+
